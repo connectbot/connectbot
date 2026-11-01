@@ -726,4 +726,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">Het is niet gelukt om de snelkoppeling te maken. Probeer het opnieuw.</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">De keten van jump-hosts bevat een lus. Controleer de instellingen van de jump-hosts.</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">De keten van jump-hosts overschrijdt de limiet van 32 hosts.</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">Lokale weergave van invoer</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">Kies of de ingevoerde tekst lokaal wordt weergegeven. Als u ervoor kiest om dit altijd in te schakelen, kan de tekst dubbel worden weergegeven als de server de tekst ook terugstuurt.</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">Automatisch</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">Altijd ingeschakeld</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">Altijd uit.</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">Start van de onderhandelingen.</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">Onderhandel over de mogelijkheden van de terminal bij het verbinden, of wacht tot de server deze opvraagt.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">Onderhandel tijdens het verbinden.</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">Wacht op de server.</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">Niet-binaire gegevens</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">Als de server de binaire modus weigert, staat u dan het gebruik van de oude achtbit-bytes toe of vereist u ASCII. Beide partijen moeten dezelfde codering gebruiken.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">Sta het gebruik van oude achtbit-bytes toe.</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">Vereis ASCII.</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">Gekopieerde regelafsluitingen</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">Buiten de binaire modus om, converteer de gekopieerde LF-tekens naar CRLF of behoud de LF-tekens. Dit geldt ook voor geautomatiseerde tekst.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">Converteer LF naar CRLF.</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">Behoud LF</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">De invoer is niet verzonden. Deze verbinding vereist het gebruik van ASCII totdat de server de binaire modus inschakelt.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">De invoer kon niet naar deze Telnet-server worden verzonden.</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">Verbinding mislukt.</string>
+  <string name="terminal_connected" tools:machine_translated="true">Verbinding tot stand gebracht.</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">Authenticatie succesvol.</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">Kan geen SSH-sessie openen.</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">De SSH-server heeft het verzoek om een terminalverbinding geweigerd.</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">De SSH-server heeft het verzoek om een shell te starten geweigerd.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">Verbindingsgegevens</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">Protocol</string>
+  <string name="connection_info_host" tools:machine_translated="true">Hostnaam</string>
+  <string name="connection_info_port" tools:machine_translated="true">Poort</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">SSH-poort</string>
+  <string name="connection_info_username" tools:machine_translated="true">Gebruikersnaam</string>
+  <string name="connection_info_status" tools:machine_translated="true">Status</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">Verbinden</string>
+  <string name="connection_info_connected" tools:machine_translated="true">Verbonden</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">Verbinding verbroken.</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">Lokaal adres</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">Details over de initiële SSH-verbinding die wordt gebruikt om Mosh te starten, en niet over de actieve Mosh-verbinding.</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">Details over de algoritme-onderhandelingen via de SSH-verbinding.</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">De details van de SSH-onderhandeling zijn niet beschikbaar.</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">Sleuteluitwisseling</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">Hostsleutel van de server</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">Versleuteling: van client naar server</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">Versleuteling: van server naar client</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">Integriteit: van client naar server</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">Integriteit: van server naar client</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">Geïntegreerd met encryptie.</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">Post-kwantum sleuteluitwisseling</string>
+  <string name="connection_info_yes" tools:machine_translated="true">Ja</string>
+  <string name="connection_info_no" tools:machine_translated="true">Nee</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">Poortdoorsturen</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">Bron geconfigureerd.</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">Toegewezen poort</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">Niet actief</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">Status van de doorstuurfunctie</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">Actief</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">Inactief</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">Bestemmingsadres</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">Cryptografisch beleid</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">Standaard</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">Toekomst</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">Oude versie</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">FIPS-algoritmen</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">Aangepast</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">Aanbevolen algoritmen en sleutellengtes</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">Vereis een sleuteluitwisseling die bestand is tegen aanvallen door kwantumcomputers.</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">Beperk de algoritmen; deze zijn niet FIPS-gecertificeerd.</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">Sta oudere algoritmen toe voor compatibiliteit.</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">Selecteer algoritmen en minimale sleutellengtes.</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">Moderne algoritmen en de vereiste sleutellengtes worden door de SSH-bibliotheek ondersteund.</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">Vereist een hybride sleuteluitwisseling die bestand is tegen aanvallen door kwantumcomputers, 256-bits encryptiesleutels en sterkere RSA-sleutels.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">Beperkt de keuze aan algoritmen; er wordt geen FIPS-validatie uitgevoerd.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">Hiermee kunnen oudere algoritmen en kleinere RSA- en DH-sleutels worden gebruikt voor compatibiliteit. Moderne algoritmen blijven echter de voorkeur genieten.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">Pas de standaardinstellingen aan. De keuze van algoritmen en de minimale sleutellengte zijn onafhankelijk van elkaar.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">Minimaal aantal RSA-bits</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">Minimaal aantal DH-bits</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">Standaardinstellingen overnemen (%1$d bits)</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">Laat dit veld leeg om de standaardinstelling te gebruiken. Dit geldt ook voor algoritmen die expliciet zijn ingeschakeld.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">Voer minimaal 1024 bits in. DH mag niet meer dan 8192 bits bedragen.</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">Algoritmen voor sleuteluitwisseling</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">Versleutelingsalgoritmen</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">Algoritmen voor berichtauthenticatie</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">Algoritmen voor hostsleutels</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">Authenticatie-algoritmen op basis van een openbare sleutel</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">Selectiemodus</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">Standaardinstellingen overnemen</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">Standaardinstellingen wijzigen</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">Gebruik uitsluitend deze.</string>
+  <string name="crypto_apply" tools:machine_translated="true">Toepassen</string>
+  <string name="crypto_expression" tools:machine_translated="true">Algoritme-expressie</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">Door komma\'s gescheiden namen. Kies bij \'Standaardinstellingen wijzigen\' om elk van de namen te voorzien van een voorvoegsel: ^ (eerste), + (toevoegen) of - (uitsluiten).</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">Gebruik unieke SSH-namen en één selectiemodus. Exacte lijsten mogen niet leeg zijn.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">Geldende volgorde van voorkeuren</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">Niet beschikbaar op dit apparaat; behouden in uw configuratie.</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">Uitgesloten vanwege de minimale sleutellengte.</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">Ingeschakeld als standaardinstelling</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">Beschikbaar; niet ingeschakeld in de standaardinstellingen.</string>
+  <string name="crypto_prepend" tools:machine_translated="true">Geef de voorkeur aan de eerste optie.</string>
+  <string name="crypto_append" tools:machine_translated="true">Toevoegen</string>
+  <string name="crypto_exclude" tools:machine_translated="true">Uitsluiten</string>
+  <string name="crypto_inherit" tools:machine_translated="true">Gebruik de standaardinstellingen.</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">niet geïmplementeerd in deze bibliotheek</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">niet beschikbaar met de geïnstalleerde cryptografische providers.</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">De DH-groep is kleiner dan de geconfigureerde minimumwaarde.</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">de sleutel of het certificaat voldoet niet aan het RSA- of certificaatbeleid.</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">Waarschuwing — %1$s: %2$s: %3$s overgeslagen (%4$s).</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">De cryptografische instellingen laten geen bruikbare %1$s over.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">De cryptografische beleidsregel voor %1$s is mislukt: %2$s</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">Cryptografisch beleid — %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">Minimale sleutellengtes</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA: %1$d bits; DH met eindig veld: %2$d bits</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">Toon de daadwerkelijke volgorde van voorkeuren</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">Verberg de effectieve volgorde van voorkeuren.</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">Wijzig de status voor %1$s</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ Geef de voorkeur aan de eerste optie · + Voeg toe · ✓ Volg de standaardinstelling · − Sluit uit</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">Shift-toets</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">Druk op Enter</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">Terugtoets</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">Verwijderen</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">Invoegen</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">Omhoog-pijl</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">↓</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">Thuis</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">Einde</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">Pagina omhoog</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">Pagina omlaag</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">Tekstinvoer</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">Composeer</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">Toetsenbord</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">Toetsenbordinstellingen voor terminal</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">Toetsenbordindelingen</string>
+  <string name="keyboard_macros" tools:machine_translated="true">Gedeelde macro\'s</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">Macro ontbreekt.</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">Niet-ondersteunde configuratie</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">De toetsenbordactie is mislukt.</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">Naar boven</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">Ga naar beneden.</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">Ga naar links.</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">Ga naar rechts.</string>
+  <string name="keyboard_off" tools:machine_translated="true">Uit</string>
+  <string name="keyboard_once" tools:machine_translated="true">Volgende toets</string>
+  <string name="keyboard_locked" tools:machine_translated="true">Vergrendeld</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">Nieuwe lay-out</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">Nieuwe macro</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(kopieer)</string>
+  <string name="keyboard_back" tools:machine_translated="true">Terug</string>
+  <string name="keyboard_error" tools:machine_translated="true">De wijziging kon niet worden toegepast: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">Indeling toevoegen</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">Macro toevoegen</string>
+  <string name="keyboard_edit" tools:machine_translated="true">Bewerken</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">Duplicaat</string>
+  <string name="keyboard_delete" tools:machine_translated="true">Verwijderen</string>
+  <string name="keyboard_default" tools:machine_translated="true">Gebruik als standaardinstelling voor de app.</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">Gebruikt in: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">Bevestigen</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">Deze wijziging doorvoeren? Opgeslagen lay-outwijzigingen kunnen verloren gaan. Gedeelde macro\'s blijven behouden wanneer een lay-out wordt hersteld.</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">Annuleren</string>
+  <string name="keyboard_name" tools:machine_translated="true">Naam</string>
+  <string name="keyboard_width" tools:machine_translated="true">Breedte van de knop (in dp, voor alle knoppen)</string>
+  <string name="keyboard_height" tools:machine_translated="true">Hoogte van de knop (in dp, voor alle knoppen)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">Tik op een toets om deze te bewerken. Raak de toets aan en houd deze ingedrukt en sleep vervolgens om de toets te verplaatsen. Sleep tussen de secties om de toets vast te zetten of los te maken. De knopgrootte geldt voor elke toets.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">Sleep om de knop te verplaatsen.</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">Toets toevoegen</string>
+  <string name="keyboard_visible" tools:machine_translated="true">Zichtbaar</string>
+  <string name="keyboard_row" tools:machine_translated="true">Rij (beginnend bij 0)</string>
+  <string name="keyboard_column" tools:machine_translated="true">Kolom (beginnend bij 0)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">Rij-overslag</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">Kolombreedte</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">Verwijder toets</string>
+  <string name="keyboard_save" tools:machine_translated="true">Opslaan</string>
+  <string name="keyboard_reset" tools:machine_translated="true">Standaardinstellingen herstellen</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">Gebruik de standaardinstellingen van de app.</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">Visuele editor</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">Teksteditor</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">Eén actie per regel: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. De tekst maakt gebruik van JSON-escaping.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">Macro-stappen</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">Voeg tekst toe</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">Voeg toets toe</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">Voeg bytes toe.</string>
+  <string name="keyboard_text" tools:machine_translated="true">Tekst om te verzenden</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">Exacte bytewaarden (hexadecimaal)</string>
+  <string name="keyboard_character" tools:machine_translated="true">Karakter</string>
+  <string name="terminal_key_space" tools:machine_translated="true">Spatiebalk</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">Toetsenblok %1$s</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">Tekst op de knop</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">Citrus</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">Compacte bedieningselementen voor de terminal</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">Eindbestemming</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">Ruime bedieningselementen voor de terminal</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">Klauw</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">Geoptimaliseerd voor Claude Code.</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">Scribe</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">Geoptimaliseerd voor de Codex-opdrachtregelinterface.</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">Kies een toetsenbordindeling.</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">Klassieke CB</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">Pas aan de breedte aan</string>
+  <string name="keyboard_layer" tools:machine_translated="true">Laag %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">Laag %1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">Laag wijzigen</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">Bestemmingslaag</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">Volgende niet-lege laag</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">De doelbestemminglaag is leeg.</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">Stoppen</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">Geschiedenis</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">Modus</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">Nieuwe regel</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">Logbestand</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">Bewerken</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">Kopiëren</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">Plakken</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">Onderbreken</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Zoekgeschiedenis</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">Schakel tussen de verschillende machtigingsmodi.</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">Nieuwe regel invoegen</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">Transcriptie in- of uitschakelen</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">Open externe editor</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">Antwoord kopiëren</string>
+  <string name="macro_assign" tools:machine_translated="true">Macro toewijzen</string>
+  <string name="macro_import" tools:machine_translated="true">Macro importeren</string>
+  <string name="macro_export" tools:machine_translated="true">Macro exporteren</string>
+  <string name="macro_none" tools:machine_translated="true">Er zijn geen opgeslagen macro\'s.</string>
+  <string name="automation_run_macro" tools:machine_translated="true">Macro uitvoeren</string>
+  <string name="macro_choose" tools:machine_translated="true">Selecteer een macro</string>
+  <string name="macro_manage" tools:machine_translated="true">Macro\'s beheren</string>
+  <string name="keyboard_selected" tools:machine_translated="true">Geselecteerd</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">Standaardinstelling voor de app</string>
+  <string name="keyboard_select" tools:machine_translated="true">Gebruik dit</string>
+  <string name="keyboard_change" tools:machine_translated="true">Indeling wijzigen</string>
+  <string name="keyboard_customize" tools:machine_translated="true">Aanpassen</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">Bewerken van gedeelde lay-out</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">Gebruik als standaardinstelling voor de app.</string>
+  <string name="keyboard_saving" tools:machine_translated="true">Bezig met opslaan…</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">Aangepast</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">Gebruik het standaardtoetsenbord.</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">Vanuit het profiel \"%1$s\"</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">Geavanceerd</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">Toetsenbord: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">Geautomatiseerde handelingen na het inloggen: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">Profiel: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">Host: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">Layout “%1$s” verwijderen?</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">Macro “%1$s” verwijderen?</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">Hosts en profielen die deze lay-out gebruiken, zullen in plaats daarvan hun standaardtoetsenbord gebruiken. Als dit de standaardinstelling van de app is, wordt een andere lay-out de standaard.</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">Hierdoor wordt de macro uit de gedeelde bibliotheek verwijderd.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">De oorspronkelijke toetsen en afmetingen van deze lay-out herstellen? De wijzigingen worden opgeslagen wanneer u de lay-out opslaat. Gedeelde macro\'s blijven behouden.</string>
+  <string name="macro_shared_title" tools:machine_translated="true">Een gedeelde macro bewerken?</string>
+  <string name="macro_shared_message" tools:machine_translated="true">Deze macro wordt op andere plaatsen gebruikt. Maak een afzonderlijke kopie of bewerk de gedeelde versie voor alle gebruikers.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">Maak een kopie</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">Bewerken van gedeelde macro</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">Door de wijzigingen op te slaan, worden deze macro overal bijgewerkt waar deze wordt gebruikt, zelfs als u later besluit de bijbehorende editor te verwijderen.</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">Verwijder of wijzig deze toepassingen voordat u deze macro verwijdert.</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">Deze sessie</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">Deze host is alleen-lezen. Het toetsenbord kan niet worden gewijzigd.</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">Indelingen beheren</string>
+  <string name="keyboard_done" tools:machine_translated="true">Klaar.</string>
+  <string name="automation_draft_host" tools:machine_translated="true">Deze stappen worden opgeslagen bij de nieuwe host.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">Sla deze host op en voeg poortdoorstuurregels toe voordat je doorstuuracties gebruikt.</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">Actie</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">Toets</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">Macro</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">Wijzigingstoets</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">App-actie</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">Laag wijzigen</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">Gedeelde lay-out: updates worden opgeslagen en zijn beschikbaar voor alle gebruikers.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">Deze toetsenbordindeling is niet beschikbaar.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">Rijen en kolommen beginnen bij 0 binnen elke sectie. Toetsen zijn één rij hoog. Met de kolombreedte kunt u instellen hoeveel cellen een toets inneemt.</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">Uiterlijk</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">Achtergrondkleur</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">Tekstkleur</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">Omtrekkleur</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">Standaardthema</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Achtergrondtransparantie: %1$d%%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">Omrand</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">Lijndikte: %1$.1f dp</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">Stel het uiterlijk terug</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">Actieve modifiers en laagselecties gebruiken de themakleur voor de markering.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">Gedrag</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">Herhaal terwijl ingedrukt.</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">Gebruik de standaardinstelling voor herhaling.</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">App-instelling</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">Aan</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">Uit</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">Haptische feedback: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">Vaste toetsen</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">Scrollbare toetsen</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">Sleep toetsen hierheen.</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">Bevestig aan de rechterkant</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">Kies lay-outs, pas toetsen aan en beheer macro\'s.</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">Lay-out bewerken</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">Bewerken</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">Indelingsinstellingen</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">Scrollbaar</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">Aanpassen aan de breedte</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">Toetsenbord</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">Tik om te bewerken · Houd ingedrukt en sleep om te verplaatsen</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">Vaste toetsen blijven aan het einde van het toetsenbord staan (links in interfaces waarin van rechts naar links wordt gelezen).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">Sleep een toets naar ‘Vaste toetsen’ om deze aan het einde van het toetsenbord te plaatsen. Sleep de toets terug naar ‘Scrollbare toetsen’ om deze los te maken.</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">Uitgebreid</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">Samengevouwen</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">Bewerk een kopie</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">Ga verder met bewerken.</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">Maakt een lay-out aan voor %1$s. Andere gebruikers behouden hun huidige lay-out.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">De wijzigingen worden toegepast wanneer u deze host of dit profiel opslaat.</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">Door deze toets op te slaan, wordt de conceptversie van de lay-out bijgewerkt. Sla de lay-out op om uw wijzigingen te behouden.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">Plaatsing</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">Toon toets</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">Vastgezet aan het einde</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">Sneltoets wijzigen</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">Kies welke functie deze toets uitvoert wanneer u erop drukt.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">Achtergrond, tekst en omtrek</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · Haptische feedback: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">Druk één keer.</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">Herhaalt zolang de toets wordt ingedrukt.</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">Rij, kolom en toetsbreedte</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">Gebruikt door %1$d</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">Deze toets verwijderen uit het ontwerp van het toetsenbord?</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">Gewenste wijzigingen toepassen?</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">Pas deze wijzigingen toe op de lay-out, of annuleer ze.</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">Wijzigingen toepassen</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">Lay-out bewerken</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">Toets of sneltoets</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">Voorbeeld</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">Aangepaste selectie</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">Gebruik de standaardindeling.</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">Lay-outbewerkingen</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">Kleurenvoorbeeld</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">Voeg een toets toe om deze laag te activeren.</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">De wijzigingen worden toegepast op dit terminalvenster zodra u de lay-out opslaat.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">Door deze lay-out op te slaan, worden alle gebruikers bijgewerkt. U kunt in plaats daarvan een kopie bewerken.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">Gedeelde lay-out wijzigen?</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">deze configuratie</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">Ingebouwde sjablonen</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">De standaardinstellingen blijven ongewijzigd. Als u een instelling bewerkt, maakt u een persoonlijke kopie.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">Voorgeprogrammeerde instelling</string>
 </resources>

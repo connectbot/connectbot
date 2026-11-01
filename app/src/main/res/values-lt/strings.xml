@@ -734,4 +734,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">Nepavyko sukurti nuorodos. Pabandykite dar kartą.</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">Šuolių serverių grandinėje yra ciklas. Patikrinkite šuolių serverių nustatymus.</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">Prisijungimo grandinė, sudaryta iš tarpinių serverių, viršija 32 serverių limitą.</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">Vietinis atvaizdavimas.</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">Pasirinkite, ar įvestas tekstas turi būti rodomas vietiniame įrenginyje. Jei nuolat įjungta ši funkcija, tekstas gali būti rodomas du kartus, kai serveris jį atsiunčia.</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">Automatinis</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">Visada įjungta.</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">Visada išjungta.</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">Pradėti derybas.</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">Pradedant ryšį, derinkite terminalo galimybes arba palaukite, kol serveris jų paprašys.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">Derėkitės prisijungiant.</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">Laukite, kol prisijungs serveris.</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">Dvejetainiai duomenys</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">Jei serveris atmeta dvejetainį režimą, leiskite naudoti senesnius aštuonių bitų duomenų blokus arba reikalaukite ASCII formato. Abiejose pusėse turi būti naudojamas vienodas kodavimas.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">Leiskite naudoti senesnius aštuonių bitų simbolius.</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">Reikalauti ASCII formato.</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">Įklijuotų eilučių pabaigos</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">Kai naudojamas kitas nei dvejetainis režimas, įklijuotą eilutės posūkio simbolį (LF) konvertuokite į simbolių porą (CRLF) arba palikite jį kaip LF. Taip pat taikoma automatizuoto teksto atveju.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">Pakeiskite LF į CRLF.</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">Išsaugokite LF.</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">Įvestis nebuvo išsiųsta. Šiam ryšiui reikalingas ASCII kodavimas, kol serveris įjungia dvejetainį režimą.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">Nepavyko nusiųsti duomenų į šį „Telnet“ serverį.</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">Ryšys nepavyko užmegzti.</string>
+  <string name="terminal_connected" tools:machine_translated="true">Prisijungta.</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">Autentifikacija sėkminga.</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">Nepavyko užmegzti SSH sesijos.</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">SSH serveris atmetė terminalo užklausą.</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">SSH serveris atmetė prašymą paleisti interaktyviąją sesiją.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">Ryšio informacija</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">Protokolas</string>
+  <string name="connection_info_host" tools:machine_translated="true">Serveris</string>
+  <string name="connection_info_port" tools:machine_translated="true">Prievadas</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">SSH prievadas</string>
+  <string name="connection_info_username" tools:machine_translated="true">Vartotojo vardas</string>
+  <string name="connection_info_status" tools:machine_translated="true">Būsena</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">Pradedamas ryšys.</string>
+  <string name="connection_info_connected" tools:machine_translated="true">Prisijungta.</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">Ryšys nutrauktas.</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">Vietinis adresas</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">Pradinės SSH derybos, naudojamos Mosh paleidimui, informacija (ne esamos Mosh sesijos).</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">SSH ryčio derybų detalės.</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">Nėra prieinamos informacijos apie SSH ryšio nustatymo detales.</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">Rakto mainymo algoritmas.</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">Serverio pagrindinis raktas</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">Šifravimas: nuo kliento iki serverio.</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">Šifravimas: nuo serverio iki kliento.</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">Duomenų vientisumas: nuo kliento iki serverio.</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">Duomenų vientisumas: nuo serverio iki kliento.</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">Integruota su šifravimu.</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">Po kvantinės erų raktų mainų protokolas</string>
+  <string name="connection_info_yes" tools:machine_translated="true">Taip.</string>
+  <string name="connection_info_no" tools:machine_translated="true">Ne</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">Peradresuoti prievadus</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">Nustatytas šaltinis.</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">Paskirtas prievadas</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">Nesusietas</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">Porto perdavimo būsena</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">Veikia.</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">Neaktyvus</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">Galinis adresas</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">Kriptografinės politikos nustatymai.</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">Numatytasis</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">Ateitis</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">Senesnė versija.</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">FIPS algoritmai</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">Pritaikytas</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">Rekomenduojami algoritmai ir raktų dydžiai.</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">Reikalauti, kad būtų naudojamas po kvantinės eros šifravimo raktų mainų metodas.</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">Apriboti algoritmus; nepatvirtinta pagal FIPS standartą.</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">Leiskite naudoti senesnius algoritmus, kad būtų užtikrintas suderinamumas.</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">Pasirinkite algoritmus ir minimalų raktų dydį.</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">Šiuolaikiniai algoritmai ir SSH bibliotekos palaikomi minimalūs raktų dydžio reikalavimai.</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">Reikalauja hibridinio postkvantinio raktų maino, 256 bitų ilgio šifravimo raktų ir stipresnių RSA raktų.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">Apriboja galimų algoritmų pasirinkimą; nenumato FIPS patvirtinimo proceso.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">Leidžia naudoti senesnius algoritmus ir mažesnius RSA bei DH raktus, kad būtų užtikrintas suderinamumas. Vis dėlto, modernūs algoritmai vis tiek yra pageidaujami.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">Pritaikykite numatytuosius nustatymus. Algoritmų pasirinkimas ir minimalus rakto dydis yra nepriklausomi vienas nuo kito.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">Minimalus RSA bitų skaičius.</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">Mažiausias DH bitų skaičius.</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">Panaudoti numatytuosius nustatymus (%1$d bitų)</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">Palikite lauką tuščią, kad būtų taikomos numatytosios nuostatos. Taikoma net ir tada, kai algoritmai yra aiškiai įjungti.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">Įveskite bent 1024 bitus. DH negali viršyti 8192 bitų.</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">Rakto mainymo algoritmai</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">Šifravimo algoritmai</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">Pranešimų autentifikavimo algoritmai</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">Šeimininko rakto algoritmai</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">Viešojo rakto autentifikavimo algoritmai</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">Pasirinkimo režimas</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">Panaudoti numatytuosius nustatymus.</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">Pakeisti numatytuosius nustatymus.</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">Naudokite tik šiuos.</string>
+  <string name="crypto_apply" tools:machine_translated="true">Pritaikyti</string>
+  <string name="crypto_expression" tools:machine_translated="true">Algoritmo išraiška.</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">Komon simboliu atskirtų pavadinimų sąrašas. Skiltyje „Redaguoti numatytuosius nustatymus“ prie kiekvieno pavadinimo pridėkite simbolį ^ (pradžioje), + (pabaigoje) arba - (išskirkite).</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">Naudokite unikalius SSH pavadinimus ir vieną pasirinkimo režimą. Sąrašai turi būti užpildyti, negali būti tušti.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">Galiojantis prioritetų eilės tvarka.</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">Neprieinama šiame įrenginyje; išsaugota jūsų konfigūracijoje.</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">Išskirtas dėl minimalaus rakto dydžio.</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">Įjungta pagal numatytuosius nustatymus.</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">Pasiekiamas; numatytuosiuose nustatymuose neįjungtas.</string>
+  <string name="crypto_prepend" tools:machine_translated="true">Pirmenybę teikite pirmam variantui.</string>
+  <string name="crypto_append" tools:machine_translated="true">Pridėti</string>
+  <string name="crypto_exclude" tools:machine_translated="true">Neįtraukti</string>
+  <string name="crypto_inherit" tools:machine_translated="true">Naudoti numatytuosius nustatymus.</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">šioje bibliotekoje neįgyvendinta.</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">neprieinama, nes įdiegti kriptografiniai paslaugų teikėjai.</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">DH grupė yra mažesnė už nustatytą minimalų dydį.</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">raktas arba sertifikatas neatitinka RSA arba sertifikatų politikos reikalavimų.</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">Įspėjimas – %1$s: %2$s: %3$s praleistas (%4$s).</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">Kriptografinės politikos nustatymai neleidžia naudoti jokių %1$s.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">Kriptografinės politikos taikymas %1$s nepavyko: %2$s</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">Kriptografinė politika – %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">Minimalūs rakto dydžiai.</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA: %1$d bitų; riboto lauko DH: %2$d bitų.</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">Rodyti efektyvų pageidavimų tvarkos sąrašą.</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">Paslėpti veiksmingą pageidaujamų algoritmų tvarką.</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">Pakeiskite būseną elementui %1$s.</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ Pirmenybė teikiama pirmam variantui · + Pridėti · ✓ Laikytis numatytųjų nustatymų · − Neįtraukti</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">„Shift“ klavišas.</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">Tabuliatorius</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">Paspauskite „Enter“</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">„Backspace“ klavišas.</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">Ištrinti</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">Įterpti</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">↑</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">↓</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">Pagrindinis puslapis</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">Pabaiga</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">PgUp</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">PgDn</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">Teksto įvedimas</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">Sudaryti (tekstą)</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">Klavišų klaviatūra</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">Terminalo klaviatūra</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">Klavišų išdėstymo schemos</string>
+  <string name="keyboard_macros" tools:machine_translated="true">Bendrinami makrokomandos.</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">Trūksta makrokomandos.</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">Nepalaikoma konfigūracija.</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">Veiksmas, atliekamas naudojant klaviatūrą, nepavyko.</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">Perkelkite aukštyn.</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">Perkelkite žemyn.</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">Perkelkite į kairę.</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">Perkelkite dešinėn.</string>
+  <string name="keyboard_off" tools:machine_translated="true">Išjungta.</string>
+  <string name="keyboard_once" tools:machine_translated="true">Kitas klavišas</string>
+  <string name="keyboard_locked" tools:machine_translated="true">Užrakinta.</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">Naujas išdėstymas.</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">Naujas makrokomandas rinkinys.</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(kopijuoti)</string>
+  <string name="keyboard_back" tools:machine_translated="true">Atgal</string>
+  <string name="keyboard_error" tools:machine_translated="true">Nepavyko pritaikyti pakeitimo: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">Pridėti klaviatūros išdėstymą.</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">Pridėti makrokomandą.</string>
+  <string name="keyboard_edit" tools:machine_translated="true">Redaguoti</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">Dublikatas</string>
+  <string name="keyboard_delete" tools:machine_translated="true">Ištrinti</string>
+  <string name="keyboard_default" tools:machine_translated="true">Naudoti kaip numatytąją programos konfigūraciją.</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">Naudojama: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">Patvirtinkite.</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">Ar taikyti šį pakeitimą, kuris gali sugadinti duomenis? Išsaugoti išdėstymo pakeitimai gali būti prarasti. Bendrinami makrokomandos išlieka, kai išdėstymas atkuriamas į pradinę būseną.</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">Atšaukti.</string>
+  <string name="keyboard_name" tools:machine_translated="true">Pavadinimas</string>
+  <string name="keyboard_width" tools:machine_translated="true">Mygtuko plotis (dp, visi mygtukai)</string>
+  <string name="keyboard_height" tools:machine_translated="true">Mygtuko aukštis (dp, visi mygtukai)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">Bakstelėkite klavišą, kad jį redaguotumėte. Palieskite ir palaikykite, tada vilkite, kad jį perkeltumėte. Vilkite tarp skirsnių, kad pritvirtintumėte arba atkabintumėte. Mygtuko dydis taikomas kiekvienam klavišui.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">Perkelkite, kad pakeistumėte mygtuko padėtį.</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">Pridėti klavišą</string>
+  <string name="keyboard_visible" tools:machine_translated="true">Matomas.</string>
+  <string name="keyboard_row" tools:machine_translated="true">Eilė (pradedant nuo 0)</string>
+  <string name="keyboard_column" tools:machine_translated="true">Stulpelis (numeravimas prasideda nuo 0)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">Eilučių apimtis.</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">Stulpelių plotis</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">Šalinti mygtuką</string>
+  <string name="keyboard_save" tools:machine_translated="true">Išsaugoti</string>
+  <string name="keyboard_reset" tools:machine_translated="true">Atkurti numatytuosius nustatymus.</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">Naudokite numatytąją programos konfigūraciją.</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">Vizualinis redaktorius</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">Teksto rengyklė</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">Viena komanda vienoje eilutėje: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. Tekste naudojamos JSON eilutės kaitos sekos.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">Makrokomandų žingsniai.</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">Įveskite tekstą.</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">Pridėti klavišą.</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">Pridėti baitus.</string>
+  <string name="keyboard_text" tools:machine_translated="true">Siunčiamas tekstas</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">Tikslios baitų reikšmės (šešioliktainės)</string>
+  <string name="keyboard_character" tools:machine_translated="true">Simbolis</string>
+  <string name="terminal_key_space" tools:machine_translated="true">Tarpo klavišas</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">Skaitmenų klaviatūros klavišas %1$s</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">Mygtuko užrašas</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">Citrusinis</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">Kompaktiški terminalo valdikliai.</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">Paskutinė stotelė</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">Erdvūs terminalo valdikliai.</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">Claw</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">Optimizuota „Claude Code“ aplinkai.</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">Scribe</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">Optimizuota „Codex“ komandų sąsajos įrankiui.</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">Pasirinkite klaviatūros išankstinę konfiguraciją.</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">Klasikinė „CB“ klaviatūros išdėstymas</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">Priderinkite prie ekrano plotį.</string>
+  <string name="keyboard_layer" tools:machine_translated="true">Sluoksnis %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">L%1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">Klavišų išdėstymo perjungiklis.</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">Sluoksnio paskirties vieta</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">Kitas ne tuščias klavišų išdėstymo lygis.</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">Paskirties sluoksnis yra tuščias.</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">Sustabdyti</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">Istorija</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">Režimas</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">Nauja eilutė</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">Įrašas</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">Redaguoti</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">Kopijuoti</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">Įklijuoti</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">Pertraukti</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Paieškos istorija</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">Perjungti leidimų režimus</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">Įterpti naują eilutę</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">Perjungti transkriptą</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">Atidaryti išorinį rengyklę.</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">Kopijuoti atsakymą</string>
+  <string name="macro_assign" tools:machine_translated="true">Priskirti makrokomandą</string>
+  <string name="macro_import" tools:machine_translated="true">Importuoti makrokomandą</string>
+  <string name="macro_export" tools:machine_translated="true">Eksportuoti makrokomandą</string>
+  <string name="macro_none" tools:machine_translated="true">Nėra išsaugotų makrokomandų.</string>
+  <string name="automation_run_macro" tools:machine_translated="true">Paleisti makrokomandą.</string>
+  <string name="macro_choose" tools:machine_translated="true">Pasirinkite makrokomandą.</string>
+  <string name="macro_manage" tools:machine_translated="true">Tvarkyti makrokomandas</string>
+  <string name="keyboard_selected" tools:machine_translated="true">Pasirinkta</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">Programos numatytasis nustatymas.</string>
+  <string name="keyboard_select" tools:machine_translated="true">Naudokite tai.</string>
+  <string name="keyboard_change" tools:machine_translated="true">Pakeisti klaviatūros išdėstymą.</string>
+  <string name="keyboard_customize" tools:machine_translated="true">Pritaikykite pagal savo poreikius.</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">Redaguoti bendrą išdėstymą.</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">Naudoti kaip numatytąją programos konfigūraciją.</string>
+  <string name="keyboard_saving" tools:machine_translated="true">Įrašoma…</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s – %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">Pritaikytas</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">Naudokite paveldėtą klaviatūrą.</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s – %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">Iš profilio „%1$s“</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">Patobulintas</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">Klavišų išdėstymas: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">Automatizuoti veiksmai po prisijungimo: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">Profilis: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">Šeimininkas: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">Ar ištrinti išdėstymą „%1$s“?</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">Ar ištrinti makrokomandą „%1$s“?</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">Šioje konfigūracijoje naudojami kompiuteriai ir profiliai naudos numatytą klaviatūros išdėstymą. Jei tai yra programos numatytasis išdėstymas, kitas išdėstymas tampa numatytuoju.</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">Tai pašalina makrokomandą iš bendros bibliotekos.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">Ar norite atkurti šio išdėstymo pradinę klavišų ir matmenų konfigūraciją? Pakeitimai įsigalios, kai išsaugoosite. Bendrinami makrokomandos išliks.</string>
+  <string name="macro_shared_title" tools:machine_translated="true">Ar norite redaguoti bendrinamą makrokomandą?</string>
+  <string name="macro_shared_message" tools:machine_translated="true">Šis makrokomandas jau naudoja kitos sistemos. Sukurkite atskirą kopiją arba redaguokite bendrąją versiją, kad ji būtų prieinama visiems vartotojams.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">Pagal makrokomandą sukurkite kopiją.</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">Redaguoti bendrinamą makrokomandą</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">Įrašant atnaujinimus, ši makrokomanda bus išsaugota visuose jos naudojimo vietose, net jei vėliau pašalinsite aplinkinį redaktorių.</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">Prieš ištrindami šį makrokomandą, pašalinkite arba priskirkite šias funkcijas kitoms makrokomandoms.</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">Ši sesija</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">Šis įrenginys yra skirtas tik skaitymui. Jo klaviatūros negalima keisti.</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">Tvarkyti išdėstymus.</string>
+  <string name="keyboard_done" tools:machine_translated="true">Atlikta.</string>
+  <string name="automation_draft_host" tools:machine_translated="true">Šie veiksmai bus išsaugoti kartu su naujuoju serveriu.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">Išsaugokite šį serverį ir nustatykite prievadų nukreipimą prieš pradėdami naudoti nukreipimo funkcijas.</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">Veiksmas</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">Klavišas</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">Makrokomanda</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">Modifikatorius</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">Programos veiksmas</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">Perjunkite klavišų išdėstymą.</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">Bendras išdėstymas: atnaujinimai įrašomi, kad jais galėtų naudotis visi.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">Šis klaviatūros išdėstymas negalimas.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">Eilės ir stulpeliai kiekvienoje skiltyje prasideda nuo 0. Kiekvieno klavišo aukštis yra viena eilė. Stulpelių plotis nurodo, kiek langelių užima klavišas.</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">Išvaizda</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">Fono spalva</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">Teksto spalva</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">Kontūro spalva</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">Numatytoji tema</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Fono skaidrumas: %1$d %%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">Paryškinta kontūrais.</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">Kontūro storis: %1$.1f dp</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">Atkurti išvaizdą</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">Aktyvūs modifikatoriai ir perjungikliai naudoja teminį akcentą.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">Elgsena</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">Pakartoti, kol mygtukas yra paspaustas.</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">Naudokite numatytąjį kartojimo režimą.</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">Programos nustatymas</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">Įjungta</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">Išjungti.</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">Haptinė vibracija: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">Įtvirtinti klavišai</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">Perkeliamos klavišai</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">Perkelkite klavišus čia.</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">Įtvirtinti dešinėje pusėje.</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">Pasirinkite išdėstymus, pritaikykite klavišus ir tvarkykite makrokomandas.</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">Redaguoti išdėstymą</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">Redaguoti klavišą</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">Išdėstymo nustatymai</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">Perkeliama.</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">Priderinkite prie plotį.</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">Klavišų klaviatūra</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">Bakstelėkite, kad redaguotumėte · Paspauskite ir vilkite, kad perkeltumėte.</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">„Prisegti“ klavišai išlieka klaviatūros gale (iš kairės į dešinę, kai naudojama kairės į dešinę sąsaja).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">Perkelkite klavišą į „Prisegti klavišai“ skiltį, kad jis visada būtų klaviatūros gale. Perkelkite jį atgal į „Klavišai, kuriuos galima peržiūrėti“, kad pašalintumėte prisegimą.</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">Išplėstas</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">Suskleista.</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">Redaguokite tekstą.</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">Tęskite redagavimą.</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">Sukuria išdėstymą %1$s. Kiti naudotojai naudoja esamą išdėstymą.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">Pakeitimai įsigalios, kai išsaugoosite šį įrenginį arba profilį.</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">Išsaugant šį klavišą, atnaujinamas maketo projektas. Išsaugokite maketą, kad jūsų pakeitimai būtų įrašyti.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">Išdėstymas.</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">Rodyti klavišą.</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">Įtvirtinta gale.</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">Pakeisti klavišų kombinaciją</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">Pasirinkite, kokią funkciją atliks šis klavišas, kai bus paspaustas.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">Fonas, tekstas ir kontūras.</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · Haptinė sąsaja: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">Paspauskite vieną kartą.</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">Kartojasi, kol mygtukas yra paspaustas.</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">Eilė, stulpelis ir klavišo plotis.</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">Naudoja %1$d.</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">Ar norite pašalinti šį klavišą iš maketo projekto?</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">Ar taikyti klavišų pakeitimus?</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">Pritaikykite šiuos pakeitimus išdėstymui arba atmeskite juos.</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">Pritaikyti pakeitimus.</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">Redaguoti išdėstymą.</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">Mygtukas arba klavišų derinys</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">Peržiūra</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">Individualus pasirinkimas</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">Naudokite pavirtą išdėstymą.</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">Išdėstymo veiksmai</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">Spalvų peržiūra</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">Pridėkite klavišą, kuriuo būtų galima paleisti šį sluoksnį.</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">Pakeitimai bus taikomi šiam terminalui, kai išsaugoosite išdėstymą.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">Įrašant šį išdėstymą, atnaujinama informacija visiems jo naudotojams. Vietoj to galite redaguoti jo kopiją.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">Ar norite redaguoti bendrą klaviatūros išdėstymą?</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">ši konfigūracija</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">Įdiegtieji išankstiniai nustatymai</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Įdiegtieji išankstiniai nustatymai lieka nepakeisti. Redaguodami sukuriate savo asmeninę kopiją.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">Įdiegtas numatytasis nustatymas.</string>
 </resources>

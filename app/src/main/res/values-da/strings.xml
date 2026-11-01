@@ -726,4 +726,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">Genvejen kunne ikke oprettes. Prøv venligst igen.</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">Jump-host-kæden indeholder en cyklus. Kontroller indstillingerne for jump-hosten.</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">Antallet af jump-servere i kæden overskrider grænsen på 32 servere.</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">Visning af indtastet tekst lokalt.</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">Vælg, om indtastet tekst skal vises lokalt. Hvis funktionen altid er aktiveret, kan det resultere i, at teksten vises to gange, når serveren sender den tilbage.</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">Automatisk</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">Altid aktiveret</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">Altid slået fra</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">Start af forhandlingsproces</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">Forhandl terminalens funktioner ved oprettelse af forbindelse, eller vent på, at serveren anmoder om dem.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">Forhandl ved oprettelse af forbindelse.</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">Vent på serveren.</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">Ikke-binære data</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">Hvis serveren afviser binær tilstand, skal du tillade brugen af ældre ottebit-byte eller kræve ASCII. Begge parter skal bruge den samme kodning.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">Tillad ældre ottebit-bytes.</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">Kræv ASCII</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">Indsatte linjeskift</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">Uden for binær tilstand skal du konvertere indsatte linjeskift (LF) til CR+LF eller bevare LF. Dette gælder også for automatiseret tekst.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">Konverter LF til CRLF.</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">Bevar LF</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">Inputtet blev ikke sendt. Denne forbindelse kræver ASCII-format, indtil serveren aktiverer binær tilstand.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">Input kunne ikke sendes til denne Telnet-server.</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">Forbindelsen mislykkedes.</string>
+  <string name="terminal_connected" tools:machine_translated="true">Forbundet.</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">Godkendelsen lykkedes.</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">Kunne ikke åbne en SSH-session.</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">SSH-serveren afviste anmodningen om terminaladgang.</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">SSH-serveren afviste anmodningen om at starte en interaktiv shell.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">Forbindelsesoplysninger</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">Protokol</string>
+  <string name="connection_info_host" tools:machine_translated="true">Værtsnavn</string>
+  <string name="connection_info_port" tools:machine_translated="true">Port</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">SSH-port</string>
+  <string name="connection_info_username" tools:machine_translated="true">Brugernavn</string>
+  <string name="connection_info_status" tools:machine_translated="true">Status</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">Forbinder</string>
+  <string name="connection_info_connected" tools:machine_translated="true">Forbundet</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">Forbindelsen er afbrudt.</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">Lokal adresse</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">Detaljer om den indledende SSH-forhandling, der bruges til at starte Mosh, og ikke den aktive Mosh-forbindelse.</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">Detaljer om SSH-forhandlingen</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">Der er ingen tilgængelige oplysninger om den forhandlede SSH-forbindelse.</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">Nøgleudveksling</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">Serverens værtsnøgle</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">Kryptering: fra klient til server</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">Kryptering: fra server til klient</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">Integritet: fra klient til server</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">Integritet: fra server til klient</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">Integreret med kryptering</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">Nøgleudveksling, der er sikker i en postkvante-æra</string>
+  <string name="connection_info_yes" tools:machine_translated="true">Ja</string>
+  <string name="connection_info_no" tools:machine_translated="true">Nej</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">Portvideresendelser</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">Konfigureret kilde</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">Tilknyttet port</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">Ikke tilknyttet</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">Status for portvideresendelse</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">Aktiv</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">Inaktiv</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">Destinationsadresse</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">Kryptografisk politik</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">Standardindstilling</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">Fremtidig</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">Ældre version</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">FIPS-algoritmer</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">Brugerdefineret</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">Anbefalede algoritmer og nøglestørrelser</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">Kræv nøgleudveksling, der er sikker mod kvantecomputere.</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">Begræns algoritmer; ikke FIPS-godkendt.</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">Tillad brug af ældre algoritmer for at sikre kompatibilitet.</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">Vælg algoritmer og minimumstørrelse for nøgler.</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">Moderne algoritmer og krav til nøglestørrelse, som understøttes af SSH-biblioteket.</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">Kræver en hybrid nøgleudvekslingsmetode, der er sikker mod kvantecomputere, 256-bit krypteringsnøgler og stærkere RSA-nøgler.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">Begrænser valgmulighederne for algoritmer; udfører ikke FIPS-validering.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">Tillader ældre algoritmer og mindre RSA- og DH-nøgler for at sikre kompatibilitet. Moderne algoritmer foretrækkes stadig.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">Tilpas standardindstillingerne. Valg af algoritmer og minimumstørrelse for nøgler er uafhængige af hinanden.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">Minimum antal RSA-bit</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">Minimum antal DH-bits</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">Arv standardindstillinger (%1$d bit)</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">Lad feltet stå tomt for at bruge standardindstillingen. Gælder også for algoritmer, der er eksplicit aktiveret.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">Indtast mindst 1024 bit. DH må ikke overstige 8192 bit.</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">Algoritmer til nøgleudveksling</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">Krypteringsalgoritmer</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">Algoritmer til godkendelse af beskeder</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">Algoritmer til værtsnøgler</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">Autentificeringsalgoritmer baseret på offentlige nøgler</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">Valgtilstand</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">Brug standardindstillingerne</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">Rediger standardindstillinger</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">Brug kun disse</string>
+  <string name="crypto_apply" tools:machine_translated="true">Anvend</string>
+  <string name="crypto_expression" tools:machine_translated="true">Algoritmeudtryk</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">Navne adskilt med komma. I \"Rediger standardindstillinger\" skal du tilføje præfikset ^ (først), + (tilføj) eller - (udeluk) foran hvert navn.</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">Brug unikke SSH-navne og én enkelt udvælgelsestilstand. Præcise lister må ikke være tomme.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">Gældende prioriteringsrækkefølge</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">Ikke tilgængelig på denne enhed; bevares i din konfiguration.</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">Udelukket på grund af minimumskravet til nøglestørrelsen.</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">Aktiveret som standard</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">Tilgængelig; ikke aktiveret som standard.</string>
+  <string name="crypto_prepend" tools:machine_translated="true">Foretræk det første</string>
+  <string name="crypto_append" tools:machine_translated="true">Tilføj</string>
+  <string name="crypto_exclude" tools:machine_translated="true">Udeluk</string>
+  <string name="crypto_inherit" tools:machine_translated="true">Brug standardindstillingerne</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">ikke implementeret i dette bibliotek</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">utilgængelig med de installerede kryptografiske udbydere.</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">DH-gruppen er mindre end den konfigurerede minimumstørrelse.</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">nøglen eller certifikatet opfylder ikke kravene i RSA- eller certifikatpolitikken.</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">Advarsel – %1$s: %2$s: %3$s blev sprunget over (%4$s).</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">Den kryptografiske politik efterlader ingen brugbare %1$s.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">Den kryptografiske politik kunne ikke anvendes for %1$s: %2$s</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">Kryptografisk politik – %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">Minimumstørrelse for nøgler</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA: %1$d bit; endeligt felt DH: %2$d bit</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">Vis den effektive præferenceorden</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">Skjul den effektive præferenceorden.</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">Ændr status for %1$s</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ Foretræk først · + Tilføj · ✓ Følg standardindstillingen · − Udeluk</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">Shift-tast</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">Tryk på Enter</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">Backspace-tast</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">Slet</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">Indsæt</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">↑</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">nedpil</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">Hjem</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">Slut</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">PgOp</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">Pg ned</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">Tekstindtastning</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">Sammensætning</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">Tastatur</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">Terminaltastatur</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">Tastaturlayouts</string>
+  <string name="keyboard_macros" tools:machine_translated="true">Delte makroer</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">Makro mangler.</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">Konfigurationen understøttes ikke.</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">Handling af tastaturhandling mislykkedes.</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">Flyt op</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">Flyt ned</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">Flyt til venstre</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">Flyt til højre</string>
+  <string name="keyboard_off" tools:machine_translated="true">Slået fra</string>
+  <string name="keyboard_once" tools:machine_translated="true">Næste tast</string>
+  <string name="keyboard_locked" tools:machine_translated="true">Låst</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">Nyt layout</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">Ny makro</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(kopier)</string>
+  <string name="keyboard_back" tools:machine_translated="true">Tilbage</string>
+  <string name="keyboard_error" tools:machine_translated="true">Kunne ikke anvende ændringen: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">Tilføj tastaturopsætning</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">Tilføj makro</string>
+  <string name="keyboard_edit" tools:machine_translated="true">Rediger</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">Duplikat</string>
+  <string name="keyboard_delete" tools:machine_translated="true">Slet</string>
+  <string name="keyboard_default" tools:machine_translated="true">Brug som standardindstilling for appen</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">Anvendes i: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">Bekræft</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">Vil du anvende denne ændring, som kan medføre tab af data? Gemte ændringer i layoutet kan gå tabt. Delte makroer bevares, når du nulstiller et layout.</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">Annuller</string>
+  <string name="keyboard_name" tools:machine_translated="true">Navn</string>
+  <string name="keyboard_width" tools:machine_translated="true">Knappens bredde (dp, gælder for alle knapper)</string>
+  <string name="keyboard_height" tools:machine_translated="true">Knaphøjde (dp, alle knapper)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">Tryk på en tast for at redigere den. Tryk og hold, og træk derefter for at flytte den. Træk mellem sektioner for at fastgøre eller løsne. Knapstørrelsen gælder for alle taster.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">Træk for at ændre rækkefølgen af knapperne.</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">Tilføj tast</string>
+  <string name="keyboard_visible" tools:machine_translated="true">Synlig</string>
+  <string name="keyboard_row" tools:machine_translated="true">Række (starter ved 0)</string>
+  <string name="keyboard_column" tools:machine_translated="true">Kolonne (starter ved 0)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">Rækkeomfang</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">Kolonnebredde</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">Fjern tast</string>
+  <string name="keyboard_save" tools:machine_translated="true">Gem</string>
+  <string name="keyboard_reset" tools:machine_translated="true">Gendan standardindstillingerne</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">Brug appens standardindstillinger.</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">Visuel editor</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">Teksteditor</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">Én handling pr. linje: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. Teksten bruger JSON-streng-escaping.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">Makrotrin</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">Tilføj tekst</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">Tilføj tast</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">Tilføj bytes</string>
+  <string name="keyboard_text" tools:machine_translated="true">Tekst, der skal sendes</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">Præcise byteværdier (i hexadecimalt format)</string>
+  <string name="keyboard_character" tools:machine_translated="true">Tegn</string>
+  <string name="terminal_key_space" tools:machine_translated="true">Mellemrum</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">Tastaturtast %1$s</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">Knappens tekst</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">Citrus</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">Kompakte terminalstyringer</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">Sidste stop</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">Rummelige terminalindstillinger</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">Klo</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">Optimeret til Claude Code.</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">Scribe</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">Optimeret til Codex-kommandolinjegrænsefladen.</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">Vælg en tastaturindstilling.</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">Klassisk CB</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">Tilpas til bredden</string>
+  <string name="keyboard_layer" tools:machine_translated="true">Lag %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">Lag %1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">Skift tastlag</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">Lagets destination</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">Næste lag, der indeholder indhold</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">Destinationslaget er tomt.</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">Afbryd</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">Forkortet historik (etikette til genvejen Ctrl+R); hold det kort.</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">Tilstand</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">Ny linje</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">Log</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">Rediger</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">Kopiér</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">Indsæt</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">Afbryd</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Søgehistorik</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">Skift mellem tilladelsestilstande</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">Indsæt linjeskift</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">Vis/skjul transskription</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">Åbn ekstern editor</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">Kopiér svar</string>
+  <string name="macro_assign" tools:machine_translated="true">Tilknyt makro</string>
+  <string name="macro_import" tools:machine_translated="true">Importer makro</string>
+  <string name="macro_export" tools:machine_translated="true">Eksportér makro</string>
+  <string name="macro_none" tools:machine_translated="true">Ingen gemte makroer.</string>
+  <string name="automation_run_macro" tools:machine_translated="true">Kør makro</string>
+  <string name="macro_choose" tools:machine_translated="true">Vælg makro</string>
+  <string name="macro_manage" tools:machine_translated="true">Administrer makroer</string>
+  <string name="keyboard_selected" tools:machine_translated="true">Valgt</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">Appens standardindstillinger</string>
+  <string name="keyboard_select" tools:machine_translated="true">Brug dette</string>
+  <string name="keyboard_change" tools:machine_translated="true">Skift layout</string>
+  <string name="keyboard_customize" tools:machine_translated="true">Tilpas</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">Rediger det delte layout</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">Brug som standardindstilling for appen</string>
+  <string name="keyboard_saving" tools:machine_translated="true">Gemmer…</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s – %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">Brugerdefineret</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">Brug det nedarvede tastatur.</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s – %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">Fra profilen \"%1$s\"</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">Avanceret</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">Tastatur: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">Automatiseret handling efter login: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">Profil: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">Vært: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">Vil du slette layoutet \"%1$s\"?</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">Vil du slette makroen \"%1$s\"?</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">Værter og profiler, der bruger dette tastaturlayout, vil i stedet bruge deres standardtastatur. Hvis dette er appens standardindstilling, vil et andet layout blive standard.</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">Dette fjerner makroen fra det delte bibliotek.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">Genskab de oprindelige taster og dimensioner for dette layout? Ændringerne træder i kraft, når du gemmer. Delte makroer bevares.</string>
+  <string name="macro_shared_title" tools:machine_translated="true">Rediger en delt makro?</string>
+  <string name="macro_shared_message" tools:machine_translated="true">Denne makro bruges også andre steder. Lav en separat kopi, eller rediger den delte version, så den passer til alle brugere.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">Opret en kopi</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">Rediger delt makro</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">Når du gemmer ændringerne, gemmes denne makro overalt, hvor den bruges, selvom du efterfølgende sletter den omkringliggende editor.</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">Fjern eller omfordel disse anvendelser, før du sletter denne makro.</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">Denne session</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">Denne vært er kun til læsning. Tastaturet kan ikke ændres.</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">Administrer tastaturoplæg.</string>
+  <string name="keyboard_done" tools:machine_translated="true">Færdig</string>
+  <string name="automation_draft_host" tools:machine_translated="true">Disse trin gemmes sammen med den nye vært.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">Gem denne vært og tilføj portvideresendelser, før du bruger videresendelseshandlinger.</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">Handling</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">Tast</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">Makro</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">Modifikator</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">App-handling</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">Skift lag</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">Fælles layout: gemmer opdateringer, så alle brugere får adgang til dem.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">Denne tastaturlayout er ikke tilgængelig.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">Rækker og kolonner starter ved 0 inden for hvert afsnit. Tasterne er én række høje. Kolonnebredden angiver, hvor mange celler en tast fylder.</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">Udseende</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">Baggrundsfarve</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">Tekstfarve</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">Omridsfarve</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">Standardtema</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Baggrundsgennemsigtighed: %1$d%%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">Med omrids</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">Linjetykkelse: %1$.1f dp</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">Nulstil udseende</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">Aktive modifikatorer og lagskift bruger temaets fremhævningsfarve.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">Funktioner</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">Gentag, så længe knappen holdes nede.</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">Brug standardindstillingen for gentagelse.</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">App-indstilling</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">Tilslået</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">Slået fra</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">Haptisk feedback: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">Fastgjorte taster</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">Rullebare taster</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">Træk tasterne hertil.</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">Fastgør til højre</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">Vælg layout, tilpas taster, og administrer makroer.</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">Rediger layout</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">Rediger tast</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">Indstillinger for tastaturopsætning</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">Kan rulles.</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">Tilpas til bredden</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">Tastatur</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">Tryk for at redigere · Hold nede og træk for at flytte</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">Fastgjorte taster forbliver i enden af tastaturet (yderst til venstre i brugergrænseflader, hvor teksten læses fra højre mod venstre).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">Træk et tastaturtast ind i feltet \"Fastgjorte taster\" for at placere det nederst på tastaturet. Træk det tilbage til feltet \"Rulbare taster\" for at fjerne fastgørelsen.</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">Udvidet</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">Sammenklappet</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">Rediger en kopi</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">Fortsæt med at redigere.</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">Opretter et layout for %1$s. Andre brugere beholder deres nuværende layout.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">Ændringerne træder i kraft, når du gemmer denne vært eller profil.</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">Hvis du gemmer denne tast, opdateres udkastet til tastaturopsætningen. Gem opsætningen for at bevare dine ændringer.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">Placering</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">Vis tast</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">Fastgjort til slutningen</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">Rediger genvej</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">Vælg, hvilken funktion denne tast skal udføre, når den trykkes.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">Baggrund, tekst og omrids.</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · Haptisk feedback: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">Tryk én gang.</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">Gentages, så længe knappen holdes nede.</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">Række, kolonne og tastbredde</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">Anvendes af %1$d</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">Skal denne tast fjernes fra udkastet til tastaturopsætningen?</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">Vil du anvende de ændrede tasteindstillinger?</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">Anvend disse ændringer på layoutet, eller forkast dem.</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">Anvend ændringerne</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">Rediger layout</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">Tast eller genvej</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">Forhåndsvisning</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">Brugerdefineret valg</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">Brug den nedarvede layout.</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">Layout-handlinger</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">Farveprøve</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">Tilføj en tast for at aktivere dette lag.</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">Ændringerne træder i kraft i dette terminalvindue, når du gemmer layoutet.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">Hvis du gemmer dette layout, opdateres det for alle brugere. Du kan i stedet redigere en kopi.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">Vil du redigere den delte tastaturlayout?</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">denne konfiguration</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">Indbyggede skabeloner</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">De forudindstillede standardindstillinger ændres ikke. Når du redigerer, oprettes din egen kopi.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">Forudindstillet standardindstilling</string>
 </resources>

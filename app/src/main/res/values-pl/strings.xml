@@ -734,4 +734,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">Nie można utworzyć skrótu. Proszę spróbować ponownie.</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">W łańcuchu serwerów pośredniczących występuje pętla. Sprawdź ustawienia serwerów pośredniczących.</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">Liczba serwerów pośredniczących w łańcuchu przekracza limit 32.</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">Lokalne wyświetlanie wprowadzanych danych.</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">Wybierz, czy wprowadzany tekst ma być wyświetlany lokalnie. Jeśli opcja „zawsze włączona” jest aktywna, może to powodować powtarzanie tekstu, gdy serwer go odbija.</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">Automatyczny</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">Zawsze włączone.</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">Zawsze wyłączone.</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">Rozpoczęcie negocjacji.</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">Podczas nawiązywania połączenia ustal parametry terminala lub poczekaj, aż serwer o nie zapyta.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">Ustal parametry podczas nawiązywania połączenia.</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">Oczekiwanie na odpowiedź serwera.</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">Dane niebinarne.</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">Jeśli serwer odrzuca tryb binarny, należy zezwolić na użycie starszego, ośmiobitowego kodowania lub wymagać użycia kodowania ASCII. Obie strony muszą używać tego samego kodowania.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">Zezwól na użycie starszych bajtów ośmiobitowych.</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">Wymagaj użycia kodowania ASCII.</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">Wklejone zakończenia linii</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">Poza trybem binarnym, przekształć wklejony znak nowej linii LF na CRLF lub zachowaj znak LF. Dotyczy to również tekstu używanego w automatyzacji.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">Konwertuj znak nowej linii LF na CRLF.</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">Zachowaj znak nowej linii (LF).</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">Dane nie zostały wysłane. W tym połączeniu wymagane jest użycie kodowania ASCII, dopóki serwer nie włączy trybu binarnego.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">Nie można było wysłać danych do tego serwera Telnet.</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">Nie udało się nawiązać połączenia.</string>
+  <string name="terminal_connected" tools:machine_translated="true">Połączono.</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">Uwierzytelnianie zakończone pomyślnie.</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">Nie można otworzyć sesji SSH.</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">Serwer SSH odrzucił żądanie dotyczące terminala.</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">Serwer SSH odrzucił żądanie uruchomienia powłoki.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">Informacje o połączeniu</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">Protokół</string>
+  <string name="connection_info_host" tools:machine_translated="true">Serwer</string>
+  <string name="connection_info_port" tools:machine_translated="true">Port</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">Port SSH</string>
+  <string name="connection_info_username" tools:machine_translated="true">Nazwa użytkownika</string>
+  <string name="connection_info_status" tools:machine_translated="true">Stan</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">Nawiązywanie połączenia.</string>
+  <string name="connection_info_connected" tools:machine_translated="true">Połączono</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">Połączenie zakończone.</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">Adres lokalny</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">Szczegóły dotyczące początkowej fazy negocjacji SSH, używanej do uruchomienia Mosh, a nie do bieżącego połączenia Mosh.</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">Szczegóły dotyczące negocjacji algorytmów przez połączenie SSH.</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">Brak dostępnych szczegółowych informacji dotyczących negocjacji połączenia SSH.</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">Wymiana kluczy</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">Klucz serwera</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">Szyfrowanie: od klienta do serwera.</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">Szyfrowanie: od serwera do klienta.</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">Integralność: od klienta do serwera.</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">Integralność: od serwera do klienta.</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">Zintegrowane z funkcją szyfrowania.</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">Wymiana kluczy zgodna z algorytmami odpornymi na ataki kwantowe.</string>
+  <string name="connection_info_yes" tools:machine_translated="true">Tak.</string>
+  <string name="connection_info_no" tools:machine_translated="true">Nie.</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">Przekierowania portów</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">Skonfigurowano źródło.</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">Przypisany port.</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">Nieaktywny.</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">Status przekierowania</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">Aktywny</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">Nieaktywny.</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">Adres docelowy</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">Zasady kryptograficzne.</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">Domyślne</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">Przyszłość</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">Starsza wersja / Ustawienia zgodności ze starszymi wersjami.</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">Algorytmy FIPS</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">Niestandardowy</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">Zalecane algorytmy i rozmiary kluczy.</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">Wymagaj wymiany kluczy odpornej na ataki kwantowe.</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">Ogranicz algorytmy; algorytmy nie zostały zweryfikowane zgodnie ze standardem FIPS.</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">Zezwól na użycie starszych algorytmów w celu zapewnienia kompatybilności.</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">Wybierz algorytmy i minimalne rozmiary kluczy.</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">Nowoczesne algorytmy i wymagania dotyczące długości klucza, które są obsługiwane przez bibliotekę SSH.</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">Wymaga zastosowania hybrydowej wymiany kluczy odpornej na ataki kwantowe, kluczy szyfrujących o długości 256 bitów oraz silniejszych kluczy RSA.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">Ogranicza wybór algorytmów; nie zapewnia weryfikacji zgodności z normą FIPS.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">Umożliwia stosowanie starszych algorytmów oraz krótszych kluczy RSA i DH w celu zapewnienia kompatybilności. Nowoczesne algorytmy pozostają preferowane.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">Dostosuj ustawienia domyślne. Wybór algorytmów i minimalna długość klucza są niezależne od siebie.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">Minimalna długość klucza RSA (w bitach)</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">Minimalna liczba bitów DH.</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">Użyj domyślnych ustawień (%1$d bitów)</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">Pozostaw puste, aby zastosować ustawienia domyślne. Dotyczy to również algorytmów, które zostały wyraźnie włączone.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">Wprowadź co najmniej 1024 bitów. Długość klucza DH nie może przekraczać 8192 bitów.</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">Algorytmy wymiany kluczy.</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">Algorytmy szyfrujące</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">Algorytmy uwierzytelniania komunikatów</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">Algorytmy klucza hosta.</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">Algorytmy uwierzytelniania oparte na kluczu publicznym.</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">Tryb wyboru</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">Użyj domyślnych ustawień.</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">Zmień domyślne ustawienia.</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">Używaj tylko tych.</string>
+  <string name="crypto_apply" tools:machine_translated="true">Zastosuj</string>
+  <string name="crypto_expression" tools:machine_translated="true">Wyrażenie algorytmu.</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">Nazwy oddzielone przecinkami. W opcji „Modyfikuj domyślne ustawienia” dodaj na początku każdej nazwy znak ^ (dla pierwszego elementu), na końcu znak + (dla dołączenia) lub użyj znaku - (dla wykluczenia).</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">Używaj unikalnych nazw SSH i jednego trybu wyboru. Listy nie mogą być puste.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">Kolejność preferencji, która ma zastosowanie.</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">Niedostępne na tym urządzeniu; zachowano w konfiguracji.</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">Wykluczone ze względu na minimalny wymagany rozmiar klucza.</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">Włączone domyślnie.</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">Dostępne; nieaktywne w ustawieniach domyślnych.</string>
+  <string name="crypto_prepend" tools:machine_translated="true">Preferuj jako pierwsze.</string>
+  <string name="crypto_append" tools:machine_translated="true">Dodaj</string>
+  <string name="crypto_exclude" tools:machine_translated="true">Wyklucz</string>
+  <string name="crypto_inherit" tools:machine_translated="true">Użyj ustawień domyślnych.</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">funkcja nie jest zaimplementowana w tej bibliotece.</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">nie można zastosować z zainstalowanymi dostawcami usług kryptograficznych.</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">Grupa DH jest mniejsza niż skonfigurowane minimum.</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">klucz lub certyfikat nie spełnia wymagań dotyczących RSA lub zasad dotyczących certyfikatów.</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">Ostrzeżenie — %1$s: %2$s: pominięto %3$s (%4$s).</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">Zdefiniowana polityka kryptograficzna nie dopuszcza użycia żadnych algorytmów %1$s.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">Zastosowanie zasad kryptograficznych nie powiodło się dla %1$s: %2$s.</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">Zasady kryptograficzne — %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">Minimalne rozmiary kluczy.</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA: %1$d bitów; DH w skończonym polu: %2$d bitów</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">Pokaż preferowaną kolejność algorytmów.</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">Ukryj listę preferowanych algorytmów, które zostały już zastosowane.</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">Zmień stan dla %1$s.</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ Preferuj pierwsze · + Dodaj · ✓ Przestrzegaj ustawień domyślnych · − Wyklucz</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">Shift (klawisz)</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">Tabulator</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">Naciśnij Enter.</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">Klawisz „Wstecz” / „Usuń”</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">Usuń</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">Wstaw</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">strzałka w górę</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">↓</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">Początek / Strona główna</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">Koniec</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">Przewiń w górę (stronę)</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">Przewiń w dół (stronę).</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">Wprowadzanie tekstu.</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">Przełącznik klawisza kompozycji.</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">Klawiatura</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">Klawiatura terminala</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">Układy klawiatury</string>
+  <string name="keyboard_macros" tools:machine_translated="true">Wspólne makra</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">Brak makra.</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">Nieobsługiwana konfiguracja.</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">Akcja związana z klawiaturą nie powiodła się.</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">Przesuń w górę.</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">Przesuń w dół.</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">Przesuń w lewo.</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">Przesuń w prawo.</string>
+  <string name="keyboard_off" tools:machine_translated="true">Wyłączone.</string>
+  <string name="keyboard_once" tools:machine_translated="true">Następny klawisz</string>
+  <string name="keyboard_locked" tools:machine_translated="true">Zablokowane.</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">Nowy układ.</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">Nowe makro.</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(skopiuj)</string>
+  <string name="keyboard_back" tools:machine_translated="true">Wstecz</string>
+  <string name="keyboard_error" tools:machine_translated="true">Nie można zastosować zmiany: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">Dodaj układ klawiatury.</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">Dodaj makro.</string>
+  <string name="keyboard_edit" tools:machine_translated="true">Edytuj</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">Duplikat</string>
+  <string name="keyboard_delete" tools:machine_translated="true">Usuń</string>
+  <string name="keyboard_default" tools:machine_translated="true">Ustaw jako domyślne dla aplikacji.</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">Używane w: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">Potwierdź.</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">Czy zastosować tę destrukcyjną zmianę? Zapisane modyfikacje układu mogą zostać utracone. Współdzielone makra są zachowywane podczas resetowania układu.</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">Anuluj</string>
+  <string name="keyboard_name" tools:machine_translated="true">Nazwa</string>
+  <string name="keyboard_width" tools:machine_translated="true">Szerokość przycisku (w jednostkach dp, dotyczy wszystkich przycisków).</string>
+  <string name="keyboard_height" tools:machine_translated="true">Wysokość przycisku (w jednostkach dp, dotyczy wszystkich przycisków).</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">Dotknij klawisza, aby go edytować. Dotknij i przytrzymaj, a następnie przeciągnij, aby go przesunąć. Przeciągnij między sekcjami, aby przypiąć lub odpiąć. Rozmiar przycisku dotyczy każdego klawisza.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">Przeciągnij, aby zmienić kolejność przycisków.</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">Dodaj klawisz</string>
+  <string name="keyboard_visible" tools:machine_translated="true">Widoczny.</string>
+  <string name="keyboard_row" tools:machine_translated="true">Wiersz (numeracja zaczyna się od 0)</string>
+  <string name="keyboard_column" tools:machine_translated="true">Kolumna (numeracja zaczyna się od 0)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">Zakres wierszy</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">Zakres kolumn</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">Usuń przycisk</string>
+  <string name="keyboard_save" tools:machine_translated="true">Zapisz</string>
+  <string name="keyboard_reset" tools:machine_translated="true">Przywróć ustawienia domyślne.</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">Użyj domyślnych ustawień aplikacji.</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">Edytor wizualny.</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">Edytor tekstu.</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">Jedna akcja w każdej linii: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. Tekst wykorzystuje mechanizm escape\'owania ciągów znaków JSON.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">Kroki makra.</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">Dodaj tekst.</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">Dodaj klawisz.</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">Dodaj bajty.</string>
+  <string name="keyboard_text" tools:machine_translated="true">Tekst do wysłania.</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">Dokładne wartości bajtów (szesnastkowo)</string>
+  <string name="keyboard_character" tools:machine_translated="true">Znak</string>
+  <string name="terminal_key_space" tools:machine_translated="true">Spacja</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">Klawisz %1$s na klawiaturze numerycznej</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">Etykieta przycisku</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">Cytrusowy</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">Kompaktowe elementy sterujące terminala.</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">Ostatni przystanek.</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">Przestronne elementy sterujące terminala.</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">Pazur</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">Zoptymalizowano dla Claude Code.</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">Scribe</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">Zoptymalizowano dla interfejsu wiersza poleceń Codex.</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">Wybierz ustawienie klawiatury.</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">Klasyczny układ klawiatury CB.</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">Dopasuj do szerokości.</string>
+  <string name="keyboard_layer" tools:machine_translated="true">Warstwa nr %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">Warstwa %1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">Przełącznik warstw</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">Warstwa docelowa</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">Następna niepusta warstwa.</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">Warstwa docelowa jest pusta.</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">Zatrzymaj</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">Skrócona historia</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">Tryb</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">Nowy wiersz</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">Dziennik</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">Edytuj</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">Kopiuj</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">Wklej</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">Przerwij</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Historia wyszukiwań</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">Przełączaj tryby uprawnień.</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">Wstaw znak nowego wiersza.</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">Włącz/wyłącz transkrypcję.</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">Otwórz zewnętrzny edytor</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">Skopiuj odpowiedź</string>
+  <string name="macro_assign" tools:machine_translated="true">Przypisz makro.</string>
+  <string name="macro_import" tools:machine_translated="true">Importuj makro</string>
+  <string name="macro_export" tools:machine_translated="true">Eksportuj makro</string>
+  <string name="macro_none" tools:machine_translated="true">Brak zapisanych makr.</string>
+  <string name="automation_run_macro" tools:machine_translated="true">Uruchom makro.</string>
+  <string name="macro_choose" tools:machine_translated="true">Wybierz makro.</string>
+  <string name="macro_manage" tools:machine_translated="true">Zarządzaj makrami.</string>
+  <string name="keyboard_selected" tools:machine_translated="true">Wybrane</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">Domyślne ustawienia aplikacji.</string>
+  <string name="keyboard_select" tools:machine_translated="true">Użyj tego.</string>
+  <string name="keyboard_change" tools:machine_translated="true">Zmień układ klawiatury.</string>
+  <string name="keyboard_customize" tools:machine_translated="true">Dostosuj</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">Edytuj wspólny układ.</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">Ustaw jako domyślne dla aplikacji.</string>
+  <string name="keyboard_saving" tools:machine_translated="true">Zapisywanie…</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">Niestandardowy</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">Użyj domyślnej klawiatury.</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">Z profilu „%1$s”</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">Zaawansowane</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">Klawiatura: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">Automatyzacja po zalogowaniu: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">Profil: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">Host: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">Usunąć układ „%1$s”?</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">Usunąć makro „%1$s”?</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">Komputery i profile korzystające z tego układu będą używać domyślnego układu klawiatury. Jeśli jest to domyślny układ w aplikacji, inny układ stanie się domyślnym.</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">To usuwa makro z biblioteki wspólnych zasobów.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">Przywrócić oryginalne ustawienia klawiszy i wymiary tego układu? Zmiany zostaną zastosowane po zapisaniu. Współdzielone makra zostaną zachowane.</string>
+  <string name="macro_shared_title" tools:machine_translated="true">Edytuj wspólnie używaną makro?</string>
+  <string name="macro_shared_message" tools:machine_translated="true">Ta makrodefinicja jest używana w innych miejscach. Utwórz oddzielną kopię lub edytuj współdzieloną wersję, aby zmiany były widoczne dla wszystkich użytkowników.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">Utwórz kopię.</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">Edytuj wspólnie używaną makrodefinicję.</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">Zapisanie zmian spowoduje aktualizację tej makrodefinicji we wszystkich miejscach, w których jest używana, nawet jeśli później usuniesz otaczający ją edytor.</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">Usuń lub zmień przypisanie tych elementów przed usunięciem makra.</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">Ta sesja</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">Ten serwer jest dostępny tylko do odczytu. Nie można zmieniać jego ustawień klawiatury.</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">Zarządzaj układami.</string>
+  <string name="keyboard_done" tools:machine_translated="true">Gotowe.</string>
+  <string name="automation_draft_host" tools:machine_translated="true">Te kroki zostaną zapisane wraz z nowym hostem.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">Zapisz tę konfigurację hosta i dodaj przekierowania portów przed użyciem funkcji przekierowania.</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">Akcja</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">Klawisz</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">Makro</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">Modyfikator</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">Akcja aplikacji.</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">Przełącz warstwę.</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">Wspólny układ: zapisywanie zmian, aby wszyscy użytkownicy mieli dostęp do aktualnej wersji.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">Ten układ klawiatury jest niedostępny.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">W każdej sekcji wiersze i kolumny numerowane są od 0. Każdy klawisz zajmuje jeden wiersz. Określenie „rozpiętość kolumn” definiuje, ile komórek zajmuje dany klawisz.</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">Wygląd</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">Kolor tła</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">Kolor tekstu</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">Kolor obramowania</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">Domyślny motyw</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Przezroczystość tła: %1$d%%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">Z obramowaniem</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">Grubość obramowania: %1$.1f dp</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">Przywróć domyślny wygląd.</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">Aktywne modyfikatory i przełączniki warstw wykorzystują wyróżniający się element graficzny w aktualnym motywie.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">Zachowanie</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">Powtarzaj, gdy przycisk jest wciśnięty.</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">Użyj domyślnego ustawienia powtarzania.</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">Ustawienia aplikacji</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">Włączono</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">Wyłącz</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">Informacje zwrotne dotykowe: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">Przypięte klawisze</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">Klawisze, które można przewijać.</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">Przeciągnij klawisze tutaj.</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">Przypnij do prawej strony.</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">Wybierz układy, dostosuj klawisze i zarządzaj makrami.</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">Edytuj układ</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">Edytuj przycisk</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">Ustawienia układu klawiatury</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">Przewijany</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">Dopasuj do szerokości.</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">Klawiatura</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">Dotknij, aby edytować · Przytrzymaj i przeciągnij, aby przesunąć.</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">Przypięte klawisze pozostają na końcu klawiatury (po lewej stronie w interfejsach od prawej do lewej).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">Przeciągnij klawisz do sekcji „Przypięte klawisze”, aby umieścić go na końcu klawiatury. Przeciągnij go z powrotem do sekcji „Klawisze przewijane”, aby usunąć przypięcie.</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">Rozszerzono</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">Zwijana/Zredukowana.</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">Edytuj kopię</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">Kontynuuj edycję.</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">Tworzy układ dla %1$s. Inni użytkownicy zachowują dotychczasowy układ.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">Zmiany zostaną zastosowane po zapisaniu tej konfiguracji lub profilu.</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">Zapisanie tej zmiany aktualizuje wersję roboczą układu. Zapisz układ, aby zachować wprowadzone zmiany.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">Umiejscowienie</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">Pokaż klawisz.</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">Przypięty na końcu.</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">Zmień skrót klawiszowy.</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">Wybierz, jaką funkcję ma pełnić dany klawisz po naciśnięciu.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">Tło, tekst i obramowanie.</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · Funkcja haptyczna: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">Naciśnij raz.</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">Powtarza się, gdy przycisk jest wciśnięty.</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">Liczba wierszy, liczba kolumn i szerokość klawisza.</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">Używane przez %1$d</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">Czy usunąć ten klawisz z wersji roboczej układu?</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">Zastosować zmiany w klawiszach?</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">Zastosuj te zmiany do układu lub je odrzuć.</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">Zastosuj zmiany.</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">Edytuj układ.</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">Klawisz lub skrót klawiszowy.</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">Podgląd</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">Własny wybór</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">Użyj domyślnego układu.</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">Akcje dotyczące układu.</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">Podgląd kolorów</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">Dodaj klawisz, który uruchomi tę warstwę.</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">Zmiany zostaną zastosowane w tym terminalu po zapisaniu układu.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">Zapisanie tej konfiguracji spowoduje aktualizację dla wszystkich jej użytkowników. Możesz zamiast tego edytować kopię.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">Czy chcesz zmienić współdzielony układ klawiatury?</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">ta konfiguracja</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">Wbudowane ustawienia domyślne.</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Wbudowane ustawienia pozostają niezmienione. Edycja powoduje utworzenie własnej kopii.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">Wbudowany szablon</string>
 </resources>

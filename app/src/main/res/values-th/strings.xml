@@ -726,4 +726,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">ไม่สามารถสร้างทางลัดได้ โปรดลองใหม่อีกครั้ง</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">เกิดข้อผิดพลาดเนื่องจากมีการวนซ้ำในลำดับการเชื่อมต่อผ่านโฮสต์ หากเกิดปัญหานี้ โปรดตรวจสอบการตั้งค่าโฮสต์ที่ใช้ในการเชื่อมต่อ</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">จำนวนโฮสต์ที่ใช้เชื่อมต่อกันเกินขีดจำกัดที่กำหนดไว้ (32 โฮสต์)</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">แสดงผลการพิมพ์ในเครื่อง</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">เลือกว่าจะแสดงข้อความที่พิมพ์ในเครื่องหรือไม่ หากเปิดใช้งานอยู่ตลอดเวลา อาจทำให้ข้อความซ้ำเมื่อเซิร์ฟเวอร์ส่งกลับมา</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">อัตโนมัติ</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">เปิดใช้งานเสมอ</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">ปิดเสมอ</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">เริ่มต้นการเจรจา</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">เมื่อเชื่อมต่อ ให้เจรจาต่อรองเกี่ยวกับคุณสมบัติของเทอร์มินัล หรือรอให้เซิร์ฟเวอร์ร้องขอคุณสมบัติเหล่านั้น</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">เจรจาเมื่อเชื่อมต่อ</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">รอเซิร์ฟเวอร์</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">ข้อมูลที่ไม่ใช่แบบไบนารี</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">หากเซิร์ฟเวอร์ไม่รองรับโหมดไบนารี ให้เลือกใช้รูปแบบข้อมูลแบบเก่าที่มี 8 บิต หรือบังคับให้ใช้ ASCII ทั้งสองฝั่งจะต้องใช้รูปแบบการเข้ารหัสเดียวกัน</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">อนุญาตให้ใช้ไบต์แบบ 8 บิตแบบเดิม</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">กำหนดให้ใช้ ASCII</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">การจัดการการขึ้นบรรทัดใหม่ของข้อความที่คัดลอกมา</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">นอกเหนือจากโหมดไบนารี ให้แปลงอักขระขึ้นบรรทัดใหม่ (LF) ที่คัดลอกมาเป็น CRLF หรือคงไว้เป็น LF นอกจากนี้ ยังใช้กับข้อความที่ใช้ในการทำงานอัตโนมัติด้วย</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">แปลง LF เป็น CRLF</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">เก็บรักษา LF ไว้</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">ไม่สามารถส่งข้อมูลได้ การเชื่อมต่อนี้จำเป็นต้องใช้รูปแบบ ASCII จนกว่าเซิร์ฟเวอร์จะเปิดใช้งานโหมดไบนารี</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">ไม่สามารถส่งข้อมูลไปยังเซิร์ฟเวอร์ Telnet นี้ได้</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">ไม่สามารถเชื่อมต่อได้</string>
+  <string name="terminal_connected" tools:machine_translated="true">เชื่อมต่อสำเร็จ</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">การยืนยันตัวตนสำเร็จ</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">ไม่สามารถเปิดเซสชัน SSH ได้</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">เซิร์ฟเวอร์ SSH ปฏิเสธคำขอการเชื่อมต่อเทอร์มินัล</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">เซิร์ฟเวอร์ SSH ปฏิเสธคำขอเปิดเชลล์</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">ข้อมูลการเชื่อมต่อ</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">โปรโตคอล</string>
+  <string name="connection_info_host" tools:machine_translated="true">โฮสต์</string>
+  <string name="connection_info_port" tools:machine_translated="true">พอร์ต</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">พอร์ต SSH</string>
+  <string name="connection_info_username" tools:machine_translated="true">ชื่อผู้ใช้</string>
+  <string name="connection_info_status" tools:machine_translated="true">สถานะ</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">กำลังเชื่อมต่อ</string>
+  <string name="connection_info_connected" tools:machine_translated="true">เชื่อมต่อแล้ว</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">ตัดการเชื่อมต่อแล้ว</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">ที่อยู่ภายในเครือข่าย</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">รายละเอียดการเริ่มต้นใช้งาน SSH</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">รายละเอียดการเจรจาผ่านการเชื่อมต่อ SSH</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">ไม่มีข้อมูลรายละเอียดเกี่ยวกับการเจรจาเพื่อเชื่อมต่อ SSH</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">การแลกเปลี่ยนคีย์</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">คีย์โฮสต์ของเซิร์ฟเวอร์</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">การเข้ารหัส: จากไคลเอนต์ไปยังเซิร์ฟเวอร์</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">การเข้ารหัส: จากเซิร์ฟเวอร์ไปยังไคลเอนต์</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">ความสมบูรณ์: จากไคลเอนต์ไปยังเซิร์ฟเวอร์</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">ความสมบูรณ์: จากเซิร์ฟเวอร์ไปยังไคลเอนต์</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">รวมเข้ากับระบบการเข้ารหัส</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">การแลกเปลี่ยนคีย์ที่รองรับระบบรักษาความปลอดภัยแบบโพสต์ควอนตัม</string>
+  <string name="connection_info_yes" tools:machine_translated="true">ใช่</string>
+  <string name="connection_info_no" tools:machine_translated="true">ไม่มี</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">การส่งต่อพอร์ต</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">กำหนดค่าแหล่งที่มา</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">พอร์ตที่ถูกกำหนดให้ใช้งาน</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">ไม่ได้ผูกไว้</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">สถานะการส่งต่อพอร์ต</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">กำลังใช้งาน</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">ไม่ได้ใช้งาน</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">ปลายทาง</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">นโยบายด้านการเข้ารหัส</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">ค่าเริ่มต้น</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">อนาคต</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">แบบเก่า</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">อัลกอริทึม FIPS</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">กำหนดเอง</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">อัลกอริทึมและขนาดคีย์ที่แนะนำ</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">กำหนดให้ใช้การแลกเปลี่ยนคีย์แบบโพสต์ควอนตัม</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">จำกัดอัลกอริทึม ไม่ได้รับการรับรองตามมาตรฐาน FIPS</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">อนุญาตให้อัลกอริทึมรุ่นเก่าเพื่อรองรับการทำงานร่วมกัน</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">เลือกอัลกอริทึมและขนาดคีย์ขั้นต่ำ</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">อัลกอริทึมและข้อกำหนดเกี่ยวกับขนาดคีย์ที่ทันสมัย ซึ่งได้รับการดูแลรักษาโดยไลบรารี SSH</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">จำเป็นต้องใช้ระบบแลกเปลี่ยนคีย์แบบผสมผสานที่รองรับการเข้ารหัสแบบโพสต์ควอนตัม, คีย์การเข้ารหัสขนาด 256 บิต และคีย์ RSA ที่มีความแข็งแกร่งมากขึ้น</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">จำกัดตัวเลือกอัลกอริทึม ไม่ได้กำหนดมาตรฐานการตรวจสอบ FIPS</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">อนุญาตให้อัลกอริทึมรุ่นเก่าและคีย์ RSA และ DH ที่มีขนาดเล็กลง เพื่อให้สามารถใช้งานร่วมกับระบบเดิมได้ แต่อัลกอริทึมรุ่นใหม่ยังคงเป็นตัวเลือกที่แนะนำ</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">ปรับแต่งค่าเริ่มต้น การเลือกอัลกอริทึมและขนาดคีย์ขั้นต่ำเป็นอิสระจากกัน</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">จำนวนบิตขั้นต่ำสำหรับ RSA</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">จำนวนบิตขั้นต่ำสำหรับ DH</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">ใช้ค่าเริ่มต้น (%1$d บิต)</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">หากปล่อยว่างไว้ ระบบจะใช้ค่าเริ่มต้นตามปกติ ค่านี้จะใช้กับอัลกอริทึมที่เปิดใช้งานไว้อย่างชัดเจนด้วย</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">ป้อนค่าอย่างน้อย 1024 บิต ค่า DH ต้องไม่เกิน 8192 บิต</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">อัลกอริทึมสำหรับการแลกเปลี่ยนคีย์</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">อัลกอริทึมการเข้ารหัส</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">อัลกอริทึมสำหรับการตรวจสอบความถูกต้องของข้อความ</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">อัลกอริทึมสำหรับคีย์โฮสต์</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">อัลกอริทึมการยืนยันตัวตนด้วยคีย์สาธารณะ</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">โหมดการเลือก</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">ใช้ค่าเริ่มต้น</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">แก้ไขค่าเริ่มต้น</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">ใช้เฉพาะรายการเหล่านี้</string>
+  <string name="crypto_apply" tools:machine_translated="true">นำไปใช้</string>
+  <string name="crypto_expression" tools:machine_translated="true">นิพจน์ของอัลกอริทึม</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">ชื่อที่คั่นด้วยเครื่องหมายจุลภาค ในส่วน \"แก้ไขค่าเริ่มต้น\" ให้ใส่เครื่องหมาย ^ (ไว้ด้านหน้า), + (ไว้ด้านท้าย) หรือ - (ยกเว้น) นำหน้าชื่อแต่ละรายการ</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">ใช้ชื่อ SSH ที่ไม่ซ้ำกัน และเลือกใช้โหมดการเลือกเพียงโหมดเดียว รายการที่ระบุจะต้องไม่เป็นรายการว่างเปล่า</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">ลำดับความสำคัญที่มีผลบังคับใช้</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">ไม่สามารถใช้งานได้บนอุปกรณ์นี้ แต่ยังคงอยู่ในค่ากำหนดของคุณ</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">ถูกยกเว้นเนื่องจากขนาดคีย์ต่ำกว่าเกณฑ์ที่กำหนด</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">เปิดใช้งานตามค่าเริ่มต้น</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">พร้อมใช้งาน แต่ไม่ได้เปิดใช้งานในค่าเริ่มต้น</string>
+  <string name="crypto_prepend" tools:machine_translated="true">เลือกอันแรก</string>
+  <string name="crypto_append" tools:machine_translated="true">เพิ่มต่อท้าย</string>
+  <string name="crypto_exclude" tools:machine_translated="true">ยกเว้น</string>
+  <string name="crypto_inherit" tools:machine_translated="true">ใช้ค่าเริ่มต้น</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">ไลบรารีนี้ยังไม่ได้ติดตั้งใช้งาน</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">ไม่สามารถใช้งานได้กับผู้ให้บริการเข้ารหัสที่ติดตั้งไว้</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">กลุ่ม DH มีขนาดเล็กกว่าค่าต่ำสุดที่กำหนดไว้</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">คีย์หรือใบรับรองไม่เป็นไปตามข้อกำหนดของนโยบาย RSA หรือนโยบายใบรับรอง</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">คำเตือน — %1$s: %2$s: %3$s ถูกข้ามไป (%4$s)</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">นโยบายการเข้ารหัสลับทำให้ไม่มีอัลกอริทึม %1$s ที่ใช้งานได้</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">นโยบายการเข้ารหัสสำหรับ %1$s ล้มเหลว: %2$s</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">นโยบายด้านการเข้ารหัส — %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">ขนาดคีย์ขั้นต่ำ</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA: %1$d บิต; DH แบบฟิลด์จำกัด: %2$d บิต</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">แสดงลำดับความสำคัญที่มีประสิทธิภาพ</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">ซ่อนลำดับความสำคัญที่ใช้งานได้ผล</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">เปลี่ยนสถานะสำหรับ %1$s</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ ให้ความสำคัญกับอันแรก · + เพิ่ม · ✓ ทำตามค่าเริ่มต้น · − ยกเว้น</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">ปุ่ม Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">ปุ่ม Alt</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">ปุ่ม Shift</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">แท็บ</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">กด Enter</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">ปุ่มลบอักขระ</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">ลบ</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">แทรก</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">ลูกศรชี้ขึ้น</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">ลูกศรชี้ลง</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">ลูกศรชี้ไปทางซ้าย</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">หน้าหลัก</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">สิ้นสุด</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">เลื่อนหน้าขึ้น</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">เลื่อนหน้าลง</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">การป้อนข้อความ</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">สลับปุ่ม</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">แป้นพิมพ์</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">แป้นพิมพ์สำหรับเทอร์มินัล</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">รูปแบบการจัดวางแป้นพิมพ์</string>
+  <string name="keyboard_macros" tools:machine_translated="true">มาโครที่ใช้ร่วมกัน</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">ไม่มีมาโคร</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">การตั้งค่าไม่รองรับ</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">การทำงานของแป้นพิมพ์ล้มเหลว</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">เลื่อนขึ้น</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">เลื่อนลง</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">เลื่อนไปทางซ้าย</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">เลื่อนไปทางขวา</string>
+  <string name="keyboard_off" tools:machine_translated="true">ปิด</string>
+  <string name="keyboard_once" tools:machine_translated="true">ปุ่มถัดไป</string>
+  <string name="keyboard_locked" tools:machine_translated="true">ล็อคแล้ว</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">รูปแบบใหม่</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">สร้างมาโครใหม่</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(คัดลอก)</string>
+  <string name="keyboard_back" tools:machine_translated="true">ย้อนกลับ</string>
+  <string name="keyboard_error" tools:machine_translated="true">ไม่สามารถบันทึกการเปลี่ยนแปลงได้: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">เพิ่มรูปแบบการจัดวาง</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">เพิ่มมาโคร</string>
+  <string name="keyboard_edit" tools:machine_translated="true">แก้ไข</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">ซ้ำ</string>
+  <string name="keyboard_delete" tools:machine_translated="true">ลบ</string>
+  <string name="keyboard_default" tools:machine_translated="true">ใช้เป็นค่าเริ่มต้นของแอป</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">ใช้ใน: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">ยืนยัน</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">ต้องการใช้การเปลี่ยนแปลงที่อาจทำให้ข้อมูลสูญหายนี้หรือไม่ การแก้ไขรูปแบบที่บันทึกไว้ก่อนหน้านี้อาจถูกลบ หากรีเซ็ตรูปแบบ ระบบจะเก็บรักษามาโครที่แชร์ไว้</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">ยกเลิก</string>
+  <string name="keyboard_name" tools:machine_translated="true">ชื่อ</string>
+  <string name="keyboard_width" tools:machine_translated="true">ความกว้างของปุ่ม (หน่วยเป็น dp, สำหรับปุ่มทั้งหมด)</string>
+  <string name="keyboard_height" tools:machine_translated="true">ความสูงของปุ่ม (หน่วยเป็น dp, สำหรับปุ่มทั้งหมด)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">แตะที่ปุ่มเพื่อแก้ไข แตะค้างไว้แล้วลากเพื่อย้าย ลากระหว่างส่วนต่างๆ เพื่อตรึงหรือยกเลิกการตรึง ขนาดของปุ่มจะใช้กับทุกปุ่ม</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">ลากเพื่อจัดเรียงปุ่มใหม่</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">เพิ่มปุ่ม</string>
+  <string name="keyboard_visible" tools:machine_translated="true">มองเห็นได้</string>
+  <string name="keyboard_row" tools:machine_translated="true">แถว (เริ่มต้นที่ 0)</string>
+  <string name="keyboard_column" tools:machine_translated="true">คอลัมน์ (เริ่มต้นที่ 0)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">จำนวนแถว</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">จำนวนคอลัมน์</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">ลบปุ่ม</string>
+  <string name="keyboard_save" tools:machine_translated="true">บันทึก</string>
+  <string name="keyboard_reset" tools:machine_translated="true">คืนค่าเริ่มต้น</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">ใช้ค่าเริ่มต้นของแอป</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">ตัวแก้ไขด้วยภาพ</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">โปรแกรมแก้ไขข้อความ</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">ดำเนินการหนึ่งรายการต่อหนึ่งบรรทัด: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. ข้อความจะใช้รูปแบบการหลีกเลี่ยงอักขระพิเศษแบบ JSON.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">ขั้นตอนการทำงานของมาโคร</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">เพิ่มข้อความ</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">เพิ่มปุ่ม</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">เพิ่มไบต์</string>
+  <string name="keyboard_text" tools:machine_translated="true">ข้อความที่จะส่ง</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">ค่าไบต์ที่แน่นอน (เลขฐานสิบหก)</string>
+  <string name="keyboard_character" tools:machine_translated="true">ตัวอักษร</string>
+  <string name="terminal_key_space" tools:machine_translated="true">ช่องว่าง</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">ปุ่ม %1$s บนแป้นตัวเลข</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">ข้อความบนปุ่ม</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">ซิตรัส</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">ชุดคำสั่งควบคุมสำหรับอุปกรณ์ขนาดเล็ก</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">ป้ายสุดท้าย</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">ส่วนควบคุมที่ใช้งานง่ายและมีพื้นที่กว้างขวาง</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">คลอว์</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">ปรับแต่งให้เหมาะสมสำหรับ Claude Code</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">สไครบ์</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">ปรับแต่งให้เหมาะสมสำหรับ Codex CLI</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">เลือกรูปแบบแป้นพิมพ์</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">รูปแบบแป้นพิมพ์ ConnectBot แบบดั้งเดิม</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">ปรับขนาดให้พอดีกับความกว้าง</string>
+  <string name="keyboard_layer" tools:machine_translated="true">เลเยอร์ %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">เลเยอร์ %1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">สลับเลเยอร์</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">ปลายทางของเลเยอร์</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">เลเยอร์ถัดไปที่ไม่ว่างเปล่า</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">เลเยอร์ปลายทางว่างเปล่า</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">หยุด</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">ประวัติ (ย่อ)</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">โหมด</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">ขึ้นบรรทัดใหม่</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">บันทึก</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">แก้ไข</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">คัดลอก</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">วาง</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">หยุดชั่วคราว</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">ประวัติการค้นหา</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">สลับโหมดการอนุญาต</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">แทรกบรรทัดใหม่</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">สลับการแสดงคำบรรยาย</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">เปิดโปรแกรมแก้ไขภายนอก</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">คัดลอกข้อความตอบกลับ</string>
+  <string name="macro_assign" tools:machine_translated="true">กำหนดมาโคร</string>
+  <string name="macro_import" tools:machine_translated="true">นำเข้ามาโคร</string>
+  <string name="macro_export" tools:machine_translated="true">ส่งออกแมโคร</string>
+  <string name="macro_none" tools:machine_translated="true">ไม่มีมาโครที่บันทึกไว้</string>
+  <string name="automation_run_macro" tools:machine_translated="true">เรียกใช้แมโคร</string>
+  <string name="macro_choose" tools:machine_translated="true">เลือกมาโคร</string>
+  <string name="macro_manage" tools:machine_translated="true">จัดการแมโคร</string>
+  <string name="keyboard_selected" tools:machine_translated="true">เลือกแล้ว</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">ค่าเริ่มต้นของแอป</string>
+  <string name="keyboard_select" tools:machine_translated="true">ใช้สิ่งนี้</string>
+  <string name="keyboard_change" tools:machine_translated="true">เปลี่ยนรูปแบบ</string>
+  <string name="keyboard_customize" tools:machine_translated="true">ปรับแต่ง</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">แก้ไขรูปแบบที่ใช้ร่วมกัน</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">ใช้เป็นค่าเริ่มต้นของแอป</string>
+  <string name="keyboard_saving" tools:machine_translated="true">กำลังบันทึก…</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">กำหนดเอง</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">ใช้คีย์บอร์ดที่สืบทอดมา</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">จากโปรไฟล์ \"%1$s\"</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">ขั้นสูง</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">แป้นพิมพ์: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">ระบบอัตโนมัติหลังการลงชื่อเข้าใช้: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">โปรไฟล์: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">โฮสต์: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">ต้องการลบรูปแบบ “%1$s” ใช่หรือไม่</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">ลบมาโครชื่อ “%1$s” หรือไม่</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">โฮสต์และโปรไฟล์ที่ใช้รูปแบบนี้ จะใช้รูปแบบแป้นพิมพ์เริ่มต้นแทน หากนี่คือรูปแบบเริ่มต้นของแอป รูปแบบอื่นจะกลายเป็นรูปแบบเริ่มต้นแทน</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">การดำเนินการนี้จะลบมาโครออกจากคลังข้อมูลที่ใช้ร่วมกัน</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">ต้องการกู้คืนปุ่มและขนาดเดิมของการจัดวางนี้หรือไม่ หากต้องการ ให้บันทึกการเปลี่ยนแปลง แมโครที่แชร์ไว้จะยังคงอยู่</string>
+  <string name="macro_shared_title" tools:machine_translated="true">แก้ไขมาโครที่แชร์อยู่?</string>
+  <string name="macro_shared_message" tools:machine_translated="true">มาโครนี้ถูกนำไปใช้ในส่วนอื่น ๆ แล้ว โปรดสร้างสำเนาแยก หรือแก้ไขเวอร์ชันที่แชร์เพื่อให้ผู้ใช้ทุกคนสามารถใช้งานได้</string>
+  <string name="macro_make_copy" tools:machine_translated="true">สร้างสำเนา</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">แก้ไขมาโครที่แชร์</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">กำลังบันทึกการเปลี่ยนแปลงไปยังมาโครนี้ในทุกที่ที่ใช้งาน แม้ว่าในภายหลังคุณจะลบส่วนประกอบอื่นๆ ที่เกี่ยวข้องออกไปก็ตาม</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">ลบหรือกำหนดการใช้งานใหม่สำหรับรายการเหล่านี้ ก่อนที่จะลบมาโครนี้</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">ในเซสชันนี้</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">เครื่องนี้เป็นแบบอ่านได้อย่างเดียว ไม่สามารถเปลี่ยนแปลงการตั้งค่าแป้นพิมพ์ได้</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">จัดการรูปแบบ</string>
+  <string name="keyboard_done" tools:machine_translated="true">เสร็จแล้ว</string>
+  <string name="automation_draft_host" tools:machine_translated="true">ขั้นตอนเหล่านี้จะถูกบันทึกไว้พร้อมกับโฮสต์ใหม่</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">บันทึกโฮสต์นี้และเพิ่มการตั้งค่าการส่งต่อพอร์ตก่อนที่จะใช้ฟังก์ชันการส่งต่อ</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">การดำเนินการ</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">ปุ่ม</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">มาโคร</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">ตัวปรับเปลี่ยน</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">การทำงานของแอป</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">เปลี่ยนเลเยอร์</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">รูปแบบที่ใช้ร่วมกัน: บันทึกการอัปเดตเพื่อให้ทุกคนที่ใช้งานสามารถเข้าถึงได้</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">รูปแบบแป้นพิมพ์นี้ไม่สามารถใช้งานได้</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">แถวและคอลัมน์จะเริ่มต้นที่ 0 ในแต่ละส่วน ปุ่มแต่ละปุ่มจะสูงหนึ่งแถว การตั้งค่าจำนวนคอลัมน์ที่ปุ่มครอบคลุมจะกำหนดว่าปุ่มจะครอบคลุมเซลล์ทั้งหมดกี่เซลล์</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">ลักษณะที่แสดงผล</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">สีพื้นหลัง</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">สีข้อความ</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">สีเส้นขอบ</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">ธีมเริ่มต้น</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">ระดับความโปร่งใสของพื้นหลัง: %1$d%%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">มีเส้นขอบ</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">ความหนาของเส้นขอบ: %1$.1f dp</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">รีเซ็ตลักษณะที่แสดง</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">ตัวปรับเปลี่ยนค่าที่ใช้งานอยู่และสวิตช์เลเยอร์จะใช้การเน้นสีตามธีม</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">ลักษณะการทำงาน</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">ทำซ้ำขณะกดค้างไว้</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">ใช้การตั้งค่าเริ่มต้นสำหรับการทำซ้ำ</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">การตั้งค่าแอปพลิเคชัน</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">เปิดใช้งาน</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">ปิด</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">การตอบสนองแบบสัมผัส: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">ปุ่มที่ตรึงไว้</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">ปุ่มที่สามารถเลื่อนดูได้</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">ลากปุ่มมาวางที่นี่</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">ตรึงไว้ทางด้านขวา</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">เลือกรูปแบบ, กำหนดค่าปุ่ม และจัดการมาโคร</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">แก้ไขรูปแบบ</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">แก้ไขชื่อปุ่ม</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">การตั้งค่ารูปแบบการจัดวาง</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">เลื่อนดูได้</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">ปรับขนาดให้พอดีกับความกว้าง</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">แป้นพิมพ์</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">แตะเพื่อแก้ไข · กดค้างแล้วลากเพื่อย้าย</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">ปุ่มที่ตรึงไว้จะอยู่ด้านบนของแป้นพิมพ์ (ด้านซ้ายในอินเทอร์เฟซที่อ่านจากขวาไปซ้าย)</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">ลากปุ่มไปวางในส่วนของปุ่มที่ตรึงไว้ เพื่อให้ปุ่มนั้นอยู่ด้านล่างของแป้นพิมพ์ ลากปุ่มกลับไปยังส่วนของปุ่มที่สามารถเลื่อนได้ เพื่อยกเลิกการตรึง</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">ขยายแล้ว</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">ยุบแล้ว</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">แก้ไขสำเนา</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">ดำเนินการแก้ไขต่อ</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">สร้างรูปแบบการจัดวางสำหรับ %1$s ผู้ใช้รายอื่นจะยังคงใช้รูปแบบการจัดวางเดิม</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">การเปลี่ยนแปลงจะมีผลเมื่อคุณบันทึกโฮสต์หรือโปรไฟล์นี้</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">การบันทึกคีย์นี้จะอัปเดตแบบร่างการจัดวาง หากต้องการเก็บการเปลี่ยนแปลง ให้บันทึกการจัดวาง</string>
+  <string name="keyboard_placement" tools:machine_translated="true">ตำแหน่งที่วาง</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">แสดงปุ่ม</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">ตรึงไว้ที่ปลาย</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">เปลี่ยนทางลัด</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">เลือกฟังก์ชันที่ปุ่มนี้จะทำงานเมื่อกด</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">พื้นหลัง ข้อความ และเส้นขอบ</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · การตอบสนองต่อการสัมผัส: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">กดหนึ่งครั้ง</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">เมื่อกดค้างไว้ จะมีการทำซ้ำ</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">แถว คอลัมน์ และความกว้างของปุ่ม</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">มีผู้ใช้งาน %1$d คน</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">ลบปุ่มนี้ออกจากแบบร่างการจัดวางแผงปุ่มกดหรือไม่</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">ต้องการใช้การเปลี่ยนแปลงปุ่มหรือไม่</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">นำการเปลี่ยนแปลงเหล่านี้ไปใช้กับรูปแบบ หรือยกเลิกการเปลี่ยนแปลงเหล่านั้น</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">บันทึกการเปลี่ยนแปลง</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">แก้ไขรูปแบบ</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">ปุ่มหรือทางลัด</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">ตัวอย่าง</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">เลือกเอง</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">ใช้รูปแบบที่สืบทอดมา</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">การปรับเปลี่ยนรูปแบบ</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">ตัวอย่างสี</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">เพิ่มปุ่มเพื่อเริ่มใช้งานเลเยอร์นี้</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">การเปลี่ยนแปลงจะถูกนำไปใช้กับเทอร์มินัลนี้เมื่อคุณบันทึกรูปแบบ</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">การบันทึกรูปแบบนี้จะอัปเดตสำหรับผู้ใช้ทั้งหมด คุณสามารถแก้ไขสำเนาแทนได้</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">ต้องการแก้ไขรูปแบบแป้นพิมพ์ที่ใช้ร่วมกันหรือไม่</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">การตั้งค่านี้</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">เทมเพลตเริ่มต้น</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">ค่าเริ่มต้นที่มีอยู่จะไม่เปลี่ยนแปลง การแก้ไขจะสร้างสำเนาส่วนตัวของคุณ</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">ค่าเริ่มต้นที่ตั้งไว้</string>
 </resources>

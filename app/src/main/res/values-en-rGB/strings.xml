@@ -13,7 +13,6 @@
   <string name="list_menu_sortcolor">Sort by colour</string>
   <string name="title_scheme_manager">Manage Colour Schemes</string>
   <string name="dialog_title_new_scheme">New Colour Scheme</string>
-  <string name="label_custom_scheme" tools:machine_translated="true">Custom</string>
   <string name="button_export_scheme">Export Colour Scheme</string>
   <string name="button_import_scheme">Import Colour Scheme</string>
   <string name="title_palette_editor">Edit Colour Palette</string>
@@ -36,4 +35,503 @@
   <string name="shortcut_use_host_color">Use host colour</string>
   <string name="terminal_keyboard_text_input_button">Text entry</string>
   <string name="pref_auth_on_launch_summary">Require fingerprint, face recognition, or device PIN when opening the app</string>
+  <string name="service_desc" tools:machine_translated="true">Maintains SSH connections and loaded public keys.</string>
+  <string name="title_pubkey_list" tools:machine_translated="true">Public keys</string>
+  <string name="title_port_forwards_list" tools:machine_translated="true">Port forwarding</string>
+  <string name="terms_and_conditions" tools:machine_translated="true">Terms and Conditions</string>
+  <string name="hints" tools:machine_translated="true">Tips</string>
+  <string name="increase_font_size" tools:machine_translated="true">Increase font size</string>
+  <string name="decrease_font_size" tools:machine_translated="true">Decrease font size</string>
+  <string name="paste_shortcut" tools:machine_translated="true">Ctrl+Shift+V</string>
+  <string name="pubkey_gather_entropy" tools:machine_translated="true">Collecting Entropy</string>
+  <string name="pubkey_touch_hint" tools:machine_translated="true">To ensure randomness during key generation, move your finger randomly over the box below.</string>
+  <string name="pubkey_export_private_openssh" tools:machine_translated="true">Export private key (OpenSSH format)</string>
+  <string name="pubkey_export_set_passphrase" tools:machine_translated="true">Set export passphrase.</string>
+  <string name="pubkey_export_passphrase_message" tools:machine_translated="true">Enter a passphrase to encrypt the key being exported.</string>
+  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">Confirm passphrase.</string>
+  <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">The passphrases do not match.</string>
+  <string name="pubkey_import_encrypted_message" tools:machine_translated="true">Enter password to decrypt key \'%1$s\' (%2$s).</string>
+  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">Encrypt key for storage.</string>
+  <string name="pubkey_import_reuse_password" tools:machine_translated="true">Use the same password for encryption.</string>
+  <string name="pubkey_import_confirm_password" tools:machine_translated="true">Confirm password.</string>
+  <string name="pubkey_unlock_message" tools:machine_translated="true">Enter password to unlock key \'%1$s\'.</string>
+  <string name="pubkey_nickname_exists" tools:machine_translated="true">A key with this nickname already exists.</string>
+  <string name="pubkey_load_on_start" tools:machine_translated="true">Load key at startup</string>
+  <string name="pubkey_confirm_use" tools:machine_translated="true">Confirm before using.</string>
+  <string name="portforward_edit" tools:machine_translated="true">Edit port forwarding</string>
+  <string name="portforward_delete" tools:machine_translated="true">Delete port forwarding</string>
+  <string name="prompt_username" tools:machine_translated="true">User name:</string>
+  <string name="prompt_password_can_be_blank" tools:machine_translated="true">Note: the password field can be left blank.</string>
+  <string name="prompt_allow_agent_to_use_key" tools:machine_translated="true">Allow the remote host to\nuse the key \'%1$s\'?</string>
+  <string name="host_verification_failure_warning_header" tools:machine_translated="true">WARNING: THE IDENTIFICATION OF THE REMOTE HOST HAS CHANGED!</string>
+  <string name="host_verification_failure_warning" tools:machine_translated="true">IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING SINISTER!\nSomeone could be eavesdropping on you right now (a man-in-the-middle attack)!\nIt is also possible that the host key has just been changed.</string>
+  <string name="host_authenticity_warning" tools:machine_translated="true">The authenticity of host \'%1$s\' cannot be verified.</string>
+  <string name="host_fingerprint" tools:machine_translated="true">The key fingerprint for host %1$s is %2$s.</string>
+  <string name="fingerprint_copy_description" tools:machine_translated="true">Copy fingerprint to clipboard.</string>
+  <string name="alert_passwords_do_not_match_msg" tools:machine_translated="true">The passwords do not match!</string>
+  <string name="alert_wrong_password_msg" tools:machine_translated="true">Incorrect password!</string>
+  <string name="network_lost_grace_period" tools:machine_translated="true">Network connection lost, waiting to reconnect…</string>
+  <string name="network_restored_same_ip" tools:machine_translated="true">Network restored, connection remains active.</string>
+  <string name="network_restored_ip_changed" tools:machine_translated="true">Network connection restored, but IP address has changed. Reconnecting…</string>
+  <string name="pref_scrollback_summary" tools:machine_translated="true">Size of the scrollback buffer to be kept in memory for each console.</string>
+  <string name="pref_customfont_title" tools:machine_translated="true">Add custom font.</string>
+  <string name="pref_customfont_summary" tools:machine_translated="true">Add a font from Google Fonts by its name.</string>
+  <string name="dialog_customfont_hint" tools:machine_translated="true">Google Fonts name (e.g. Cascadia Code)</string>
+  <string name="pref_localfont_title" tools:machine_translated="true">Import local font.</string>
+  <string name="pref_localfont_summary" tools:machine_translated="true">Import a font file from storage (TTF, OTF).</string>
+  <string name="dialog_localfont_hint" tools:machine_translated="true">Display name for the font.</string>
+  <string name="pref_backupkeys_title" tools:machine_translated="true">Back up public keys</string>
+  <string name="pref_backupkeys_summary" tools:machine_translated="true">Keep backups of the private keys using Android’s backup feature.</string>
+  <string name="pref_language_download_failed" tools:machine_translated="true">Download failed, tap to retry.</string>
+  <string name="pref_theme_dark" tools:machine_translated="true">Dark theme</string>
+  <string name="pref_titlebarhide_title" tools:machine_translated="true">Automatically hide title bar</string>
+  <string name="pref_titlebarhide_summary" tools:machine_translated="true">Tap the console to display the title bar and access the menu.</string>
+  <string name="pref_alwaysvisible_title" tools:machine_translated="true">Always show special keys.</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Add an IME button to the row of special keys that toggles compose mode for languages that require a composition buffer (Japanese, Chinese, Korean, etc.).</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Full IME Ctrl/Alt key combinations</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">No workaround available.</string>
+  <string name="pref_pg_updn_gesture_summary" tools:machine_translated="true">Swipe across the left third of the screen to send the page up/down command to the terminal.</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">Swipe to switch between sessions.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">Enable horizontal swiping to switch between terminal sessions. Disabled by default for accessibility reasons.</string>
+  <string name="pref_fullscreen_summary" tools:machine_translated="true">Hide the status bar when in console mode.</string>
+  <string name="pref_shiftfkeys_title" tools:machine_translated="true">Shift+number keys are F-keys.</string>
+  <string name="pref_shiftfkeys_summary" tools:machine_translated="true">On hardware keyboards, the number keys send F1–F10 when the Shift key is pressed.</string>
+  <string name="pref_ctrlfkeys_title" tools:machine_translated="true">Ctrl+number keys are F-keys.</string>
+  <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">On software keyboards, the number keys send F1–F10 when the Ctrl key is pressed.</string>
+  <string name="pref_volumefont_title" tools:machine_translated="true">Volume keys adjust font size.</string>
+  <string name="pref_volumefont_summary" tools:machine_translated="true">You can also change the font size in the profile settings.</string>
+  <string name="pref_memkeys_title" tools:machine_translated="true">Remember keys in memory.</string>
+  <string name="pref_memkeys_summary" tools:machine_translated="true">Keep unlocked keys in memory until the backend service is terminated.</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Show terminal bell and connection loss notifications.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Connection alerts are turned off. Background connection support remains enabled.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">Android controls the visibility of the ongoing connection notification, independently of connection alerts.</string>
+  <string name="pref_stickymodifiers_title" tools:machine_translated="true">Persistent modifiers</string>
+  <string name="only_alt" tools:machine_translated="true">Alt only</string>
+  <string name="pref_keepalive_title" tools:machine_translated="true">Keep screen on</string>
+  <string name="pref_keepalive_summary" tools:machine_translated="true">Prevent the screen from switching off when working in a console.</string>
+  <string name="pref_wifilock_title" tools:machine_translated="true">Keep Wi-Fi enabled.</string>
+  <string name="pref_wifilock_summary" tools:machine_translated="true">Prevent Wi-Fi from switching off when a session is in progress.</string>
+  <string name="pref_bumpyarrows_title" tools:machine_translated="true">Keyboard haptic feedback</string>
+  <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Vibrate when pressing keys on the terminal. Individual keys can override this setting.</string>
+  <string name="pref_bell_summary" tools:machine_translated="true">Play sound when a terminal alert is triggered.</string>
+  <string name="pref_bell_vibrate_title" tools:machine_translated="true">Vibrate on terminal bell</string>
+  <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Vibrate when a terminal alert is triggered.</string>
+  <string name="pref_bell_notification_summary" tools:machine_translated="true">Display a pop-up notification without sound when a bell rings in a session you are not currently viewing.</string>
+  <string name="list_keymode_right" tools:machine_translated="true">Use the keys on the right-hand side.</string>
+  <string name="list_keymode_left" tools:machine_translated="true">Use the keys on the left-hand side.</string>
+  <string name="list_pubkeyids_none" tools:machine_translated="true">Do not use keys.</string>
+  <string name="list_pubkeyids_any" tools:machine_translated="true">Use any unlocked key.</string>
+  <string name="hostpref_pubkeyid_title" tools:machine_translated="true">Use public key authentication.</string>
+  <string name="hostpref_authagent_title" tools:machine_translated="true">Use SSH authentication agent.</string>
+  <string name="hostpref_postlogin_title" tools:machine_translated="true">Automation after login</string>
+  <string name="hostpref_compression_summary" tools:machine_translated="true">This may be helpful for slower networks.</string>
+  <string name="hostpref_wantsession_title" tools:machine_translated="true">Start shell session.</string>
+  <string name="hostpref_wantsession_summary" tools:machine_translated="true">Disable this setting to use port forwarding only.</string>
+  <string name="hostpref_stayconnected_title" tools:machine_translated="true">Remain connected.</string>
+  <string name="hostpref_stayconnected_summary" tools:machine_translated="true">Attempt to reconnect to the host if it becomes disconnected.</string>
+  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Close on disconnection.</string>
+  <string name="hostpref_quickdisconnect_summary" tools:machine_translated="true">Close immediately after the remote connection is terminated, without prompting the user.</string>
+  <string name="hostpref_delkey_title" tools:machine_translated="true">Delete key</string>
+  <string name="hostpref_save_password_summary" tools:machine_translated="true">Store the login password securely for automatic authentication.</string>
+  <string name="hostpref_password_unchanged" tools:machine_translated="true">Password (no change)</string>
+  <string name="hostpref_hostname_title" tools:machine_translated="true">Host name</string>
+  <string name="hostpref_profile_summary" tools:machine_translated="true">Select a profile to use its terminal settings.</string>
+  <string name="profile_controlled_setting" tools:machine_translated="true">Controlled by profile.</string>
+  <string name="font_use_default" tools:machine_translated="true">Use Default Font</string>
+  <string name="font_system_default" tools:machine_translated="true">Default (Monospaced)</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">Local display of typed input.</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">Choose whether typed input is displayed locally. If ‘Always on’ is selected, text may be duplicated when the server echoes it.</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">Always on.</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">Always off.</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">Negotiation start-up</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">Negotiate terminal capabilities on connection, or wait for the server to request them.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">Negotiate on connection.</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">Wait for server.</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">Non-binary data</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">If the server does not support binary mode, allow legacy eight-bit bytes or require ASCII. Both ends must use the same encoding.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">Allow legacy eight-bit bytes.</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">Require ASCII.</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">Outside binary mode, convert pasted line feeds (LF) to carriage return line feeds (CRLF) or preserve the line feeds. This also applies to automated text.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">Convert LF to CRLF.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">The input could not be sent to this Telnet server.</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">Bold as bright.</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">Use bright ANSI colours for bold text. Applies to new terminal sessions.</string>
+  <string name="profile_editor_force_size_summary" tools:machine_translated="true">Force the terminal to a specific size (columns by rows) instead of automatically resizing to fit the screen.</string>
+  <string name="profile_editor_force_size_enable" tools:machine_translated="true">Enable forced size</string>
+  <string name="profile_list_empty_message" tools:machine_translated="true">No profiles yet. Tap the + button to create one.</string>
+  <string name="console_switch_session" tools:machine_translated="true">Switch session.</string>
+  <string name="console_menu_portforwards" tools:machine_translated="true">Port forwarding</string>
+  <string name="console_menu_resize" tools:machine_translated="true">Set size</string>
+  <string name="console_menu_urlscan" tools:machine_translated="true">Scan URLs</string>
+  <string name="console_url_no_handler" tools:machine_translated="true">No app available to open this URL.</string>
+  <string name="console_url_not_supported" tools:machine_translated="true">This type of URL is not supported.</string>
+  <string name="portforward_pos" tools:machine_translated="true">Create port forwarding</string>
+  <string name="list_menu_pubkeys" tools:machine_translated="true">Manage public keys</string>
+  <string name="known_hosts_title" tools:machine_translated="true">Trusted hosts</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">View, import or remove the trusted SSH host keys for this host.</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">No known hosts found.</string>
+  <string name="known_host_delete" tools:machine_translated="true">Delete trusted host</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">Delete trusted host?</string>
+  <string name="known_hosts_error" tools:machine_translated="true">Unable to update the list of known hosts.</string>
+  <string name="known_host_import" tools:machine_translated="true">Import host key.</string>
+  <string name="known_host_import_title" tools:machine_translated="true">Import host key.</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">Enter a valid OpenSSH public key. The algorithm and encoded key must be the same.</string>
+  <string name="list_menu_sortname" tools:machine_translated="true">Sort by nickname</string>
+  <string name="list_host_portforwards" tools:machine_translated="true">Edit port forwarding rules.</string>
+  <string name="list_camera_ctrlaspace" tools:machine_translated="true">Ctrl+A, then Space.</string>
+  <string name="delete_pos" tools:machine_translated="true">Yes, delete.</string>
+  <string name="disconnect_all_pos" tools:machine_translated="true">Yes, disconnect.</string>
+  <string name="terminal_connecting" tools:ignore="PluralsCandidate" tools:machine_translated="true">Connecting to %1$s:%2$d using %3$s</string>
+  <string name="terminal_sucess" tools:machine_translated="true">Verified host key for \'%1$s\': %2$s</string>
+  <string name="terminal_auth" tools:machine_translated="true">Attempting to authenticate.</string>
+  <string name="terminal_auth_pass" tools:machine_translated="true">Attempting ‘password’ authentication.</string>
+  <string name="terminal_auth_pass_fail" tools:machine_translated="true">Authentication method ‘password’ failed.</string>
+  <string name="terminal_auth_saved_password" tools:machine_translated="true">Attempting to use saved password…</string>
+  <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">Authentication using the saved password failed.</string>
+  <string name="terminal_auth_pubkey_any" tools:machine_translated="true">Attempting ‘public key’ authentication using any available public keys.</string>
+  <string name="terminal_auth_pubkey_invalid" tools:machine_translated="true">The selected public key is invalid. Please try selecting the key again in the host editor.</string>
+  <string name="terminal_auth_pubkey_specific" tools:machine_translated="true">Attempting public key authentication using a specific public key.</string>
+  <string name="terminal_auth_biometric" tools:machine_translated="true">Requesting biometric authentication for key \'%1$s\'.</string>
+  <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">The biometric key \'%1$s\' has been invalidated. This can happen when new fingerprints are registered on the device. Please generate a new key.</string>
+  <string name="terminal_auth_pubkey_fail" tools:machine_translated="true">Authentication method \'public key\' with key \'%1$s\' failed.</string>
+  <string name="terminal_auth_ki" tools:machine_translated="true">Attempting ‘keyboard-interactive’ authentication.</string>
+  <string name="terminal_auth_ki_fail" tools:machine_translated="true">Authentication method ‘keyboard-interactive’ failed.</string>
+  <string name="terminal_auth_fail" tools:machine_translated="true">[Your host does not support ‘password’ or ‘keyboard-interactive’ authentication.]</string>
+  <string name="terminal_no_session" tools:machine_translated="true">The session will not start because of the host’s settings.</string>
+  <string name="terminal_enable_portfoward" tools:machine_translated="true">Port forwarding enabled: %1$s</string>
+  <string name="local_shell_unavailable" tools:machine_translated="true">Error! A local shell is not available on this phone.</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Establishing Mosh connection…</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Warning: Mosh installation timed out.</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Launching mosh server on the remote host…</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">Failed to start the mosh server on the remote host.</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">Mosh client failed to start.</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">Mosh connection established.</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Custom path or command for the Mosh server (leave blank to use the default)</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Fixed UDP port for Mosh (0 for automatic, using the 60000-61000 range).</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Time before the server shuts down if there have been no client updates. Leave blank to use the server setting or one week; use 0 to disable expiry.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Enter a whole number between 0 and 2147483647, or leave the field blank.</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">Locale setting</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">Locale for the Mosh session (e.g. en_US.UTF-8).</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">Mosh release and source code.</string>
+  <string name="notification_text" tools:machine_translated="true">%1$s requires your attention.</string>
+  <string name="no" tools:machine_translated="true">No.</string>
+  <string name="yes" tools:machine_translated="true">Yes.</string>
+  <string name="dialog_title_delete_scheme" tools:machine_translated="true">Delete scheme?</string>
+  <string name="dialog_message_delete_scheme" tools:machine_translated="true">Are you sure you want to delete \"%1$s\"? This action cannot be reversed.</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">Your changes will be lost if you leave without saving.</string>
+  <string name="label_built_in_scheme" tools:machine_translated="true">Built-in.</string>
+  <string name="empty_custom_schemes" tools:machine_translated="true">No custom schemes available. Tap ‘New Scheme’ to create one.</string>
+  <string name="message_export_success" tools:machine_translated="true">%1$s exported.</string>
+  <string name="message_import_success" tools:machine_translated="true">%1$s imported.</string>
+  <string name="error_invalid_json" tools:machine_translated="true">Invalid JSON file.</string>
+  <string name="app_is_running" tools:machine_translated="true">ConnectBot is running.</string>
+  <string name="section_fg_bg_colors" tools:machine_translated="true">Foreground and Background</string>
+  <string name="image_description_send_tab_character" tools:machine_translated="true">Send Tab character.</string>
+  <string name="image_description_left" tools:machine_translated="true">Arrow pointing left</string>
+  <string name="image_description_right" tools:machine_translated="true">Right-pointing arrow</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Toggle the Alt key.</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Toggle compose mode for IME input.</string>
+  <string name="button_key_pgup" tools:machine_translated="true">Page Up</string>
+  <string name="button_key_pgdn" tools:machine_translated="true">Page Down</string>
+  <string name="terminal_text_input_dialog_label" tools:machine_translated="true">Enter text to send to the terminal.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">Compose mode (input method editor)</string>
+  <string name="button_navigate_up" tools:machine_translated="true">Go up</string>
+  <string name="error_connection_failed" tools:machine_translated="true">Unable to connect to %1$s (%2$s): %3$s</string>
+  <string name="error_port_forward_load_failed" tools:machine_translated="true">Failed to load port forwarding rules for %1$s: %2$s</string>
+  <string name="error_host_save_failed" tools:machine_translated="true">Failed to save host configuration for %1$s: %2$s</string>
+  <string name="empty_hosts_message" tools:machine_translated="true">No hosts have been configured.</string>
+  <string name="empty_port_forwards_message" tools:machine_translated="true">No port forwarding rules configured.</string>
+  <string name="empty_urls_message" tools:machine_translated="true">No URLs found in the terminal buffer.</string>
+  <string name="host_editor_show_advanced" tools:machine_translated="true">Show advanced settings</string>
+  <string name="host_editor_hide_advanced" tools:machine_translated="true">Hide advanced settings</string>
+  <string name="resize_disable_force_size" tools:machine_translated="true">Disable fixed size</string>
+  <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">Encrypted keys cannot be unlocked when the system starts up.</string>
+  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">Not encrypted.</string>
+  <string name="pubkey_biometric_description" tools:machine_translated="true">Protect this key using your fingerprint.</string>
+  <string name="pubkey_biometric_not_enrolled" tools:machine_translated="true">No fingerprint registered. Set up fingerprint in the device settings to use this feature.</string>
+  <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">Fingerprint protection is only available for RSA and EC keys.</string>
+  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">Authenticate to use the key.</string>
+  <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">Touch the fingerprint sensor to unlock \'%1$s\'.</string>
+  <string name="pubkey_biometric_description_icon" tools:machine_translated="true">Protected by fingerprint.</string>
+  <string name="pubkey_biometric_not_available" tools:machine_translated="true">Fingerprint authentication is not available.</string>
+  <string name="portforward_nickname_placeholder" tools:machine_translated="true">Internal web server</string>
+  <string name="portforward_port_range_error" tools:machine_translated="true">The port number must be between 1 and 65535.</string>
+  <string name="portforward_destination_format_error" tools:machine_translated="true">The format should be host:port (e.g. localhost:80).</string>
+  <string name="portforward_enabled" tools:machine_translated="true">Port forwarding enabled.</string>
+  <string name="portforward_disabled" tools:machine_translated="true">Port forwarding disabled.</string>
+  <string name="hostpref_setting_title" tools:machine_translated="true">Host settings</string>
+  <string name="pubkey_import_existing" tools:machine_translated="true">Import existing public key</string>
+  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Paste from the clipboard</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Allow notifications to see connected devices and receive alerts for terminal beeps and connection losses. Connections can still run in the background even without this permission.</string>
+  <string name="connect_anyway" tools:machine_translated="true">Connect anyway.</string>
+  <string name="terminal_no_route" tools:machine_translated="true">Are you trying to access a host on the local network? Grant the necessary permissions.</string>
+  <string name="migration_title" tools:machine_translated="true">Database Migration in Progress</string>
+  <string name="migration_warning" tools:machine_translated="true">Please do not close the app while the migration is in progress.</string>
+  <string name="migration_stats_known_hosts" tools:machine_translated="true">Number of known hosts migrated: %d</string>
+  <string name="migration_failed_title" tools:machine_translated="true">Migration failed.</string>
+  <string name="migration_failed_message" tools:machine_translated="true">An error occurred during the database migration: %s</string>
+  <string name="migration_retry" tools:machine_translated="true">Try again</string>
+  <string name="migration_failed_help" tools:machine_translated="true">If the problem continues, please report it at %1$s, including a copy of the debug log shown above.</string>
+  <string name="delete_host_confirm" tools:machine_translated="true">Are you sure you want to delete the host \'%1$s\'?</string>
+  <string name="forget_host_keys_confirm" tools:machine_translated="true">Are you sure you want to delete the stored host keys for \'%1$s\'? You will be prompted to verify the host key the next time you connect.</string>
+  <string name="list_pubkey_edit" tools:machine_translated="true">Edit public key</string>
+  <string name="hostpref_jumphost_summary" tools:machine_translated="true">Connect via another SSH host.</string>
+  <string name="terminal_connecting_via_jump" tools:machine_translated="true">Connecting via jump server: %s</string>
+  <string name="terminal_jump_authenticated" tools:machine_translated="true">Authenticated to jump server: %s</string>
+  <string name="terminal_jump_failed" tools:machine_translated="true">Unable to connect to jump host %1$s: %2$s</string>
+  <string name="terminal_jump_auth_failed" tools:machine_translated="true">Authentication failed for the jump host: %s</string>
+  <string name="terminal_jump_not_found" tools:machine_translated="true">Jump host not found in saved host list.</string>
+  <string name="terminal_jump_password" tools:machine_translated="true">Password for the jump host %s:</string>
+  <string name="logs_copied" tools:machine_translated="true">Logs copied to the clipboard.</string>
+  <string name="logs_bug_report_info" tools:machine_translated="true">To report a bug, copy these logs and open a new issue at https://connectbot.org/bug.</string>
+  <string name="no_logs_available" tools:machine_translated="true">No logs available.</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">No process exit records found.</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">Process exit history not available.</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">No description available.</string>
+  <string name="save_tombstone" tools:machine_translated="true">Save Crash Report</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">Save the most recent native crash report to a location of your choice.</string>
+  <string name="tombstone_saved" tools:machine_translated="true">Tombstone saved.</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">No native crash report is available. Android may have already deleted it.</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">Unable to save the crash report.</string>
+  <string name="help_section_contact" tools:machine_translated="true">Contact and Support</string>
+  <string name="help_github" tools:machine_translated="true">Source code</string>
+  <string name="help_section_donate" tools:machine_translated="true">Support development.</string>
+  <string name="help_donate_coffee" tools:machine_translated="true">Buy me a coffee</string>
+  <string name="colorscheme_dracula_description" tools:machine_translated="true">A dark theme for the terminal.</string>
+  <string name="colorscheme_monokai_description" tools:machine_translated="true">Theme inspired by Sublime Text.</string>
+  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">A clean and comfortable dark mode.</string>
+  <string name="pref_alwaysvisible_summary" tools:machine_translated="true">Always show special keys.</string>
+  <string name="pref_customterminal_summary" tools:machine_translated="true">Add custom TERM values for remote servers.</string>
+  <string name="dialog_customterminal_hint" tools:machine_translated="true">Terminal type (e.g. rxvt-unicode)</string>
+  <string name="dialog_custom_value_label" tools:machine_translated="true">Enter custom value.</string>
+  <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A, then Space</string>
+  <string name="list_camera_text_input_description" tools:machine_translated="true">Text field</string>
+  <string name="export_hosts_success" tools:machine_translated="true">Exported %1$d hosts and %2$d profiles.</string>
+  <string name="import_hosts_success" tools:machine_translated="true">Imported %1$d hosts (%2$d skipped) and %3$d profiles (%4$d skipped).</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">The JSON file is too large to import (maximum 8 MB).</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">Unable to open the selected file.</string>
+  <string name="pref_auth_on_launch_title" tools:machine_translated="true">Authentication at launch.</string>
+  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot is locked.</string>
+  <string name="auth_screen_unlock_button" tools:machine_translated="true">Tap to unlock.</string>
+  <string name="auth_prompt_subtitle" tools:machine_translated="true">Verify your identity to proceed.</string>
+  <string name="profile_inline_images" tools:machine_translated="true">Inline images</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">Display images inline?</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">Allow this host to display images inline for the remainder of this session?</string>
+  <string name="automation_load_failed" tools:machine_translated="true">Unable to load automation.</string>
+  <string name="automation_save_failed" tools:machine_translated="true">Unable to save automation.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">Check the text, pattern, duration, or selected port forwarding rule.</string>
+  <string name="automation_action_failed" tools:machine_translated="true">Action failed.</string>
+  <string name="automation_timed_out" tools:machine_translated="true">Timeout occurred while waiting for text.</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">Too much output arrived before the automation could process it.</string>
+  <string name="automation_no_session" tools:machine_translated="true">This action requires an open terminal window.</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">Port forwarding is missing.</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">This connection does not support port forwarding.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Wait for the string.</string>
+  <string name="automation_send_text" tools:machine_translated="true">Send string.</string>
+  <string name="automation_send_key" tools:machine_translated="true">Send special key.</string>
+  <string name="automation_delay" tools:machine_translated="true">Wait.</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">Enable port forwarding.</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">Disable port forwarding.</string>
+  <string name="automation_move_up" tools:machine_translated="true">Move up.</string>
+  <string name="automation_move_down" tools:machine_translated="true">Move down.</string>
+  <string name="automation_drag" tools:machine_translated="true">Drag to reorder.</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Matches incoming text without ANSI formatting. The regular expression supports RE2 syntax; lookahead and back-references are not supported.</string>
+  <string name="automation_forward" tools:machine_translated="true">Port forwarding</string>
+  <string name="automation_stop" tools:machine_translated="true">Stop automation.</string>
+  <string name="automation_save_host" tools:machine_translated="true">Save host to configure automation.</string>
+  <string name="automation_progress" tools:machine_translated="true">Automation: %1$d of %2$d</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">Cancel automation.</string>
+  <string name="automation_seconds" tools:machine_translated="true">%1$.3f secs</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">You have disconnected from this host.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">The remote session has finished.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">The network connection has been lost. Reconnect when the network is available.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">Authentication failed. Please check your username, password or key before attempting to reconnect.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">The connection has ended.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">Connection requires attention.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Open the console to view the remaining output.</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">Sessions requiring attention.</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">Connections lost</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">Manage notification channels in settings.</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">Silence alerts.</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Notifications for lost connections</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Display a silent pop-up notification when a session you are not currently viewing unexpectedly disconnects.</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">Could not save the key. Try a different nickname or try again.</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">Unable to create the shortcut. Please try again.</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">The jump host chain contains a loop. Check the jump host settings.</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">The jump host chain exceeds the limit of 32 hosts.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">Connection information</string>
+  <string name="connection_info_username" tools:machine_translated="true">User name</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">Connecting...</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">Disconnected.</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">Details of the SSH negotiation.</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">SSH negotiation details are unavailable.</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">Integrity: client to server.</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">Integrated with encryption.</string>
+  <string name="connection_info_yes" tools:machine_translated="true">Yes.</string>
+  <string name="connection_info_no" tools:machine_translated="true">No.</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">Port forwarding</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">Source configured.</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">Not bound.</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">Customised</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">Recommended algorithms and key sizes.</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">Require post-quantum key exchange.</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">Restrict algorithms; not FIPS validated.</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">Allow older algorithms for compatibility.</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">Choose algorithms and minimum key sizes.</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">Modern algorithms and key-size requirements supported by the SSH library.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">Restricts the choice of algorithms; does not implement FIPS validation.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">Allows older algorithms and smaller RSA and DH keys for compatibility purposes. Modern algorithms remain the preferred option.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">Customise Default. Algorithm selections and minimum key sizes are independent.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">Minimum RSA bit length</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">Minimum DH bit length</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">Leave blank to use the default setting. This applies even to algorithms that have been explicitly enabled.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">Enter at least 1024 bits. The DH value must not exceed 8192 bits.</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">Inherit Default Settings</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">Use only these.</string>
+  <string name="crypto_expression" tools:machine_translated="true">Algorithm expression.</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">Comma-separated names. In Modify Default, prefix each name with ^ (insert at the beginning), + (append), or - (exclude).</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">Use unique SSH names and a single selection mode. Exact lists must not be empty.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">Effective priority order</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">Not available on this device; retained in your configuration.</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">Excluded due to the minimum key size.</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">Enabled by default.</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">Available; not enabled by default.</string>
+  <string name="crypto_prepend" tools:machine_translated="true">Prefer first.</string>
+  <string name="crypto_inherit" tools:machine_translated="true">Follow Default.</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">not implemented by this library.</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">unavailable with the installed cryptographic providers.</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">The DH group is smaller than the configured minimum.</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">key or certificate does not meet the RSA or certificate policy requirements.</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">The cryptographic policy does not allow for any usable %1$s.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">The cryptographic policy for %1$s failed: %2$s</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">Show the preferred order.</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">Hide preferred order</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">Change state for %1$s.</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ Prioritise first · + Add · ✓ Follow default · − Exclude</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">Press Enter</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">Page Up</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">Page Down</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">Text entry</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">Macro missing.</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">Keyboard operation failed.</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">Move upwards.</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">Move down.</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">Move to the left.</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">Move to the right.</string>
+  <string name="keyboard_locked" tools:machine_translated="true">Locked.</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">New macro.</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(copy)</string>
+  <string name="keyboard_error" tools:machine_translated="true">Could not apply the change: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">Add layout.</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">Add macro.</string>
+  <string name="keyboard_default" tools:machine_translated="true">Use as the app default.</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">Confirm.</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">Apply this destructive change? Saved layout edits may be lost. Shared macros are retained when resetting a layout.</string>
+  <string name="keyboard_width" tools:machine_translated="true">Button width (dp, applies to all buttons)</string>
+  <string name="keyboard_height" tools:machine_translated="true">Button height (dp, applies to all buttons)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">Tap a key to edit it. Touch and hold, then drag to move it. Drag between sections to pin or unpin. The button size applies to every key.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">Drag to reorder the button.</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">Column width</string>
+  <string name="keyboard_reset" tools:machine_translated="true">Restore default settings.</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">Use the app’s default settings.</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">Add text.</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">Add key.</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">Add bytes.</string>
+  <string name="keyboard_text" tools:machine_translated="true">Text to send.</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">Final Destination</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">Spacious terminal controls</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">Optimised for Claude Code.</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">Optimised for the Codex command-line interface.</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">Choose a keyboard layout.</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">Fit to width.</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">Layer %1$d</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">Next non-empty layer.</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">The destination layer is empty.</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">History</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">New line</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">Cycle through permission modes.</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">Insert new line.</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">Toggle transcript.</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">Open external editor.</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">Copy reply</string>
+  <string name="macro_assign" tools:machine_translated="true">Assign macro.</string>
+  <string name="macro_none" tools:machine_translated="true">No saved macros.</string>
+  <string name="automation_run_macro" tools:machine_translated="true">Run macro.</string>
+  <string name="macro_choose" tools:machine_translated="true">Choose macro.</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">App default.</string>
+  <string name="keyboard_select" tools:machine_translated="true">Use this.</string>
+  <string name="keyboard_change" tools:machine_translated="true">Change keyboard layout.</string>
+  <string name="keyboard_customize" tools:machine_translated="true">Customise</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">Edit shared layout.</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">Customised</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">Use the inherited keyboard.</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">From profile \"%1$s\"</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">Automation after login: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">Delete layout \"%1$s\"?</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">Hosts and profiles that use this layout will instead use their inherited keyboard. If this is the app’s default setting, another layout will become the default.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">Restore the original keys and dimensions for this layout? Changes will be applied when you save. Shared macros will be retained.</string>
+  <string name="macro_shared_message" tools:machine_translated="true">This macro is used in other places. Either make a separate copy, or edit the shared version for all its users.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">Make a copy.</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">Edit shared macro.</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">Saving updates this macro wherever it is used, even if you later discard the surrounding editor.</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">This host is read-only. Its keyboard cannot be modified.</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">Manage keyboard layouts.</string>
+  <string name="keyboard_done" tools:machine_translated="true">Finished.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">Save this host and add port forwarding rules before using forwarding actions.</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">Switch layer.</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">Shared layout: saving updates for everyone who uses it.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">This keyboard layout is not available.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">Rows and columns start at 0 within each section. Keys are one row in height. Column span determines how many cells a key occupies.</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">Background colour</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">Text colour</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">Outline colour</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">Default theme</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">Reset appearance.</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">Active modifiers and layer switches use the theme’s highlight colour.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">Behaviour</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">Repeat while pressed.</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">Use the default repeat setting.</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">App settings</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">Keys that can be scrolled.</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">Drag keys here.</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">Pin to the right.</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">Choose layouts, customise keys and manage macros.</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">Edit layout.</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">Edit key title.</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">Fit to width.</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">Tap to edit · Press and drag to move.</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">Pinned keys remain at the end of the keyboard (on the left in right-to-left interfaces).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">Drag a key into the Pinned keys area to keep it at the end of the keyboard. Drag it back into the Scrollable keys area to unpin it.</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">Edit the copy.</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">Continue editing.</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">Creates a layout for %1$s. Other users will retain their current layout.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">Changes will be applied when you save this host or profile.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">Layout.</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">Display key.</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">Fixed at the end.</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">Change shortcut.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">Background, text and outline.</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">Press once.</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">Repeats while pressed.</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">Row, column and key width.</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">Apply key modifications?</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">Apply changes.</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">Edit layout.</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">Use the inherited layout.</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">Layout options</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">Colour preview</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">Changes will be applied to this terminal when you save the layout.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">Saving this layout will update it for all users. You can edit a copy instead.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">Edit shared keyboard layout?</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">Built-in templates</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">The built-in presets remain unchanged. Editing creates your own copy.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">Built-in preset.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+		<item quantity="one">%d session connected.</item>
+		<item quantity="other">%d sessions connected</item>
+	</plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+		<item quantity="one">%d requires attention.</item>
+		<item quantity="other">%d require attention</item>
+	</plurals>
 </resources>

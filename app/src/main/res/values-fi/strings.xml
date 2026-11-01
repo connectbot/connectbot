@@ -726,4 +726,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">Pikakuvakkeen luominen epäonnistui. Yritä uudelleen.</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">Hyppyhostiketjussa on silmukka. Tarkista hyppyhostin asetukset.</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">Yhteyden vaatima välipalvelinverkko ylittää 32 palvelimen rajan.</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">Paikallinen toisto</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">Valitse, näytetäänkö kirjoitetut merkit paikallisesti. Jos asetus on jatkuvasti päällä, teksti voi toistua, kun palvelin toistaa merkit.</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">Automaattinen</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">Aina päällä</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">Aina pois päältä.</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">Neuvotteluyhteyden aloitus</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">Neuvottele terminaalin ominaisuuksista yhteyden muodostamisen yhteydessä tai odota, että palvelin pyytää niitä.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">Neuvottele yhteyden muodostamisen yhteydessä.</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">Odota palvelinta.</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">Ei-binäärinen data</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">Jos palvelin ei hyväksy binääritilaa, salli vanhojen kahdeksanbittisten merkkien käyttö tai vaadi ASCII-koodausta. Molempien osapuolten on käytettävä samaa koodaustapaa.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">Salli vanhojen järjestelmien käyttämien kahdeksanbittisten merkkien käyttö.</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">Vaaditaan ASCII-merkistö.</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">Liitettyjen rivien loppumerkit</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">Kun käytetään muuta kuin binääritilaa, muunna liitetty rivinvaihto (LF) muotoon CRLF tai säilytä rivinvaihto (LF). Tämä koskee myös automatisoitua tekstiä.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">Muunna rivinvaihtomerkki LF muotoon CRLF.</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">Säilytä rivinvaihtomerkki (LF).</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">Syötettä ei lähetetty. Tämä yhteys edellyttää ASCII-merkistöä, kunnes palvelin ottaa käyttöön binääritilan.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">Syötettä ei voitu lähettää tälle Telnet-palvelimelle.</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">Yhteyden muodostaminen epäonnistui.</string>
+  <string name="terminal_connected" tools:machine_translated="true">Yhteys muodostettu.</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">Todentaminen onnistui.</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">SSH-yhteyttä ei voitu avata.</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">SSH-palvelin hylkäsi terminaalipyyntösi.</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">SSH-palvelin hylkäsi pyynnön käynnistää komentotulkki.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">Yhteystiedot</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">Protokolla</string>
+  <string name="connection_info_host" tools:machine_translated="true">Palvelin</string>
+  <string name="connection_info_port" tools:machine_translated="true">Portti</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">SSH-portti</string>
+  <string name="connection_info_username" tools:machine_translated="true">Käyttäjänimi</string>
+  <string name="connection_info_status" tools:machine_translated="true">Tila</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">Yhdistetään</string>
+  <string name="connection_info_connected" tools:machine_translated="true">Yhdistetty</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">Yhteys katkaistu.</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">Paikallinen osoite</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">Alustavat SSH-yhteystiedot</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">SSH-yhteyden kautta neuvotellut algoritmitiedot</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">SSH-yhteyden neuvottelutiedot eivät ole saatavilla.</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">Avaintenvaihto</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">Palvelimen isäntäavain</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">Salaus: asiakkaan ja palvelimen välinen yhteys</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">Salaus: palvelimesta asiakkaaseen</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">Tietojen eheys: asiakkaan ja palvelimen välinen tiedonsiirto</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">Tietojen eheys: palvelimesta asiakkaaseen</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">Integroitu salaukseen</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">Kvanteettiturvallinen avaintenvaihto</string>
+  <string name="connection_info_yes" tools:machine_translated="true">Kyllä.</string>
+  <string name="connection_info_no" tools:machine_translated="true">Ei</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">Porttien uudelleenohjaukset</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">Määritetty lähde.</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">Määrätty portti</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">Ei ole määritetty kuuntelijaa.</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">Portinohjauksen tila</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">Aktiivinen</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">Ei aktiivinen</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">Kohdeosoite</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">Salauskäytäntö</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">Oletusarvo</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">Tulevaisuus</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">Vanha versio</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">FIPS-algoritmit</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">Mukautettu</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">Suositellut algoritmit ja avainten pituudet</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">Vaadi kvanttivastustuskykyisen salausalgoritmin käyttöä avaintenvaihdossa.</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">Rajoita algoritmeja; ei FIPS-sertifioitu.</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">Salli vanhempien algoritmien käyttö yhteensopivuuden varmistamiseksi.</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">Valitse algoritmit ja pienin avaimen koko.</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">SSH-kirjaston käyttämät nykyaikaiset algoritmit ja avainten vähimmäiskokoa koskevat vaatimukset.</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">Edellyttää kvanttivastustuskykyistä hybridi-avaintenvaihtoa, 256-bittisiä salausavaimia ja vahvempia RSA-avaimia.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">Rajoittaa käytettävissä olevien algoritmien valikoimaa; ei määritä FIPS-validointia.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">Mahdollistaa vanhempien algoritmien ja pienempien RSA- ja DH-avaimien käytön yhteensopivuuden varmistamiseksi. Nykyaikaiset algoritmit ovat edelleen ensisijaisia.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">Mukauta oletusasetuksia. Algoritmien valinta ja avaimen vähimmäiskoko ovat toisistaan riippumattomia.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">RSA-avaimen vähimmäispituus (bitteinä)</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">Minimimäärä DH-bittejä</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">Käytä oletusasetuksia (%1$d bittiä)</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">Jätä tyhjäksi, jos haluat käyttää oletusasetuksia. Tämä koskee myös nimenomaisesti käytössä olevia algoritmeja.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">Syötä vähintään 1024 bittiä. DH-arvon enimmäismäärä on 8192 bittiä.</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">Avaintenvaihtoalgoritmit</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">Salausalgoritmit</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">Viestin aitouden varmistamiseen käytettävät algoritmit</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">Isäntäavaimen algoritmit</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">Julkisen avaimen käyttäviä tunnistusalgoritmeja</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">Valintatila</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">Käytä oletusasetuksia</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">Muokkaa oletusasetuksia</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">Käytä vain näitä.</string>
+  <string name="crypto_apply" tools:machine_translated="true">Ota käyttöön</string>
+  <string name="crypto_expression" tools:machine_translated="true">Algoritmin määrittely</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">Pilkuilla erotetut nimet. Valinnassa Muokkaa oletusarvoja, lisää jokaisen nimen eteen merkki ^ (lisää alkuun), + (lisää loppuun) tai - (poista).</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">Käytä yksilöllisiä SSH-nimiä ja yhtä valintatilaa. Tarkat luettelot eivät saa olla tyhjiä.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">Voimassa oleva prioriteettijärjestys</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">Ei saatavilla tässä laitteessa; säilytetään määrityksissäsi.</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">Poistettu, koska avaimen koko ei täytä vähimmäisvaatimusta.</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">Oletusarvoisesti käytössä.</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">Käytettävissä; ei ole oletusarvoisesti käytössä.</string>
+  <string name="crypto_prepend" tools:machine_translated="true">Ensisijainen</string>
+  <string name="crypto_append" tools:machine_translated="true">Lisää</string>
+  <string name="crypto_exclude" tools:machine_translated="true">Jätä pois</string>
+  <string name="crypto_inherit" tools:machine_translated="true">Käytä oletusasetuksia.</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">tätä ominaisuutta ei ole toteutettu tässä kirjastossa</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">ei ole käytettävissä asennettujen salauspalveluntarjoajien kanssa</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">DH-ryhmän koko on pienempi kuin määritetty vähimmäiskoko.</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">avain tai sertifikaatti ei täytä RSA- tai sertifikaattikäytäntöjen vaatimuksia.</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">Varoitus – %1$s: %2$s: %3$s ohitettiin (%4$s).</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">Salauspolitiikan asetusten mukaan käytettäviä %1$s-algoritmeja ei ole.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">Salauspolitiikan soveltaminen epäonnistui kohteessa %1$s: %2$s</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">Salauspolitiikka – %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">Pienimmät avainten koot</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA: %1$d bittiä; äärellisen kentän DH: %2$d bittiä</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">Näytä käytössä oleva suositusjärjestys.</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">Piilota käytössä olevat suositusasetukset</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">Muuta tilaa kohteelle %1$s</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ Käytä ensisijaista · + Lisää · ✓ Noudata oletusarvoa · − Jätä pois</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">Alt-näppäin</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">Vaihto-näppäin</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">Tab-näppäin</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">Paina Enter</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">Poista-näppäin</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">Poista</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">Lisää</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">Ylös-nuoli</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">↓</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">Aloitus</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">Lopeta</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">Sivu ylös</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">Sivu alas</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">Tekstin syöttö</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">Kirjoita</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">Näppäimistö</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">Päätelaitteen näppäimistö</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">Näppäimistöasettelut</string>
+  <string name="keyboard_macros" tools:machine_translated="true">Jaetut makrot</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">Makro puuttuu.</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">Tätä konfiguraatiota ei tueta.</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">Näppäimistötoiminto epäonnistui.</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">Siirry ylöspäin.</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">Siirry alaspäin.</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">Siirry vasemmalle.</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">Siirry oikealle.</string>
+  <string name="keyboard_off" tools:machine_translated="true">Pois päältä.</string>
+  <string name="keyboard_once" tools:machine_translated="true">Seuraava näppäin</string>
+  <string name="keyboard_locked" tools:machine_translated="true">Lukittu</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">Uusi asettelu</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">Uusi makro</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(kopioi)</string>
+  <string name="keyboard_back" tools:machine_translated="true">Takaisin</string>
+  <string name="keyboard_error" tools:machine_translated="true">Muutosta ei voitu ottaa käyttöön: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">Lisää näkymäasettelu.</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">Lisää makro</string>
+  <string name="keyboard_edit" tools:machine_translated="true">Muokkaa</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">Kaksoiskappale</string>
+  <string name="keyboard_delete" tools:machine_translated="true">Poista</string>
+  <string name="keyboard_default" tools:machine_translated="true">Käytä sovelluksen oletusasetuksena.</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">Käytetään: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">Vahvista</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">Haluatko ottaa tämän peruuttamattoman muutoksen käyttöön? Tallennetut asettelumuutokset saattavat kadota. Jaetut makrot säilytetään, kun asettelu palautetaan oletusarvoihin.</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">Peruuta</string>
+  <string name="keyboard_name" tools:machine_translated="true">Nimi</string>
+  <string name="keyboard_width" tools:machine_translated="true">Painikkeen leveys (dp, kaikki painikkeet)</string>
+  <string name="keyboard_height" tools:machine_translated="true">Painikkeen korkeus (dp, kaikki painikkeet)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">Napauta näppäintä muokataksesi sitä. Kosketa ja pidä painettuna, ja vedä sitten siirtääksesi sitä. Vedä näppäimiä eri osioiden välillä kiinnittääksesi tai poistaaksesi kiinnityksen. Näppäinten koko koskee kaikkia näppäimiä.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">Vedä ja järjestä painike uudelleen</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">Lisää näppäin</string>
+  <string name="keyboard_visible" tools:machine_translated="true">Näkyvissä</string>
+  <string name="keyboard_row" tools:machine_translated="true">Rivi (alkaa numerosta 0)</string>
+  <string name="keyboard_column" tools:machine_translated="true">Sarake (alkaa numerosta 0)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">Rivien määrä</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">Sarakkeen leveys</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">Poista näppäin</string>
+  <string name="keyboard_save" tools:machine_translated="true">Tallenna</string>
+  <string name="keyboard_reset" tools:machine_translated="true">Palauta oletusasetukset.</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">Käytä sovelluksen oletusasetuksia.</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">Visuaalinen editori</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">Tekstieditori</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">Yksi toiminto per rivi: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. Tekstissä käytetään JSON-merkkijonojen erityismerkkien käsittelyä.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">Makrojen vaiheet</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">Lisää tekstiä</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">Lisää näppäin</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">Lisää tavuja.</string>
+  <string name="keyboard_text" tools:machine_translated="true">Lähetettävä teksti</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">Tarkat tavuarvot (heksadesimaalimuodossa)</string>
+  <string name="keyboard_character" tools:machine_translated="true">Merkki</string>
+  <string name="terminal_key_space" tools:machine_translated="true">Välilyönti</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">Näppäimistön %1$s</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">Painikkeen teksti</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">Sitrus</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">Kompaktit ohjauspaneelit</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">Viimeinen pysäkki</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">Tilavat ohjauspaneelit</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">Kynsi</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">Optimoitu Claude Code -ympäristöä varten.</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">Kirjoittaja</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">Optimisoitu Codex-komentorivikäyttöliittymää varten.</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">Valitse näppäimistöasetus.</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">Perinteinen CB</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">Säädä leveys</string>
+  <string name="keyboard_layer" tools:machine_translated="true">Tasokerros %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">Kerros %1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">Kerroksen vaihto</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">Kohdekerros</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">Seuraava täytetty kerros</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">Kohdekerros on tyhjä.</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">Lopeta</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">Historia (lyhennetty)</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">Tila</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">Uusi rivi</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">Loki</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">Muokkaa</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">Kopioi</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">Liitä</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">Keskeytä</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Selainhistoria</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">Vaihda käyttöoikeustilojen välillä</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">Lisää uusi rivi</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">Ota tekstitys käyttöön/pois käytöstä</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">Avaa ulkoinen tekstieditori</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">Kopioi vastaus</string>
+  <string name="macro_assign" tools:machine_translated="true">Määritä makro</string>
+  <string name="macro_import" tools:machine_translated="true">Tuo makro</string>
+  <string name="macro_export" tools:machine_translated="true">Vie makro</string>
+  <string name="macro_none" tools:machine_translated="true">Tallessa ei ole yhtään makroa.</string>
+  <string name="automation_run_macro" tools:machine_translated="true">Suorita makro</string>
+  <string name="macro_choose" tools:machine_translated="true">Valitse makro</string>
+  <string name="macro_manage" tools:machine_translated="true">Hallitse makroja</string>
+  <string name="keyboard_selected" tools:machine_translated="true">Valittu</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">Sovelluksen oletusasetus</string>
+  <string name="keyboard_select" tools:machine_translated="true">Käytä tätä.</string>
+  <string name="keyboard_change" tools:machine_translated="true">Vaihda näkymää</string>
+  <string name="keyboard_customize" tools:machine_translated="true">Mukauta</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">Muokkaa jaettua asettelua</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">Käytä sovelluksen oletusasetuksena.</string>
+  <string name="keyboard_saving" tools:machine_translated="true">Tallennetaan…</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s – %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">Mukautettu</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">Käytä perittyä näppäimistöasetusta.</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s – %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">Profiilista ”%1$s”</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">Edistynyt</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">Näppäimistö: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">Automaattinen toiminto kirjautumisen jälkeen: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">Profiili: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">Isäntä: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">Poistetaanko asettelua \"%1$s\"?</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">Poistetaanko makro nimeltä \"%1$s\"?</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">Tämän asettelun käyttävät isäntäkoneet ja profiilit käyttävät sen sijaan oletusnäppäimistöään. Jos tämä on sovelluksen oletusasetus, toisesta asettelusta tulee uusi oletusasetus.</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">Tämä poistaa makron jaetusta kirjastosta.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">Palautetaanko tämän asettelun alkuperäiset näppäimet ja mitat? Muutokset tulevat voimaan, kun tallennat. Jaetut makrot säilytetään.</string>
+  <string name="macro_shared_title" tools:machine_translated="true">Muokkaa jaettua makroa?</string>
+  <string name="macro_shared_message" tools:machine_translated="true">Tätä makroa käytetään muualla. Luo erillinen kopio tai muokkaa jaettua versiota, jotta kaikki käyttäjät voivat käyttää sitä.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">Luo kopio.</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">Muokkaa jaettua makroa</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">Päivitysten tallentaminen vaikuttaa tähän makroon kaikissa sen käyttökohdissa, vaikka myöhemmin poistaisitkin sen ympärillä olevan editorin.</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">Poista tai määritä nämä käyttötapaukset uudelleen ennen tämän makron poistamista.</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">Tämä istunto</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">Tämä laite on käytössä vain lukutilassa. Sen näppäimistöä ei voi muuttaa.</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">Hallitse näkymiä</string>
+  <string name="keyboard_done" tools:machine_translated="true">Valmis.</string>
+  <string name="automation_draft_host" tools:machine_translated="true">Nämä vaiheet tallennetaan uuden isäntäkoneen yhteyteen.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">Tallenna tämä palvelin ja lisää porttien uudelleenohjaukset ennen kuin käytät uudelleenohjaustoimintoja.</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">Toiminto</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">Näppäin</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">Makro</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">Muokkaaja</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">Sovelluksen toiminto</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">Vaihda kerros</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">Jaettu asettelu: päivitykset tallennetaan, jolloin kaikki käyttäjät hyötyvät niistä.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">Tämä näppäinasettelu ei ole käytettävissä.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">Rivit ja sarakkeet alkavat numerosta 0 kussakin osiossa. Näppäinten korkeus on yksi rivi. Sarakkeen leveys määrittää, kuinka monta solua näppäin kattaa.</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">Ulkoasu</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">Taustaväri</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">Tekstin väri</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">Reunan väri</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">Oletusaihe</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Taustan läpinäkyvyys: %1$d %%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">Reunaviiva on käytössä.</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">Reunan paksuus: %1$.1f dp</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">Palauta oletusulkoasu.</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">Aktiiviset muokkaimet ja tasojen vaihtokytkimet käyttävät teemaväriä korostuksena.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">Toiminta</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">Toista, kunnes vapautetaan</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">Käytä oletusarvoista toistotoimintoa.</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">Sovelluksen asetus</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">Päällä</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">Pois päältä.</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">Kosketuspalautteen asetus: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">Kiinnitetyt näppäimet</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">Siirrettävät näppäimet</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">Vedä näppäimet tänne.</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">Kiinnitä oikeaan reunaan</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">Valitse asettelut, mukauta näppäimiä ja hallinnoi makroja.</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">Muokkaa asettelua</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">Muokkaa näppäimen otsikkoa</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">Asetteluasetukset</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">Selaustila</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">Sovitetaan leveyteen</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">Näppäimistö</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">Napauta muokataksesi · Pidä ja vedä siirtääksesi</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">Kiinnitetyt näppäimet pysyvät näppäimistön lopussa (vasemmalla, jos käyttöliittymän suunta on oikealta vasemmalle).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">Vedä näppäin kohtaan «Kiinnitetyt näppäimet», jotta se pysyy näppäimistön alaosassa. Vedä se takaisin kohtaan «Selaavat näppäimet» poistaaksesi sen kiinnityksen.</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">Laajennettu</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">Kokoontaitettu</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">Muokkaa kopiota</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">Jatka muokkaamista.</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">Luo asettelun %1$s:lle. Muut käyttäjät säilyttävät nykyisen asettelunsa.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">Muutokset tulevat voimaan, kun tallennat tämän laitteen tai profiilin.</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">Tämän näppäimen tallentaminen päivittää asetteluluonnoksen. Tallenna asettelu, jotta muutoksesi säilyvät.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">Sijoittelu</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">Näytä näppäin</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">Kiinnitetty loppuun</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">Vaihda pikanäppäintä.</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">Valitse, mitä tämä näppäin tekee, kun sitä painetaan.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">Tausta, teksti ja ääriviivat</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · Kosketuspalautteen asetukset: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">Paina kerran.</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">Toistetaan, kun painiketta pidetään pohjassa.</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">Rivin, sarakkeen ja näppäimen leveys</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">Käyttäjiä: %1$d</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">Poistetaanko tämä näppäin asetteluluonnoksesta?</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">Haluatko ottaa käyttöön näppäinmuutokset?</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">Ota nämä muutokset käyttöön asettelussa tai peruuta ne.</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">Ota muutokset käyttöön.</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">Muokkaa asettelua</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">Näppäin tai pikakuvake</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">Esikatselu</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">Mukautettu valinta</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">Käytä perittyä asettelua.</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">Asettelutoiminnot</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">Värinäyte</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">Lisää näppäin, jolla tämä kerros aktivoidaan.</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">Muutokset tulevat voimaan tässä terminaali-ikkunassa, kun tallennat asettelun.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">Tämän asettelun tallentaminen päivittää sen kaikki käyttäjät. Voit sen sijaan muokata kopion.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">Muokkaa jaettua näppäinasettelua?</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">tämä määritys</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">Valmiit oletusasetukset</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Valmiit oletusasetukset pysyvät ennallaan. Muokkaaminen luo oman kopiosi.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">Valmiiksi määritetty asetus</string>
 </resources>

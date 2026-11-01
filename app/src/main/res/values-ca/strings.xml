@@ -730,4 +730,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">No s’ha pogut crear l’enllaç ràpid. Si us plau, torneu-ho a provar.</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">La cadena d’hosts intermedis conté un cicle. Reviseu la configuració dels hosts intermedis.</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">La cadena d’amfitrions intermedis supera el límit de 32 amfitrions.</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">Visualització local de la entrada.</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">Trieu si voleu que el text que introduïu es mostri localment. Si l’opció està sempre activada, pot ser que el text es dupliqui quan el servidor el repeteix.</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">Automàtic</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">Sempre activat.</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">Sempre desactivat.</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">Inici de la negociació.</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">Negocia les capacitats del terminal en establir la connexió o espera que el servidor les sol·liciti.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">Negocia en establir la connexió.</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">Espera el servidor.</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">Dades no binàries</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">Si el servidor rebutja el mode binari, permeteu l’ús de bytes de vuit bits o exigeix l’ús de codi ASCII. Ambdues parts han d’utilitzar la mateixa codificació.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">Permetre els bytes de vuit bits antics.</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">Cal ASCII.</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">Finals de línia copiades</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">Fora del mode binari, convertiu els salts de línia (LF) copiats a CRLF o conserveu-los com a LF. Això també s’aplica al text d’automatització.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">Converteix LF a CRLF.</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">Conserva LF.</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">No s\'ha enviat la informació. Aquesta connexió requereix el format ASCII fins que el servidor habiliti el mode binari.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">No s’ha pogut enviar la informació a aquest servidor Telnet.</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">La connexió ha fallat.</string>
+  <string name="terminal_connected" tools:machine_translated="true">Connexió establerta.</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">L’autenticació ha tingut èxit.</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">No s’ha pogut obrir una sessió SSH.</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">El servidor SSH ha rebutjat la sol·licitud de terminal.</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">El servidor SSH ha rebutjat la sol·licitud d’obertura de l’intèrpret d’ordres.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">Informació de la connexió</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">Protocol</string>
+  <string name="connection_info_host" tools:machine_translated="true">Servidor</string>
+  <string name="connection_info_port" tools:machine_translated="true">Port</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">Port SSH</string>
+  <string name="connection_info_username" tools:machine_translated="true">Nom d’usuari</string>
+  <string name="connection_info_status" tools:machine_translated="true">Estat</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">S\'establint la connexió.</string>
+  <string name="connection_info_connected" tools:machine_translated="true">Connectat</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">Desconnectat</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">Adreça local</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">Detalls de la inicialització SSH</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">Detalls de la negociació SSH.</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">No hi ha informació disponible sobre la negociació SSH.</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">Intercanvi de claus</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">Clau de l\'amfitrió del servidor</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">Xifrat: del client al servidor.</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">Xifrat: del servidor al client.</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">Integritat: del client al servidor.</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">Integritat: del servidor al client.</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">Integrat amb el xifratge.</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">Intercanvi de claus postquàntic</string>
+  <string name="connection_info_yes" tools:machine_translated="true">Sí.</string>
+  <string name="connection_info_no" tools:machine_translated="true">No.</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">Reenviaments de ports</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">S\'ha configurat l\'origen.</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">Port assignat</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">No està enllaçat.</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">Estat del reenviaments</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">Actiu</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">Inactiu</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">Destí</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">Política criptogràfica</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">Per defecte</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">Futur</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">Herència</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">Algorismes FIPS</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">Personalitzat</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">Algoritmes i mides de clau recomanades.</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">Exigeix l’ús d’un intercanvi de claus postquàntic.</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">Restringir els algoritmes; no validats per FIPS.</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">Permet l’ús d’algoritmes més antics per garantir la compatibilitat.</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">Trieu els algoritmes i les mides mínimes de les claus.</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">Algoritmes moderns i requisits de mida de clau que manté la biblioteca SSH.</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">Requereix un intercanvi de claus híbrid postquàntic, claus de xifrat de 256 bits i claus RSA més robustes.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">Limita les opcions d’algorismes; no estableix la validació FIPS.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">Permet l’ús d’algorismes més antics i de claus RSA i DH més petites per garantir la compatibilitat. Els algorismes moderns continuen sent els preferits.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">Personalitza els valors per defecte. Les seleccions d’algoritmes i els valors mínims de la mida de la clau són independents.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">Nombre mínim de bits RSA.</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">Nombre mínim de bits DH.</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">Hereta els valors per defecte (%1$d bits)</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">Deixeu-ho en blanc per utilitzar la configuració per defecte. S’aplica fins i tot als algoritmes que s’han habilitat explícitament.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">Introduïu com a mínim 1024 bits. DH no pot superar els 8192 bits.</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">Algoritmes d’intercanvi de claus</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">Algorismes de xifratge</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">Algoritmes d’autenticació de missatges</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">Algoritmes de clau d’amfitrió</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">Algoritmes d’autenticació de clau pública</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">Mode de selecció</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">Hereta la configuració per defecte.</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">Modifica el valor per defecte.</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">Feu servir només aquests.</string>
+  <string name="crypto_apply" tools:machine_translated="true">Aplica</string>
+  <string name="crypto_expression" tools:machine_translated="true">Expressió de l’algoritme</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">Noms separats per comes. A «Modifica els valors per defecte», afegeix el prefix ^ (al principi), + (al final) o - (exclou) a cada nom.</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">Feu servir noms SSH únics i un sol mode de selecció. Les llistes exactes no poden estar buides.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">Ordre de preferències efectiu.</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">No disponible en aquest dispositiu; s’ha conservat a la vostra configuració.</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">Exclòs per la mida mínima de la clau.</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">Activat per defecte.</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">Disponible; no està habilitat per defecte.</string>
+  <string name="crypto_prepend" tools:machine_translated="true">Prioritza el primer.</string>
+  <string name="crypto_append" tools:machine_translated="true">Afegeix</string>
+  <string name="crypto_exclude" tools:machine_translated="true">Exclou</string>
+  <string name="crypto_inherit" tools:machine_translated="true">Segueix la configuració per defecte.</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">no implementat per aquesta biblioteca.</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">no disponible amb els proveïdors de xifrat instal·lats.</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">El grup DH és més petit que el mínim configurat.</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">la clau o el certificat no compleixen els requisits de la política RSA o de certificats.</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">Avís: %1$s: %2$s: %3$s s’ha ometut (%4$s).</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">La política criptogràfica no deixa cap %1$s que es pugui utilitzar.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">La política de xifratge ha fallat per a %1$s: %2$s</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">Política de xifrat — %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">Mides mínimes de les claus.</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA: %1$d bits; DH de camp finit: %2$d bits</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">Mostra l’ordre de preferències efectiu.</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">Oculta l’ordre de preferències que ha donat bons resultats.</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">Canvia l’estat de %1$s.</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ Prioritzar el primer · + Afegir · ✓ Seguir la configuració per defecte · − Excloure</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">Majúscules</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">Tabulador</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">Introdueix</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">Tecla de retrocessió.</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">Suprimeix</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">Insereix</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">↑</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">↓</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">Inici</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">Final</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">Pàg. Sup.</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">Pàg. Av.</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">Introducció de text</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">Activa/desactiva la tecla de composició.</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">Teclat</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">Teclat del terminal</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">Distribució del teclat</string>
+  <string name="keyboard_macros" tools:machine_translated="true">Macros compartides</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">Macro absent.</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">Configuració no admesa.</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">L’acció del teclat ha fallat.</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">Mou-se cap amunt.</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">Desplaça\'t cap avall.</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">Mou-te cap a l’esquerra.</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">Mou-se cap a la dreta.</string>
+  <string name="keyboard_off" tools:machine_translated="true">Desactivat</string>
+  <string name="keyboard_once" tools:machine_translated="true">Tecla següent</string>
+  <string name="keyboard_locked" tools:machine_translated="true">Bloquejat</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">Nou esquema</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">Nova macro.</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(copia)</string>
+  <string name="keyboard_back" tools:machine_translated="true">Enrere</string>
+  <string name="keyboard_error" tools:machine_translated="true">No s’ha pogut aplicar el canvi: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">Afegeix el disseny.</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">Afegeix una macro.</string>
+  <string name="keyboard_edit" tools:machine_translated="true">Edita</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">Duplicat</string>
+  <string name="keyboard_delete" tools:machine_translated="true">Suprimeix</string>
+  <string name="keyboard_default" tools:machine_translated="true">Utilitza-ho com a configuració per defecte de l’aplicació.</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">S’utilitza a: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">Confirmeu.</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">Aplicar aquest canvi destructiu? Les modificacions guardades del disseny es poden perdre. Les macros compartides es conserven quan es restableix un disseny.</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">Cancel·lar</string>
+  <string name="keyboard_name" tools:machine_translated="true">Nom</string>
+  <string name="keyboard_width" tools:machine_translated="true">Amplada del botó (dp, per a tots els botons)</string>
+  <string name="keyboard_height" tools:machine_translated="true">Alçada del botó (dp, per a tots els botons)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">Toqueu una tecla per editar-la. Manteniu premuda i arrossegueu per moure-la. Arrossegueu entre les seccions per fixar-la o desfixar-la. La mida del botó s’aplica a totes les tecles.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">Arrossegueu per reordenar el botó.</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">Afegeix la tecla</string>
+  <string name="keyboard_visible" tools:machine_translated="true">Visible</string>
+  <string name="keyboard_row" tools:machine_translated="true">Fila (començant per 0)</string>
+  <string name="keyboard_column" tools:machine_translated="true">Columna (comença al 0)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">Ample de fila</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">Ample de columna</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">Elimina la tecla</string>
+  <string name="keyboard_save" tools:machine_translated="true">Desa</string>
+  <string name="keyboard_reset" tools:machine_translated="true">Restaura la configuració per defecte.</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">Utilitza la configuració per defecte de l’aplicació.</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">Editor visual</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">Editor de text</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">Una acció per línia: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. El text utilitza l’escapament de cadenes JSON.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">Passos de la macro.</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">Afegeix text</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">Afegeix la tecla</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">Afegeix bytes.</string>
+  <string name="keyboard_text" tools:machine_translated="true">Text a enviar.</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">Bytes exactes (en format hexadecimal)</string>
+  <string name="keyboard_character" tools:machine_translated="true">Caràcter</string>
+  <string name="terminal_key_space" tools:machine_translated="true">Espai</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">Tecla del teclat numèric %1$s</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">Etiqueta del botó</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">Cítrics</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">Controls compactes per a la terminal</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">Última parada.</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">Controls de terminal amb espai ampli.</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">Unga</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">Optimitzat per a Claude Code.</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">Scribe</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">Optimitzat per a la interfície de línia de comandaments (CLI) de Codex.</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">Trieu una configuració predefinida del teclat.</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">CB clàssic</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">Ajusta a l’amplada.</string>
+  <string name="keyboard_layer" tools:machine_translated="true">Capa %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">Capa %1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">Canvi de capa</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">Destinació de la capa</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">Següent capa no buida.</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">La capa de destinació està buida.</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">Atura</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">Historial (abreujat)</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">Mode</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">Salt de línia</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">Registre</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">Edita</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">Copia</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">Enganxar</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">Atura</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Historial de cerca</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">Canvia els modes de permís.</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">Insereix un salt de línia.</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">Activa/desactiva la transcripció.</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">Obre l’editor extern.</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">Copia la resposta</string>
+  <string name="macro_assign" tools:machine_translated="true">Assigna la macro.</string>
+  <string name="macro_import" tools:machine_translated="true">Importa la macro</string>
+  <string name="macro_export" tools:machine_translated="true">Exporta la macro.</string>
+  <string name="macro_none" tools:machine_translated="true">No hi ha macros desades.</string>
+  <string name="automation_run_macro" tools:machine_translated="true">Executa la macro.</string>
+  <string name="macro_choose" tools:machine_translated="true">Seleccioneu una macro.</string>
+  <string name="macro_manage" tools:machine_translated="true">Gestiona les macros.</string>
+  <string name="keyboard_selected" tools:machine_translated="true">Seleccionat</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">Configuració per defecte de l’aplicació</string>
+  <string name="keyboard_select" tools:machine_translated="true">Feu servir això.</string>
+  <string name="keyboard_change" tools:machine_translated="true">Canvia la distribució.</string>
+  <string name="keyboard_customize" tools:machine_translated="true">Personalitza</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">Edita el disseny compartit.</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">Utilitza-ho com a configuració per defecte de l’aplicació.</string>
+  <string name="keyboard_saving" tools:machine_translated="true">S’està desant...</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">Personalitzat</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">Utilitza el teclat heretat.</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">Des del perfil «%1$s»</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">Avançat</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">Teclat: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">Automatització després de l’inici de sessió: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">Perfil: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">Amfitrió: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">Eliminar el disseny «%1$s»?</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">Voleu eliminar la macro «%1$s»?</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">Els host i els perfils que utilitzen aquest disseny faran servir el teclat predeterminat. Si aquest és el disseny predeterminat de l’aplicació, un altre disseny passarà a ser el predeterminat.</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">Això elimina la macro de la biblioteca compartida.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">Restaurar les tecles i les dimensions originals d’aquest esquema? Els canvis s’aplicaran quan deseu. Les macros compartides es conservaran.</string>
+  <string name="macro_shared_title" tools:machine_translated="true">Voleu editar una macro compartida?</string>
+  <string name="macro_shared_message" tools:machine_translated="true">Aquesta macro ja s’utilitza en altres llocs. Feu-ne una còpia separada o editeu la versió compartida perquè la puguin fer servir tots els usuaris.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">Fes una còpia.</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">Edita la macro compartida.</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">En desar les actualitzacions, aquesta macro es guardarà a tot arreu on s’utilitzi, fins i tot si posteriorment descarta l’editor que l’envolta.</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">Elimineu o reassigneu aquests usos abans d’esborrar aquesta macro.</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">Aquesta sessió</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">Aquest servidor és de només lectura. No es pot canviar el seu teclat.</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">Gestiona els dissenys.</string>
+  <string name="keyboard_done" tools:machine_translated="true">Fet.</string>
+  <string name="automation_draft_host" tools:machine_translated="true">Aquests passos es guardaran amb el nou servidor.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">Guarda aquest host i afegeix les redireccions de port abans d’utilitzar les accions de reenviament.</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">Acció</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">Tecla</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">Macro</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">Modificador</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">Acció de l’aplicació</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">Canvia de capa.</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">Distribució compartida: guardar les actualitzacions per a tots els usuaris.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">Aquest esquema de teclat no està disponible.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">Les files i les columnes comencen al 0 dins de cada secció. Les tecles tenen una sola fila d’alçada. L’amplitud de la columna determina quantes cel·les ocupa una tecla.</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">Aspecte</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">Color de fons</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">Color del text</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">Color del contorn</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">Tema per defecte</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Opacitat del fons: %1$d%%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">Amb contorn</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">Gruix del contorn: %1$.1f dp</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">Restaura l’aparença.</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">Els modificadors actius i els canvis de capa utilitzen el color de ressaltat del tema.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">Comportament</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">Repeteix mentre es manté premut.</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">Utilitza el comportament de repetició predeterminat.</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">Configuració de l’aplicació</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">Activat</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">Desactivat</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">Resposta tàctil: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">Tecles fixades</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">Tecles que es poden desplaçar.</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">Arrossegueu les tecles aquí.</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">Fixa a la dreta</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">Trieu les distribucions, personalitzeu les tecles i gestioneu les macros.</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">Edita el disseny</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">Edita el títol de la tecla.</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">Configuració del disseny</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">Desplaçable</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">Ajusta a l’amplada.</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">Teclat</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">Toqueu per editar · Manteniu premut i arrossegueu per moure.</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">Les tecles fixades es mantenen a la part final del teclat (a l’esquerra en les interfícies d’esquerra a dreta).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">Arrossegueu una tecla a la secció «Tecles fixades» per mantenir-la al final del teclat. Arrossegueu-la de nou a la secció «Tecles desplaçables» per deixar de fixar-la.</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">Ampliat</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">Col·lapsat</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">Edita una còpia.</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">Continueu editant.</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">Crea una distribució per a %1$s. La resta d’usuaris conserven la distribució actual.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">Els canvis s’aplicaran quan guardeu aquest host o perfil.</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">Desar en aquesta tecla actualitza l’esborrany de la configuració. Desa la configuració per conservar els canvis.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">Ubicació.</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">Mostra la tecla.</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">Fixat al final</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">Canvia la combinació de tecles.</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">Seleccioneu quina acció ha de realitzar aquesta tecla quan es prem.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">Fons, text i contorn.</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · Retroalimentació tàctil: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">Premeu una vegada.</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">Es repeteix mentre es manté premut.</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">Fila, columna i amplada de la tecla.</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">Utilitzat per %1$d</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">Eliminar aquesta tecla de l’esquema provisional?</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">Aplicar els canvis a les tecles?</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">Aplica aquests canvis a la disposició o descarta’ls.</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">Aplica els canvis.</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">Edita el disseny.</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">Tecla o combinació de tecles</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">Previsualització</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">Selecció personalitzada</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">Utilitza el disseny per defecte.</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">Accions de disseny</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">Previsualització del color</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">Afegeix una tecla per iniciar aquesta capa.</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">Els canvis s’aplicaran a aquest terminal quan deseu la configuració.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">En desar aquest disseny, s’actualitza per a tots els usuaris. Podeu editar una còpia en lloc d’això.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">Voleu editar la configuració compartida?</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">aquesta configuració</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">Plantilles predefinides.</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Els paràmetres predefinits integrats no es modifiquen. Editar-los crea una còpia personal.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">Configuració predeterminada integrada</string>
 </resources>

@@ -726,4 +726,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">Ezin izan da lasterbidea sortu. Saiatu berriro.</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">Jump host katean zikloa dago. Egiaztatu jump hostaren konfigurazioa.</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">Konexioak 32 ost baino gehiago dituen salto-osteen kateak muga gainditzen du.</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">Sarrerako testua bertako pantailan erakutsi.</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">Aukeratu, idatzitako testua tokian bertan erakutzi nahi duzun ala ez. Beti aktibatuta badago, testua bikoiztu egin daiteke zerbitzariak erantzun egiten duenean.</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">Automatikoa</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">Betidan gaituta</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">Beti itzalita.</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">Elkarrizketaren hasiera.</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">Eman konektatzean terminalaren gaitasunak, edo itxaron zerbitzariak eskatzen dituen arte.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">Konexioan zehar negoziatu.</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">Itxaron zerbitzariaren erantzunaren zain.</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">Ez-binarioa den datua</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">Zerbitzariak modu bitarra onartatzen ez badu, baimendu zortzi biteko byte zaharrak edo eskatatu ASCII. Bi muturrek enkoderazio bera erabili behar dute.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">Baimendu zortzi biteko byte zaharrak.</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">ASCII formatua eskatzen da.</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">Itsatsitako lerroen amaierak</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">Bit-arteko modutik kanpo, itsatsitako LF CRLF bihurtu edo LF mantendu. Automatizazio-testuetara ere aplikatzen da.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">LF CRLF bihurtu.</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">LF mantendu.</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">Sarrerako datuak ez dira bidali. Konexio honek ASCII formatua eskatzen du zerbitzariak bitarteko modua gaitzen duen arte.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">Ezin izan da sarrera hau Telnet zerbitzari honi bidali.</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">Konexioa ezinezkoa izan da.</string>
+  <string name="terminal_connected" tools:machine_translated="true">Konektatuta.</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">Autentifikazioa arrakastaz egin da.</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">Ezin da SSH saio bat ireki.</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">SSH zerbitzariak terminal-eskaera baztertu zuen.</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">SSH zerbitzariak ezezkoa eman dio shell eskaerari.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">Konexio-informazioa</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">Protokoloa</string>
+  <string name="connection_info_host" tools:machine_translated="true">Zerbitzaria</string>
+  <string name="connection_info_port" tools:machine_translated="true">Portua</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">SSH ataka</string>
+  <string name="connection_info_username" tools:machine_translated="true">Erabiltzaile-izena</string>
+  <string name="connection_info_status" tools:machine_translated="true">Egoera</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">Konexioa egiten</string>
+  <string name="connection_info_connected" tools:machine_translated="true">Konektatuta</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">Konexioa eten da.</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">Tokiko helbidea</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">Mosh abiarazteko erabiltzen den hasierako SSH negoziaketaren xehetasunak.</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">SSH konexioaren bidez negoziatutako algoritmoei buruzko xehetasunak.</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">SSH konexioaren xehetasunak ez daude eskuragarri.</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">Gako-trukea</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">Zerbitzariaren ostalaren gakoa</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">Enkriptazioa: bezeroetik zerbitzaria</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">Enkriptazioa: zerbitzarietik bezeroari.</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">Osotasuna: bezeroetik zerbitzaria</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">Osotasuna: zerbitzarietik bezeroari.</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">Enkriptazioarekin integratuta.</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">Post-kuantiko gako-trukea</string>
+  <string name="connection_info_yes" tools:machine_translated="true">Bai</string>
+  <string name="connection_info_no" tools:machine_translated="true">Ez</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">Portuen birzuzenketa</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">Konfiguratutako iturburu.</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">Esleitutako portua</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">Ez dago lotuta.</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">Aurreratze-egoera</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">Aktibo</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">Inaktibo</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">Helburuko helbidea</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">Politika kriptografikoa</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">Lehenetsia</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">Etorkizuna</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">Aurreko bertsioa.</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">FIPS algoritmoak</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">Pertsonalizatua</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">Gomendatutako algoritmoak eta gako-tamainak.</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">Post-kuantiko gako-trukea derrigorrezkoa izan behar da.</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">Algoritmoak murriztu; FIPS ziurtagiria ez du.</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">Baimendu algoritmo zaharrak, bateragarritasuna ahalbidetzeko.</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">Hautatu algoritmoak eta gutxieneko gako-tamainak.</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">SSH liburutegiak mantentzen dituen algoritmo modernoak eta gako-tamainuen baldintzak.</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">Post-kuantiko hibridoaren gako-trukea, 256 biteko enkriptazio-gakoak eta RSA gako indartuagoak behar dira.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">Algoritmo-hautaketak mugatzen ditu; ez du FIPS balidazioa ezartzen.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">Algoritmo zaharrak eta RSA eta DH gako txikiagoak onartzen ditu, bateragarritasunerako. Algoritmo modernoak hobetsiak dira oraindik.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">Lehenespenezko aukerak pertsonalizatu. Hautatutako algoritmoak eta gutxieneko gako-tamaina independenteak dira.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">RSAren gutxieneko bitek</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">Gutxienezko DH bitek</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">Lehenetsitako balioa (%1$d bit)</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">Hutsa utzi, baldin eta lehenetsitako balioa erabili nahi baduzu. Balio hau algoritmo guztiei aplikatzen zaie, beren konfigurazioa edozein dela ere.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">Sartu gutxienez 1024 bit. DH-k 8192 bit baino gehiago izan ezin du.</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">Gako-truke algoritmok</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">Zifratze-algoritmoak</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">Mezu-autentifikazio algoritmoak</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">Ostalariko gako-algoritmoak</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">Gako publikoaren autentifikazio-algoritmoak</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">Hautatzeko modua</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">Lehenetsitako balioak hartu</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">Lehenetsitako balioa aldatu</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">Erabili hauek bakarrik.</string>
+  <string name="crypto_apply" tools:machine_translated="true">Aplikatu</string>
+  <string name="crypto_expression" tools:machine_translated="true">Algoritmoaren adierazpena</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">Komaz bereizitutako izenak. Lehenetsitako aukerak aldatzean, gehitu ^ (lehengoa), + (gehitu) edo - (baztertu) aurrizkia izen bakoitzari.</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">Erabili SSH izen bereziak eta aukera-modu bakarra. Zerrenda zehatzak ezinezkoak izan behar dira.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">Lehentasun-ordena eraginkorra</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">Gailu honetan ez dago eskuragarri; zure konfigurazioan gorde da.</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">Gakoaren gutxieneko luzerak baztertu du.</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">Lehenetsitakoan gaituta</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">Eskura dago; ez dago aktibatuta Lehenetsitako konfigurazioan.</string>
+  <string name="crypto_prepend" tools:machine_translated="true">Lehenago erabili.</string>
+  <string name="crypto_append" tools:machine_translated="true">Gehitu</string>
+  <string name="crypto_exclude" tools:machine_translated="true">Baztertu</string>
+  <string name="crypto_inherit" tools:machine_translated="true">Lehenetsitako aukera jarraitu</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">liburutegi honek ez du ezarpen hori onartzen.</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">instalaturiko kriptografia-hornitzaileekin erabilgarri ez dago.</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">DH taldea konfiguratu den gutxieneko balioa baino txikiagoa da.</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">gakoak edo ziurtagiria ez dute RSA edo ziurtagiri-politika betetzen.</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">Abisua — %1$s: %2$s: %3$s saltatu egin da (%4$s).</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">Kriptografia-politika ez du %1$s erabilgarririk uzten.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">%1$s-rako kriptografia-politika ez da ondo abiatu: %2$s</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">Kriptografia-politika — %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">Gutxieneko gako-tamainak</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA: %1$d bit; eremu finituko DH: %2$d bit</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">Eraginkor den lehentasun-ordena erakutsi</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">Erakutsi/ezkutatu lehentasun-ordena eraginkorra</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">Aldatu %1$s-en egoera.</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ Lehenengoa aukeratu · + Gehitu · ✓ Lehenetsia jarraitu · − Baztertu</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">Aldatu</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">Ihes</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">Sartu</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">Atzera botoia</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">Ezabatu</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">Txertatu</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">↑</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">↓</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">Hasiera</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">Amaiera</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">Orrialde aurrera</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">Orrialde beherantz</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">Testua sartu</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">Konposatu</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">Teklatua</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">Terminaleko teklatua</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">Teklatuaren konfigurazioak</string>
+  <string name="keyboard_macros" tools:machine_translated="true">Partekatutako makroak</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">Makroa falta da.</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">Ez dago onartutako konfiguraziorik.</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">Teklatuaren ekintzak huts egin du.</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">Gora mugitu</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">Beherantz mugitu</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">Mugitu ezkerretara</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">Mugitu eskuinera</string>
+  <string name="keyboard_off" tools:machine_translated="true">Itzalita</string>
+  <string name="keyboard_once" tools:machine_translated="true">Hurrengo tekla</string>
+  <string name="keyboard_locked" tools:machine_translated="true">Blokeatuta</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">Diseinu berria</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">Makro berria</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(kopiatu)</string>
+  <string name="keyboard_back" tools:machine_translated="true">Atzera</string>
+  <string name="keyboard_error" tools:machine_translated="true">Ezin izan da aldaketa aplikatu: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">Gehitu diseinua</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">Gehitu makroa</string>
+  <string name="keyboard_edit" tools:machine_translated="true">Editatu</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">Bikoiztu</string>
+  <string name="keyboard_delete" tools:machine_translated="true">Ezabatu</string>
+  <string name="keyboard_default" tools:machine_translated="true">Erabili aplikazioaren lehenespen gisa</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">Erabiltzen: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">Baieztatu</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">Aldaketa hau aplikatu al dezakegu? Aurreko konfigurazio-aldaketak galdu daitezke. Konfigurazio bat berrezarritzean, partekatutako makroak gorde egiten dira.</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">Utzi egin</string>
+  <string name="keyboard_name" tools:machine_translated="true">Izena</string>
+  <string name="keyboard_width" tools:machine_translated="true">Botoien zabalera (dp, botoi guztietan)</string>
+  <string name="keyboard_height" tools:machine_translated="true">Botoien altuera (dp, botoi guztietan)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">Tekla bat ukituta, editatu dezakezu. Ukitu eta eutsita, arrastatu dezakezu mugitzeko. Atalen artean arrastatu, finkatzeko edo desfinkatzeko. Botoi-tamaina guztietako teklei aplikatzen zaie.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">Arrastatu botoiaren ordena aldatzeko.</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">Gehitu tekla</string>
+  <string name="keyboard_visible" tools:machine_translated="true">Ikusgai.</string>
+  <string name="keyboard_row" tools:machine_translated="true">Lerroa (0tik hasita)</string>
+  <string name="keyboard_column" tools:machine_translated="true">Zutabea (0tik hasita)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">Lerro-zabala</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">Zutabearen zabalera</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">Kendu botoia</string>
+  <string name="keyboard_save" tools:machine_translated="true">Gorde</string>
+  <string name="keyboard_reset" tools:machine_translated="true">Leheneratutako ezarpenak berreskuratu</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">Erabili aplikazioaren ezarpen lehenetsia.</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">Editore bisuala</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">Testu-editorea</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">Ekintza bat lerro bakoitzeko: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. Testuak JSON katearen ihes-mekanismoa erabiltzen du.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">Makroko pausoak</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">Gehitu testua</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">Gehitu tekla</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">Gehitu byteak</string>
+  <string name="keyboard_text" tools:machine_translated="true">Bidali beharreko testua</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">Byte zehatzak (hamaseitarrean)</string>
+  <string name="keyboard_character" tools:machine_translated="true">Karaktere</string>
+  <string name="terminal_key_space" tools:machine_translated="true">Espazioa</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">Teclako %1$s</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">Botoiaren etiketa</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">Zitriko</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">Terminalaren kontrol txikiak</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">Azken geltokia</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">Terminaleko kontrol atseginak</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">Arrasto</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">Claude Code-rako optimizatua.</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">Scribe</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">Codex CLIrako optimizatua.</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">Aukeratu teklatu-aurrekonfigurazio bat.</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">CB klasikoa</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">Pantailan egokitu</string>
+  <string name="keyboard_layer" tools:machine_translated="true">Geruza %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">L%1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">Geruza aldatu</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">Geruzaren helmuga</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">Hurrengo hutsik ez dagoen geruza</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">Helburuko geruza hutsik dago.</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">Gelditu</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">Hist.</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">Modua</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">Lerro berri</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">Erregistroa</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">Editatu</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">Kopiatu</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">Itsatsi</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">Eten</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Bilaketa-historia</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">Baimen-moduak aldatu</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">Lerro-jauzi berria sartu</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">Azpitituluen bistaratzea aktibatu/desaktibatu</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">Kanpoko editorea ireki</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">Erantzun kopiatu</string>
+  <string name="macro_assign" tools:machine_translated="true">Makroa esleitu</string>
+  <string name="macro_import" tools:machine_translated="true">Makroa inportatu</string>
+  <string name="macro_export" tools:machine_translated="true">Makroa esportatu</string>
+  <string name="macro_none" tools:machine_translated="true">Makro bat ere ez dago gorde.</string>
+  <string name="automation_run_macro" tools:machine_translated="true">Makroa exekutatu</string>
+  <string name="macro_choose" tools:machine_translated="true">Hautatu makroa</string>
+  <string name="macro_manage" tools:machine_translated="true">Makroak kudeatu</string>
+  <string name="keyboard_selected" tools:machine_translated="true">Hautatua</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">Aplikazioaren ezarpen lehenetsia</string>
+  <string name="keyboard_select" tools:machine_translated="true">Erabili hau.</string>
+  <string name="keyboard_change" tools:machine_translated="true">Diseinua aldatu</string>
+  <string name="keyboard_customize" tools:machine_translated="true">Pertsonalizatu</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">Editatu diseinu partekatua.</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">Erabili aplikazioaren lehenespen gisa</string>
+  <string name="keyboard_saving" tools:machine_translated="true">Gorde egiten…</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">Pertsonalizatua</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">Erabili oinarrizko teklatua.</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">«%1$s» profilaren arabera.</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">Aurreratua</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">Teklatua: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">Saioa hasi ondoren automatizazioa: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">Profila: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">Ostalaritza: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">Ezabatu diseinua \"%1$s\"?</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">Ezabatu makro hau: «%1$s»?</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">Diseinu hau erabiltzen duten hostak eta profilak beren teklatu lehenetsia erabiliko dute. Hau aplikazioaren diseinu lehenetsia bada, beste diseinu bat bihurtuko da lehenetsia.</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">Honek makroa partekatutako liburutegitik kentzen du.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">Berreskuratu diseinu honen jatorrizko teklak eta neurriak? Aldaketak gordetzen dituzunean aplikatuko dira. Makro partekatuak gordeko dira.</string>
+  <string name="macro_shared_title" tools:machine_translated="true">Makro partekatua aldatu?</string>
+  <string name="macro_shared_message" tools:machine_translated="true">Makro hau beste leku batzuetan ere erabiltzen da. Kopia bereizi bat egin, edo editatu partekatutako bertsioa, erabiltzaile guztientzat.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">Kopia egin</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">Makro partekatua editatu</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">Makro honen eguneraketak gordetzen ari da, eta gordeko da makroa erabiltzen den leku guztietan, nahiz eta geroago inguruko editorea baztertu.</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">Kendu edo esleitu berri batzu erabilera hauei, makro hau ezabatu aurretik.</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">Saio hau</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">Host hau irakurtzeko soilik dago. Ezin da bere teklatua aldatu.</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">Diseinuak kudeatu</string>
+  <string name="keyboard_done" tools:machine_translated="true">Egina.</string>
+  <string name="automation_draft_host" tools:machine_translated="true">Urrats hauek host berriarekin gordeko dira.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">Gorde host hau eta gehitu portuen birbidualketak aurrerapen-ekintzak erabili aurretik.</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">Ekintza</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">Tekla</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">Makro</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">Aldatzailea</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">Aplikazioaren ekintza</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">Geruza aldatu</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">Layout partekatua: eguneratzeak gordetzen dira, eta horiek erabiltzen dituzten guztiek eskuratu ahal izango dituzte.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">Teclatu-diseinu hau ez dago eskuragarri.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">Lerroak eta zutabeak 0tik hasten dira, bakoitzaren atalean. Teklak lerro bakarrekoak dira. Zutabearen zabalera zehazten du tekla batek zenbat zela hartzen duen.</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">Itxura</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">Atzeko planoaren kolorea</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">Testuaren kolorea</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">Marrazkiaren kolorea</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">Lehenetsitako gaiak</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Atzeko planoaren gardentasuna: %1$d%%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">Marraztuta</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">Marrazkiaren lodiera: %1$.1f dp</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">Itxura berrezarri</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">Aktibo dauden aldaketak eta geruza-aldaketak gai-nabarmendua erabiltzen dute.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">Jokabidea</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">Sakaturik dagoen bitartean errepikatu</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">Lehenetsitako errepikapen-jokabidea erabili</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">Aplikazioaren ezarpenak</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">Aktibatuta</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">Desaktibatuta</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">Ukimen-feedbacka: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">Finkatutako teklak</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">Mugitu daitezkeen teklak</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">Arrastatu teklak hona.</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">Eskuinean finkatu.</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">Hautatu diseinuak, pertsonalizatu teklak eta kudeatu makroak.</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">Diseinua editatu</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">Editatu botoia</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">Diseinu-ezarpenak</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">Arrastatzeko aukera duen</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">Zabalera egokitu</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">Teklatua</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">Ukitu editatzeko · Sakatu eta arrastatu mugitzeko</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">Finkatutako teklak teklatuaren amaieran mantentzen dira (eskuinetik ezkerrerako interfazeetan, ezkerrean).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">Arrastatu teklako botoi bat «Finkatutako botoiak» atalera, eta horrela, teklatuaren amaieran mantenduko da. Arrastatu berriz «Arrastatu daitezkeen botoiak» atalera, eta finkapena kentuko du.</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">Zabaldu da.</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">Txikituta</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">Kopia editatu</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">Jarraitu editatzen.</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">%1$s-rako diseinu berri bat sortzen du. Beste erabiltzaileek beren diseinu egungoari eutsiko diote.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">Aldaketak aplikatuko dira host edo profil hau gorde ondoren.</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">Tekla hau gordetzeak diseinuaren bertsio behin-behinekoa eguneratuko du. Gordetu diseinua, egindako aldaketak gorde ahal izateko.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">Kokapena</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">Erakutsi tekla</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">Amaieran finkatuta</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">Laste-bidea aldatu</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">Aukeratu teklaren funtzioa sakatzen denean.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">Atzeko planoa, testua eta marjadura</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · Ukimen-sentsazioa: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">Sakatu behin.</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">Eusten den bitartean errepikatzen da.</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">Lerroa, zutabea eta tekla-zabaleraren neurria.</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">Erabiltzaile %1$d-ek erabili du</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">Kendu al dezakegu teklaren diseinuaren aurreikuspenetik?</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">Aldaketak aplikatu?</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">Aplikatu aldaketa hauek diseinuari, edo ezabatu.</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">Aldaketak aplikatu</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">Diseinua aldatu</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">Tekla edo lasterbide</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">Aurrebista</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">Hautapen pertsonalizatua</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">Erabili oinarrizko diseinua.</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">Diseinu-ekintzak</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">Kolorearen aurrebista</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">Gehitu teklako botoi bat geruza hau aktibatzeko.</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">Aldaketak terminal honetan aplikatuko dira diseinua gorde ondoren.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">Diseinu hau gordetzeak erabiltzaile guztiei eguneratuko die. Kopia bat editatu dezakezu, ordez.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">Aldatu partekatutako konfigurazioa?</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">konfigurazio hau</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">Aurrez aurre egindako plantilla-multzoak</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Lehenagotik dauden konfigurazioak aldatu gabe mantentzen dira. Aldatzean, kopia pribatu bat sortzen da.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">Aurrez definitutako konfigurazioa</string>
 </resources>

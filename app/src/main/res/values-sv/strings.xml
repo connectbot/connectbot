@@ -726,4 +726,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">Det gick inte att skapa genvägen. Försök igen.</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">Kedjan av mellanliggande värdservrar innehåller en loop. Kontrollera inställningarna för mellanliggande värdservrar.</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">Antalet mellanliggande värdservrar i kedjan har överskridit gränsen på 32 servrar.</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">Lokal återgivning</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">Välj om inmatad text ska visas lokalt. Om alternativet alltid är aktiverat kan texten visas två gånger när servern skickar tillbaka samma text.</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">Automatiskt</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">Alltid aktiverat</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">Alltid avstängt.</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">Starta förhandlingen</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">Förhandla om terminalens funktioner vid anslutning, eller vänta tills servern begär dem.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">Förhandla vid anslutning.</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">Vänta på servern.</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">Icke-binär data</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">Om servern inte accepterar binärt läge, tillåt användning av äldre åttabitsdata eller kräva ASCII. Båda parter måste använda samma teckenkodning.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">Tillåt äldre åttabitsdata.</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">Kräv ASCII.</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">Inmatade radslutstecken</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">Utanför binärläge, konvertera infogade radbrytningstecken (LF) till CRLF eller behåll LF. Detta gäller även för automatiserad text.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">Konvertera LF till CRLF.</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">Behåll LF.</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">Inmatningen skickades inte. Den här anslutningen kräver ASCII-format tills servern aktiverar binärt läge.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">Det gick inte att skicka in data till den här Telnet-servern.</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">Anslutningen misslyckades.</string>
+  <string name="terminal_connected" tools:machine_translated="true">Ansluten.</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">Autentiseringen lyckades.</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">Det gick inte att öppna en SSH-session.</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">SSH-servern avvisade förfrågan om terminalanslutning.</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">SSH-servern avvisade förfrågan om att starta ett interaktivt skal.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">Anslutningsinformation</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">Protokoll</string>
+  <string name="connection_info_host" tools:machine_translated="true">Värd</string>
+  <string name="connection_info_port" tools:machine_translated="true">Portnummer</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">SSH-port</string>
+  <string name="connection_info_username" tools:machine_translated="true">Användarnamn</string>
+  <string name="connection_info_status" tools:machine_translated="true">Status</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">Ansluter</string>
+  <string name="connection_info_connected" tools:machine_translated="true">Ansluten</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">Anslutningen avbruten.</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">Lokal adress</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">Detaljer om den inledande SSH-förhandlingen som används för att starta Mosh, inte den aktiva Mosh-anslutningen.</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">Detaljer om algoritmförhandlingen via SSH-anslutningen.</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">Detaljer om SSH-förhandlingen är inte tillgängliga.</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">Nyckelutbyte</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">Serverns värdnyckel</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">Kryptering: från klient till server</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">Kryptering: från server till klient</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">Integritet: från klient till server</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">Integritet: från server till klient</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">Integrerad med kryptering</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">Nyckelutbyte som är säkert även efter införandet av kvantdatorer</string>
+  <string name="connection_info_yes" tools:machine_translated="true">Ja</string>
+  <string name="connection_info_no" tools:machine_translated="true">Nej</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">Vidarebefordrade portar</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">Konfigurerad källa.</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">Tilldelad port</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">Ingen aktiv lyssnare</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">Status för portvidarebefordran</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">Aktiv</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">Inaktiv</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">Måladress</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">Kryptografisk policy</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">Standard</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">Framtida</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">Äldre version</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">FIPS-algoritmer</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">Anpassad</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">Rekommenderade algoritmer och nyckelstorlekar</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">Kräv nyckelutbyte som är säkert även efter införandet av kvantdatorer.</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">Begränsa algoritmerna; de är inte FIPS-certifierade.</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">Tillåt äldre algoritmer för att säkerställa kompatibilitet.</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">Välj algoritmer och minsta nyckelstorlekar.</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">Moderna algoritmer och krav på nyckelstorlek som upprätthålls av SSH-biblioteket.</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">Kräver en hybridnyckelutväxling som är beständig mot kvantdatorattacker, 256-bitars krypteringsnycklar och starkare RSA-nycklar.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">Begränsar val av algoritmer; möjliggör inte FIPS-validering.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">Tillåter äldre algoritmer och kortare RSA- och DH-nycklar för att säkerställa kompatibilitet. Modernare algoritmer är fortfarande att föredra.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">Anpassa standardinställningarna. Val av algoritmer och minsta nyckelstorlek är oberoende av varandra.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">Minsta antal RSA-bitar</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">Minsta antal DH-bitar</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">Använd standardinställningarna (%1$d bitar)</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">Lämna fältet tomt för att använda standardinställningen. Gäller även för algoritmer som har aktiverats manuellt.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">Ange minst 1024 bitar. DH får inte överstiga 8192 bitar.</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">Algoritmer för nyckelutbyte</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">Krypteringsalgoritmer</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">Algoritmer för meddelandeautentisering</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">Algoritmer för värdnycklar</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">Autentiseringsalgoritmer för offentliga nycklar</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">Urvalsläge</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">Använd standardinställningarna.</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">Ändra standardinställningar</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">Använd endast dessa.</string>
+  <string name="crypto_apply" tools:machine_translated="true">Använd</string>
+  <string name="crypto_expression" tools:machine_translated="true">Algoritmisk uttryck</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">Namn avgränsade med kommatecken. I Ändra standardinställningar, lägg till ^ (först), + (efter) eller - (uteslut) som prefix för varje namn.</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">Använd unika SSH-namn och ett urvalsläge. Listorna får inte vara tomma.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">Gällande prioriteringsordning</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">Inte tillgängligt på den här enheten; behålls i din konfiguration.</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">Exkluderad på grund av det minsta tillåtna nyckellängden.</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">Aktiverad som standard</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">Tillgänglig; inte aktiverad som standard.</string>
+  <string name="crypto_prepend" tools:machine_translated="true">Föredra det första</string>
+  <string name="crypto_append" tools:machine_translated="true">Lägg till</string>
+  <string name="crypto_exclude" tools:machine_translated="true">Exkludera</string>
+  <string name="crypto_inherit" tools:machine_translated="true">Använd standardinställningarna.</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">inte implementerat i detta bibliotek</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">inte tillgängligt med de installerade kryptografiska modulerna.</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">DH-gruppen är mindre än det konfigurerade minimivärdet.</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">nyckeln eller certifikatet uppfyller inte kraven i RSA- eller certifikatpolicyn.</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">Varning – %1$s: %2$s: %3$s hoppades över (%4$s).</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">Den kryptografiska policyn tillåter inte användning av några %1$s.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">Den kryptografiska policyn misslyckades för %1$s: %2$s</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">Kryptografisk policy – %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">Minsta nyckelstorlekar</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA: %1$d bitar; DH med ändligt fält: %2$d bitar</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">Visa den faktiska ordningen för valda algoritmer</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">Dölj den prioriterade ordningen för algoritmerna.</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">Ändra status för %1$s</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ Använd först · + Lägg till · ✓ Följ standardinställningen · − Exkludera</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">Skift</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">Tryck på Enter</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">Backspace-tangenten</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">Radera</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">Infoga</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">↑</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">↓</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">Hem</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">Slut</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">Sida upp</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">Sida ned</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">Texteindata</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">Komponera</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">Tangentbord</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">Terminaltangentbord</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">Tangentbordslayouter</string>
+  <string name="keyboard_macros" tools:machine_translated="true">Delade makron</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">Makrot saknas.</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">Ogiltig konfiguration.</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">Åtgärden för tangentbordet misslyckades.</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">Flytta uppåt.</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">Flytta nedåt.</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">Flytta åt vänster.</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">Flytta åt höger.</string>
+  <string name="keyboard_off" tools:machine_translated="true">Avstängt</string>
+  <string name="keyboard_once" tools:machine_translated="true">Nästa tangent</string>
+  <string name="keyboard_locked" tools:machine_translated="true">Låst</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">Nytt tangentbordslayout</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">Nytt makro</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(kopiera)</string>
+  <string name="keyboard_back" tools:machine_translated="true">Tillbaka</string>
+  <string name="keyboard_error" tools:machine_translated="true">Ändringen kunde inte tillämpas: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">Lägg till tangentbordslayout.</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">Lägg till makro</string>
+  <string name="keyboard_edit" tools:machine_translated="true">Redigera</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">Dubbelpost</string>
+  <string name="keyboard_delete" tools:machine_translated="true">Radera</string>
+  <string name="keyboard_default" tools:machine_translated="true">Använd som standardinställning för appen.</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">Används i: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">Bekräfta</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">Vill du tillämpa denna ändring, som kan leda till dataförlust? Eventuella sparade ändringar av layouten kan försvinna. Delade makron behålls när du återställer en layout.</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">Avbryt</string>
+  <string name="keyboard_name" tools:machine_translated="true">Namn</string>
+  <string name="keyboard_width" tools:machine_translated="true">Knappbredd (dp, för alla knappar)</string>
+  <string name="keyboard_height" tools:machine_translated="true">Knapphöjd (dp, alla knappar)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">Tryck på en tangent för att redigera den. Tryck och håll, och dra sedan för att flytta den. Dra mellan avsnitten för att fästa eller ta bort fästningen. Knappstorleken gäller för alla tangenter.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">Dra för att ändra ordningen på knappen.</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">Lägg till tangent</string>
+  <string name="keyboard_visible" tools:machine_translated="true">Synlig</string>
+  <string name="keyboard_row" tools:machine_translated="true">Rad (börjar på 0)</string>
+  <string name="keyboard_column" tools:machine_translated="true">Kolumn (börjar på 0)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">Radomfång</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">Kolumnbredd</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">Ta bort tangent</string>
+  <string name="keyboard_save" tools:machine_translated="true">Spara</string>
+  <string name="keyboard_reset" tools:machine_translated="true">Återställ standardinställningarna.</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">Använd appens standardinställningar.</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">Visuell redigerare</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">Textredigerare</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">En åtgärd per rad: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. Texten använder JSON-formatering för att hantera specialtecken.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">Makrokommandon</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">Lägg till text</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">Lägg till tangent.</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">Lägg till byte.</string>
+  <string name="keyboard_text" tools:machine_translated="true">Text att skicka</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">Exakta bytevärden (i hexadecimalt format)</string>
+  <string name="keyboard_character" tools:machine_translated="true">Tecken</string>
+  <string name="terminal_key_space" tools:machine_translated="true">Mellanslag</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">Siffertangent %1$s</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">Knappens text</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">Citrus</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">Kompakta terminalkontroller</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">Sista stationen</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">Rymliga kontroller i terminalen</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">Klo</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">Optimerad för Claude Code.</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">Skrivare</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">Optimerad för Codex-kommandoradsgränssnittet.</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">Välj en förinställning för tangentbordet.</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">Klassisk CB</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">Anpassa till bredden</string>
+  <string name="keyboard_layer" tools:machine_translated="true">Lager %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">Lager %1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">Växla lager</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">Mål för lagret</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">Nästa lager som innehåller innehåll</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">Mållagret är tomt.</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">Avbryt</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">Förkortad historik</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">Läge</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">Ny rad</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">Logg</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">Redigera</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">Kopiera</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">Klistra in</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">Avbryt</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Sökhistorik</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">Växla mellan olika behörighetslägen</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">Infoga ny rad</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">Visa/dölj transkription</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">Öppna extern redigerare</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">Kopiera svar</string>
+  <string name="macro_assign" tools:machine_translated="true">Tilldela makro</string>
+  <string name="macro_import" tools:machine_translated="true">Importera makro</string>
+  <string name="macro_export" tools:machine_translated="true">Exportera makro</string>
+  <string name="macro_none" tools:machine_translated="true">Inga sparade makron.</string>
+  <string name="automation_run_macro" tools:machine_translated="true">Kör makro</string>
+  <string name="macro_choose" tools:machine_translated="true">Välj makro</string>
+  <string name="macro_manage" tools:machine_translated="true">Hantera makron</string>
+  <string name="keyboard_selected" tools:machine_translated="true">Valt</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">Appens standardinställningar</string>
+  <string name="keyboard_select" tools:machine_translated="true">Använd detta.</string>
+  <string name="keyboard_change" tools:machine_translated="true">Ändra tangentbordslayout</string>
+  <string name="keyboard_customize" tools:machine_translated="true">Anpassa</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">Redigera delad layout</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">Använd som standardinställning för appen.</string>
+  <string name="keyboard_saving" tools:machine_translated="true">Sparar…</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s – %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">Anpassad</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">Använd det ärvda tangentbordet.</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s – %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">Från profilen ”%1$s”</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">Avancerat</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">Tangentbord: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">Automatisering efter inloggning: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">Profil: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">Värd: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">Vill du ta bort layouten ”%1$s”?</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">Vill du ta bort makrot “%1$s”?</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">Datorer och profiler som använder detta tangentbordslayout kommer istället att använda det tangentbord som är inställt som standard. Om detta är appens standardinställning, kommer ett annat tangentbordslayout att bli standard.</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">Detta tar bort makrot från det gemensamma biblioteket.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">Återställ de ursprungliga tangenterna och måtten för detta tangentbordslayout? Ändringarna tillämpas när du sparar. Delade makron behålls.</string>
+  <string name="macro_shared_title" tools:machine_translated="true">Redigera ett delat makro?</string>
+  <string name="macro_shared_message" tools:machine_translated="true">Det här makrot används på andra ställen. Skapa en separat kopia, eller redigera den delade versionen så att alla användare får tillgång till den.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">Skapa en kopia</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">Redigera delat makro</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">Genom att spara ändringarna sparas även uppdateringarna för detta makro överallt där det används, även om du senare tar bort den omgivande redigeringsmiljön.</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">Ta bort eller tilldela dessa användningsområden på nytt innan du tar bort detta makro.</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">Det här sessionen</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">Den här värddatorn är inställd på skrivskydd. Dess tangentbord kan inte ändras.</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">Hantera layouter</string>
+  <string name="keyboard_done" tools:machine_translated="true">Klart.</string>
+  <string name="automation_draft_host" tools:machine_translated="true">Dessa steg kommer att sparas tillsammans med den nya värddatorn.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">Spara den här värden och lägg till portvidarebefordringar innan du använder funktioner för vidarebefordran.</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">Åtgärd</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">Tangent</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">Makro</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">Modifiering</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">Appåtgärd</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">Byt lager</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">Delat layout: sparar uppdateringar för alla som använder det.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">Det här tangentbordslayoutet är inte tillgängligt.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">Rader och kolumner börjar på 0 inom varje sektion. Tangenterna är en rad höga. Kolumnbredden anger hur många celler en tangent upptar.</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">Utseende</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">Bakgrundsfärg</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">Textfärg</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">Konturfärg</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">Standardtema</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Bakgrundens genomskinlighet: %1$d %%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">Med kontur</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">Linjebredd: %1$.1f dp</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">Återställ utseendet.</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">Aktiva modifierare och lageromkopplare använder temats markeringsfärg.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">Funktioner</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">Upprepa så länge knappen hålls nedtryckt.</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">Använd standardinställningarna för upprepning.</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">Applikationsinställning</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">På</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">Av</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">Haptisk återkoppling: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">Fästa tangenter</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">Bläddrbara tangenter</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">Dra tangenterna hit.</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">Fäst till höger</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">Välj layouter, anpassa tangenterna och hantera makron.</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">Redigera layout</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">Redigera knapp</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">Layoutinställningar</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">Bläddringsbart</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">Anpassa till bredd</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">Tangentbord</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">Tryck för att redigera · Håll ned och dra för att flytta</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">Fästa tangenter förblir längst ned på tangentbordet (längst till vänster i gränssnitt där text läses från höger till vänster).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">Dra en tangent till ”Fästa tangenter” för att placera den längst ned på tangentbordet. Dra den tillbaka till ”Rullbara tangenter” för att ta bort den från listan över fästa tangenter.</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">Utökat</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">Ihopläggt</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">Redigera en kopia</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">Fortsätt redigera.</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">Skapar en layout för %1$s. Andra användare behåller sin nuvarande layout.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">Ändringarna tillämpas när du sparar den här värden eller profilen.</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">Genom att spara den här inställningen uppdateras utkastet till tangentbordslayouten. Spara layouten för att behålla dina ändringar.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">Placering</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">Visa tangent</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">Fastgjord i slutet.</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">Ändra snabbkommando</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">Välj vilken funktion den här tangenten ska utföra när den trycks ned.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">Bakgrund, text och kontur.</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · Haptisk återkoppling: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">Tryck en gång.</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">Upprepas så länge knappen hålls nedtryckt.</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">Rad, kolumn och tangentbredd.</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">Används av %1$d</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">Vill du ta bort den här tangenten från utkastet till tangentbordslayouten?</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">Vill du tillämpa de ändrade tangentbordsinställningarna?</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">Använd dessa ändringar på layouten, eller avbryt dem.</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">Använd ändringarna.</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">Redigera layouten.</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">Tangent eller snabbkommando</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">Förhandsvisning</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">Anpassat urval</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">Använd den ärvda layouten.</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">Layoutåtgärder</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">Färgförhandsvisning</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">Lägg till en tangent för att aktivera detta lager.</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">Ändringarna tillämpas på den här terminalen när du sparar layouten.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">Genom att spara det här tangentbordslayoutet uppdateras det för alla användare. Du kan istället redigera en kopia.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">Vill du ändra den delade tangentbordslayouten?</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">den här konfigurationen</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">Förinställda mallar</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">De förinställda mallarna som ingår i systemet förblir oförändrade. När du redigerar dem skapas en egen kopia.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">Förinställd mall</string>
 </resources>

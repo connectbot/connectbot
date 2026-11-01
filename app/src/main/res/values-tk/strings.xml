@@ -726,4 +726,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">Gysga ýol döredip bolmady. Ýene-de synap görüň.</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">Aralyk hostlaryň zynjyrynda aýlaw bar. Aralyk hostlaryň sazlamalaryny barlaň.</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">Aralyk hostlaryň zynjyry 32 host çäginden geçýär.</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">Ýerli gaýtalamak</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">Girizilen maglumatlar ýerli ulgamda görnüşiniň ýa-da görnüşiniň ýokdugyny saýlaň. \"Herwagt\" ýagdaýynda, serwer maglumatlary gaýtalaýan wagty, tekst gaýtalanabilir.</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">Awomatiki</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">Her nähili şertde-de</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">Her nähili ýagdaýda-da öçürilýär.</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">Götüşikleriň başlanmagy</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">Baglananda terminaliň mümkinçilikleri barada gürleşiň, ýa-da serwerden olary talap etmegi garaýň.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">Baglanýan wagty ara-almazlyk etmek.</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">Serweriň jogabyny garaýyň.</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">Ikili däl maglumatlar</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">Eger serwer ikilik reżimi kabul etmese, ilki bilen sekiz bitli formatda maglumat geçirmek ýa-da ASCII-den peýdalanmak mümkin. Iki tarap hem birmeňze şertli kodlamany ulanmaly.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">Öňki sekiz bitli baýtlara rugsat ber.</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">ASCII-ni talap ediň.</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">Göçürilen setirleriň ahyry</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">Ikili reżimden daşary, ýapyşdyrylan LF-i CRLF-e öwürüp geçiriň ýa-da LF-i saklaň. Şeýle-de, awtomatlaşdyrylan tekst üçin hem geçerlidir.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">LF-i CRLF-e öwürüň.</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">LF-i saklaň.</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">Girizilen maglumat iberilmedi. Bu baglanyşykda serwer ikilik reżimi işläne çençä ASCII ulanylmalydyr.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">Bu Telnet serwerine maglumat ibermegi başartmadyk.</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">Baglanşyk amala aşyrylmady.</string>
+  <string name="terminal_connected" tools:machine_translated="true">Baglanyşyk ýola salyndy.</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">Dogrulama üstünlikli tamamlandy.</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">SSH seansyny açmak başartmady.</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">SSH serwery talap edilen terminali ret etdi.</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">SSH serwery interaktiw çalyşmany başlap bilmän, soranzy ret etdi.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">Baglanyşyk barada maglumat</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">Protokol</string>
+  <string name="connection_info_host" tools:machine_translated="true">Serwer ady</string>
+  <string name="connection_info_port" tools:machine_translated="true">Port</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">SSH porty</string>
+  <string name="connection_info_username" tools:machine_translated="true">Ulanyjy ady</string>
+  <string name="connection_info_status" tools:machine_translated="true">Ýagdaý</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">Baglanyşyk ýola salynýar.</string>
+  <string name="connection_info_connected" tools:machine_translated="true">Baglanyşyk ýola salyndy</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">Baglanyşyk kesildi.</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">Yerli salgy</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">Mosh-y ulanmak üçin ilkiňki SSH elgarnyşy bilen bagly maglumatlar.</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">SSH aragatnaşygynyň algoritmleri barada maglumatlar</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">SSH baglanyşy boýunça ylalaşylan maglumatlar ýok.</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">Kilidi çalşyşy</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">Serweriň host açary</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">Şifrläme: klientden serwera.</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">Şifrläme: serwerden kliende</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">Bütinlik: klientden serwera.</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">Bütinlik: serwerden kliende</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">Gurnama ulgamy bilen birleşdirilen.</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">Kwantdan soňky açar çalşyşy</string>
+  <string name="connection_info_yes" tools:machine_translated="true">Hawa</string>
+  <string name="connection_info_no" tools:machine_translated="true">Ýok</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">Port ýöneldirmeleri</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">Çeşme gurnaldy.</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">Bellenen port</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">Baglanmadyk.</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">Portyň häzirki ýagdaýy</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">Aktiw</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">Hereket etmeýär.</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">Gutaryş ýeri</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">Kriptografik syýasat</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">Standart görnüşi</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">Geljek</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">Öňki</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">FIPS algoritmleri</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">Kesgitlenän</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">Maslahat berilýän algoritmalar we açar ululyklary</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">Kwantdan soňky açar üýtgeşmesini talep ediň.</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">Algoritmleri çäklendiriň; FIPS tarapyndan bellenilmedik.</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">Öňki algoritm ulanyp bolýar, şonuň üçin ulgamlar biri-birine laýyk gelsin.</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">Algoritmleri we iň az açar ululygyny saýlaň.</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">SSH kitaphanasy tarapyndan goldanylýan häzirki zaman algoritmalary we açar ululygynyň talaplary.</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">Kwantdan soňky giňişleýin açar çalşyşy, 256 bitlik şifrlama açarlary we has gowy RSA açarlary talep edýär.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">Algoritmleriň saýlanmagyna çäklendirmeler girizýär; FIPS-iň dogrulandyrylmagyny üpjün etmeýär.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">Öňki algoritmalar we kiçi RSA we DH açarlar ulanyp bolýar, bu bolsa ulgamda ýöriteleşdirilmegi üpjün edýär. Häzirki zaman algoritmalary esasy bolup galýar.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">Standart görnüşi özelleştirin. Algoritmleri saýlap almak we açaryň minimal ululygyny kesgitlemek özbaşdak amala aşyrylýar.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">Kiçi RSA bitleri</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">Kiçi DH bitleri</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">Standart görnüşden al (%1$d bit).</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">Boş goýsaň, ýagdaýy üýtgetmezden, esli ýagdaýda galýar. Şeýle-de, aýratyn öňden bellenen algoritmalar üçin hem geçerlidir.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">Kiçeligi 1024 bitden az bolmaly. DH-nyň kiçeligi 8192 bitden geçmeli däldir.</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">Kilidi çalşyş algoritmalary</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">Şifrlama algoritmalary</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">Habar tassyklaýjy algoritmalar</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">Host açarynyň algoritmalary</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">Açyk açar bilen tanyşdyryş algoritmalary</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">Saýlama reżimi</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">Standart ulgamdan al</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">Standart görnüşi üýtget.</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">Diňe şu ýerleri ulan</string>
+  <string name="crypto_apply" tools:machine_translated="true">Ulgamaga geçiň</string>
+  <string name="crypto_expression" tools:machine_translated="true">Algoritmiň nyşany</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">Örän bilen bölünen adlar. “Standart ulgamyny üýtget” bölüminde, her ady ^ (ilki), + (goşmak) ýa-da - (çykarmak) belgileri bilen başlaň.</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">Öňki däldir ýa-da özboluşly SSH ady ulanyň we bir sanawy saýlaň. Sanawlar boş bolmaly däldir.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">Şertli talap edilen tertip</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">Bu enjamda ulanylmaýar; konfigurasiýaňyzda saklanýar.</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">Kiçelme çägi esasynda çykaryldy.</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">Standartda işläp durýar</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">Elýeterli; Standart ýagdaýda işleýär.</string>
+  <string name="crypto_prepend" tools:machine_translated="true">Ilki bilen</string>
+  <string name="crypto_append" tools:machine_translated="true">Goşmak</string>
+  <string name="crypto_exclude" tools:machine_translated="true">Çykaryp goýuň</string>
+  <string name="crypto_inherit" tools:machine_translated="true">Standart görnüşi ulan.</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">bu kitaphanada ulanylmady.</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">ulanylan şifrlama serişdeleriniň ýokarladygy sebäpli mümkin däl.</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">DH topary, bellenen minimumdan kiçi.</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">açaryň ýa-da şahadatnamäniň RSA-nyň ýa-da şahadatnama düzgünleriniň talaplaryna laýyk gelmeýär.</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">Duýduryş — %1$s: %2$s: %3$s geçildi (%4$s).</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">Kriptografik saýasat ulanylýan %1$s-iň ýoklugyna getirýär.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">Kriptografik saýasat %1$s üçin ýeterlik däldi: %2$s.</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">Kriptografik syýasat — %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">Kiçelräk açar ölçegleri</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA: %1$d bit; çäkli meýdanly DH: %2$d bit</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">Çözülen algoritmleriň saýlanan tertibini görkez.</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">Çözülen algoritm saýlama tertibini gizle.</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">%1$s üçin ýagdaýy üýtget.</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ Ilki bilen ulan · + Goşmak · ✓ Standart düzüri ulanmak · − Çykarmak</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">Üýtgetmek</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">Tab düwmesi</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">Giriz</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">Geri aýryň düwmesi</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">Aýyrmak</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">Goýuň</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">↑</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">↓</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">Baş sahypa</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">Ahyry</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">Sahyany öňe geçir</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">Sahapany aşak hereketdir</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">Tekstiň girizilmegi</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">Birleşdir</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">Klawiatur</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">Terminal klawiaturasy</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">Klawiaturanyň düzümleri</string>
+  <string name="keyboard_macros" tools:machine_translated="true">Ortak makrolar</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">Makro ýok.</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">Goldanmaýan gurluş</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">Klawiaturanyň hereketi ýalňyşdy.</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">Ýokary süýşür</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">Aşaşrak hereket ediň</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">Çep tarapa hereket ediň.</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">Saňa tarap hereket et.</string>
+  <string name="keyboard_off" tools:machine_translated="true">Öçürildi</string>
+  <string name="keyboard_once" tools:machine_translated="true">Kiçi klawiş</string>
+  <string name="keyboard_locked" tools:machine_translated="true">Kilitleýin</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">Jaňy düzüliş</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">Jaňy makro</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(kopyala)</string>
+  <string name="keyboard_back" tools:machine_translated="true">Yza</string>
+  <string name="keyboard_error" tools:machine_translated="true">Üzgünlik bildirýäris, üýtgetmäni ulanyp bolmady: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">Düzüni goş.</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">Makro goşmak</string>
+  <string name="keyboard_edit" tools:machine_translated="true">Üýtgetmek</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">Gatnaşykly</string>
+  <string name="keyboard_delete" tools:machine_translated="true">Aýyrmak</string>
+  <string name="keyboard_default" tools:machine_translated="true">Programmanyň deslapky sazlamasy hökmünde ulan</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">Ulanylan ýeri: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">Täsdiqläň.</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">Bu üýrüdilýän üýtgeşmäni ulanyňmy? Saklanan düzüwler ýitip biler. Düzüwleri dikeldýän wagtyňda umumy makrolar saklanar.</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">Yatyr</string>
+  <string name="keyboard_name" tools:machine_translated="true">Ady</string>
+  <string name="keyboard_width" tools:machine_translated="true">Düğmeleriň giňligi (dp, ähli dügme üçin)</string>
+  <string name="keyboard_height" tools:machine_translated="true">Düğmeleriň beýikligi (dp, ähli dügmeler üçin)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">Üzgertmek üçin düwme ýüzüne degiň. Degip, basyp saklaň, soňra hereket etdirip, ýerini üýtgetmäge çalyşyň. Bölümleriň arasynda hereket etdirip, düwmäni ýerinde saklap bilersiňiz ýa-da ýerinden aýyryp bilersiňiz. Düwmäniň ululygy ähli düwmeler üçin geçerlidir.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">Düzüri üýtgetmek üçin düwme ýerini üýtgetmäge mümkinçilik ber.</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">Gatlygy goş</string>
+  <string name="keyboard_visible" tools:machine_translated="true">Görünýär</string>
+  <string name="keyboard_row" tools:machine_translated="true">Hat (0-dan başlap)</string>
+  <string name="keyboard_column" tools:machine_translated="true">Kolon (0-dan başlap)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">Setiriň giňeldilmegi</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">Sütüň giňişligi</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">Düwme aýyryň</string>
+  <string name="keyboard_save" tools:machine_translated="true">Saklaň</string>
+  <string name="keyboard_reset" tools:machine_translated="true">Öňki ýagdaýa getir</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">Programmanyň ýadygär görnüşini ulan.</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">Görünüşli redaktor</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">Tekst redaktory</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">Her bir setirde bir hereket: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. Tekst JSON formatyndaky simwollary ulanýar.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">Makro hereketleri</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">Teksti goş</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">Giriş ýazgyçy konfigurasiýasy: täze ýazgyçy goş.</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">Baitleri goş.</string>
+  <string name="keyboard_text" tools:machine_translated="true">Iberiljek tekst</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">Takyk baýt bahalary (on altylyk ulgamda)</string>
+  <string name="keyboard_character" tools:machine_translated="true">Simwol</string>
+  <string name="terminal_key_space" tools:machine_translated="true">Boşluk</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">Sanly klawiaturanyň %1$s düwmesi</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">Düğmäniň ady</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">Sitrus</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">Kiçi terminaliň düzgünleri</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">Soňky saklanan ýer</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">Giňiş terminaliň dolandyryş düzümleri</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">Penje</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">Claude Code üçin optimizirlenýär.</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">Ýazgy</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">Codex CLI üçin optimizirlendi.</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">Klaviaturanyň öňünden saýlanan görnüşini saýlaň.</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">Klassik CB</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">Ekran enine görä deňläşdir.</string>
+  <string name="keyboard_layer" tools:machine_translated="true">%1$d-nji gat</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">L%1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">Gatlak üýtgetmek</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">Gatlak maksat ýeri</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">Kiçelmedik gelki gatlagy</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">Nysana nişanlanýan gatlak boş.</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">Saklaň</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">Gysgaça taryhy</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">Režim</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">Jaňy setir</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">Jurnal</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">Üýtgetmek</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">Kopyala</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">Göçürmek</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">Kesmek</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Alynyp galnan soraglar</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">Özgerişli ygtyýar režimlerini ulanyň.</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">täze setiri goşmak</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">Transkripti açyp-söndürmek</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">Daşky redaktory açyň.</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">Jogaby kopyala</string>
+  <string name="macro_assign" tools:machine_translated="true">Makro belläň</string>
+  <string name="macro_import" tools:machine_translated="true">Paýlaşylan makro import etmek</string>
+  <string name="macro_export" tools:machine_translated="true">Makro eksport etmek</string>
+  <string name="macro_none" tools:machine_translated="true">Saklanan makrolar ýok.</string>
+  <string name="automation_run_macro" tools:machine_translated="true">Makro ýerine ýetir.</string>
+  <string name="macro_choose" tools:machine_translated="true">Makro saýlaň</string>
+  <string name="macro_manage" tools:machine_translated="true">Makrolary dolandyryň.</string>
+  <string name="keyboard_selected" tools:machine_translated="true">Saýlanyldy</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">Programmanyň başlangyç görnüşi</string>
+  <string name="keyboard_select" tools:machine_translated="true">Munu ulanýň.</string>
+  <string name="keyboard_change" tools:machine_translated="true">Düzümini üýgýtläň.</string>
+  <string name="keyboard_customize" tools:machine_translated="true">Özelleşdiriň</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">Ortak düzüni üýtget</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">Programmanyň deslapky sazlamasy hökmünde ulan</string>
+  <string name="keyboard_saving" tools:machine_translated="true">Saklanýar…</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">Kesgitli</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">Miras edilen klawiaturany ulanýň.</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">“%1$s” profildan</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">Öňurýetili</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">Klawiatur: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">Girizilenden soňky awtomatlaşdyrylan işlem: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">Profil: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">Eýegeçi: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">“%1$s” düzümini silmek isleýäňizmi?</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">“%1$s” makrony öçürmek isleýäňizmi?</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">Bu düzülişden peýdalanýan host we profiller özleriniň ilki bilen bellenen klawiaturasyny ulanar. Eger bu programma üçin ilki bilen bellenen düzüliş bolsa, başga düzüliş ilki bilen bellenen düzüliş bolýar.</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">Bu, makrony üleşdirilen kitaphanadan aýyrýar.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">Bu düzülişiniň ilki başlangyç ýagdaýyndaky dükmelerini we ölçeglerini dikeldip bereliňmi? Üýtgeler, saklanyňyzda hereket edýär. Ortak makrolar saklanýar.</string>
+  <string name="macro_shared_title" tools:machine_translated="true">Paýlaşylan makro ýazylýan ýerini üýtgetmek?</string>
+  <string name="macro_shared_message" tools:machine_translated="true">Bu makro başga ýerde ulanylýar. Aýratyn nusgasyny ýasaň ýa-da onuň ähli ulanyjylary üçin paýlaşylan nusgasyny üýtget.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">Kopyýasyny ýasaň.</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">Ortak makro düzläň.</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">Makro ulanylýan ähli ýerlerde üýtgetmeleri saklaýar, hatda soňradan bu makrony ulanyp, redaktoryň beýleki böleklerini üýtgetseňiz-de.</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">Bu makrony öçürmeden öň, bu ulanyşlary ýa-da täzeden kesgitläň.</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">Bu seans.</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">Bu serwer diňe okamaga niýetlenendir. Onuň klawiaturasyny üýtgetmek bolmaýar.</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">Düzümleri dolandyryň.</string>
+  <string name="keyboard_done" tools:machine_translated="true">Gutardyldy</string>
+  <string name="automation_draft_host" tools:machine_translated="true">Bu ädimler täze serwerde saklanar.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">Bu serweri saklaň we ýöneldişli işlemden öň port ýöneldişlerini goş.</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">Hereket</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">Giriş</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">Makro</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">Üzgertiji</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">Programyň hereketi</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">Gatlaky üýtget</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">Ortak düzüliş: ulanyjylar üçin täzelemeleri saklamak.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">Bu klawiaturanyň düzüli şu wagtda ulanylmaýar.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">Her bölekde hatarlar we sütünler 0-dan başlanýar. Klawişa basylanda, ol bir hatar ýokarylykda görünýär. Sütünleriň ululygy, klawişanyň näçe öýjükden ybarat boljakdygyny kesgitläýär.</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">Görünüşi</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">Arka plan öwüti</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">Tekstiň öwüşi</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">Çyzgyň öwüşginiň reňgi</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">Temaň görnüşi</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Arka plan tömizligi: %1$d%%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">Çyzgyly</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">Çyzgyň galynlygy: %1$.1f dp</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">Görünüşi dikeldin.</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">Aktiw modifikatorlar we gatlak çalşyjylar temanyň öňe çykarylyş usulyny ulanýarlar.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">Hereket edýän ýagdaýy</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">Basylanda-da gaýtala</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">Standart gaýtalanma rejimini ulanýaň.</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">Programmyň sazlamalary</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">On</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">Öçüriň</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">Deňişmäniň täsirli ulgamly jogaby: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">Berkitilen düwmeçeler</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">Gözden geçirip bolýan klawişler</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">Klavyura redaktory bölümine geçirmek üçin açarlary şaýba.</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">Sağa gysgaýdyň.</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">Dizain ýerleşişini saýlaň, düwmeleri özleşdiriň we makroslary dolandyryň.</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">Düzüni üýtget</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">Düzediň</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">Düzüliş ulgamynyň gurnalyşlary</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">Aýlamak mümkin</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">Giňlige laýyklaşdyr</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">Klawiatur</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">Üýtgetmek üçin dokuning · hereket etdirmek üçin basyp saklap, süýşürip geçiň.</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">Berkitilen düwmeler klawiaturanyň ahyrynda galýar (sagdan çep tarapa geçýän interfeýslerde çep tarapda).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">Klawiaturanyň ahyrky ýerinde saklamak üçin, klawişi \"Berkitilen klawişler\" bölümine sürün. Onu \"Sürülip bilýän klawişler\" bölümine gaýtaryp sürün, şonda ol berkitilmez.</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">Giňeldildi</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">Gyçyrdy</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">Kopyany düzläň.</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">Üzgertmäni dowam ediň.</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">%1$s üçin täze düzüliş döredýär. Beýleki ulanyjylar özleriniň häzirki düzülişini saklaýarlar.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">Üzgertmeler şu hosta ýa-da profila saklanyňda hereket edýär.</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">Bu düwmeçäni saklamak, düzüliş nusgasyny täzelendirýär. Öz üýtgetmelerinizi saklamak üçin düzülişi saklaň.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">Ýerleşdirilişi</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">Klawaçany göräz</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">Soňunda berkidildi</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">Gysga ýol düwmelerini üýtget</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">Bu düwme basylanda näme etmelidigini saýlaň.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">Arka plan, tekst we çyzgy</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · Dokunma: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">Bir gezek basyň.</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">Basylanda-da gaýtalanar.</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">Setir, sütun we düwme giňligi.</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">%1$d ulanyjy tarapyndan ulanyldy</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">Bu düwmeçäni maketden aýyryňmy?</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">Täzelikler girizilsinmi?</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">Bu üýtgeşmeleri düzüme uýgulanyň ýa-da olardan ýüz döndüriň.</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">Üzgertmeleri ulanyň</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">Dizany üýtgetmek</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">Girişme ýa-da gysga ýol</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">Önünden geçmek</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">Kesgitli saýlama</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">Miras edilen düzülişden peýdalanyň.</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">Düzüliş hereketleri</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">Reňiň öňden görüş nusgasy</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">Bu gatlağı işe girizmek üçin täze düwme goş.</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">Üýtgeşmeler şu terminala, tertibi saklap galanda taryp edilýär.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">Bu düzülişi saklamak, onu ulanýan ähli adamlar üçin täzelänişleri ýaýbaýar. Iň soňky nusgasyny üýtgetmek mümkindir.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">Ortak düzüni üýtgetmek?</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">bu gurnama</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">Önünden ýörite taýýarlanan şablonlar</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Önünden ýörite taýýarlanan şablonlar üýtgämez. Şablonlary üýtgetmek, özüňiň şahsy nusgangyňy döredýär.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">Önünden kesilen şablon</string>
 </resources>

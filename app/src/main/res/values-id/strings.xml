@@ -726,4 +726,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">Tidak dapat membuat pintasan. Silakan coba lagi.</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">Rantai host perantara mengandung siklus. Periksa pengaturan host perantara.</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">Rantai host perantara melebihi batas maksimum 32 host.</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">Tampilan lokal dari input yang diketik.</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">Pilih apakah teks yang diketik akan ditampilkan secara lokal. Jika selalu diaktifkan, teks mungkin akan ditampilkan dua kali ketika server melakukan pengulangan.</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">Otomatis</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">Selalu aktif</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">Selalu mati.</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">Mulai negosiasi.</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">Negosiasikan kemampuan terminal saat terhubung, atau tunggu hingga server meminta kemampuan tersebut.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">Lakukan negosiasi saat terhubung.</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">Tunggu hingga server merespons.</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">Data non-biner</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">Jika server menolak mode biner, izinkan penggunaan delapan bit atau wajibkan penggunaan ASCII. Kedua ujung koneksi harus menggunakan pengkodean yang sama.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">Izinkan penggunaan byte delapan bit yang sudah ada.</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">Wajib menggunakan ASCII.</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">Akhir baris yang disalin</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">Di luar mode biner, konversikan baris baru (LF) yang ditempelkan menjadi CRLF atau pertahankan LF. Hal ini juga berlaku untuk teks otomatisasi.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">Konversi LF menjadi CRLF.</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">Pertahankan LF.</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">Input tidak terkirim. Koneksi ini memerlukan format ASCII hingga server mengaktifkan mode biner.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">Input tidak dapat dikirim ke server Telnet ini.</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">Koneksi gagal.</string>
+  <string name="terminal_connected" tools:machine_translated="true">Terhubung.</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">Autentikasi berhasil.</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">Tidak dapat membuka sesi SSH.</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">Server SSH menolak permintaan terminal.</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">Server SSH menolak permintaan shell.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">Informasi koneksi</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">Protokol</string>
+  <string name="connection_info_host" tools:machine_translated="true">Host (nama host)</string>
+  <string name="connection_info_port" tools:machine_translated="true">Port</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">Port SSH</string>
+  <string name="connection_info_username" tools:machine_translated="true">Nama pengguna</string>
+  <string name="connection_info_status" tools:machine_translated="true">Status</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">Menghubungkan</string>
+  <string name="connection_info_connected" tools:machine_translated="true">Terhubung</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">Koneksi terputus.</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">Alamat lokal</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">Detail inisialisasi SSH</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">Detail negosiasi SSH</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">Detail negosiasi SSH tidak tersedia.</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">Pertukaran kunci</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">Kunci host server</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">Enkripsi: dari klien ke server</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">Enkripsi: dari server ke klien</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">Integritas: dari klien ke server</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">Integritas: dari server ke klien</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">Terintegrasi dengan enkripsi.</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">Pertukaran kunci pasca-kuantum</string>
+  <string name="connection_info_yes" tools:machine_translated="true">Ya</string>
+  <string name="connection_info_no" tools:machine_translated="true">Tidak</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">Pengalihan port</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">Sumber telah dikonfigurasi.</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">Port yang ditetapkan</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">Tidak terikat.</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">Status penerusan</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">Aktif</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">Tidak aktif</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">Tujuan</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">Kebijakan kriptografi</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">Standar</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">Masa Depan</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">Lama</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">Algoritma FIPS</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">Kustom</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">Algoritma dan ukuran kunci yang direkomendasikan</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">Wajib menggunakan pertukaran kunci pasca-kuantum.</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">Batasi algoritma; belum divalidasi FIPS.</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">Izinkan penggunaan algoritma lama untuk memastikan kompatibilitas.</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">Pilih algoritma dan ukuran kunci minimum.</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">Algoritma modern dan persyaratan ukuran kunci yang diterapkan oleh pustaka SSH.</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">Membutuhkan pertukaran kunci hibrida pasca-kuantum, kunci enkripsi 256-bit, dan kunci RSA yang lebih kuat.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">Membatasi pilihan algoritma; tidak menetapkan validasi FIPS.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">Mengizinkan penggunaan algoritma lama dan kunci RSA dan DH yang lebih kecil untuk memastikan kompatibilitas. Algoritma modern tetap menjadi pilihan utama.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">Sesuaikan Pengaturan Default. Pemilihan algoritma dan ukuran kunci minimum bersifat independen.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">Jumlah bit RSA minimum</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">Jumlah bit DH minimum</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">Gunakan Pengaturan Default (%1$d bit)</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">Biarkan kosong untuk mengikuti pengaturan Standar. Berlaku bahkan untuk algoritma yang diaktifkan secara eksplisit.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">Masukkan minimal 1024 bit. DH tidak boleh melebihi 8192 bit.</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">Algoritma pertukaran kunci</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">Algoritma enkripsi</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">Algoritma autentikasi pesan</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">Algoritma kunci host</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">Algoritma autentikasi kunci publik</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">Mode pemilihan</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">Gunakan Pengaturan Default</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">Ubah Pengaturan Default</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">Gunakan hanya ini.</string>
+  <string name="crypto_apply" tools:machine_translated="true">Terapkan</string>
+  <string name="crypto_expression" tools:machine_translated="true">Ekspresi algoritma</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">Nama-nama yang dipisahkan dengan koma. Di bagian Modifikasi Default, tambahkan awalan pada setiap nama dengan ^ (pertama), + (tambahkan di akhir), atau - (kecualikan).</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">Gunakan nama SSH yang unik dan satu mode pemilihan. Daftar yang tepat tidak boleh kosong.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">Urutan preferensi yang berlaku.</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">Tidak tersedia di perangkat ini; tetap disimpan dalam konfigurasi Anda.</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">Dikecualikan karena ukuran kunci minimum.</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">Diaktifkan secara bawaan.</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">Tersedia; tidak diaktifkan dalam pengaturan Default.</string>
+  <string name="crypto_prepend" tools:machine_translated="true">Utamakan yang pertama.</string>
+  <string name="crypto_append" tools:machine_translated="true">Tambahkan</string>
+  <string name="crypto_exclude" tools:machine_translated="true">Kecualikan</string>
+  <string name="crypto_inherit" tools:machine_translated="true">Ikuti Pengaturan Default</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">belum diimplementasikan oleh pustaka ini.</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">tidak tersedia dengan penyedia kriptografi yang terpasang.</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">Grup DH lebih kecil dari ukuran minimum yang telah dikonfigurasi.</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">kunci atau sertifikat tidak memenuhi persyaratan kebijakan RSA atau kebijakan sertifikat.</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">Peringatan — %1$s: %2$s: %3$s dilewati (%4$s).</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">Kebijakan kriptografi tidak menyisakan algoritma %1$s yang dapat digunakan.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">Kebijakan kriptografi gagal untuk %1$s: %2$s</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">Kebijakan kriptografi — %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">Ukuran kunci minimum</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA: %1$d bit; DH bidang hingga: %2$d bit</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">Tampilkan urutan preferensi yang efektif.</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">Sembunyikan urutan preferensi yang efektif.</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">Ubah status untuk %1$s</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ Utamakan yang pertama · + Tambahkan · ✓ Ikuti Pengaturan Default · − Kecualikan</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">Shift</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">Tekan Enter</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">Tombol Hapus</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">Hapus</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">Sisipkan</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">↑</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">↓</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">Beranda</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">Akhir</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">Halaman Atas</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">Halaman Bawah</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">Input teks</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">Aktifkan/Nonaktifkan fungsi komposisi.</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">Papan ketik</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">Konfigurasi keyboard Terminal</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">Tata letak keyboard</string>
+  <string name="keyboard_macros" tools:machine_translated="true">Makro yang dibagikan</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">Makro tidak ditemukan.</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">Konfigurasi tidak didukung.</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">Aksi pada keyboard gagal.</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">Naik</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">Geser ke bawah.</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">Geser ke kiri.</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">Geser ke kanan.</string>
+  <string name="keyboard_off" tools:machine_translated="true">Mati</string>
+  <string name="keyboard_once" tools:machine_translated="true">Tombol berikutnya</string>
+  <string name="keyboard_locked" tools:machine_translated="true">Terkunci.</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">Tata letak baru</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">Makro baru</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(salin)</string>
+  <string name="keyboard_back" tools:machine_translated="true">Kembali</string>
+  <string name="keyboard_error" tools:machine_translated="true">Perubahan tidak dapat diterapkan: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">Tambahkan tata letak.</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">Tambahkan makro.</string>
+  <string name="keyboard_edit" tools:machine_translated="true">Edit</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">Duplikat</string>
+  <string name="keyboard_delete" tools:machine_translated="true">Hapus</string>
+  <string name="keyboard_default" tools:machine_translated="true">Gunakan sebagai pengaturan bawaan aplikasi.</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">Digunakan di: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">Konfirmasi</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">Apakah Anda ingin menerapkan perubahan yang akan menghapus data ini? Perubahan tata letak yang telah disimpan mungkin akan hilang. Makro yang dibagikan akan tetap tersimpan saat Anda mengatur ulang tata letak.</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">Batalkan</string>
+  <string name="keyboard_name" tools:machine_translated="true">Nama</string>
+  <string name="keyboard_width" tools:machine_translated="true">Lebar tombol (dalam dp, untuk semua tombol)</string>
+  <string name="keyboard_height" tools:machine_translated="true">Tinggi tombol (dp, semua tombol)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">Ketuk tombol untuk mengeditnya. Sentuh dan tahan, lalu seret untuk memindahkannya. Seret di antara bagian-bagian untuk menyematkan atau melepaskan penyematan. Ukuran tombol berlaku untuk setiap tombol.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">Seret untuk mengubah urutan tombol.</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">Tambahkan tombol</string>
+  <string name="keyboard_visible" tools:machine_translated="true">Terlihat</string>
+  <string name="keyboard_row" tools:machine_translated="true">Baris (dimulai dari 0)</string>
+  <string name="keyboard_column" tools:machine_translated="true">Kolom (dimulai dari 0)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">Rentang baris</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">Rentang kolom</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">Hapus tombol</string>
+  <string name="keyboard_save" tools:machine_translated="true">Simpan</string>
+  <string name="keyboard_reset" tools:machine_translated="true">Kembalikan ke pengaturan awal.</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">Gunakan pengaturan bawaan aplikasi.</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">Editor visual</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">Editor teks</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">Satu tindakan per baris: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. Teks menggunakan escape string JSON.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">Langkah-langkah makro</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">Tambahkan teks.</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">Tambahkan tombol</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">Tambahkan byte.</string>
+  <string name="keyboard_text" tools:machine_translated="true">Teks yang akan dikirim</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">Nilai byte yang tepat (heksadesimal)</string>
+  <string name="keyboard_character" tools:machine_translated="true">Karakter</string>
+  <string name="terminal_key_space" tools:machine_translated="true">Spasi</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">Tombol keypad %1$s</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">Label tombol</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">Citrus</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">Kontrol terminal yang ringkas.</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">Perhentian Terakhir</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">Kontrol terminal yang luas.</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">Cakar</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">Dioptimalkan untuk Claude Code.</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">Scribe</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">Dioptimalkan untuk Codex CLI.</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">Pilih tata letak keyboard.</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">Tata Letak Keyboard CB Klasik</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">Sesuaikan dengan lebar layar.</string>
+  <string name="keyboard_layer" tools:machine_translated="true">Lapisan %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">L%1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">Ganti lapisan</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">Tujuan lapisan</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">Lapisan berikutnya yang tidak kosong.</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">Lapisan tujuan kosong.</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">Berhenti</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">Riwayat singkat</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">Mode</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">Baris Baru</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">Catat</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">Edit</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">Salin</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">Tempel</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">Hentikan</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Riwayat pencarian</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">Ganti mode izin</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">Sisipkan baris baru</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">Aktifkan/nonaktifkan transkrip</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">Buka editor eksternal</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">Salin respons</string>
+  <string name="macro_assign" tools:machine_translated="true">Tetapkan makro.</string>
+  <string name="macro_import" tools:machine_translated="true">Impor makro</string>
+  <string name="macro_export" tools:machine_translated="true">Ekspor makro</string>
+  <string name="macro_none" tools:machine_translated="true">Tidak ada makro yang disimpan.</string>
+  <string name="automation_run_macro" tools:machine_translated="true">Jalankan makro</string>
+  <string name="macro_choose" tools:machine_translated="true">Pilih makro</string>
+  <string name="macro_manage" tools:machine_translated="true">Kelola makro</string>
+  <string name="keyboard_selected" tools:machine_translated="true">Dipilih</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">Pengaturan bawaan aplikasi</string>
+  <string name="keyboard_select" tools:machine_translated="true">Gunakan ini</string>
+  <string name="keyboard_change" tools:machine_translated="true">Ubah tata letak</string>
+  <string name="keyboard_customize" tools:machine_translated="true">Sesuaikan</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">Edit tata letak yang dibagikan.</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">Gunakan sebagai pengaturan bawaan aplikasi.</string>
+  <string name="keyboard_saving" tools:machine_translated="true">Menyimpan…</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">Kustom</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">Gunakan keyboard bawaan.</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">Dari profil \"%1$s\"</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">Tingkat Lanjut</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">Keyboard: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">Otomatisasi setelah masuk: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">Profil: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">Host: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">Hapus tata letak “%1$s”?</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">Hapus makro “%1$s”?</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">Host dan profil yang menggunakan tata letak ini akan menggunakan tata letak keyboard bawaannya. Jika ini adalah tata letak bawaan aplikasi, tata letak lain akan menjadi tata letak bawaan.</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">Ini menghapus makro dari pustaka bersama.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">Pulihkan tata letak asli, termasuk posisi dan ukuran tombol? Perubahan akan diterapkan saat Anda menyimpan. Makro yang dibagikan akan tetap tersimpan.</string>
+  <string name="macro_shared_title" tools:machine_translated="true">Edit makro yang dibagikan?</string>
+  <string name="macro_shared_message" tools:machine_translated="true">Makro ini digunakan di tempat lain. Buat salinan terpisah, atau edit versi yang dibagikan untuk semua penggunanya.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">Buat salinan</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">Edit makro yang dibagikan.</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">Pembaruan akan disimpan untuk makro ini di semua tempat penggunaannya, bahkan jika Anda menghapus editor yang mengelilinginya nanti.</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">Hapus atau ubah penugasan penggunaan ini sebelum menghapus makro ini.</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">Sesi ini</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">Host ini bersifat hanya baca. Keyboard-nya tidak dapat diubah.</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">Kelola tata letak</string>
+  <string name="keyboard_done" tools:machine_translated="true">Selesai.</string>
+  <string name="automation_draft_host" tools:machine_translated="true">Langkah-langkah ini akan disimpan bersama dengan host yang baru.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">Simpan host ini dan tambahkan pengaturan penerusan port sebelum menggunakan tindakan penerusan.</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">Aksi</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">Tombol</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">Makro</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">Pengubah</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">Aksi aplikasi</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">Ganti lapisan</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">Tata letak bersama: menyimpan pembaruan agar dapat digunakan oleh semua orang.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">Tata letak keyboard ini tidak tersedia.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">Baris dan kolom dimulai dari 0 di setiap bagian. Tinggi setiap tombol adalah satu baris. Rentang kolom menentukan berapa banyak sel yang ditempati oleh sebuah tombol.</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">Tampilan</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">Warna latar belakang</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">Warna teks</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">Warna garis luar</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">Tema bawaan</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Tingkat transparansi latar belakang: %1$d%%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">Bergaris tepi</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">Ketebalan garis luar: %1$.1f dp</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">Atur ulang tampilan.</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">Pengubah aktif dan peralihan lapisan menggunakan penyorotan tema.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">Perilaku</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">Ulangi selama ditekan.</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">Gunakan perilaku pengulangan bawaan.</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">Pengaturan aplikasi</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">Aktif</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">Mati</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">Umpan balik haptik: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">Tombol yang disematkan</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">Tombol yang dapat digulir.</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">Seret tombol ke sini</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">Tetapkan di sisi kanan</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">Pilih tata letak, sesuaikan tombol, dan kelola makro.</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">Edit tata letak</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">Edit tombol</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">Pengaturan tata letak</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">Dapat digulir</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">Sesuaikan dengan lebar.</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">Papan ketik</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">Ketuk untuk mengedit · Tekan dan seret untuk memindahkan</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">Tombol yang disematkan akan tetap berada di ujung keyboard (di sebelah kiri pada antarmuka yang membaca dari kanan ke kiri).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">Seret tombol ke bagian Tombol yang Disematkan untuk menempatkannya di bagian akhir keyboard. Seret kembali ke bagian Tombol yang Dapat Digulir untuk menghapus penanda sematnya.</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">Diperluas</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">Terlipat</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">Edit salinan</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">Lanjutkan pengeditan.</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">Membuat tata letak untuk %1$s. Pengguna lain tetap menggunakan tata letak yang mereka gunakan saat ini.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">Perubahan akan diterapkan saat Anda menyimpan host atau profil ini.</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">Menyimpan kunci ini akan memperbarui draf tata letak. Simpan tata letak untuk menyimpan perubahan Anda.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">Penempatan</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">Tampilkan tombol</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">Ditampilkan di akhir.</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">Ubah pintasan.</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">Pilih fungsi yang akan dijalankan tombol ini saat ditekan.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">Latar belakang, teks, dan garis luar.</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · Fitur sentuh: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">Tekan sekali.</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">Terus berulang saat ditekan.</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">Baris, kolom, dan lebar tombol</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">Digunakan oleh %1$d</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">Apakah tombol ini perlu dihapus dari draf tata letak?</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">Terapkan perubahan pada tombol?</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">Terapkan perubahan ini pada tata letak, atau batalkan.</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">Terapkan perubahan</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">Edit tata letak</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">Tombol atau pintasan</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">Pratinjau</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">Pilihan khusus</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">Gunakan tata letak bawaan.</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">Tindakan tata letak</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">Pratinjau warna</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">Tambahkan tombol untuk memulai lapisan ini.</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">Perubahan akan diterapkan pada terminal ini saat Anda menyimpan tata letak.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">Menyimpan tata letak ini akan memperbarui semua penggunanya. Anda dapat mengedit salinannya sebagai gantinya.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">Edit tata letak yang digunakan bersama?</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">konfigurasi ini</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">Templat bawaan</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Pengaturan bawaan tetap tidak berubah. Mengedit akan membuat salinan pribadi Anda.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">Pengaturan bawaan</string>
 </resources>

@@ -730,4 +730,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">Neizdevās izveidot saīsni. Lūdzu, mēģiniet vēlreiz.</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">Pārejas serveru ķēdē ir izveidojies cikls. Pārbaudiet pārejas serveru iestatījumus.</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">Pārejas serveru ķēde pārsniedz 32 serveru ierobežojumu.</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">Vietējā atspoguļošana.</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">Izvēlieties, vai ievadītais teksts tiek rādīts lokāli. Ja opcija ir vienmēr ieslēgta, tas var izraisīt teksta dublēšanos, kad serveris to atkārto.</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">Automātiski</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">Vienmēr ieslēgts.</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">Vienmēr izslēgt.</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">Saziņas sesijas sākšana.</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">Pieslēgšanās laikā vienojieties par termināļa iespējām vai pagaidiet, līdz serveris tās pieprasīs.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">Sākt sarunas savienojuma izveides laikā.</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">Gaidiet servera atbildi.</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">Dati, kas nav binārā formātā.</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">Ja serveris neatbalsta bināro režīmu, atļaujiet izmantot vecāku astoņu bitu kodējumu vai pieprasiet ASCII kodējumu. Abām pusēm jāizmanto vienāds kodējums.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">Atļaut izmantot vecāka tipa astoņu bitu simbolus.</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">Prasa ASCII.</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">Ielīmēto rindu beigu apstrāde.</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">Izslēdzot bināro režīmu, pārveidojiet ievietoto rindas beigu simbolu (LF) uz CRLF vai saglabājiet LF. Tas attiecas arī uz automatizēto tekstu.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">Pārveidot LF uz CRLF.</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">Saglabāt LF.</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">Ievadītais teksts netika nosūtīts. Šim savienojumam nepieciešams ASCII režīms, līdz serveris aktivizēs bināro režīmu.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">Nevarēja nosūtīt datus uz šo Telnet serveri.</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">Savienojuma izveide neizdevās.</string>
+  <string name="terminal_connected" tools:machine_translated="true">Savienojums izveidots.</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">Autentifikācija veiksmīga.</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">Nevar izveidot SSH sesiju.</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">SSH serveris noraidīja pieprasījumu par termināļa izveidi.</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">SSH serveris noraidīja pieprasījumu atvērt interaktīvu termināli.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">Savienojuma informācija</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">Protokols</string>
+  <string name="connection_info_host" tools:machine_translated="true">Resursdators</string>
+  <string name="connection_info_port" tools:machine_translated="true">Ports</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">SSH ports</string>
+  <string name="connection_info_username" tools:machine_translated="true">Lietotājvārds</string>
+  <string name="connection_info_status" tools:machine_translated="true">Statuss</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">Izveido savienojumu.</string>
+  <string name="connection_info_connected" tools:machine_translated="true">Izveidots savienojums.</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">Savienojums pārtraukts.</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">Lokālā adrese</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">Sākotnējās SSH konfigurācijas detaļas</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">SSH savienojuma algoritmu saskaņošanas detaļas.</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">Nav pieejama informācija par SSH savienojuma izveides parametriem.</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">Ataustiņu apmaiņa</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">Servera resursdatora atslēga</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">Šifrēšana: no klienta uz serveri.</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">Šifrēšana: no servera uz klientu.</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">Integritāte: no klienta uz serveri.</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">Integritāte: no servera uz klientu.</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">Integrēts ar šifrēšanas funkciju.</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">Pēckvantas atslēgu apmaiņa</string>
+  <string name="connection_info_yes" tools:machine_translated="true">Jā</string>
+  <string name="connection_info_no" tools:machine_translated="true">Nē</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">Portu pāradresācija</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">Ir konfigurēts avots.</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">Pieskaitīts ports</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">Nav saistīts.</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">Pārvirzīšanas statuss</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">Aktīvs</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">Neaktīvs</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">Galamērķa adrese.</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">Kriptogrāfiskā politika</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">Pēc noklusējuma</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">Nākotne</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">Vecā versija</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">FIPS algoritmi</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">Pielāgots</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">Ieteicamie algoritmi un atslēgu izmēri.</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">Prasa, lai tiktu izmantota pēckvantu atslēgu apmaiņa.</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">Ierobežot algoritmus; nav apstiprināti atbilstoši FIPS standartam.</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">Atļaujiet izmantot vecākus algoritmus, lai nodrošinātu saderību.</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">Izvēlieties algoritmus un minimālo atslēgas garumu.</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">Mūsdienīgi algoritmi un atslēgas izmēra prasības, ko nodrošina SSH bibliotēka.</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">Prasības: jāizmanto hibrīda atslēgu apmaiņas metode, kas ir aizsargāta pret kvantu uzbrukumiem, 256 bitu šifrēšanas atslēgas un stiprākas RSA atslēgas.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">Ierobežo algoritmu izvēli; nenodrošina FIPS validāciju.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">Atļauj izmantot vecākus algoritmus un mazākus RSA un DH atslēgas, lai nodrošinātu saderību. Tomēr priekšroka joprojām tiek dota moderniem algoritmiem.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">Pielāgojiet noklusējuma iestatījumus. Algoritmu izvēle un minimālais atslēgas garums ir neatkarīgi parametri.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">Minimālais RSA bitu skaits.</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">Minimālais DH bitu skaits.</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">Izmantot noklusējuma iestatījumus (%1$d biti).</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">Atstājiet lauku tukšu, lai tiktu izmantota noklusējuma iestatījums. Attiecas arī uz algoritmiem, kas ir skaidri aktivizēti.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">Ievadiet vismaz 1024 bitus. DH nedrīkst pārsniegt 8192 bitus.</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">Ataustiņu apmaiņas algoritmi</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">Šifrēšanas algoritmi</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">Ziņojumu autentifikācijas algoritmi</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">Resursdatora atslēgas algoritmi</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">Publisko atslēgu autentifikācijas algoritmi</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">Atlasīšanas režīms</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">Izmantot noklusējuma iestatījumus.</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">Mainīt noklusējuma iestatījumus.</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">Izmantojiet tikai šos.</string>
+  <string name="crypto_apply" tools:machine_translated="true">Pielietot</string>
+  <string name="crypto_expression" tools:machine_translated="true">Algoritma izteiksme.</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">Atdalīti ar komatu norādīti nosaukumi. Sadaļā “Modificēt noklusējuma iestatījumus” katram nosaukumam priekšā pievienojiet simbolu ^ (pirms), + (pēc) vai - (izslēgt).</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">Izmantojiet unikālus SSH nosaukumus un vienu atlases režīmu. Precīzie saraksti nedrīkst būt tukši.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">Aktīvais preferenču secības rādītājs.</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">Šajā ierīcē nav pieejams; saglabāts jūsu konfigurācijā.</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">Izslēgts, jo atbilst minimālajam atslēgas izmēram.</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">Iespējots pēc noklusējuma.</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">Pieejams; nav aktivizēts noklusējuma iestatījumos.</string>
+  <string name="crypto_prepend" tools:machine_translated="true">Izvēlieties pirmo.</string>
+  <string name="crypto_append" tools:machine_translated="true">Pievienot</string>
+  <string name="crypto_exclude" tools:machine_translated="true">Izslēgt</string>
+  <string name="crypto_inherit" tools:machine_translated="true">Izmantot noklusējuma iestatījumus.</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">šī bibliotēka to neatbalsta.</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">nav pieejams, izmantojot instalētos kriptogrāfijas nodrošinātājus.</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">DH grupa ir mazāka par konfigurēto minimālo vērtību.</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">atslēga vai sertifikāts neatbilst RSA vai sertifikātu politikai.</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">Brīdinājums — %1$s: %2$s: %3$s tika izlaists (%4$s).</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">Kriptogrāfiskā politika neļauj izmantot nevienu no pieejamajiem %1$s.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">Kriptogrāfiskās politikas piemērošana nesekmīga attiecībā uz %1$s: %2$s.</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">Kriptogrāfiskā politika — %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">Minimālais atslēgas garums.</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA: %1$d biti; ierobežota lauka DH: %2$d biti.</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">Rādīt efektīvu preferenču secību.</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">Paslēpt efektīvo vēlamo algoritmu secību.</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">Mainiet statusu elementam %1$s.</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ Izmantot pirmo · + Pievienot · ✓ Izmantot noklusējuma iestatījumu · − Izslēgt</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">Pārslēgt</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">Tabulācija</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">Nospiediet taustiņu Enter.</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">Aizstāt (taustiņš).</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">Dzēst</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">Ievietot</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">↑</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">↓</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">Sākums</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">Beigas</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">Uz augšu</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">Lapa uz leju.</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">Teksta ievade</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">Sastādīt</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">Tastatūra</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">Termināla tastatūra</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">Tastatūras izkārtojumi</string>
+  <string name="keyboard_macros" tools:machine_translated="true">Koplietotas makrokomandas</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">Trūkst makrokomanda.</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">Atbalstīta konfigurācija nav pieejama.</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">Darbība ar tastatūru neizdevās.</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">Pārvietojiet uz augšu.</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">Pārvietojiet uz leju.</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">Pārvietojieties pa kreisi.</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">Pārvietojiet pa labi.</string>
+  <string name="keyboard_off" tools:machine_translated="true">Izslēgts.</string>
+  <string name="keyboard_once" tools:machine_translated="true">Nākamā taustiņš</string>
+  <string name="keyboard_locked" tools:machine_translated="true">Bloķēts.</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">Jauna izkārtojuma versija.</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">Jauna makrokomanda.</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(kopēt)</string>
+  <string name="keyboard_back" tools:machine_translated="true">Atpakaļ</string>
+  <string name="keyboard_error" tools:machine_translated="true">Nevarēja piemērot izmaiņas: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">Pievienot tastatūras izkārtojumu.</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">Pievienot makro</string>
+  <string name="keyboard_edit" tools:machine_translated="true">Rediģēt</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">Dublikāts</string>
+  <string name="keyboard_delete" tools:machine_translated="true">Dzēst</string>
+  <string name="keyboard_default" tools:machine_translated="true">Izmantot kā lietotnes noklusējuma iestatījumu.</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">Izmanto: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">Apstiprināt</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">Vai piemērot šīs izmaiņas, kas var izraisīt datu zudumu? Saglabātās izkārtojuma izmaiņas var tikt zaudētas. Koplietotās makrokomandas tiek saglabātas, atjaunojot izkārtojumu.</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">Atcelt</string>
+  <string name="keyboard_name" tools:machine_translated="true">Nosaukums</string>
+  <string name="keyboard_width" tools:machine_translated="true">Pogas platums (dp, visas pogas)</string>
+  <string name="keyboard_height" tools:machine_translated="true">Pogas augstums (dp, visas pogas)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">Pieskarieties taustiņam, lai to rediģētu. Pieskarieties un turiet, pēc tam velciet, lai to pārvietotu. Velciet starp sadaļām, lai fiksētu vai nofiksētu. Pogas izmērs attiecas uz katru taustiņu.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">Pārvilciet, lai mainītu pogas izvietojumu.</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">Pievienot taustiņu</string>
+  <string name="keyboard_visible" tools:machine_translated="true">Redzams.</string>
+  <string name="keyboard_row" tools:machine_translated="true">Rinda (sākot no 0)</string>
+  <string name="keyboard_column" tools:machine_translated="true">Kolonna (sākot no 0)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">Rindu apjoms.</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">Kolonnas platums</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">Noņemt taustiņu</string>
+  <string name="keyboard_save" tools:machine_translated="true">Saglabāt</string>
+  <string name="keyboard_reset" tools:machine_translated="true">Atjaunot noklusējuma iestatījumus.</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">Izmantojiet lietotnes noklusējuma iestatījumus.</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">Grafiskais redaktors</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">Teksta redaktors</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">Viena darbība vienā rindā: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. Tekstā tiek izmantota JSON virknes kodēšana.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">Makro darbību soļi.</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">Pievienojiet tekstu.</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">Pievienot taustiņu.</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">Pievienot baitus.</string>
+  <string name="keyboard_text" tools:machine_translated="true">Nosūtāmā teksta saturs</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">Precīzas baitu vērtības (heksadecimāli)</string>
+  <string name="keyboard_character" tools:machine_translated="true">Simbols</string>
+  <string name="terminal_key_space" tools:machine_translated="true">Atstarpe</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">Numuriskās tastatūras taustiņš %1$s</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">Pogas apraksts</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">Citrus</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">Kompakti termināļa vadības elementi.</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">Pēdējā pietura</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">Ērtas termināļa vadības ierīces.</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">Nags</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">Optimizēts Claude Code rīkam.</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">Rakstnieks</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">Optimizēts Codex CLI rīku komplektam.</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">Izvēlieties tastatūras iestatījumu.</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">Klasiskā CB izkārtojuma klaviatūra</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">Pielāgot platumam</string>
+  <string name="keyboard_layer" tools:machine_translated="true">Slānis %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">Slānis %1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">Slāņu pārslēgšana</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">Slāņa galamērķis</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">Nākamā ne tukšā kārta.</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">Mērķa slānis ir tukšs.</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">Apturēt</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">Īsā vēsture</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">Režīms</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">Jauna rinda</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">Žurnāls</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">Rediģēt</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">Kopēt</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">Ielīmēt</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">Pārtraukt</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Meklēšanas vēsture</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">Pārslēdziet atļauju režīmus.</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">Ievietot jaunu rindu</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">Pārslēgt transkripcijas režīmu</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">Atvērt ārējo redaktoru.</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">Kopēt atbildi</string>
+  <string name="macro_assign" tools:machine_translated="true">Pievienot makro</string>
+  <string name="macro_import" tools:machine_translated="true">Importēt makro</string>
+  <string name="macro_export" tools:machine_translated="true">Eksportēt makro</string>
+  <string name="macro_none" tools:machine_translated="true">Nav saglabātu makrokomandu.</string>
+  <string name="automation_run_macro" tools:machine_translated="true">Izpildīt makro</string>
+  <string name="macro_choose" tools:machine_translated="true">Izvēlieties makro.</string>
+  <string name="macro_manage" tools:machine_translated="true">Pārvaldiet makrokomandas.</string>
+  <string name="keyboard_selected" tools:machine_translated="true">Izvēlēts</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">Lietotnes noklusējuma iestatījumi.</string>
+  <string name="keyboard_select" tools:machine_translated="true">Izmantojiet to.</string>
+  <string name="keyboard_change" tools:machine_translated="true">Mainīt izkārtojumu.</string>
+  <string name="keyboard_customize" tools:machine_translated="true">Pielāgot</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">Rediģēt koplietoto izkārtojumu.</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">Izmantot kā lietotnes noklusējuma iestatījumu.</string>
+  <string name="keyboard_saving" tools:machine_translated="true">Saglabāšana…</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">Pielāgots</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">Izmantojiet noklusēto tastatūru.</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">No profila “%1$s”</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">Uzlabots</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">Tastatūra: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">Automatizācija pēc pieteikšanās: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">Profils: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">Resursdators: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">Dzēst izkārtojumu “%1$s”?</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">Dzēst makro “%1$s”?</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">Šajā konfigurācijā izmantotie resursdatori un profili izmantos to noklusējuma tastatūru. Ja šī ir lietotnes noklusējuma konfigurācija, cita konfigurācija kļūst par noklusējumu.</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">Šī darbība noņem makro no koplietotās bibliotēkas.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">Atjaunot šīs izkārtojuma sākotnējās klaviatūras pogas un izmērus? Izmaiņas tiks piemērotas, kad saglabāsiet. Koplietotās makrokomandas paliks nemainīgas.</string>
+  <string name="macro_shared_title" tools:machine_translated="true">Rediģēt koplietotu makro?</string>
+  <string name="macro_shared_message" tools:machine_translated="true">Šī makro funkcija tiek izmantota citur. Izveidojiet atsevišķu kopiju vai rediģējiet koplietoto versiju, lai tā būtu piemērota visiem lietotājiem.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">Izveidot kopiju.</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">Rediģēt koplietoto makro</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">Atjauninājumu saglabāšana attiecas uz šo makro visās vietās, kur tas tiek izmantots, pat ja vēlāk nolemjat atcelt izmaiņas redaktorā.</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">Pirms šīs makro dzēšanas, noņemiet vai piešķiriet citas funkcijas šīm lietošanas instancēm.</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">Šī sesija</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">Šī ierīce ir paredzēta tikai lasīšanai. Tās tastatūru nevar mainīt.</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">Pārvaldiet izkārtojumus.</string>
+  <string name="keyboard_done" tools:machine_translated="true">Pabeigts.</string>
+  <string name="automation_draft_host" tools:machine_translated="true">Šie soļi tiks saglabāti kopā ar jauno resursdatoru.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">Saglabājiet šo serveri un pievienojiet portu pāradresācijas iestatījumus, pirms izmantojat pāradresācijas funkcijas.</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">Darbība</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">Taustiņš</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">Makrokomanda</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">Modifikators</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">Lietotnes darbība</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">Pārslēgt slāni</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">Koplietots izkārtojums: atjauninājumu saglabāšana, lai tie būtu pieejami visiem lietotājiem.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">Šī tastatūras izkārtojuma versija nav pieejama.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">Rindas un kolonnas katrā sadaļā sākas ar 0. Taustiņu augstums ir viena rinda. Kolonnas platums nosaka, cik daudz šūnu aizņem taustiņš.</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">Izskats</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">Fona krāsa</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">Teksta krāsa</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">Kontūras krāsa</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">Pēc noklusējuma lietotā tēma</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Fona caurspīdīguma līmenis: %1$d%%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">Ar apveidu</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">Apveida līnijas biezums: %1$.1f dp</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">Atjaunot izskatu.</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">Aktīvie modifikatori un slāņu pārslēgšanas elementi izmanto tēmas izceļošanas stilu.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">Uzvedība</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">Atkārtot, kamēr tiek turēta nospiesta.</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">Izmantojiet noklusējuma atkārtojuma režīmu.</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">Lietotnes iestatījums</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">Ieslēgt</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">Izslēgt</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">Haptiskā atgriezeniskā saite: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">Pievienotās klaves</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">Pārlūkojamas klaves</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">Pārvietojiet taustiņus šeit.</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">Fiksēt labajā pusē.</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">Izvēlieties izkārtojumus, pielāgojiet taustiņus un pārvaldiet makrokomandas.</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">Rediģēt izkārtojumu</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">Rediģēt taustiņu</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">Izkārtojuma iestatījumi</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">Ritināms</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">Pielāgot platumam.</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">Tastatūra</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">Pieskarieties, lai rediģētu · Turiet un velciet, lai pārvietotu.</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">Fiksētās pogas paliek klaviatūras galā (kreisajā pusē, ja izmantojat interfeisu, kur teksts lasāms no labās uz kreiso pusi).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">Pārvilciet taustiņu uz sadaļas “Pievienotie taustiņi”, lai tas vienmēr atrastos klaviatūras beigās. Pārvilciet to atpakaļ uz sadaļu “Rullējamie taustiņi”, lai noņemtu tā fiksāciju.</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">Paplašināts</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">Sakļauts.</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">Rediģēt kopiju.</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">Turpiniet rediģēt.</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">Izveido izkārtojumu programmai %1$s. Pārējie lietotāji saglabā savu pašreizējo izkārtojumu.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">Izmaiņas tiks piemērotas, kad saglabāsiet šo resursu vai profilu.</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">Šīs pogas saglabāšana atjaunina izkārtojuma versiju. Saglabājiet izkārtojumu, lai saglabātu veiktās izmaiņas.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">Izvietojums.</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">Rādīt taustiņu.</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">Fiksēts beigās.</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">Mainiet saīsni.</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">Izvēlieties, kādu darbību šī taustiņa nospiešana veic.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">Fons, teksts un kontūra.</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · Haptiskā atgriezeniskā saite: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">Nospiediet vienreiz.</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">Atkārto, kamēr poga ir nospiesta.</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">Rinda, kolonna un taustiņa platums.</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">Izmanto %1$d lietotāji.</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">Vai noņemt šo taustiņu no izkārtojuma rasējuma?</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">Piemērot izmaiņas tastatūras taustiņiem?</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">Pielietojiet šīs izmaiņas izkārtojumam vai atsakieties no tām.</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">Pielietot izmaiņas.</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">Rediģēt izkārtojumu.</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">Taustiņš vai īsceļš</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">Priekšskatījums</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">Pielāgota izvēle</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">Izmantojiet mantoto izkārtojumu.</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">Izkārtojuma darbības</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">Krāsu priekšskatījums</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">Pievienojiet taustiņu, lai aktivizētu šo slāni.</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">Izmaiņas tiks piemērotas šim terminālim, kad saglabāsiet izkārtojumu.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">Saglabājot šo izkārtojumu, tiks atjaunināti visi tā lietotāji. Varat rediģēt kopiju.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">Rediģēt koplietoto tastatūras izkārtojumu?</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">šī konfigurācija</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">Iebūvētie iestatījumi</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Iebūvētie iestatījumi paliek nemainīgi. Rediģējot, tiek izveidota jūsu personīgā kopija.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">Iebūvēta iepriekš iestatīta opcija.</string>
 </resources>

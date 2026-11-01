@@ -730,4 +730,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">לא ניתן ליצור את קיצור הדרך. אנא נסה שוב.</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">שרשרת שרתי ביניים מכילה לולאה. בדוק את הגדרות שרתי הביניים.</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">שרשרת שרתי ביניים חורגת מהמגבלה של 32 שרתים.</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">הצגת התווים המוקלדים באופן מקומי.</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">בחרו אם התוכן המוזן באמצעות המקלדת יוצג באופן מקומי. אם האפשרות מופעלת תמיד, ייתכן שהטקסט יוצג פעמיים כאשר השרת מחזיר אותו.</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">אוטומטי</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">תמיד פעיל</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">תמיד כבוי.</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">התחלת משא ומתן</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">תבצע משא ומתן על יכולות הטרמינל בעת ההתחברות, או המתן שהשרת יבקש אותן.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">נהל משא ומתן בעת ההתחברות.</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">המתן לשרת.</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">נתונים שאינם בינאריים.</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">אם השרת מסרב למצב בינארי, אפשרו שימוש בפורמט ישן של שמונה ביטים או דרשו שימוש ב-ASCII. שני הצדדים חייבים להשתמש באותו קידוד.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">אפשר שימוש בבתים ישנים של שמונה ביטים.</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">חייב להיות בפורמט ASCII.</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">סיומות שורות שהועתקו</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">מחוץ למצב בינארי, המירו את תווי המעבר לשורה שהועתקו (LF) ל-CRLF, או שמרו על תווי LF. כלל זה חל גם על טקסט אוטומטי.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">המר את תו ה-LF ל-CRLF.</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">שמור על תו ה-LF.</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">הקלט לא נשלח. חיבור זה דורש שימוש בקידוד ASCII עד שהשרת יאפשר מצב בינארי.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">לא ניתן לשלוח את הקלט לשרת Telnet זה.</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">החיבור נכשל.</string>
+  <string name="terminal_connected" tools:machine_translated="true">התחברות בוצעה בהצלחה.</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">האימות הצליח.</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">לא ניתן לפתוח סשן SSH.</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">שרת ה-SSH דחה את הבקשה לפתיחת הטרמינל.</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">שרת ה-SSH דחה את הבקשה לפתיחת מעטפת.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">פרטי החיבור</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">פרוטוקול</string>
+  <string name="connection_info_host" tools:machine_translated="true">מארח</string>
+  <string name="connection_info_port" tools:machine_translated="true">פורט</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">יציאת SSH</string>
+  <string name="connection_info_username" tools:machine_translated="true">שם משתמש</string>
+  <string name="connection_info_status" tools:machine_translated="true">מצב</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">מתחבר</string>
+  <string name="connection_info_connected" tools:machine_translated="true">מחובר</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">התחברות נותקה.</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">כתובת מקומית</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">פרטי אתחול SSH.</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">פרטי המשא ומתן של פרוטוקול SSH</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">פרטי המשא ומתן של SSH אינם זמינים.</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">חילופי מפתחות</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">מפתח מארח השרת</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">הצפנה: מהלקוח לשרת.</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">הצפנה: מהשרת ללקוח</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">שלמות: מהלקוח לשרת.</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">שלמות: מהשרת ללקוח.</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">משולב עם הצפנה.</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">חילופי מפתחות עמידים בפני התקפות מחשוב קוונטי</string>
+  <string name="connection_info_yes" tools:machine_translated="true">כן</string>
+  <string name="connection_info_no" tools:machine_translated="true">לא</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">העברת פורטים</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">מקור מוגדר.</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">יציאה מוגדרת</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">לא מוגדר.</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">סטטוס העברת הפורט</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">פעיל</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">לא פעיל.</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">כתובת יעד</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">מדיניות הצפנה</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">ברירת מחדל</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">עתידי</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">ישן</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">אלגוריתמים של תקן FIPS</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">מותאם אישית</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">אלגוריתמים וגדלי מפתח מומלצים.</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">חייב להשתמש במנגנון החלפת מפתחות עמיד בפני מחשבים קוונטיים.</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">הגבלת אלגוריתמים; לא עבר אימות FIPS.</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">אפשר שימוש באלגוריתמים ישנים יותר לצורך תאימות.</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">בחרו אלגוריתמים וגדלי מפתח מינימליים.</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">אלגוריתמים מודרניים ודרישות לגודל מפתח, כפי שמוגדרים בספריית SSH.</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">דורש החלפת מפתחות היברידית פוסט-קוונטית, מפתחות הצפנה של 256 ביט ומפתחות RSA חזקים יותר.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">מגביל את אפשרויות בחירת האלגוריתמים; אינו מבצע אימות בהתאם לתקן FIPS.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">מאפשר שימוש באלגוריתמים ישנים ובמפתחות RSA ו-DH קצרים יותר לצורך תאימות. אלגוריתמים מודרניים עדיין מועדפים.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">התאמה אישית של הגדרות ברירת המחדל. בחירת אלגוריתמים וגדלי מפתח מינימליים הם פרמטרים בלתי תלויים.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">מספר הביטים המינימלי עבור RSA.</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">מספר הביטים המינימלי של DH.</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">השתמש בהגדרות ברירת המחדל (%1$d ביטים).</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">השאירו את השדה ריק כדי להשתמש בהגדרות ברירת המחדל. החלת ההגדרה גם על אלגוריתמים שהופעלו במפורש.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">הזן לפחות 1024 ביטים. גודל DH לא יכול לעלות על 8192 ביטים.</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">אלגוריתמים להחלפת מפתחות</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">אלגוריתמי הצפנה</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">אלגוריתמים לאימות הודעות</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">אלגוריתמים למפתח מארח</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">אלגוריתמים לאימות באמצעות מפתח ציבורי.</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">מצב בחירה</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">השתמש בהגדרות ברירת המחדל</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">שנה את הגדרות ברירת המחדל</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">השתמשו רק באלה.</string>
+  <string name="crypto_apply" tools:machine_translated="true">החל</string>
+  <string name="crypto_expression" tools:machine_translated="true">ביטוי אלגוריתמי</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">שמות המופרדים בפסיקים. באפשרות \"שנה הגדרות ברירת מחדל\", הוסף לכל שם קידומת: ^ (הוסף בתחילת השם), + (הוסף בסוף השם) או - (הסר).</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">השתמשו בשמות SSH ייחודיים ובאופן בחירה אחד. רשימות מדויקות לא יכולות להיות ריקות.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">סדר העדפות בתוקף</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">לא זמין במכשיר זה; נשמר בהגדרות שלך.</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">נשלל עקב גודל המפתח המינימלי.</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">מופעל כברירת מחדל.</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">זמין; לא מופעל כברירת מחדל.</string>
+  <string name="crypto_prepend" tools:machine_translated="true">העדף את האפשרות הראשונה.</string>
+  <string name="crypto_append" tools:machine_translated="true">הוסף</string>
+  <string name="crypto_exclude" tools:machine_translated="true">החרה</string>
+  <string name="crypto_inherit" tools:machine_translated="true">השתמש בהגדרות ברירת המחדל.</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">לא מיושם בספרייה זו.</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">לא זמין עם ספקי הצפנה מותקנים.</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">קבוצת DH קטנה מהגודל המינימלי שהוגדר.</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">המפתח או האישור אינם עומדים בדרישות מדיניות RSA או מדיניות האישורים.</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">אזהרה – %1$s: %2$s: %3$s – הושמט (%4$s).</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">מדיניות הצפנה אינה מאפשרת שימוש באלגוריתמים מסוג %1$s.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">הגדרת המדיניות הקריפטוגרפית עבור %1$s נכשלה: %2$s</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">מדיניות הצפנה — %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">גדלי מפתח מינימליים</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA: %1$d ביטים; DH בשדה סופי: %2$d ביטים.</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">הצג את סדר העדפות האלגוריתמים היעיל.</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">הסתר את סדר העדפות האלגוריתמים הפעיל.</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">שנה מצב עבור %1$s.</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ העדף ראשון · + הוסף · ✓ עקוב אחר ברירת המחדל · − בטל</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">Shift (מקש)</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">טאב</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">הזן</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">מחק אחורה</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">מחק</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">הוסף</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">חץ למעלה</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">חץ מטה</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">בית</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">סוף</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">דף למעלה</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">דף למטה</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">הזנת טקסט</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">הפעל/כבה מצב הרכבה.</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">מקלדת</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">מקלדת טרמינל</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">תצורות מקלדת</string>
+  <string name="keyboard_macros" tools:machine_translated="true">מאקרואים משותפים</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">חסר מאקרו.</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">תצורה לא נתמכת.</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">הפעולה במקלדת נכשלה.</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">העבר למעלה.</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">הזז למטה.</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">הזז שמאלה.</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">הזז ימינה.</string>
+  <string name="keyboard_off" tools:machine_translated="true">כבוי</string>
+  <string name="keyboard_once" tools:machine_translated="true">המקש הבא</string>
+  <string name="keyboard_locked" tools:machine_translated="true">נעול.</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">פריסה חדשה</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">מאקרו חדש</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(העתק)</string>
+  <string name="keyboard_back" tools:machine_translated="true">חזור אחורה</string>
+  <string name="keyboard_error" tools:machine_translated="true">לא ניתן היה להחיל את השינוי: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">הוסף פריסה.</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">הוסף מאקרו</string>
+  <string name="keyboard_edit" tools:machine_translated="true">ערוך</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">כפול</string>
+  <string name="keyboard_delete" tools:machine_translated="true">מחק</string>
+  <string name="keyboard_default" tools:machine_translated="true">השתמש כברירת מחדל של האפליקציה.</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">בשימוש ב: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">אשר</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">האם להחיל את השינוי ההרסני הזה? ייתכן ששינויים ששמרתם בתצורה הנוכחית יאבדו. מאקרואים משותפים נשמרים בעת איפוס התצורה.</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">בטל</string>
+  <string name="keyboard_name" tools:machine_translated="true">שם</string>
+  <string name="keyboard_width" tools:machine_translated="true">רוחב הכפתור (בפיקסלים, לכל הכפתורים)</string>
+  <string name="keyboard_height" tools:machine_translated="true">גובה הכפתור (בפיקסלים, לכל הכפתורים)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">הקש על מקש כדי לערוך אותו. גע בו והחזק, ואז גרור כדי להזיז אותו. גרור בין החלקים כדי לקבע או לשחרר. גודל הכפתור חל על כל המקשים.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">גרור כדי לשנות את סדר הכפתורים.</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">הוסף מקש</string>
+  <string name="keyboard_visible" tools:machine_translated="true">גלוי</string>
+  <string name="keyboard_row" tools:machine_translated="true">שורה (מתחילה מ-0)</string>
+  <string name="keyboard_column" tools:machine_translated="true">עמודה (מתחיל מ-0)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">טווח שורות</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">רוחב עמודה</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">הסר מקש</string>
+  <string name="keyboard_save" tools:machine_translated="true">שמור</string>
+  <string name="keyboard_reset" tools:machine_translated="true">שחזר את הגדרות ברירת המחדל.</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">השתמש בהגדרות ברירת המחדל של האפליקציה.</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">עורך ויזואלי</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">עורך טקסט</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">פעולה אחת בכל שורה: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. הטקסט משתמש בשיטת בריחה של מחרוזות JSON.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">שלבים במאקרו</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">הוסף טקסט</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">הוסף מקש</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">הוסף בתים.</string>
+  <string name="keyboard_text" tools:machine_translated="true">טקסט לשליחה</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">ערכי הבתים המדויקים (הקסדצימליים)</string>
+  <string name="keyboard_character" tools:machine_translated="true">תו</string>
+  <string name="terminal_key_space" tools:machine_translated="true">רווח</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">מקלדת מספרית %1$s</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">תווית הכפתור</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">פרי הדר</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">פקדים קומפקטיים למסוף</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">התחנה האחרונה</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">פקדים נוחים ונגישים בממשק המשתמש</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">טופר</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">מותאם ל-Claude Code.</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">כותב</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">מותאם לשימוש עם ממשק שורת הפקודה של Codex.</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">בחר תבנית מקלדת</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">פריסת המקלדת הקלאסית של ConnectBot.</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">התאם לרוחב המסך</string>
+  <string name="keyboard_layer" tools:machine_translated="true">שכבה %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">שכבה %1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">החלפת שכבה</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">יעד השכבה</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">השכבה הבאה שאינה ריקה.</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">שכבת היעד ריקה.</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">עצור</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">היסטוריה (גרסה מקוצרת)</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">מצב</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">שורת טקסט חדשה (קיצור)</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">יומן</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">ערוך</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">העתק</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">הדבק</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">להפסיק</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">היסטוריית חיפושים</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">החלף בין מצבי ההרשאות.</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">הוסף שורה חדשה</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">הצג/הסתר תמלול</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">פתח את עורך הטקסט החיצוני.</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">העתק תגובה</string>
+  <string name="macro_assign" tools:machine_translated="true">הקצה מאקרו</string>
+  <string name="macro_import" tools:machine_translated="true">ייבא מאקרו</string>
+  <string name="macro_export" tools:machine_translated="true">ייצא מאקרו</string>
+  <string name="macro_none" tools:machine_translated="true">לא שמורים מאקרואים.</string>
+  <string name="automation_run_macro" tools:machine_translated="true">הפעל מאקרו</string>
+  <string name="macro_choose" tools:machine_translated="true">בחר מאקרו</string>
+  <string name="macro_manage" tools:machine_translated="true">נהל מאקרואים</string>
+  <string name="keyboard_selected" tools:machine_translated="true">נבחר</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">הגדרות ברירת מחדל של האפליקציה</string>
+  <string name="keyboard_select" tools:machine_translated="true">השתמש בזה.</string>
+  <string name="keyboard_change" tools:machine_translated="true">שנה פריסה</string>
+  <string name="keyboard_customize" tools:machine_translated="true">התאמה אישית</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">ערוך את הפריסה המשותפת.</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">השתמש כברירת מחדל של האפליקציה.</string>
+  <string name="keyboard_saving" tools:machine_translated="true">שמירה…</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">מותאם אישית</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">השתמש במקלדת שהוגדרה כברירת מחדל.</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">מהפרופיל \"%1$s\"</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">מתקדם</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">מקלדת: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">אוטומציה לאחר הכניסה: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">פרופיל: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">מארח: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">למחוק את הפריסה \"%1$s\"?</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">למחוק את המאקרו \"%1$s\"?</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">מארחים ופרופילים המשתמשים בתצורה זו ישתמשו במערך המקשים הקיים שלהם. אם זוהי התצורה המוגדרת כברירת מחדל באפליקציה, תצורה אחרת תהפוך לערך ברירת המחדל.</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">פעולה זו מסירה את המאקרו מהספרייה המשותפת.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">לשחזר את המיקום והגודל המקוריים של המקשים בתצורה זו? השינויים ייושמו בעת השמירה. מאקרואים משותפים יישמרו.</string>
+  <string name="macro_shared_title" tools:machine_translated="true">לערוך מאקרו משותף?</string>
+  <string name="macro_shared_message" tools:machine_translated="true">מאקרו זה נמצא בשימוש במקומות אחרים. צרו עותק נפרד, או ערכו את הגרסה המשותפת עבור כל המשתמשים שלה.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">צור עותק.</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">ערוך מאקרו משותף</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">שמירת העדכונים תשמור את המאקרו הזה בכל המקומות שבהם הוא נמצא, גם אם בהמשך תמחקו את העורך שמסביב.</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">הסר או שנה את השימושים הללו לפני מחיקת המאקרו.</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">בסשן זה.</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">מכשיר זה מוגדר למצב קריאה בלבד. לא ניתן לשנות את הגדרות המקלדת שלו.</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">נהל פריסות</string>
+  <string name="keyboard_done" tools:machine_translated="true">הושלם.</string>
+  <string name="automation_draft_host" tools:machine_translated="true">השלבים האלה יישמרו יחד עם המארח החדש.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">שמרו את המארח הזה והוסיפו העברת פורטים לפני השימוש בפעולות העברה.</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">פעולה</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">מפתח</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">מאקרו</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">משנה פעולה</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">פעולה באפליקציה</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">החלף שכבה</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">פריסת מסך משותפת: שמירת עדכונים לכל המשתמשים.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">פריסת המקלדת הזו אינה זמינה.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">שורות ועמודות מתחילות ב-0 בכל חלק. גובה כל מקש הוא שורה אחת. טווח העמודות קובע כמה תאים תופס מקש.</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">מראה חיצוני</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">צבע רקע</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">צבע הטקסט</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">צבע קו המתאר</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">ערך ברירת מחדל לנושא</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">שקיפות הרקע: %1$d%%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">מסומן</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">עובי המסגרת: %1$.1f יחידות עצמאיות לצפיפות.</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">אפס הגדרות מראה</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">שינויים פעילים ומעברי שכבות משתמשים בעיצוב הויזואלי של הנושא.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">התנהגות</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">חזור על הפעולה כל עוד המקש לחוץ.</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">השתמש בהגדרות ברירת המחדל של חזרה על פעולה.</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">הגדרות האפליקציה</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">מופעל</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">כבוי</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">משוב מגע: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">מקשים נעוצים</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">מפתחות ניתנים לגלילה</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">גררו את המקשים לכאן.</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">הצמד לימין.</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">בחרו פריסות, התאימו אישית את המקשים ונהלו מאקרואים.</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">ערוך פריסה</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">ערוך כותרת מקש</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">הגדרות פריסת המקלדת</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">ניתן לגלול</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">התאמה לרוחב</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">מקלדת</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">הקש כדי לערוך · לחץ והחזק תוך כדי גרירה כדי להזיז</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">הלחצנים המקובעים נשארים בקצה המקלדת (בצד שמאל בממשקים מימין לשמאל).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">גררו מקש לאזור \"מקשים מועדפים\" כדי לשמור עליו בסוף המקלדת. גררו אותו בחזרה לאזור \"מקשים ניתנים לגלילה\" כדי להסיר אותו מרשימת המועדפים.</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">הורחב</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">מצומצם</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">ערוך עותק</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">המשך בעריכה.</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">יוצר תבנית פריסה עבור %1$s. משתמשים אחרים ישמרו את תבנית הפריסה הנוכחית שלהם.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">השינויים ייכנסו לתוקף כאשר תשמור את המארח או הפרופיל הזה.</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">שמירת הגדרת המקש הזו תעדכן את הטיוטה של הפריסה. שמרו את הפריסה כדי לשמור על השינויים שלכם.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">מיקום</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">הצג מקש</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">מוצמד בסוף.</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">שנה קיצור דרך</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">בחרו איזו פעולה יבצע המקש כאשר הוא נלחץ.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">רקע, טקסט וקו מתאר.</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · משוב מגע: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">לחץ פעם אחת.</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">חוזר על עצמו כל עוד המשתמש לוחץ.</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">שורה, עמודה ורוחב מקש</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">בשימוש על ידי %1$d</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">האם להסיר את המקש הזה מטיוטת הפריסה?</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">האם ליישם את השינויים במקשים?</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">החל את השינויים האלה על הפריסה, או בטל אותם.</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">החל את השינויים.</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">ערוך את הפריסה</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">מקלדת או קיצור מקלדת</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">תצוגה מקדימה</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">בחירה מותאמת אישית</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">השתמש בתבנית ברירת המחדל</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">פעולות פריסה</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">תצוגה מקדימה של הצבע</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">הוסף מקש כדי להתחיל את השכבה הזו.</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">השינויים יחולו על הטרמינל הנוכחי כאשר תשמורו את הפריסה.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">שמירת תבנית המקלדת הזו תעדכן את כל המשתמשים בה. אפשר לערוך עותק במקום זאת.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">לערוך את הפריסה המשותפת?</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">הגדרות אלה</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">תבניות מובנות</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">הגדרות ברירת המחדל המובנות נשארות ללא שינוי. עריכה יוצרת עותק אישי משלך.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">הגדרת ברירת מחדל מובנית</string>
 </resources>

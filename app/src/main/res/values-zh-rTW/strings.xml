@@ -726,4 +726,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">無法建立捷徑。請再次嘗試。</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">跳板主機鏈中存在迴圈。請檢查跳板主機的設定。</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">連線所需的跳板主機鏈長度已超過 32 個主機的限制。</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">本機回顯</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">選擇是否要在本機顯示輸入的文字。如果總是啟用此功能，可能會導致文字重複顯示，因為伺服器也會回顯文字。</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">自動</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">始終啟用</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">始終關閉</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">啟動協商程序</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">在建立連線時，協商終端機的功能，或者等待伺服器要求這些功能。</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">連線時進行協商。</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">等待伺服器回應。</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">非二進位資料</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">如果伺服器拒絕二進位模式，則允許使用舊版的八位元位元組，或強制使用 ASCII 編碼。兩端都必須使用相同的編碼方式。</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">允許使用舊版八位元位元組。</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">要求使用 ASCII 字元。</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">已貼上的行尾字元</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">在非二進位模式下，將貼上的 LF 字元轉換為 CRLF，或保留 LF 字元。此設定也適用於自動化文字。</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">將 LF 轉換為 CRLF。</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">保留 LF。</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">輸入內容未傳送。此連線要求使用 ASCII 格式，直到伺服器啟用二進位模式為止。</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">無法將輸入傳送到這個 Telnet 伺服器。</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">連線失敗。</string>
+  <string name="terminal_connected" tools:machine_translated="true">已連線。</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">驗證成功。</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">無法開啟 SSH 連線。</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">SSH 伺服器拒絕了終端機請求。</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">SSH 伺服器拒絕了啟動互動式 Shell 的請求。</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">連線資訊</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">通訊協定</string>
+  <string name="connection_info_host" tools:machine_translated="true">主機名稱</string>
+  <string name="connection_info_port" tools:machine_translated="true">連接埠</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">SSH 連接埠</string>
+  <string name="connection_info_username" tools:machine_translated="true">使用者名稱</string>
+  <string name="connection_info_status" tools:machine_translated="true">狀態</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">正在連線中。</string>
+  <string name="connection_info_connected" tools:machine_translated="true">已連線</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">已斷線。</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">本機位址</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">用於啟動 Mosh 的初始 SSH 協商詳細資訊（而非目前已建立的 Mosh 連線）。</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">SSH 協商細節</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">目前無法取得 SSH 協商的詳細資訊。</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">金鑰交換</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">伺服器主機金鑰</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">加密：從用戶端到伺服器</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">加密：從伺服器到用戶端</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">完整性：從用戶端到伺服器</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">完整性：從伺服器到用戶端</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">已整合加密功能。</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">後量子密鑰交換</string>
+  <string name="connection_info_yes" tools:machine_translated="true">是。</string>
+  <string name="connection_info_no" tools:machine_translated="true">沒有</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">轉發埠口</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">已設定來源。</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">已繫結的埠口</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">未繫結。</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">轉發狀態</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">已啟用。</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">已停止運作。</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">目的地</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">加密策略</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">預設</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">未來</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">舊版</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">FIPS 演算法</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">自訂</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">建議的演算法和金鑰大小。</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">要求使用後量子密鑰交換。</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">限制使用的演算法；未通過 FIPS 驗證。</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">允許使用較舊的演算法以確保相容性。</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">選擇演算法和最小金鑰大小。</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">SSH 函式庫所維護的現代演算法和金鑰大小需求。</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">需要使用後量子混合式金鑰交換、256 位元加密金鑰，以及更強的 RSA 金鑰。</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">限制演算法選項；不建立 FIPS 驗證。</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">允許使用較舊的演算法，以及較小的 RSA 和 DH 金鑰，以確保相容性。現代演算法仍然是首選。</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">自訂預設值。演算法選擇和金鑰大小的最小值是彼此獨立的。</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">RSA 最小位數</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">最小 DH 位數</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">繼承預設值 (%1$d 位元)</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">若要採用預設值，請將此欄位留空。即使是已明確啟用過的演算法，也會套用此設定。</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">請輸入至少 1024 位元。DH 的位元數不得超過 8192 位元。</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">金鑰交換演算法</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">密碼演算法</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">訊息驗證演算法</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">主機金鑰演算法</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">公鑰驗證演算法</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">選擇模式</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">繼承預設值</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">修改預設值</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">僅使用這些。</string>
+  <string name="crypto_apply" tools:machine_translated="true">應用</string>
+  <string name="crypto_expression" tools:machine_translated="true">演算法表達式</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">以逗號分隔的名稱。在「修改預設值」中，請在每個名稱前加上 ^（優先）、+（附加）或 -（排除）。</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">請使用獨特的 SSH 名稱，並選擇一種模式。精確的清單不得為空。</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">生效的偏好順序</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">此裝置上無法使用；已保留於您的設定中。</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">因金鑰大小未達最低要求而被排除。</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">已啟用，為預設設定。</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">已啟用；未在預設設定中啟用。</string>
+  <string name="crypto_prepend" tools:machine_translated="true">優先選擇第一個</string>
+  <string name="crypto_append" tools:machine_translated="true">附加</string>
+  <string name="crypto_exclude" tools:machine_translated="true">排除</string>
+  <string name="crypto_inherit" tools:machine_translated="true">沿用預設值</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">此函式庫尚未實作。</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">由於已安裝的加密服務提供者，目前無法使用。</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">DH 群組小於已設定的最小值。</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">金鑰或憑證不符合 RSA 或憑證策略的要求。</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">警告 — %1$s：%2$s：%3$s 已跳過（%4$s）。</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">加密策略設定中，沒有可用的 %1$s。</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">密碼學策略在 %1$s 上失敗：%2$s</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">加密策略 — %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">最小金鑰大小</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA：%1$d 位元；有限域 DH：%2$d 位元</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">顯示有效的偏好順序</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">隱藏已生效的偏好順序</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">變更 %1$s 的狀態。</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ 優先採用第一個 · + 新增 · ✓ 遵循預設值 · − 排除</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">Alt 鍵</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">Shift 鍵</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">Tab 鍵</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">輸入</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">刪除鍵</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">刪除</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">插入</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">↑</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">↓</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">「主頁」</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">結束</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">頁面向上</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">頁面向下</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">文字輸入</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">組合鍵</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">鍵盤</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">終端機鍵盤</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">鍵盤配置</string>
+  <string name="keyboard_macros" tools:machine_translated="true">共享的巨集</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">缺少巨集。</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">不支援的設定。</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">鍵盤操作失敗。</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">向上移動</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">向下移動</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">向左移動</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">向右移動</string>
+  <string name="keyboard_off" tools:machine_translated="true">關閉</string>
+  <string name="keyboard_once" tools:machine_translated="true">下一個按鍵</string>
+  <string name="keyboard_locked" tools:machine_translated="true">已鎖定。</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">新的配置</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">新增巨集</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">（複製）</string>
+  <string name="keyboard_back" tools:machine_translated="true">返回</string>
+  <string name="keyboard_error" tools:machine_translated="true">無法套用變更：%1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">新增配置</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">新增巨集</string>
+  <string name="keyboard_edit" tools:machine_translated="true">編輯</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">重複</string>
+  <string name="keyboard_delete" tools:machine_translated="true">刪除</string>
+  <string name="keyboard_default" tools:machine_translated="true">將此設定設為應用程式的預設值。</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">用於：%1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">確認</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">是否套用此具破壞性的變更？已儲存的版面配置編輯可能會遺失。重設版面配置時，共用巨集會保留不變。</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">取消</string>
+  <string name="keyboard_name" tools:machine_translated="true">名稱</string>
+  <string name="keyboard_width" tools:machine_translated="true">按鈕寬度（dp，所有按鈕）</string>
+  <string name="keyboard_height" tools:machine_translated="true">按鈕高度（dp，所有按鈕）</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">點擊一個按鍵即可編輯。輕觸並長按，然後拖曳以移動它。在不同區域之間拖曳，即可固定或取消固定。按鈕大小適用於每個按鍵。</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">拖曳以重新排列按鈕</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">新增按鍵</string>
+  <string name="keyboard_visible" tools:machine_translated="true">可見</string>
+  <string name="keyboard_row" tools:machine_translated="true">列（從 0 開始）</string>
+  <string name="keyboard_column" tools:machine_translated="true">欄位（從 0 開始）</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">列跨度</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">欄寬</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">移除按鈕</string>
+  <string name="keyboard_save" tools:machine_translated="true">儲存</string>
+  <string name="keyboard_reset" tools:machine_translated="true">恢復預設值</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">使用應用程式的預設設定。</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">視覺編輯器</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">文字編輯器</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">每行一個動作：key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41。文字使用 JSON 字串轉義。</string>
+  <string name="keyboard_steps" tools:machine_translated="true">巨集步驟</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">新增文字</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">新增按鍵</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">新增位元組</string>
+  <string name="keyboard_text" tools:machine_translated="true">要傳送的文字</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">精確的位元組（十六進位）</string>
+  <string name="keyboard_character" tools:machine_translated="true">字元</string>
+  <string name="terminal_key_space" tools:machine_translated="true">空格</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">數字鍵盤：%1$s</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">按鈕標籤</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">柑橘類</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">精簡的終端控制功能</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">最後一站</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">寬敞的終端控制介面</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">爪子</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">已針對 Claude Code 進行優化。</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">速記</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">針對 Codex CLI 進行優化。</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">選擇鍵盤預設設定</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">經典 CB</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">調整寬度以適應螢幕</string>
+  <string name="keyboard_layer" tools:machine_translated="true">圖層 %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">第 %1$d 層</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">切換鍵盤層級</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">圖層目標</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">下一個非空的鍵盤層</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">目標圖層為空。</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">停止</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">歷程</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">模式</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">新行</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">記錄</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">編輯</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">複製</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">貼上</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s（%2$s）</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">中斷</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">搜尋瀏覽紀錄</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">切換權限模式</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">插入新行</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">切換字幕</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">開啟外部編輯器</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">複製回覆</string>
+  <string name="macro_assign" tools:machine_translated="true">指定巨集</string>
+  <string name="macro_import" tools:machine_translated="true">匯入巨集</string>
+  <string name="macro_export" tools:machine_translated="true">匯出巨集</string>
+  <string name="macro_none" tools:machine_translated="true">沒有已儲存的巨集。</string>
+  <string name="automation_run_macro" tools:machine_translated="true">執行巨集</string>
+  <string name="macro_choose" tools:machine_translated="true">選擇巨集</string>
+  <string name="macro_manage" tools:machine_translated="true">管理巨集。</string>
+  <string name="keyboard_selected" tools:machine_translated="true">已選取</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">應用程式預設值</string>
+  <string name="keyboard_select" tools:machine_translated="true">使用這個</string>
+  <string name="keyboard_change" tools:machine_translated="true">變更佈局</string>
+  <string name="keyboard_customize" tools:machine_translated="true">自訂</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">編輯共用版面配置</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">將此設定設為應用程式的預設值。</string>
+  <string name="keyboard_saving" tools:machine_translated="true">正在儲存……</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">自訂</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">使用繼承的鍵盤。</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">來自設定檔「%1$s」</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">進階</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">鍵盤：%1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">登入後自動化：%1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">設定檔：%1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">主機：%1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">刪除佈局「%1$s」？</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">刪除巨集「%1$s」？</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">使用此佈局的裝置和設定檔將改用其繼承的鍵盤佈局。如果這是應用程式的預設值，則會將另一個佈局設定為預設值。</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">這會從共用函式庫中移除巨集。</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">是否要恢復此佈局的原始按鍵配置和尺寸？變更將在您儲存時生效。共享的巨集將會保留。</string>
+  <string name="macro_shared_title" tools:machine_translated="true">編輯一個共享的巨集？</string>
+  <string name="macro_shared_message" tools:machine_translated="true">這個巨集已在其他地方使用。請製作一份獨立的副本，或編輯共享版本，以便所有使用者都能使用。</string>
+  <string name="macro_make_copy" tools:machine_translated="true">製作副本</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">編輯共用的巨集</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">正在儲存此巨集的所有更新，無論它在哪裡被使用，即使之後您捨棄了周圍的編輯器。</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">在刪除此巨集之前，請移除或重新指定這些巨集的使用方式。</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">這個會話。</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">此主機為唯讀模式。無法變更其鍵盤設定。</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">管理版面配置</string>
+  <string name="keyboard_done" tools:machine_translated="true">完成。</string>
+  <string name="automation_draft_host" tools:machine_translated="true">這些步驟將會與新的主機一起儲存。</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">儲存此主機，並在執行轉發動作之前新增端口轉發設定。</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">動作</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">按鍵</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">巨集</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">修飾詞</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">應用程式動作</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">切換圖層</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">共享佈局：儲存更新，讓所有使用者都能使用。</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">這個鍵盤配置目前無法使用。</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">在每個區段中，列和欄從 0 開始。每個按鍵的高度為一列。欄寬設定決定按鍵佔據多少個儲存格。</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">外觀</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">背景顏色</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">文字顏色</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">輪廓顏色</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s：%2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">預設主題</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">背景透明度：%1$d%%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">已繪製外框</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">輪廓線粗細：%1$.1f dp</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">重設外觀。</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">目前選取的修改器和圖層切換功能會使用主題醒目顯示效果。</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">行為</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">按住時重複執行</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">使用預設的重複行為。</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">應用程式設定</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">開啟</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">關閉</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">觸覺回饋：%1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">已固定按鍵</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">可滾動的按鍵</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">將按鍵拖曳到這裡</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">固定在右側</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">選擇佈局、自訂按鍵，以及管理巨集。</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">編輯佈局</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">編輯按鍵</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">版面配置設定</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">可滾動</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">調整寬度</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">鍵盤</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">點擊以編輯 · 按住並拖曳以移動</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">已固定按鍵會停留在鍵盤的末端（在從右到左的介面中，則停留在左側）。</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">將按鍵拖曳到「固定按鍵」區域，以將其固定在鍵盤的末端。將其拖曳回「可捲動按鍵」區域，以取消固定。</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">擴展</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">已收合</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">編輯副本</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">繼續編輯。</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">為 %1$s 建立一個新的配置。其他使用者將繼續使用他們目前的配置。</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">變更將在您儲存此主機或設定檔時生效。</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">儲存此按鍵會更新版面配置草稿。請儲存版面配置以保留您的變更。</string>
+  <string name="keyboard_placement" tools:machine_translated="true">擺放位置</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">顯示按鍵</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">固定在末端</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">變更快捷鍵</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">選擇按下此按鍵時，它應該執行什麼動作。</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">背景、文字和輪廓。</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · 觸覺回饋：%2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">按一下</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">持續按住時會重複執行。</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">列、欄和按鍵寬度</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">由 %1$d 人使用。</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">從佈局草稿中移除這個按鍵嗎？</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">套用按鍵變更？</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">將這些變更套用到佈局中，或捨棄這些變更。</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">套用變更</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">編輯佈局</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">按鍵或快捷鍵</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">預覽</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">自訂選項</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">使用繼承的佈局。</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">版面配置動作</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">顏色預覽</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">新增一個按鍵以啟動此層。</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">當您儲存版面配置時，變更將會套用到這個終端機。</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">儲存此佈局會更新所有使用者的設定。您可以編輯副本。</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">編輯共用佈局？</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">此設定</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">內建範本</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">內建的預設設定不會變更。編輯時會建立您自己的副本。</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">內建預設值</string>
 </resources>

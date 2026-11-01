@@ -726,4 +726,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">바로 가기를 생성할 수 없습니다. 다시 시도해 주세요.</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">점프 호스트 체인에 순환이 존재합니다. 점프 호스트 설정을 확인하세요.</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">점프 호스트 연결 수가 32개를 초과했습니다.</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">로컬 에코</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">입력한 내용이 로컬에서 표시될지 여부를 선택합니다. 항상 켜 놓으면 서버에서 에코를 보낼 때 텍스트가 중복되어 표시될 수 있습니다.</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">자동</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">항상 켜기</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">항상 끔.</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">협상 시작</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">연결 시 터미널 기능을 협상하거나 서버가 해당 기능을 요청할 때까지 기다립니다.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">연결 시 협상</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">서버 응답을 기다립니다.</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">이진 데이터가 아닌 데이터</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">서버가 바이너리 모드를 지원하지 않으면, 이전 버전의 8비트 바이트를 사용하거나 ASCII를 사용하도록 허용합니다. 양쪽 모두 동일한 인코딩을 사용해야 합니다.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">기존 8비트 바이트 허용</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">ASCII 사용 필수</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">붙여넣은 줄의 줄 바꿈 처리</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">바이너리 모드 외에는 붙여넣은 LF를 CRLF로 변환하거나 LF를 그대로 유지합니다. 또한 자동화 텍스트에도 적용됩니다.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">LF를 CRLF로 변환합니다.</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">LF 유지</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">입력이 전송되지 않았습니다. 이 연결은 서버가 바이너리 모드를 활성화할 때까지 ASCII를 사용해야 합니다.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">입력을 해당 Telnet 서버로 보낼 수 없습니다.</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">연결에 실패했습니다.</string>
+  <string name="terminal_connected" tools:machine_translated="true">연결되었습니다.</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">인증에 성공했습니다.</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">SSH 세션을 열 수 없습니다.</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">SSH 서버가 터미널 요청을 거부했습니다.</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">SSH 서버가 셸 요청을 거부했습니다.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">연결 정보</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">프로토콜</string>
+  <string name="connection_info_host" tools:machine_translated="true">호스트</string>
+  <string name="connection_info_port" tools:machine_translated="true">포트</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">SSH 포트</string>
+  <string name="connection_info_username" tools:machine_translated="true">사용자 이름</string>
+  <string name="connection_info_status" tools:machine_translated="true">상태</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">연결 중</string>
+  <string name="connection_info_connected" tools:machine_translated="true">연결됨</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">연결이 끊어졌습니다.</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">로컬 주소</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">Mosh를 시작하는 데 사용되는 초기 SSH 협상 세부 정보</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">SSH 연결을 통해 협상된 알고리즘 정보</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">SSH 연결 정보가 없습니다.</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">키 교환</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">서버 호스트 키</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">암호화: 클라이언트에서 서버로</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">암호화: 서버에서 클라이언트로</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">무결성: 클라이언트에서 서버로</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">무결성: 서버에서 클라이언트로</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">암호화와 통합됨</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">양자 내성 키 교환</string>
+  <string name="connection_info_yes" tools:machine_translated="true">네</string>
+  <string name="connection_info_no" tools:machine_translated="true">아니요</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">포트 포워딩</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">소스 구성 완료.</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">할당된 포트</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">연결되지 않음</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">포트 포워딩 상태</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">활성 상태</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">비활성 상태</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">대상 주소</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">암호화 정책</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">기본값</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">향후</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">기존 방식</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">FIPS 알고리즘</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">사용자 지정</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">권장되는 알고리즘 및 키 크기</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">양자 내성 키 교환을 필수로 설정합니다.</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">알고리즘 사용을 제한합니다. FIPS 인증을 받지 않았습니다.</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">호환성을 위해 이전 버전의 알고리즘 사용 허용</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">알고리즘과 최소 키 크기를 선택하세요.</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">SSH 라이브러리에서 사용하는 최신 알고리즘 및 키 크기 요구 사항입니다.</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">양자 내성 하이브리드 키 교환, 256비트 암호화 키, 그리고 더 강력한 RSA 키가 필요합니다.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">알고리즘 선택을 제한하며, FIPS 검증을 설정하지 않습니다.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">호환성을 위해 이전 버전의 알고리즘과 더 작은 RSA 및 DH 키를 사용할 수 있습니다. 최신 알고리즘을 사용하는 것이 좋습니다.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">기본 설정을 사용자 지정합니다. 알고리즘 선택 및 최소 키 크기는 서로 독립적으로 설정됩니다.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">최소 RSA 비트 수</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">최소 DH 비트 수</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">기본값 상속(%1$d 비트)</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">비워두면 기본 설정을 따릅니다. 명시적으로 활성화된 알고리즘에도 적용됩니다.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">최소 1024비트를 입력하세요. DH 값은 8192비트를 초과할 수 없습니다.</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">키 교환 알고리즘</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">암호 알고리즘</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">메시지 인증 알고리즘</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">호스트 키 알고리즘</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">공개 키 인증 알고리즘</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">선택 모드</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">기본 설정을 상속합니다.</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">기본값 수정</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">이것들만 사용하세요.</string>
+  <string name="crypto_apply" tools:machine_translated="true">적용</string>
+  <string name="crypto_expression" tools:machine_translated="true">알고리즘 표현</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">쉼표로 구분된 이름입니다. ‘기본값 수정’에서 각 이름 앞에 ^(처음), +(추가), 또는 -(제외)를 붙입니다.</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">고유한 SSH 이름을 사용하고 하나의 선택 모드를 선택하세요. 정확한 목록은 비어 있을 수 없습니다.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">유효한 우선순위 목록</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">이 장치에서는 사용할 수 없습니다. 현재 설정에 유지됩니다.</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">최소 키 크기 제한으로 인해 제외되었습니다.</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">기본 설정에서 활성화됨</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">사용 가능; 기본 설정에서는 활성화되지 않음</string>
+  <string name="crypto_prepend" tools:machine_translated="true">우선적으로 사용</string>
+  <string name="crypto_append" tools:machine_translated="true">추가</string>
+  <string name="crypto_exclude" tools:machine_translated="true">제외</string>
+  <string name="crypto_inherit" tools:machine_translated="true">기본 설정 따르기</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">이 라이브러리에서는 지원하지 않습니다.</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">설치된 암호화 공급자를 사용할 수 없습니다.</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">DH 그룹의 크기가 구성된 최소값보다 작습니다.</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">키 또는 인증서가 RSA 또는 인증서 정책을 충족하지 않습니다.</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">경고 — %1$s: %2$s: %3$s가 건너뛰었습니다(%4$s).</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">암호화 정책으로 인해 사용 가능한 %1$s가 없습니다.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">%1$s에 대한 암호화 정책이 실패했습니다: %2$s</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">암호화 정책 — %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">최소 키 크기</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA: %1$d비트; 유한 필드 DH: %2$d비트</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">알고리즘 목록 위에 있는 버튼을 클릭하면, 실제로 적용된 알고리즘 우선순위 목록이 표시됩니다.</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">알고리즘 목록 위에 있는 버튼으로, 적용된 알고리즘 우선순위 목록을 접어 숨깁니다.</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">%1$s의 상태 변경</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ 우선 적용 · + 추가 · ✓ 기본 설정 따름 · − 제외</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">Alt 키</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">Shift 키</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">Esc 키</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">탭</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">Enter 키</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">백스페이스</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">삭제</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">삽입</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">위쪽 화살표 키</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">아래 화살표</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">홈</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">종료</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">페이지 위로</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">페이지 아래로</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">텍스트 입력</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">합성</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">키보드</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">터미널 키보드</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">키보드 레이아웃</string>
+  <string name="keyboard_macros" tools:machine_translated="true">공유 매크로</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">매크로가 없습니다.</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">지원되지 않는 구성</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">키보드 작동에 실패했습니다.</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">위로 이동</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">아래로 이동</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">왼쪽으로 이동</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">오른쪽으로 이동</string>
+  <string name="keyboard_off" tools:machine_translated="true">끔</string>
+  <string name="keyboard_once" tools:machine_translated="true">다음 키</string>
+  <string name="keyboard_locked" tools:machine_translated="true">잠김</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">새 레이아웃</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">새 매크로</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(복사)</string>
+  <string name="keyboard_back" tools:machine_translated="true">뒤로</string>
+  <string name="keyboard_error" tools:machine_translated="true">변경 사항을 적용할 수 없습니다: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">레이아웃 추가</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">매크로 추가</string>
+  <string name="keyboard_edit" tools:machine_translated="true">수정</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">중복</string>
+  <string name="keyboard_delete" tools:machine_translated="true">삭제</string>
+  <string name="keyboard_default" tools:machine_translated="true">앱 기본 설정으로 사용</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">사용 위치: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">확인합니다.</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">이러한 변경 사항을 적용하시겠습니까? 저장된 레이아웃 편집 내용이 손실될 수 있습니다. 레이아웃을 재설정할 때 공유 매크로는 유지됩니다.</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">취소</string>
+  <string name="keyboard_name" tools:machine_translated="true">이름</string>
+  <string name="keyboard_width" tools:machine_translated="true">버튼 너비(dp, 모든 버튼)</string>
+  <string name="keyboard_height" tools:machine_translated="true">버튼 높이(dp, 모든 버튼)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">키를 탭하여 편집합니다. 키를 누른 상태에서 드래그하여 이동합니다. 섹션 사이를 드래그하여 고정하거나 고정 해제합니다. 버튼 크기는 모든 키에 적용됩니다.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">버튼 순서를 변경하려면 드래그하세요.</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">키 추가</string>
+  <string name="keyboard_visible" tools:machine_translated="true">보이는 상태</string>
+  <string name="keyboard_row" tools:machine_translated="true">행(0부터 시작)</string>
+  <string name="keyboard_column" tools:machine_translated="true">열(0부터 시작)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">행 범위</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">열 너비</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">키 제거</string>
+  <string name="keyboard_save" tools:machine_translated="true">저장</string>
+  <string name="keyboard_reset" tools:machine_translated="true">기본 설정으로 복원</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">앱 기본 설정 사용</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">시각 편집기</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">텍스트 편집기</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">각 줄에 하나의 동작을 지정합니다. key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. 텍스트는 JSON 문자열 이스케이프를 사용합니다.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">매크로 단계</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">텍스트 추가</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">키 추가</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">바이트 추가</string>
+  <string name="keyboard_text" tools:machine_translated="true">보낼 텍스트</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">정확한 바이트(16진수)</string>
+  <string name="keyboard_character" tools:machine_translated="true">문자</string>
+  <string name="terminal_key_space" tools:machine_translated="true">스페이스</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">키패드 %1$s</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">버튼 텍스트</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">시트러스</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">컴팩트 터미널 컨트롤</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">최종 목적지</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">넓고 사용하기 편리한 터미널 컨트롤</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">클로</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">Claude Code에 최적화됨</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">스크라이브</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">Codex CLI에 최적화됨</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">키보드 프리셋을 선택하세요.</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">기본 CB</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">화면 너비에 맞게 조정</string>
+  <string name="keyboard_layer" tools:machine_translated="true">레이어 %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">L%1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">레이어 변경</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">레이어 대상 위치</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">다음으로 비어 있지 않은 레이어</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">대상 레이어가 비어 있습니다.</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">중지</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">히스토리</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">모드</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">새 줄</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">기록</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">편집</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">복사</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">붙여넣기</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">중단</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">검색 기록</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">권한 모드 순환</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">새 줄 삽입</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">자막 표시/숨기기</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">외부 편집기 열기</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">응답 복사</string>
+  <string name="macro_assign" tools:machine_translated="true">매크로 지정</string>
+  <string name="macro_import" tools:machine_translated="true">매크로 가져오기</string>
+  <string name="macro_export" tools:machine_translated="true">매크로 내보내기</string>
+  <string name="macro_none" tools:machine_translated="true">저장된 매크로가 없습니다.</string>
+  <string name="automation_run_macro" tools:machine_translated="true">매크로 실행</string>
+  <string name="macro_choose" tools:machine_translated="true">매크로 선택</string>
+  <string name="macro_manage" tools:machine_translated="true">매크로 관리</string>
+  <string name="keyboard_selected" tools:machine_translated="true">선택됨</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">앱 기본 설정</string>
+  <string name="keyboard_select" tools:machine_translated="true">이것을 사용하세요.</string>
+  <string name="keyboard_change" tools:machine_translated="true">레이아웃 변경</string>
+  <string name="keyboard_customize" tools:machine_translated="true">사용자 지정</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">공유 레이아웃 편집</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">앱 기본 설정으로 사용</string>
+  <string name="keyboard_saving" tools:machine_translated="true">저장 중…</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">사용자 지정</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">상속된 키보드 사용</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">프로필 “%1$s”에서</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">고급</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">키보드: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">로그인 후 자동화: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">프로필: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">호스트: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">레이아웃 “%1$s”를 삭제하시겠습니까?</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">매크로 “%1$s”를 삭제하시겠습니까?</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">이 레이아웃을 사용하는 호스트와 프로필은 대신 기본 키보드를 사용합니다. 이 설정이 앱의 기본 설정인 경우 다른 레이아웃이 기본 설정이 됩니다.</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">이렇게 하면 공유 라이브러리에서 매크로가 제거됩니다.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">이 레이아웃의 원래 키와 크기로 되돌릴까요? 변경 사항은 저장할 때 적용됩니다. 공유 매크로는 유지됩니다.</string>
+  <string name="macro_shared_title" tools:machine_translated="true">공유된 매크로를 편집하시겠습니까?</string>
+  <string name="macro_shared_message" tools:machine_translated="true">이 매크로는 다른 곳에서도 사용됩니다. 별도의 복사본을 만들거나, 모든 사용자를 위해 공유 버전을 편집하세요.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">복사본 만들기</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">공유된 매크로 편집</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">이 매크로를 사용하는 모든 곳에 업데이트 내용을 저장하며, 나중에 주변 편집기를 삭제하더라도 저장된 내용은 유지됩니다.</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">이 매크로를 삭제하기 전에 먼저 해당 매크로의 사용 항목을 제거하거나 재할당하세요.</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">이 세션</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">이 호스트는 읽기 전용으로 설정되어 있습니다. 키보드를 변경할 수 없습니다.</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">레이아웃 관리</string>
+  <string name="keyboard_done" tools:machine_translated="true">완료되었습니다.</string>
+  <string name="automation_draft_host" tools:machine_translated="true">이 단계들은 새 호스트에 저장됩니다.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">이 호스트를 저장하고 포트 포워딩을 추가한 후 포워딩 작업을 사용하세요.</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">작업</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">키</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">매크로</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">수정자</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">앱 작업</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">레이어 전환</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">공유 레이아웃: 업데이트 내용을 저장하여 사용하는 모든 사용자가 활용할 수 있습니다.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">이 키보드 레이아웃을 사용할 수 없습니다.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">각 섹션 내에서 행과 열은 0부터 시작합니다. 키는 한 행의 높이를 가집니다. 열 너비는 키가 차지하는 셀의 개수를 설정합니다.</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">모양</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">배경색</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">텍스트 색상</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">테두리 색상</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">기본 테마</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">배경 투명도: %1$d%%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">테두리 표시</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">테두리 두께: %1$.1f dp</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">모양 초기화</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">활성화된 수정자 및 레이어 전환 기능은 테마 강조 효과를 사용합니다.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">동작</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">버튼을 누르고 있는 동안 반복</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">기본 반복 동작 사용</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">앱 설정</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">켜짐</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">끄기</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">햅틱 피드백: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">고정된 키</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">스크롤 가능한 키</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">키를 이곳으로 드래그하세요.</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">오른쪽에 고정</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">레이아웃을 선택하고, 키를 사용자 지정하고, 매크로를 관리하세요.</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">레이아웃 편집</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">키 수정</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">레이아웃 설정</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">스크롤 가능</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">너비에 맞게 조정</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">키보드</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">탭하여 편집 · 누른 상태에서 드래그하여 이동</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">고정된 키는 키보드의 끝에 위치합니다(오른쪽에서 왼쪽으로 읽는 인터페이스에서는 왼쪽에 위치).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">키를 ‘고정된 키’ 영역으로 드래그하여 키보드 맨 끝에 고정합니다. ‘고정된 키’ 영역에서 다시 ‘스크롤 가능한 키’ 영역으로 드래그하면 고정이 해제됩니다.</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">확장됨</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">접힘</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">내용 수정</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">계속 편집하세요.</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">%1$s에 대한 레이아웃을 새로 만듭니다. 다른 사용자는 현재 레이아웃을 유지합니다.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">변경 사항은 이 호스트 또는 프로필을 저장할 때 적용됩니다.</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">이 키를 저장하면 레이아웃 초안이 업데이트됩니다. 변경 사항을 유지하려면 레이아웃을 저장하세요.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">배치</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">키 표시</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">맨 끝에 고정됨</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">바로 가기 변경</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">이 키를 눌렀을 때 수행할 작업을 선택하세요.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">배경, 텍스트, 윤곽선</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · 햅틱 기능: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">한 번 누르세요.</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">누르고 있는 동안 반복됩니다.</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">행, 열, 키 너비</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">%1$d명이 사용 중입니다.</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">레이아웃 초안에서 이 키를 제거하시겠습니까?</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">키 변경 사항을 적용하시겠습니까?</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">이러한 변경 사항을 레이아웃에 적용하거나, 적용하지 않고 취소합니다.</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">변경 사항 적용</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">레이아웃 편집</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">키 또는 단축키</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">미리 보기</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">사용자 지정 선택</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">상속된 레이아웃을 사용합니다.</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">레이아웃 작업</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">색상 미리보기</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">이 레이어를 시작하는 키를 추가하세요.</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">레이아웃을 저장하면 변경 사항이 현재 터미널에 적용됩니다.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">이 레이아웃을 저장하면 해당 레이아웃을 사용하는 모든 사용자에게 변경 사항이 적용됩니다. 대신 복사본을 편집할 수 있습니다.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">공유 레이아웃 수정하시겠습니까?</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">이 구성</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">내장된 기본 설정</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">기본 설정은 변경되지 않습니다. 편집하면 개인용 복사본이 생성됩니다.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">기본 설정</string>
 </resources>
