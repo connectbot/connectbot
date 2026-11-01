@@ -61,8 +61,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
-import org.connectbot.service.ConnectionNotifier
 import org.connectbot.fido2.Fido2Manager
+import org.connectbot.service.ConnectionNotifier
 import org.connectbot.service.TerminalManager
 import org.connectbot.ui.components.DisconnectAllDialog
 import org.connectbot.ui.navigation.NavDestinations

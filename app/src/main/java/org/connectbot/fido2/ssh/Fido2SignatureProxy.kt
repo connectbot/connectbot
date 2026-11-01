@@ -17,8 +17,6 @@
 
 package org.connectbot.fido2.ssh
 
-import com.trilead.ssh2.auth.SignatureProxy
-import kotlinx.coroutines.runBlocking
 import org.connectbot.data.entity.Fido2Transport
 import org.connectbot.fido2.Fido2Algorithm
 import org.connectbot.fido2.Fido2Manager
@@ -28,7 +26,7 @@ import timber.log.Timber
 import java.io.IOException
 
 /**
- * SignatureProxy implementation for FIDO2 Security Key (SK) authentication.
+ * Signs SSH authentication requests using FIDO2 security keys.
  *
  * This proxy delegates signing operations to a FIDO2 hardware security key.
  * The signing is performed by the security key hardware, with the signature
@@ -43,19 +41,19 @@ import java.io.IOException
  * @param fido2Manager The FIDO2 manager for device communication
  */
 class Fido2SignatureProxy(
-    publicKey: SkPublicKey,
+    val publicKey: SkPublicKey,
     private val credentialId: ByteArray,
     private val rpId: String,
     private val algorithm: Fido2Algorithm,
     private val pin: String,
     private val transport: Fido2Transport,
     private val fido2Manager: Fido2Manager,
-) : SignatureProxy(publicKey) {
+) {
 
     /**
      * Sign the message using the FIDO2 security key.
      *
-     * This method blocks while waiting for the FIDO2 device to sign.
+     * This method suspends while waiting for the FIDO2 device to sign.
      * The signature is returned in SSH SK format (including flags and counter).
      *
      * @param message The message to sign (session ID + auth request)
@@ -64,14 +62,12 @@ class Fido2SignatureProxy(
      * @throws IOException If signing fails
      */
     @Throws(IOException::class)
-    override fun sign(message: ByteArray, hashAlgorithm: String): ByteArray {
+    suspend fun sign(message: ByteArray, hashAlgorithm: String): ByteArray {
         Timber.d("FIDO2 SignatureProxy.sign() called, algorithm=$algorithm, hashAlgorithm=$hashAlgorithm")
 
         // For FIDO2, we need to sign using the hardware device
-        // This is a blocking call that waits for the device response
-        val result = runBlocking {
-            performFido2Signing(message)
-        }
+        // Suspend until the device returns a signature
+        val result = performFido2Signing(message)
 
         return when (result) {
             is Fido2Result.Success -> {

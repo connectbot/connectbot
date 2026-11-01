@@ -379,7 +379,6 @@ class ImportFido2ViewModel @Inject constructor(
         }
 
         return Pubkey(
-            id = 0,
             nickname = nickname,
             type = keyType,
             encrypted = false,

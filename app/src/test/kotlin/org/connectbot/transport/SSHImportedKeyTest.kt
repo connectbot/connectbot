@@ -65,4 +65,38 @@ class SSHImportedKeyTest {
         SSH::class.java.getDeclaredField("client").apply { isAccessible = true }.set(ssh, client)
         assertEquals(AuthResult.Failure(setOf("password")), ssh.authenticate())
     }
+
+    @Test
+    fun fido2Key_isOfferedWithoutDecodingAsSoftwareKey() = runTest {
+        val manager = mock(TerminalManager::class.java)
+        val repository = mock(PubkeyRepository::class.java)
+        val client = mock(SshClient::class.java)
+        val bridge = mock(TerminalBridge::class.java)
+        val pubkey = Pubkey(
+            id = UUID(0, 42),
+            nickname = "broken",
+            type = "sk-ssh-ed25519@openssh.com",
+            storageType = org.connectbot.data.entity.KeyStorageType.FIDO2_RESIDENT_KEY,
+            publicKey = byteArrayOf(1, 2, 3),
+            privateKey = "invalid PEM".toByteArray(),
+            encrypted = false,
+            startup = false,
+            confirmation = false,
+            createdDate = 0,
+        )
+        `when`(manager.pubkeyRepository).thenReturn(repository)
+        `when`(repository.getByIdBlocking(UUID(0, 42))).thenReturn(pubkey)
+        val fallback = mock(AuthHandler::class.java)
+        `when`(client.authenticate(eq("alice") ?: "alice", any(AuthHandler::class.java) ?: fallback)).thenAnswer {
+            val handler = it.getArgument<AuthHandler>(1)
+            assertEquals(
+                listOf(org.connectbot.sshlib.AuthPublicKey(pubkey.type, pubkey.publicKey)),
+                runBlocking { handler.onPublicKeysNeeded() },
+            )
+            AuthResult.Failure(setOf("password"))
+        }
+        val ssh = SSH(Host(username = "alice", pubkeyId = UUID(0, 42)), bridge, manager)
+        SSH::class.java.getDeclaredField("client").apply { isAccessible = true }.set(ssh, client)
+        assertEquals(AuthResult.Failure(setOf("password")), ssh.authenticate())
+    }
 }

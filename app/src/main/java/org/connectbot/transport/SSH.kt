@@ -37,16 +37,24 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import org.connectbot.R
+import org.connectbot.data.entity.Fido2Transport
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.fido2.Fido2Algorithm
+import org.connectbot.fido2.ssh.Fido2SignatureProxy
+import org.connectbot.fido2.ssh.SkEcdsaVerify
+import org.connectbot.fido2.ssh.SkEd25519Verify
+import org.connectbot.fido2.ssh.SkPublicKey
 import org.connectbot.service.DisconnectReason
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import org.connectbot.service.requestBiometricAuth
 import org.connectbot.service.requestBooleanPrompt
+import org.connectbot.service.requestFido2Connect
+import org.connectbot.service.requestFido2Pin
 import org.connectbot.service.requestHostKeyFingerprintPrompt
 import org.connectbot.service.requestStringPrompt
 import org.connectbot.sshlib.AgentProvider
@@ -75,6 +83,7 @@ import org.connectbot.sshlib.transport.IpVersion
 import org.connectbot.sshlib.transport.TransportFactory
 import org.connectbot.util.CryptoProviderState
 import org.connectbot.util.HostConstants
+import org.connectbot.util.PubkeyConstants
 import org.connectbot.util.PubkeyUtils
 import org.connectbot.util.SshKeyType
 import org.connectbot.util.UrlUtils
@@ -418,6 +427,12 @@ open class SSH : AbsTransport {
                         if (pubkeyId == HostConstants.PUBKEYID_NEVER) return emptyList()
 
                         val keys = mutableListOf<AuthPublicKey>()
+                        val fido2Keys = if (pubkeyId == HostConstants.PUBKEYID_ANY) {
+                            manager?.pubkeyRepository?.getAll()?.filter { it.isFido2 }.orEmpty()
+                        } else {
+                            listOfNotNull(manager?.pubkeyRepository?.getByIdBlocking(pubkeyId)?.takeIf { it.isFido2 })
+                        }
+                        keys.addAll(fido2Keys.map { AuthPublicKey(it.type, it.publicKey) })
 
                         if (pubkeyId == HostConstants.PUBKEYID_ANY) {
                             bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_any))
@@ -455,6 +470,7 @@ open class SSH : AbsTransport {
                     }
 
                     override suspend fun onSignatureRequest(key: AuthPublicKey, dataToSign: ByteArray): ByteArray? {
+                        if (key.algorithmName.startsWith("sk-")) return signFido2Key(key, dataToSign)
                         val keyPair = confirmedAuthenticationKey(client, key, uncachedKey) ?: return null
                         return try {
                             SshSigning.signWithKeyPair(key.algorithmName, keyPair, dataToSign)
@@ -614,7 +630,107 @@ open class SSH : AbsTransport {
         return null
     }
 
+    private suspend fun signFido2Key(key: AuthPublicKey, data: ByteArray): ByteArray? {
+        val pubkey = manager?.pubkeyRepository?.getAll()?.firstOrNull {
+            it.isFido2 && it.publicKey.contentEquals(key.publicKeyBlob)
+        } ?: return null
+        return withContext((manager ?: return null).dispatchers.io) {
+            handleFido2Key(pubkey)?.sign(data, key.algorithmName)
+        }
+    }
+
+    private fun handleFido2Key(pubkey: Pubkey): Fido2SignatureProxy? {
+        val credentialId = pubkey.credentialId
+        val rpId = pubkey.fido2RpId
+
+        if (credentialId == null || rpId == null) {
+            val message = "FIDO2 key '${pubkey.nickname}' is missing credential data"
+            Timber.e(message)
+            bridge?.outputLine(message)
+            return null
+        }
+
+        // Determine key type and algorithm from the stored public key
+        val algorithm = when (pubkey.type) {
+            PubkeyConstants.KEY_TYPE_SK_ED25519 -> Fido2Algorithm.EDDSA
+
+            PubkeyConstants.KEY_TYPE_SK_ECDSA -> Fido2Algorithm.ES256
+
+            else -> {
+                val message = "Unknown FIDO2 key type: ${pubkey.type}"
+                Timber.e(message)
+                bridge?.outputLine(message)
+                return null
+            }
+        }
+
+        bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_fido2, pubkey.nickname))
+
+        // Get the preferred transport (default to USB for legacy keys)
+        val transport = pubkey.fido2Transport ?: Fido2Transport.USB
+
+        // For USB: connect device first, then request PIN
+        // For NFC: request PIN first (NFC connection is transient, happens during signing)
+        val pin: String?
+        if (transport == Fido2Transport.USB) {
+            // USB: Prompt user to connect their security key first
+            val connected = bridge?.requestFido2Connect(pubkey.nickname, credentialId, transport) ?: false
+            if (!connected) {
+                bridge?.outputLine("FIDO2 security key connection cancelled or failed")
+                return null
+            }
+
+            // Then prompt for PIN
+            pin = bridge?.requestFido2Pin(pubkey.nickname)
+            if (pin == null) {
+                bridge?.outputLine("FIDO2 PIN entry cancelled")
+                return null
+            }
+        } else {
+            // NFC: Prompt for PIN first (connection happens during signing)
+            pin = bridge?.requestFido2Pin(pubkey.nickname)
+            if (pin == null) {
+                bridge?.outputLine("FIDO2 PIN entry cancelled")
+                return null
+            }
+            // NFC connection is transient — it happens during the signing phase
+            // when the user taps their key, so no connect prompt is needed here.
+        }
+
+        // Create the public key from stored data
+        val publicKeyBytes = pubkey.publicKey
+
+        val publicKey: SkPublicKey = when (algorithm) {
+            Fido2Algorithm.EDDSA -> SkEd25519Verify.decodePublicKey(publicKeyBytes)
+            Fido2Algorithm.ES256 -> SkEcdsaVerify.decodePublicKey(publicKeyBytes)
+        }
+
+        // Get the FIDO2 manager from the bridge
+        val fido2Manager = bridge?.fido2Manager
+        if (fido2Manager == null) {
+            val message = "FIDO2 manager not available"
+            Timber.e(message)
+            bridge?.outputLine(message)
+            return null
+        }
+
+        // Create the SignatureProxy for FIDO2 authentication
+        val signatureProxy = Fido2SignatureProxy(
+            publicKey = publicKey,
+            credentialId = credentialId,
+            rpId = rpId,
+            algorithm = algorithm,
+            pin = pin,
+            transport = transport,
+            fido2Manager = fido2Manager,
+        )
+
+        Timber.d("Created FIDO2 SignatureProxy for '${pubkey.nickname}'")
+        return signatureProxy
+    }
+
     private fun getAuthenticationKey(pubkey: Pubkey): KeyPair? = try {
+        if (pubkey.isFido2) return null
         getOrUnlockKey(pubkey)
     } catch (e: LoginCancelled) {
         throw e
@@ -878,6 +994,12 @@ open class SSH : AbsTransport {
                             if (pubkeyId == HostConstants.PUBKEYID_NEVER) return emptyList()
 
                             val keys = mutableListOf<AuthPublicKey>()
+                            val fido2Keys = if (pubkeyId == HostConstants.PUBKEYID_ANY) {
+                                manager?.pubkeyRepository?.getAll()?.filter { it.isFido2 }.orEmpty()
+                            } else {
+                                listOfNotNull(manager?.pubkeyRepository?.getByIdBlocking(pubkeyId)?.takeIf { it.isFido2 })
+                            }
+                            keys.addAll(fido2Keys.map { AuthPublicKey(it.type, it.publicKey) })
                             if (pubkeyId == HostConstants.PUBKEYID_ANY) {
                                 manager?.loadedKeypairs?.entries?.forEach { entry ->
                                     val keyPair = entry.value.pair ?: return@forEach
@@ -909,6 +1031,7 @@ open class SSH : AbsTransport {
                         }
 
                         override suspend fun onSignatureRequest(key: AuthPublicKey, dataToSign: ByteArray): ByteArray? {
+                            if (key.algorithmName.startsWith("sk-")) return signFido2Key(key, dataToSign)
                             val keyPair = confirmedAuthenticationKey(jumpClient, key, uncachedKey) ?: return null
                             return try {
                                 SshSigning.signWithKeyPair(key.algorithmName, keyPair, dataToSign)

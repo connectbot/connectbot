@@ -98,7 +98,7 @@ class SkEcdsaVerifyTest {
 
         assertThat(decoded.ecPoint).isEqualTo(ecPoint)
         assertThat(decoded.curve).isEqualTo(CURVE_NAME)
-        assertThat(decoded.application).isEqualTo(application)
+        assertThat(decoded.getApplication()).isEqualTo(application)
     }
 
     @Test
@@ -127,7 +127,7 @@ class SkEcdsaVerifyTest {
 
         assertThat(decoded.ecPoint).isEqualTo(ecPoint)
         assertThat(decoded.curve).isEqualTo(CURVE_NAME)
-        assertThat(decoded.application).isEqualTo(application)
+        assertThat(decoded.getApplication()).isEqualTo(application)
     }
 
     @Test
@@ -150,7 +150,7 @@ class SkEcdsaVerifyTest {
 
         assertThat(decoded.ecPoint).isEqualTo(original.ecPoint)
         assertThat(decoded.curve).isEqualTo(original.curve)
-        assertThat(decoded.application).isEqualTo(original.application)
+        assertThat(decoded.getApplication()).isEqualTo(original.getApplication())
     }
 
     @Test

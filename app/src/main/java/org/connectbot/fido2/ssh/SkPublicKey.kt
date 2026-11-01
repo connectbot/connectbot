@@ -22,18 +22,17 @@ package org.connectbot.fido2.ssh
  *
  * These keys follow the OpenSSH sk-* format introduced in OpenSSH 8.2.
  *
- * This interface extends the sshlib SkPublicKey interface to enable
- * SK key authentication in the SSH library.
+ * Provides the public key material used by the SSH authentication callbacks.
  */
-interface SkPublicKey : com.trilead.ssh2.signature.SkPublicKey {
+interface SkPublicKey : java.security.PublicKey {
     /** The application ID, typically "ssh:" for SSH keys */
-    override fun getApplication(): String
+    fun getApplication(): String
 
     /** The underlying public key bytes (format depends on algorithm) */
-    override fun getKeyData(): ByteArray
+    fun getKeyData(): ByteArray
 
     /** The SSH key type identifier */
-    override fun getSshKeyType(): String
+    fun getSshKeyType(): String
 }
 
 /**

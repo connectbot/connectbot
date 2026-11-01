@@ -82,7 +82,7 @@ class SkEd25519VerifyTest {
         val decoded = SkEd25519Verify.decodePublicKey(encoded)
 
         assertThat(decoded.ed25519Key).isEqualTo(ed25519Key)
-        assertThat(decoded.application).isEqualTo(application)
+        assertThat(decoded.getApplication()).isEqualTo(application)
     }
 
     @Test
@@ -101,7 +101,7 @@ class SkEd25519VerifyTest {
         val decoded = SkEd25519Verify.decodePublicKey(buffer.array())
 
         assertThat(decoded.ed25519Key).isEqualTo(ed25519Key)
-        assertThat(decoded.application).isEqualTo(application)
+        assertThat(decoded.getApplication()).isEqualTo(application)
     }
 
     @Test
@@ -130,7 +130,7 @@ class SkEd25519VerifyTest {
         val decoded = SkEd25519Verify.decodePublicKey(encoded)
 
         assertThat(decoded.ed25519Key).isEqualTo(original.ed25519Key)
-        assertThat(decoded.application).isEqualTo(original.application)
+        assertThat(decoded.getApplication()).isEqualTo(original.getApplication())
     }
 
     @Test
