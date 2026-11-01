@@ -526,3 +526,124 @@ class TestWorkOrdering:
         sort_work_by_pending_strings(work)
 
         assert work == [one_job, other_one_job, two_jobs, three_jobs]
+
+
+class TestOllamaTokenLimits:
+    @pytest.mark.parametrize("asynchronous", [False, True])
+    @pytest.mark.parametrize("reason", ["stop", "length"])
+    def test_translation_response(self, monkeypatch, asynchronous, reason):
+        import asyncio
+        from unittest.mock import AsyncMock, Mock
+
+        import ollama
+        from translations import translate
+
+        monkeypatch.delenv("OLLAMA_NUM_CTX", raising=False)
+        monkeypatch.delenv("OLLAMA_NUM_PREDICT", raising=False)
+        response = ollama.ChatResponse(
+            message={"role": "assistant", "content": " Bonjour "},
+            done_reason=reason,
+        )
+        client = Mock()
+        client.chat = AsyncMock(return_value=response) if asynchronous else Mock(return_value=response)
+        job = TranslationJob("greeting", "Hello", "", "French", "fr")
+        stats = translate.Stats()
+        remaining = [1]
+        if asynchronous:
+            def run():
+                asyncio.run(translate.llm_translate_async_tracked(
+                    job, asyncio.Semaphore(1), client, stats,
+                    translate.Stats(), [1], remaining,
+                ))
+                return job.result
+        else:
+            monkeypatch.setattr(translate.ollama, "Client", Mock(return_value=client))
+
+            def run():
+                return translate.llm_translate("Hello", "", "French", "fr")
+
+        if reason == "length":
+            with pytest.raises(RuntimeError, match="incomplete translation was not saved"):
+                run()
+            assert job.result == ""
+            assert stats.completed == 0
+            assert remaining == [1]
+        else:
+            assert run() == "Bonjour"
+        assert client.chat.call_args.kwargs["options"] == {
+            "temperature": 0.0, "num_ctx": 8192, "num_predict": 4096,
+        }
+
+    def test_configurable_budgets(self, monkeypatch):
+        from translations.translate import translation_options
+
+        monkeypatch.setenv("OLLAMA_NUM_CTX", "16384")
+        monkeypatch.setenv("OLLAMA_NUM_PREDICT", "8192")
+        assert translation_options()["num_ctx"] == 16384
+        assert translation_options()["num_predict"] == 8192
+
+    @pytest.mark.parametrize("value", ["0", "-1", "invalid", "4096"])
+    def test_invalid_context_budget(self, monkeypatch, value):
+        from translations.translate import translation_options
+
+        monkeypatch.setenv("OLLAMA_NUM_CTX", value)
+        monkeypatch.setenv("OLLAMA_NUM_PREDICT", "4096")
+        with pytest.raises(ValueError, match="OLLAMA_NUM_CTX"):
+            translation_options()
+
+
+@pytest.mark.parametrize("asynchronous", [False, True])
+@pytest.mark.parametrize("outcome", ["recover", "repeat", "other"])
+def test_ollama_repeat_retries(monkeypatch, asynchronous, outcome):
+    import asyncio
+    from unittest.mock import AsyncMock, Mock
+
+    import ollama
+    from translations import translate
+
+    monkeypatch.delenv("OLLAMA_NUM_CTX", raising=False)
+    monkeypatch.delenv("OLLAMA_NUM_PREDICT", raising=False)
+    error = ollama.ResponseError(
+        "prediction aborted, token repeat limit reached" if outcome != "other" else "model not found",
+        status_code=500 if outcome != "other" else 404,
+    )
+    response = ollama.ChatResponse(
+        message={"role": "assistant", "content": "Bonjour"}, done_reason="stop",
+    )
+    effects = [error, response] if outcome == "recover" else [error] * 3
+    client = Mock()
+    client.chat = AsyncMock(side_effect=effects) if asynchronous else Mock(side_effect=effects)
+    job = TranslationJob("greeting", "Hello", "", "French", "fr")
+    stats = translate.Stats()
+    remaining = [1]
+    if asynchronous:
+        def run():
+            asyncio.run(translate.llm_translate_async_tracked(
+                job, asyncio.Semaphore(1), client, stats,
+                translate.Stats(), [1], remaining,
+            ))
+            return job.result
+    else:
+        monkeypatch.setattr(translate.ollama, "Client", Mock(return_value=client))
+
+        def run():
+            return translate.llm_translate("Hello", "", "French", "fr")
+
+    if outcome == "recover":
+        assert run() == "Bonjour"
+        assert client.chat.call_count == 2
+    else:
+        expected = RuntimeError if asynchronous and outcome == "repeat" else ollama.ResponseError
+        with pytest.raises(expected):
+            run()
+        assert client.chat.call_count == (3 if outcome == "repeat" else 1)
+        assert job.result == ""
+        assert stats.completed == 0
+        assert remaining == [1]
+    for attempt, call in enumerate(client.chat.call_args_list):
+        options = call.kwargs["options"]
+        if attempt:
+            assert options["temperature"] > 0
+            assert options["repeat_penalty"] > 1
+            assert options["repeat_last_n"] == 256
+        assert call.kwargs["messages"] == client.chat.call_args_list[0].kwargs["messages"]
