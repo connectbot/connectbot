@@ -490,6 +490,68 @@ class TestTranslationPipeline:
         assert raw.endswith("</resources>\n")
 
 
+class TestTraditionalChineseInheritance:
+    def test_hong_kong_only_translates_entries_missing_from_both_locales(self, tmp_path):
+        source = tmp_path / "values" / "strings.xml"
+        source.parent.mkdir()
+        source.write_text(resources_xml(
+            '<string name="shared">Shared</string>'
+            '<string name="regional">Regional</string>'
+            '<string name="new">New</string>'
+            '<plurals name="count"><item quantity="other">%d items</item></plurals>'
+            '<string-array name="items"><item>Item</item></string-array>'
+        ), encoding="utf-8")
+        inherited = tmp_path / "values-b+zh+Hant" / "strings.xml"
+        inherited.parent.mkdir()
+        inherited.write_text(resources_xml(
+            '<string name="shared">共用</string>'
+            '<string name="regional">連接埠</string>'
+            '<plurals name="count"><item quantity="other">%d 個項目</item></plurals>'
+            '<string-array name="items"><item>項目</item></string-array>'
+        ), encoding="utf-8")
+        target = tmp_path / "values-b+zh+Hant+HK" / "strings.xml"
+        target.parent.mkdir()
+        target.write_text(resources_xml('<string name="regional">端口</string>'), encoding="utf-8")
+
+        work = collect_jobs(source, target, "Traditional Chinese (Hong Kong)", "zh-Hant-HK")
+
+        assert work is not None
+        assert [job.name for job, _, _ in work.jobs] == ["new"]
+        assert work.target_root.find("string[@name='regional']").text == "端口"
+
+    @pytest.mark.parametrize("parent_exists", [False, True])
+    def test_hong_kong_uses_parent_only_for_matching_resource_types(self, tmp_path, parent_exists):
+        source = tmp_path / "values" / "strings.xml"
+        source.parent.mkdir()
+        source.write_text(resources_xml('<string name="label">Label</string>'), encoding="utf-8")
+        if parent_exists:
+            inherited = tmp_path / "values-b+zh+Hant" / "strings.xml"
+            inherited.parent.mkdir()
+            inherited.write_text(resources_xml(
+                '<string-array name="label"><item>標籤</item></string-array>'
+            ), encoding="utf-8")
+        target = tmp_path / "values-b+zh+Hant+HK" / "strings.xml"
+
+        work = collect_jobs(source, target, "Traditional Chinese (Hong Kong)", "zh-Hant-HK")
+
+        assert work is not None
+        assert [job.name for job, _, _ in work.jobs] == ["label"]
+
+    def test_simplified_chinese_does_not_inherit_traditional_chinese(self, tmp_path):
+        source = tmp_path / "values" / "strings.xml"
+        source.parent.mkdir()
+        source.write_text(resources_xml('<string name="label">Label</string>'), encoding="utf-8")
+        inherited = tmp_path / "values-b+zh+Hant" / "strings.xml"
+        inherited.parent.mkdir()
+        inherited.write_text(resources_xml('<string name="label">標籤</string>'), encoding="utf-8")
+        target = tmp_path / "values-b+zh+Hans" / "strings.xml"
+
+        work = collect_jobs(source, target, "Simplified Chinese", "zh-Hans")
+
+        assert work is not None
+        assert [job.name for job, _, _ in work.jobs] == ["label"]
+
+
 class TestLocaleMap:
     def test_includes_legacy_android_locale_aliases(self):
         assert LOCALE_MAP["in"] == ("Indonesian", "id")
