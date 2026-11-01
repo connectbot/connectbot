@@ -15,6 +15,9 @@ For each values-<locale>/ directory found under <res_dir>, this script:
     translations, preserving utf-8 encoding
 
 Up to MAX_CONCURRENT Ollama requests run in parallel with backpressure via a semaphore.
+
+OLLAMA_NUM_CTX (default 8192) and OLLAMA_NUM_PREDICT (default 4096) control
+the context window and output token budget for each translation request.
 """
 
 import argparse
@@ -33,6 +36,7 @@ OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
 MODEL = "translategemma:27b"
 TEMPERATURE = 0.0
 MAX_CONCURRENT = 5
+MAX_TRANSLATION_ATTEMPTS = 3
 
 TOOLS_NS = "http://schemas.android.com/tools"
 TOOLS_MACHINE_TRANSLATED = f"{{{TOOLS_NS}}}machine_translated"
@@ -397,15 +401,53 @@ def build_prompt(text: str, context: str, target_lang: str, tgt_code: str) -> st
     )
 
 
-# synchronous wrapper used by tests
+def translation_options(attempt: int = 0) -> dict[str, int | float]:
+    options: dict[str, int | float] = {"temperature": TEMPERATURE}
+    for name, default in (("num_ctx", 8192), ("num_predict", 4096)):
+        env_name = f"OLLAMA_{name.upper()}"
+        try:
+            value = int(os.environ.get(env_name, str(default)))
+        except ValueError as exc:
+            raise ValueError(f"{env_name} must be a positive integer") from exc
+        if value <= 0:
+            raise ValueError(f"{env_name} must be a positive integer")
+        options[name] = value
+    if options["num_predict"] >= options["num_ctx"]:
+        raise ValueError("OLLAMA_NUM_CTX must exceed OLLAMA_NUM_PREDICT to leave room for the prompt")
+    if attempt:
+        # A deterministic retry can reproduce the same generation loop. Sample
+        # conservatively and penalize repetitions only after Ollama aborts one.
+        options.update(temperature=0.2 * attempt, repeat_penalty=1.1 + 0.1 * attempt,
+                       repeat_last_n=256)
+    return options
+
+
+def is_repeat_limit(error: ollama.ResponseError) -> bool:
+    return error.status_code == 500 and "token repeat limit reached" in error.error.lower()
+
+
+def translation_text(response: ollama.ChatResponse) -> str:
+    if response.done_reason == "length":
+        raise RuntimeError(
+            "Ollama reached the token limit; the incomplete translation was not saved. "
+            "Increase OLLAMA_NUM_CTX and OLLAMA_NUM_PREDICT and rerun the task."
+        )
+    return response.message.content.strip()
+
+
 def llm_translate(text: str, context: str, target_lang: str, tgt_code: str) -> str:
     client = ollama.Client(host=OLLAMA_HOST)
-    response = client.chat(
-        model=MODEL,
-        messages=[{"role": "user", "content": build_prompt(text, context, target_lang, tgt_code)}],
-        options={"temperature": TEMPERATURE},
-    )
-    return response.message.content.strip()
+    for attempt in range(MAX_TRANSLATION_ATTEMPTS):
+        try:
+            response = client.chat(
+                model=MODEL,
+                messages=[{"role": "user", "content": build_prompt(text, context, target_lang, tgt_code)}],
+                options=translation_options(attempt),
+            )
+            return translation_text(response)
+        except ollama.ResponseError as exc:
+            if not is_repeat_limit(exc) or attempt == MAX_TRANSLATION_ATTEMPTS - 1:
+                raise
 
 
 # ---------------------------------------------------------------------------
@@ -618,13 +660,33 @@ async def llm_translate_async_tracked(
     prompt = build_prompt(job.text, job.context, job.target_lang, job.tgt_code)
     async with semaphore:
         t0 = time.monotonic()
-        response = await client.chat(
-            model=MODEL,
-            messages=[{"role": "user", "content": prompt}],
-            options={"temperature": TEMPERATURE},
-        )
+        for attempt in range(MAX_TRANSLATION_ATTEMPTS):
+            try:
+                response = await client.chat(
+                    model=MODEL,
+                    messages=[{"role": "user", "content": prompt}],
+                    options=translation_options(attempt),
+                )
+                break
+            except ollama.ResponseError as exc:
+                if not is_repeat_limit(exc):
+                    raise
+                if attempt == MAX_TRANSLATION_ATTEMPTS - 1:
+                    raise RuntimeError(
+                        f"en→{job.tgt_code} [{job.name}]: Ollama repeated tokens "
+                        f"on all {MAX_TRANSLATION_ATTEMPTS} attempts. "
+                        "No translations from this locale were saved."
+                    ) from exc
+                print(
+                    f"  en→{job.tgt_code} [{job.name}]: token repeat limit; "
+                    f"retrying ({attempt + 2}/{MAX_TRANSLATION_ATTEMPTS})",
+                    flush=True,
+                )
         elapsed = time.monotonic() - t0
-    job.result = response.message.content.strip()
+    try:
+        job.result = translation_text(response)
+    except RuntimeError as exc:
+        raise RuntimeError(f"en→{job.tgt_code} [{job.name}]: {exc}") from exc
     stats.record(elapsed)
     locale_stats.record(elapsed)
     locale_remaining[0] -= 1
@@ -666,6 +728,7 @@ def locale_suffix(dir_name: str) -> str:
 
 
 def main(res_dir: str) -> None:
+    translation_options()  # Validate token budgets before scheduling requests.
     res_path = Path(res_dir).resolve()
     source_values = res_path / "values"
     if not source_values.is_dir():
