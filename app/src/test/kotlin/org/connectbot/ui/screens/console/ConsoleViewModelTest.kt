@@ -41,6 +41,7 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
@@ -615,6 +616,75 @@ class ConsoleViewModelTest {
 
         assertEquals(0, viewModel.uiState.value.currentBridgeIndex)
         assertEquals(2, viewModel.uiState.value.sessionCounts[UUID(0, 1)])
+        assertEquals(second, viewModel.getCurrentBridge())
+    }
+
+    @Test
+    fun newSessionSelectsReturnedSessionAndKeepsOtherHostsSeparate() = runTest {
+        val first = createMockBridge(UUID(0, 1), "shared")
+        val second = createMockBridge(UUID(0, 1), "shared")
+        Mockito.`when`(second.sessionId).thenReturn(20L)
+        val other = createMockBridge(UUID(0, 2), "other")
+        bridgesFlow.value = listOf(first, other)
+        Mockito.`when`(savedStateHandle.get<String>("hostId")).thenReturn(EntityIds.NONE.toString())
+        Mockito.`when`(terminalManager.openConnectionForHostId(first.host.id)).thenReturn(second)
+        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
+        viewModel.setTerminalManager(terminalManager)
+        advanceUntilIdle()
+        viewModel.openNewSession()
+        advanceUntilIdle()
+        bridgesFlow.value = listOf(first, other, second)
+        advanceUntilIdle()
+        assertEquals(second, viewModel.getCurrentBridge())
+        assertEquals(listOf(first, second), viewModel.getSessionsForCurrentHost())
+        viewModel.disconnectCurrentSession()
+        Mockito.verify(second).dispatchDisconnect(org.connectbot.service.DisconnectReason.USER_REQUESTED)
+        Mockito.verify(first, Mockito.never()).dispatchDisconnect(org.connectbot.service.DisconnectReason.USER_REQUESTED)
+    }
+
+    @Test
+    fun openingSessionHandlesNullResultAndConnectionErrors() = runTest {
+        val bridge = createMockBridge(UUID(0, 1), "shared")
+        bridgesFlow.value = listOf(bridge)
+        Mockito.`when`(savedStateHandle.get<String>("hostId")).thenReturn(EntityIds.NONE.toString())
+        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
+        viewModel.setTerminalManager(terminalManager)
+        advanceUntilIdle()
+        viewModel.openNewSession()
+        advanceUntilIdle()
+        assertEquals(bridge, viewModel.getCurrentBridge())
+        Mockito.`when`(terminalManager.openConnectionForHostId(bridge.host.id)).thenThrow(IllegalStateException("offline"), IllegalStateException())
+        viewModel.openNewSession()
+        advanceUntilIdle()
+        assertEquals("offline", viewModel.uiState.value.error)
+        viewModel.openNewSession()
+        advanceUntilIdle()
+        assertEquals("Failed to open new session", viewModel.uiState.value.error)
+    }
+
+    @Test
+    fun emptyConsoleSessionActionsAreNoOps() = runTest {
+        Mockito.`when`(savedStateHandle.get<String>("hostId")).thenReturn(EntityIds.NONE.toString())
+        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
+        viewModel.openNewSession()
+        viewModel.disconnectCurrentSession()
+        assertEquals(null, viewModel.getCurrentBridge())
+        assertEquals(emptyList<TerminalBridge>(), viewModel.getSessionsForCurrentHost())
+        advanceUntilIdle()
+    }
+
+    @Test
+    fun initialSessionIdSelectsRequestedSessionInsteadOfLastUsed() = runTest {
+        val first = createMockBridge(UUID(0, 1), "shared")
+        val second = createMockBridge(UUID(0, 1), "shared")
+        Mockito.`when`(second.sessionId).thenReturn(20L)
+        Mockito.`when`(savedStateHandle.get<String>("hostId")).thenReturn(UUID(0, 1).toString())
+        Mockito.`when`(savedStateHandle.get<Long>("sessionId")).thenReturn(20L)
+        Mockito.`when`(terminalManager.getLastUsedBridge(first.host.id)).thenReturn(first)
+        bridgesFlow.value = listOf(first, second)
+        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
+        viewModel.setTerminalManager(terminalManager)
+        advanceUntilIdle()
         assertEquals(second, viewModel.getCurrentBridge())
     }
 
