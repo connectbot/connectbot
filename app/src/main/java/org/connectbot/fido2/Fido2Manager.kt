@@ -41,7 +41,6 @@ import com.yubico.yubikit.fido.ctap.PinUvAuthProtocolV1
 import com.yubico.yubikit.fido.ctap.PinUvAuthProtocolV2
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -53,6 +52,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
+import org.connectbot.di.CoroutineDispatchers
 import timber.log.Timber
 import java.security.MessageDigest
 import java.util.concurrent.Executors
@@ -73,8 +73,9 @@ import kotlin.coroutines.resumeWithException
 @Singleton
 class Fido2Manager @Inject constructor(
     @ApplicationContext private val context: Context,
+    private val dispatchers: CoroutineDispatchers,
 ) {
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+    private val scope = CoroutineScope(SupervisorJob() + dispatchers.main)
     private val yubiKitManager = YubiKitManager(context)
 
     // Single-thread executor for all YubiKey operations - ensures thread safety

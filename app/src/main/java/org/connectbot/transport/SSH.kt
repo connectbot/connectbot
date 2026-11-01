@@ -432,7 +432,7 @@ open class SSH : AbsTransport {
                         } else {
                             listOfNotNull(manager?.pubkeyRepository?.getByIdBlocking(pubkeyId)?.takeIf { it.isFido2 })
                         }
-                        keys.addAll(fido2Keys.map { AuthPublicKey(it.type, it.publicKey) })
+                        keys.addAll(fido2Keys.map(::fido2AuthenticationKey))
 
                         if (pubkeyId == HostConstants.PUBKEYID_ANY) {
                             bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_any))
@@ -630,6 +630,15 @@ open class SSH : AbsTransport {
         return null
     }
 
+    private fun fido2AuthenticationKey(pubkey: Pubkey): AuthPublicKey {
+        val algorithm = when (pubkey.type) {
+            PubkeyConstants.KEY_TYPE_SK_ED25519 -> org.connectbot.fido2.ssh.SkEd25519PublicKey.KEY_TYPE
+            PubkeyConstants.KEY_TYPE_SK_ECDSA -> org.connectbot.fido2.ssh.SkEcdsaPublicKey.KEY_TYPE
+            else -> pubkey.type
+        }
+        return AuthPublicKey(algorithm, pubkey.publicKey)
+    }
+
     private suspend fun signFido2Key(key: AuthPublicKey, data: ByteArray): ByteArray? {
         val pubkey = manager?.pubkeyRepository?.getAll()?.firstOrNull {
             it.isFido2 && it.publicKey.contentEquals(key.publicKeyBlob)
@@ -652,9 +661,9 @@ open class SSH : AbsTransport {
 
         // Determine key type and algorithm from the stored public key
         val algorithm = when (pubkey.type) {
-            PubkeyConstants.KEY_TYPE_SK_ED25519 -> Fido2Algorithm.EDDSA
+            PubkeyConstants.KEY_TYPE_SK_ED25519, org.connectbot.fido2.ssh.SkEd25519PublicKey.KEY_TYPE -> Fido2Algorithm.EDDSA
 
-            PubkeyConstants.KEY_TYPE_SK_ECDSA -> Fido2Algorithm.ES256
+            PubkeyConstants.KEY_TYPE_SK_ECDSA, org.connectbot.fido2.ssh.SkEcdsaPublicKey.KEY_TYPE -> Fido2Algorithm.ES256
 
             else -> {
                 val message = "Unknown FIDO2 key type: ${pubkey.type}"
@@ -999,7 +1008,7 @@ open class SSH : AbsTransport {
                             } else {
                                 listOfNotNull(manager?.pubkeyRepository?.getByIdBlocking(pubkeyId)?.takeIf { it.isFido2 })
                             }
-                            keys.addAll(fido2Keys.map { AuthPublicKey(it.type, it.publicKey) })
+                            keys.addAll(fido2Keys.map(::fido2AuthenticationKey))
                             if (pubkeyId == HostConstants.PUBKEYID_ANY) {
                                 manager?.loadedKeypairs?.entries?.forEach { entry ->
                                     val keyPair = entry.value.pair ?: return@forEach
