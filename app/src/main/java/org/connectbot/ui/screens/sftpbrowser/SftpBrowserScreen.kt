@@ -481,8 +481,11 @@ private fun SftpBiometricPromptHandler(
     val activity = remember(context) { context.findFragmentActivity() }
     val currentOnSuccess by rememberUpdatedState(onSuccess)
     val currentOnFailure by rememberUpdatedState(onFailure)
+    val title = stringResource(R.string.pubkey_biometric_prompt_title)
+    val subtitle = stringResource(R.string.pubkey_biometric_prompt_subtitle, keyName)
+    val cancelLabel = stringResource(R.string.delete_neg)
 
-    LaunchedEffect(keyName) {
+    LaunchedEffect(keyName, title, subtitle, cancelLabel) {
         if (activity == null) {
             Timber.e("Cannot show BiometricPrompt: FragmentActivity not found")
             currentOnFailure()
@@ -511,9 +514,9 @@ private fun SftpBiometricPromptHandler(
         val biometricPrompt = BiometricPrompt(activity, executor, callback)
 
         val promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle(context.getString(R.string.pubkey_biometric_prompt_title))
-            .setSubtitle(context.getString(R.string.pubkey_biometric_prompt_subtitle, keyName))
-            .setNegativeButtonText(context.getString(R.string.delete_neg))
+            .setTitle(title)
+            .setSubtitle(subtitle)
+            .setNegativeButtonText(cancelLabel)
             .build()
 
         biometricPrompt.authenticate(promptInfo)

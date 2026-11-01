@@ -65,7 +65,7 @@ internal class SftpAuthKeyCache(
 
     private fun cacheKey(pubkey: Pubkey): String = when {
         pubkey.storageType == KeyStorageType.ANDROID_KEYSTORE && pubkey.keystoreAlias != null -> "keystore:${pubkey.keystoreAlias}"
-        pubkey.id > 0 -> "id:${pubkey.id}"
+        pubkey.id != org.connectbot.data.EntityIds.NONE -> "id:${pubkey.id}"
         else -> "nickname:${pubkey.nickname}"
     }
 
