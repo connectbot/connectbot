@@ -597,6 +597,27 @@ class ConsoleViewModelTest {
         assertEquals("Switching bridges should show the selected bridge's current progress value", 90, viewModel.uiState.value.progressValue)
     }
 
+    @Test
+    fun sessionSelectionSurvivesReorderingForSameUuidHost() = runTest {
+        val first = createMockBridge(UUID(0, 1), "same-host")
+        val second = createMockBridge(UUID(0, 1), "same-host")
+        whenever(first.sessionId).thenReturn(10L)
+        whenever(second.sessionId).thenReturn(20L)
+        bridgesFlow.value = listOf(first, second)
+        whenever(savedStateHandle.get<String>("hostId")).thenReturn(EntityIds.NONE.toString())
+        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
+        viewModel.setTerminalManager(terminalManager)
+        advanceUntilIdle()
+
+        viewModel.selectBridgeBySessionId(20L)
+        bridgesFlow.value = listOf(second, first)
+        advanceUntilIdle()
+
+        assertEquals(0, viewModel.uiState.value.currentBridgeIndex)
+        assertEquals(2, viewModel.uiState.value.sessionCounts[UUID(0, 1)])
+        assertEquals(second, viewModel.getCurrentBridge())
+    }
+
     private fun createMockBridge(
         id: UUID,
         hostname: String,
@@ -612,7 +633,7 @@ class ConsoleViewModelTest {
             username = "test",
         )
         whenever(bridge.host).thenReturn(host)
-        whenever(bridge.sessionId).thenReturn(id)
+        whenever(bridge.sessionId).thenReturn(id.leastSignificantBits)
         whenever(bridge.isSessionOpen).thenReturn(true)
         whenever(bridge.isDisconnected).thenReturn(false)
         whenever(bridge.progressState).thenReturn(progressFlow)

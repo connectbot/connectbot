@@ -2612,4 +2612,6 @@
     <string name="pubkey_piv_wrong_key">This PIV slot does not match the saved SSH key. Connect the registered YubiKey.</string>
     <!-- Error when the reader cannot use the PIV slot or hardware touch is not confirmed. -->
     <string name="pubkey_piv_failed">Could not use the PIV slot. Check that PIV is enabled, the slot contains a key, and any required touch was confirmed.</string>
+	<!-- Shown in the alert dialog when a user chooses the 'disconnect' item to disconnect from a SSH or Telnet host. -->
+	<string name="disconnect_host_alert">Are you sure you want to disconnect from \'%1$s\'?</string>
 </resources>

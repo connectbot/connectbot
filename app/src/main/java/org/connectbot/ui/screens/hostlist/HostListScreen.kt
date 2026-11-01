@@ -23,6 +23,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -510,8 +511,6 @@ fun HostListScreenContent(
 private fun HostListItem(
     host: Host,
     connectionState: ConnectionState,
-    sessionCount: Int = 0,
-    makingShortcut: Boolean = false,
     onClick: () -> Unit,
     onEdit: () -> Unit,
     onPortForwards: () -> Unit,
@@ -519,8 +518,9 @@ private fun HostListItem(
     onForgetHostKeys: () -> Unit,
     onDisconnect: () -> Unit,
     onDelete: () -> Unit,
-    onOpenNewSession: () -> Unit = {},
     modifier: Modifier = Modifier,
+    sessionCount: Int = 0,
+    onOpenNewSession: () -> Unit = {},
     makingShortcut: Boolean = false,
     disconnectReason: DisconnectReason? = null,
 ) {

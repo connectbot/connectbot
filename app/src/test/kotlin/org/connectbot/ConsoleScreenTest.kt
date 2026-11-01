@@ -206,7 +206,7 @@ class ConsoleScreenTest {
     ): TerminalBridge {
         val bridge = mock(TerminalBridge::class.java)
         val host = Host(
-            id = id,
+            id = UUID(0, id),
             hostname = hostname,
             nickname = hostname,
             protocol = "ssh",
@@ -366,6 +366,8 @@ class ConsoleScreenTest {
         val first = mockTerminalBridge()
         val second = mockTerminalBridge()
         val host = Host(id = UUID(0, 1), nickname = "Original session")
+        `when`(first.sessionId).thenReturn(10L)
+        `when`(second.sessionId).thenReturn(20L)
         `when`(first.host).thenReturn(host)
         `when`(second.host).thenReturn(host.copy(nickname = "Updated session"))
         var selectedIndex = -1
@@ -610,10 +612,9 @@ class ConsoleScreenTest {
             ),
         )
         `when`(mockViewModel.networkStatusMessages).thenReturn(MutableSharedFlow())
-        `when`(mockViewModel.shouldShowNotificationWarning()).thenReturn(false)
 
         setContent(mockConsoleViewModel = mockViewModel)
-        navigateToConsoleScreen(hostId = 1L)
+        navigateToConsoleScreen(hostId = UUID(0, 1))
 
         composeTestRule.onNodeWithText("a-long-hostname").assertIsDisplayed()
         composeTestRule.onNodeWithText("#1 a-long-hostname").assertIsNotDisplayed()
@@ -634,10 +635,9 @@ class ConsoleScreenTest {
             ),
         )
         `when`(mockViewModel.networkStatusMessages).thenReturn(MutableSharedFlow())
-        `when`(mockViewModel.shouldShowNotificationWarning()).thenReturn(false)
 
         setContent(mockConsoleViewModel = mockViewModel)
-        navigateToConsoleScreen(hostId = 1L)
+        navigateToConsoleScreen(hostId = UUID(0, 1))
 
         composeTestRule.onNodeWithText("#2 a-long-hostname").assertIsDisplayed()
         composeTestRule.onNodeWithText("a-long-hostname #2").assertIsNotDisplayed()

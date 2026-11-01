@@ -261,17 +261,17 @@ class HostListViewModel @Inject constructor(
      * Get the session ID of the last-used session for a host.
      * Returns null if no sessions exist.
      */
-    fun getLastUsedSessionId(hostId: Long): Long? = terminalManager?.getLastUsedBridge(hostId)?.sessionId
+    fun getLastUsedSessionId(hostId: UUID): Long? = terminalManager?.getLastUsedBridge(hostId)?.sessionId
 
     /**
      * Check if a host has any connected sessions.
      */
-    fun isHostConnected(hostId: Long): Boolean = terminalManager?.isHostConnected(hostId) ?: false
+    fun isHostConnected(hostId: UUID): Boolean = terminalManager?.isHostConnected(hostId) ?: false
 
     /**
      * Get the number of sessions for a host.
      */
-    fun getSessionCount(hostId: Long): Int = terminalManager?.getSessionCount(hostId) ?: 0
+    fun getSessionCount(hostId: UUID): Int = terminalManager?.getSessionCount(hostId) ?: 0
 
     fun deleteHost(host: Host) {
         viewModelScope.launch {

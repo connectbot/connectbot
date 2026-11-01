@@ -52,7 +52,7 @@ data class ConsoleUiState(
     val progressState: ProgressState? = null,
     val progressValue: Int = 0,
     // Session counts for hosts that have multiple sessions (for tab display)
-    val sessionCounts: Map<Long, Int> = emptyMap(),
+    val sessionCounts: Map<UUID, Int> = emptyMap(),
 )
 
 @HiltViewModel
@@ -282,7 +282,7 @@ class ConsoleViewModel @Inject constructor(
         val currentState = _uiState.value
         val selectedIndex = findBridgeIndexBySession(allBridges, selectedSessionId)
         val requestedHostIndex = findBridgeIndexByHost(allBridges, pendingInitialHostId)
-        val lastUsedIndex = if (currentState.bridges.isEmpty() && hostId != -1L) {
+        val lastUsedIndex = if (currentState.bridges.isEmpty() && hostId != EntityIds.NONE) {
             terminalManager?.getLastUsedBridge(hostId)?.let { bridge ->
                 findBridgeIndexBySession(allBridges, bridge.sessionId)
             } ?: -1
