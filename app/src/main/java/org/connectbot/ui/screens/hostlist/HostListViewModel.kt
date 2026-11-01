@@ -24,7 +24,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -241,13 +240,8 @@ class HostListViewModel @Inject constructor(
     fun connectToHost(host: Host) {
         viewModelScope.launch {
             try {
-                withContext(Dispatchers.IO) {
-                    // Build URI from host
-                    val uri = android.net.Uri.Builder()
-                        .scheme(host.protocol)
-                        .encodedAuthority("${host.username}@${host.hostname}:${host.port}")
-                        .build()
-                    terminalManager?.openConnection(uri)
+                withContext(dispatchers.io) {
+                    terminalManager?.openConnectionForHostId(host.id)
                 }
             } catch (e: Exception) {
                 _uiState.update {
