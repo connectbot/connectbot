@@ -734,4 +734,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">Не вдалося створити ярлик. Будь ласка, спробуйте ще раз.</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">У ланцюжку проміжних хостів виявлено цикл. Перевірте налаштування проміжних хостів.</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">Кількість проміжних серверів у ланцюжку перевищує ліміт у 32 сервери.</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">Локальне відображення введеного тексту.</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">Оберіть, чи потрібно відображати введений текст локально. Якщо опцію ввімкнено постійно, це може призвести до дублювання тексту, коли сервер надсилає його назад.</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">Автоматичний</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">Завжди ввімкнено.</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">Завжди вимкнено.</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">Початок узгодження.</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">Під час встановлення з’єднання узгоджуйте можливості термінала або дочекайтеся, поки сервер надішле запит на їх надання.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">Узгоджуйте під час встановлення з’єднання.</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">Очікуйте відповіді від сервера.</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">Дані, що не є двійковими.</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">Якщо сервер відмовляється від двійкового режиму, дозвольте використання застарілих восьмибітових байтів або вимагайте використання кодування ASCII. Обидві сторони повинні використовувати однакове кодування.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">Дозволити використання застарілих восьмибітних байтів.</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">Вимагати використання кодування ASCII.</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">Вставлені символи кінця рядка</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">У режимі, відмінному від двійкового, перетворюйте вставлені символи нового рядка (LF) на CRLF або зберігайте їх у форматі LF. Це також стосується автоматизованого тексту.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">Перетворити LF на CRLF.</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">Зберігати символ нового рядка (LF).</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">Введений текст не було надіслано. Для цього з’єднання необхідно використовувати кодування ASCII, поки сервер не ввімкне двійковий режим.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">Не вдалося надіслати дані на цей Telnet-сервер.</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">З’єднання не вдалося.</string>
+  <string name="terminal_connected" tools:machine_translated="true">Підключено.</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">Аутентифікацію виконано успішно.</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">Не вдалося відкрити SSH-сесію.</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">SSH-сервер відхилив запит на підключення до термінала.</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">SSH-сервер відхилив запит на запуск інтерактивної оболонки.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">Інформація про з’єднання</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">Протокол</string>
+  <string name="connection_info_host" tools:machine_translated="true">Хост</string>
+  <string name="connection_info_port" tools:machine_translated="true">Порт</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">Порт SSH</string>
+  <string name="connection_info_username" tools:machine_translated="true">Ім’я користувача</string>
+  <string name="connection_info_status" tools:machine_translated="true">Статус</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">Встановлення з’єднання.</string>
+  <string name="connection_info_connected" tools:machine_translated="true">Під’єднано</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">З’єднання розірвано.</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">Локальна адреса</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">Детальна інформація про початкове встановлення SSH, яке використовується для запуску Mosh, а не для активного з’єднання Mosh.</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">Деталі узгодження алгоритмів через SSH-з’єднання.</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">Інформація про узгоджені параметри SSH-з’єднання відсутня.</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">Обмін ключами</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">Ключ хоста сервера</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">Шифрування: від клієнта до сервера.</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">Шифрування: від сервера до клієнта.</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">Цілісність: від клієнта до сервера.</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">Цілісність: від сервера до клієнта.</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">Інтегровано з шифруванням.</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">Обмін ключами, стійкий до атак квантових комп’ютерів.</string>
+  <string name="connection_info_yes" tools:machine_translated="true">Так</string>
+  <string name="connection_info_no" tools:machine_translated="true">Ні</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">Налаштування перенаправлення портів</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">Налаштовано джерело.</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">Призначений порт</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">Не пов’язано.</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">Статус перенаправлення</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">Активний</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">Неактивний</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">Адреса призначення</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">Політика щодо криптографії.</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">За замовчуванням</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">У майбутньому</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">Застарілий</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">Алгоритми FIPS</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">Налаштовано користувачем.</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">Рекомендовані алгоритми та розміри ключів.</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">Вимагати використання постквантового обміну ключами.</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">Обмежити алгоритми; не пройшли перевірку на відповідність стандарту FIPS.</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">Дозволити використання застарілих алгоритмів для забезпечення сумісності.</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">Оберіть алгоритми та мінімальні розміри ключів.</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">Сучасні алгоритми та вимоги до довжини ключів, які підтримуються бібліотекою SSH.</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">Вимагає використання гібридного обміну ключами, стійкого до квантових обчислень, 256-бітових ключів шифрування та надійніших ключів RSA.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">Обмежує вибір алгоритмів; не передбачає підтвердження відповідності стандарту FIPS.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">Дозволяє використовувати застарілі алгоритми та менші ключі RSA і DH для забезпечення сумісності. Сучасні алгоритми залишаються пріоритетними.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">Налаштуйте параметри за замовчуванням. Вибір алгоритмів і мінімальний розмір ключа є незалежними параметрами.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">Мінімальна кількість біт RSA.</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">Мінімальна кількість бітів DH.</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">Використовувати значення за замовчуванням (%1$d біт)</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">Залиште поле порожнім, щоб використовувати значення за замовчуванням. Застосовується навіть до алгоритмів, які були явно увімкнені.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">Введіть щонайменше 1024 біт. Обсяг DH не повинен перевищувати 8192 біт.</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">Алгоритми обміну ключами</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">Алгоритми шифрування</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">Алгоритми автентифікації повідомлень</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">Алгоритми для генерації ключів хоста.</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">Алгоритми автентифікації за допомогою відкритого ключа.</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">Режим вибору</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">Використовувати значення за замовчуванням.</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">Змінити значення за замовчуванням.</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">Використовуйте лише ці.</string>
+  <string name="crypto_apply" tools:machine_translated="true">Застосувати</string>
+  <string name="crypto_expression" tools:machine_translated="true">Вираз алгоритму.</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">Імена, розділені комами. У розділі «Змінити параметри за замовчуванням» додайте до кожного імені префікс: ^ (на початок), + (в кінець) або - (виключити).</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">Використовуйте унікальні імена SSH і один режим вибору. Списки не повинні бути порожніми.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">Актуальний порядок пріоритетів.</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">Недоступно на цьому пристрої; збережено у вашій конфігурації.</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">Виключено через мінімальний розмір ключа.</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">Увімкнено за замовчуванням.</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">Доступно; не ввімкнено за замовчуванням.</string>
+  <string name="crypto_prepend" tools:machine_translated="true">Віддавайте перевагу першому.</string>
+  <string name="crypto_append" tools:machine_translated="true">Додати</string>
+  <string name="crypto_exclude" tools:machine_translated="true">Виключити</string>
+  <string name="crypto_inherit" tools:machine_translated="true">Використовувати значення за замовчуванням.</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">не реалізовано в цій бібліотеці.</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">недоступно, оскільки встановлено криптографічні провайдери.</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">Розмір групи DH менший за встановлений мінімум.</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">ключ або сертифікат не відповідає вимогам політики RSA або політики сертифікатів.</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">Увага — %1$s: %2$s: %3$s пропущено (%4$s).</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">Налаштування криптографічної політики не передбачає використання жодного з доступних %1$s.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">Застосування криптографічної політики для %1$s завершилося невдало: %2$s.</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">Криптографічна політика — %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">Мінімальні розміри ключів.</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA: %1$d біт; DH у скінченному полі: %2$d біт.</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">Показати діючу послідовність пріоритетів.</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">Приховати діючу послідовність пріоритетів.</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">Змінити стан для %1$s.</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ Надати пріоритет першому · + Додати · ✓ Дотримуватися налаштувань за замовчуванням · − Виключити</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">Shift</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">Клавіша «Tab»</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">Введіть</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">Клавіша «Назад»</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">Видалити</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">Вставити</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">↑</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">↓</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">Додому</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">Кінець</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">Page Up</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">Постр. вниз</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">Введення тексту</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">Компонувати</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">Клавіатура</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">Клавіатура термінала</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">Розкладки клавіатури</string>
+  <string name="keyboard_macros" tools:machine_translated="true">Загальні макроси</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">Відсутній макрос.</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">Непідтримувана конфігурація.</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">Дію з клавіатурою не вдалося виконати.</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">Перемістити вгору</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">Перемістити вниз.</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">Перемістити ліворуч.</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">Перемістити вправо.</string>
+  <string name="keyboard_off" tools:machine_translated="true">Вимкнено.</string>
+  <string name="keyboard_once" tools:machine_translated="true">Наступна клавіша</string>
+  <string name="keyboard_locked" tools:machine_translated="true">Заблоковано.</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">Нова розкладка</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">Новий макрос.</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(скопіювати)</string>
+  <string name="keyboard_back" tools:machine_translated="true">Назад</string>
+  <string name="keyboard_error" tools:machine_translated="true">Не вдалося застосувати зміни: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">Додати розкладку клавіатури.</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">Додати макрос.</string>
+  <string name="keyboard_edit" tools:machine_translated="true">Редагувати</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">Дублікат</string>
+  <string name="keyboard_delete" tools:machine_translated="true">Видалити</string>
+  <string name="keyboard_default" tools:machine_translated="true">Використовувати як стандартну для програми.</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">Використовується в: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">Підтвердити</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">Застосувати ці руйнівні зміни? Збережені зміни до макета можуть бути втрачені. Спільні макроси зберігаються під час скидання макета.</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">Скасувати</string>
+  <string name="keyboard_name" tools:machine_translated="true">Назва</string>
+  <string name="keyboard_width" tools:machine_translated="true">Ширина кнопки (в пікселях, для всіх кнопок).</string>
+  <string name="keyboard_height" tools:machine_translated="true">Висота кнопки (в пікселях, для всіх кнопок)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">Торкніться клавіші, щоб її відредагувати. Торкніться та утримуйте, а потім перетягніть, щоб перемістити її. Перетягніть між розділами, щоб закріпити або відкріпити. Розмір кнопки застосовується до кожної клавіші.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">Перетягніть, щоб змінити порядок розташування кнопки.</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">Додати клавішу</string>
+  <string name="keyboard_visible" tools:machine_translated="true">Відображається.</string>
+  <string name="keyboard_row" tools:machine_translated="true">Ряд (починається з 0)</string>
+  <string name="keyboard_column" tools:machine_translated="true">Стовпець (нумерація починається з 0)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">Кількість рядків, які охоплює елемент.</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">Кількість стовпців</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">Видалити клавішу</string>
+  <string name="keyboard_save" tools:machine_translated="true">Зберегти</string>
+  <string name="keyboard_reset" tools:machine_translated="true">Відновити значення за замовчуванням.</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">Використовуйте налаштування за замовчуванням для програми.</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">Візуальний редактор</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">Текстовий редактор</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">Одна дія на кожному рядку: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. У тексті використовується екранування JSON-рядків.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">Етапи макросу</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">Додати текст.</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">Додати клавішу.</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">Додати байти.</string>
+  <string name="keyboard_text" tools:machine_translated="true">Текст для надсилання.</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">Точні значення байтів (шістнадцяткові)</string>
+  <string name="keyboard_character" tools:machine_translated="true">Символ</string>
+  <string name="terminal_key_space" tools:machine_translated="true">Пробіл</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">Клавіша цифрової клавіатури %1$s</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">Назва кнопки</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">Цитрусові</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">Компактні елементи керування терміналом.</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">Остання зупинка</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">Зручні елементи керування терміналом.</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">Кіготь</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">Оптимізовано для Claude Code.</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">Скриб</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">Оптимізовано для інтерфейсу командного рядка Codex.</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">Оберіть шаблон клавіатури.</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">Класична схема CB</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">Автоматично підібрати ширину</string>
+  <string name="keyboard_layer" tools:machine_translated="true">Шар %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">Шар %1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">Перемикання шарів</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">Місце призначення шару</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">Наступний заповнений шар.</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">Цільовий шар порожній.</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">Зупинити</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">Історія</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">Режим</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">Новий рядок</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">Журнал</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">Редагувати</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">Копіювати</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">Вставити</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">Перервати</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Історія пошуку</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">Перемикайте режими дозволів.</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">Вставити новий рядок</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">Увімкнути/вимкнути текст</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">Відкрити зовнішній редактор.</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">Скопіювати відповідь</string>
+  <string name="macro_assign" tools:machine_translated="true">Призначити макрос.</string>
+  <string name="macro_import" tools:machine_translated="true">Імпортувати макрос</string>
+  <string name="macro_export" tools:machine_translated="true">Експортувати макрос</string>
+  <string name="macro_none" tools:machine_translated="true">Немає збережених макросів.</string>
+  <string name="automation_run_macro" tools:machine_translated="true">Виконати макрос.</string>
+  <string name="macro_choose" tools:machine_translated="true">Оберіть макрос.</string>
+  <string name="macro_manage" tools:machine_translated="true">Керування макросами</string>
+  <string name="keyboard_selected" tools:machine_translated="true">Вибрано</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">Налаштування за замовчуванням для програми.</string>
+  <string name="keyboard_select" tools:machine_translated="true">Використовуйте це.</string>
+  <string name="keyboard_change" tools:machine_translated="true">Змінити розкладку клавіатури.</string>
+  <string name="keyboard_customize" tools:machine_translated="true">Налаштувати</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">Редагувати спільний макет.</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">Використовувати як стандартну для програми.</string>
+  <string name="keyboard_saving" tools:machine_translated="true">Збереження…</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">Налаштований/власний</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">Використовуйте клавіатуру, налаштування якої успадковано.</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">З профілю «%1$s»</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">Розширені можливості</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">Клавіатура: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">Автоматизація після входу в систему: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">Профіль: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">Хост: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">Видалити макет «%1$s»?</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">Видалити макрос «%1$s»?</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">Для хостів і профілів, які використовують цю розкладку, буде застосовано їхню стандартну розкладку клавіатури. Якщо це стандартна розкладка для програми, то інша розкладка стане стандартною.</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">Це видаляє макрос із загальної бібліотеки.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">Відновити початкові параметри розташування клавіш і розміри? Зміни будуть застосовані після збереження. Спільні макроси зберігаються.</string>
+  <string name="macro_shared_title" tools:machine_translated="true">Відредагувати спільний макрос?</string>
+  <string name="macro_shared_message" tools:machine_translated="true">Цей макрос використовується в інших місцях. Створіть окрему копію або відредагуйте спільну версію для всіх користувачів.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">Створити копію.</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">Редагувати спільний макрос</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">Збереження оновлень застосовується до цієї макрокоманди всюди, де вона використовується, навіть якщо згодом ви видалите пов’язаний з нею редактор.</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">Видаліть або перепризначте ці параметри перед видаленням цього макросу.</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">Ця сесія.</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">До цього пристрою можна лише отримувати дані, але не змінювати їх. Його клавіатуру не можна налаштувати.</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">Керуйте макетами</string>
+  <string name="keyboard_done" tools:machine_translated="true">Готово.</string>
+  <string name="automation_draft_host" tools:machine_translated="true">Ці кроки будуть збережені разом із даними про нового хоста.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">Збережіть цю інформацію про сервер і додайте правила перенаправлення портів, перш ніж використовувати функції перенаправлення.</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">Дія</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">Клавіша</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">Макрос</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">Модифікатор</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">Дія програми</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">Перемкнути шар</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">Спільний макет: збереження оновлень для всіх, хто ним користується.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">Ця розкладка клавіатури недоступна.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">Рядки та стовпці починаються з 0 у кожному розділі. Висота клавіші становить один рядок. Параметр «Діапазон стовпців» визначає, скільки клітинок займає клавіша.</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">Зовнішній вигляд</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">Колір фону</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">Колір тексту</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">Колір обведення</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">Тема за замовчуванням</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Прозорість фону: %1$d%%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">З обведенням</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">Товщина обведення: %1$.1f пікселів (незалежно від щільності).</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">Скинути налаштування зовнішнього вигляду.</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">Активні модифікатори та перемикачі шарів використовують стилізоване виділення, що відповідає поточній темі.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">Поведінка</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">Повторювати, поки утримується</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">Використовуйте стандартні налаштування повторення.</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">Налаштування програми</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">Увімкнено</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">Вимкнути</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">Тактильний відгук: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">Закріплені клавіші</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">Клавіші, які можна прокручувати.</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">Перетягніть сюди клавіші.</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">Закріпити праворуч.</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">Обирайте макети, налаштовуйте клавіші та керуйте макросами.</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">Редагувати макет</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">Змінити назву клавіші</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">Налаштування розташування клавіш</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">З можливістю прокручування.</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">Підлаштувати під ширину</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">Клавіатура</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">Торкніться, щоб редагувати · Утримуйте та перетягуйте, щоб перемістити.</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">Закріплені клавіші залишаються в кінці клавіатури (зліва в інтерфейсах, де текст відображається справа наліво).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">Перетягніть клавішу до розділу «Закріплені клавіші», щоб вона завжди була в кінці клавіатури. Перетягніть її назад до розділу «Клавіші, які можна прокручувати», щоб зняти закріплення.</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">Розширено</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">Згорнуто</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">Відредагуйте текст.</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">Продовжуйте редагування.</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">Створює макет для %1$s. Інші користувачі зберігають поточний макет.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">Зміни будуть застосовані, коли ви збережете цей хост або профіль.</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">Збереження цієї клавіші оновлює чернетку макета. Збережіть макет, щоб зберегти внесені зміни.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">Розташування</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">Покажіть клавішу.</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">Закріплено в кінці.</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">Змінити комбінацію клавіш</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">Оберіть, яку дію виконуватиме ця клавіша під час натискання.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">Фон, текст і контур.</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · Тактильний відгук: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">Натисніть один раз.</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">Повторює, поки утримується.</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">Рядок, стовпець і ширина клавіші.</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">Використовується %1$d користувачами.</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">Видалити цю клавішу з чернетки макета?</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">Застосувати зміни до клавіш?</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">Застосуйте ці зміни до макета або скасуйте їх.</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">Застосувати зміни.</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">Редагувати макет</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">Клавіша або комбінація клавіш</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">Перегляд</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">Вибір користувача</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">Використовуйте успадковане розташування елементів.</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">Дії з макетом</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">Попередній перегляд кольору</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">Додайте клавішу для активації цього шару.</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">Зміни застосовуються до цього термінала після збереження макета.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">Збереження цієї розкладки оновлює її для всіх користувачів. Замість цього ви можете відредагувати копію.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">Змінити спільний макет клавіатури?</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">ця конфігурація</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">Вбудовані шаблони</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Вбудовані шаблони залишаються незмінними. Редагування створює вашу власну копію.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">Вбудований попередньо встановлений шаблон.</string>
 </resources>

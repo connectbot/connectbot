@@ -730,4 +730,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">Nu s-a putut crea scurtătura. Vă rugăm să încercați din nou.</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">Lanțul de servere intermediare conține un ciclu. Verificați setările serverelor intermediare.</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">Lanțul de servere intermediare depășește limita de 32 de servere.</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">Afișare locală a textului introdus.</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">Alegeți dacă textul introdus trebuie afișat local. Dacă opțiunea este întotdeauna activă, este posibil ca textul să fie duplicat atunci când serverul îl retransmite.</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">Automat</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">Întotdeauna activat.</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">Întotdeauna dezactivat.</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">Inițierea negocierii</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">Negociază capabilitățile terminalului la conectare sau așteaptă ca serverul să le solicite.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">Negociază la conectare.</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">Așteptați răspunsul de la server.</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">Date non-binare</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">Dacă serverul refuză modul binar, permiteți utilizarea formatului vechi de opt biți sau solicitați utilizarea formatului ASCII. Ambele părți trebuie să utilizeze aceeași codificare.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">Permite utilizarea octeților de 8 biți din versiunile anterioare.</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">Solicită utilizarea codului ASCII.</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">Linii copiate cu caractere de sfârșit de linie.</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">În afara modului binar, convertiți caracterele LF copiate în caractere CRLF sau păstrați caracterele LF. Această regulă se aplică și textului utilizat în automatizări.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">Convertește LF în CRLF.</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">Păstrează LF.</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">Datele introduse nu au fost trimise. Această conexiune necesită utilizarea codificării ASCII până când serverul activează modul binar.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">Nu s-a putut trimite datele de intrare către acest server Telnet.</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">Conexiunea a eșuat.</string>
+  <string name="terminal_connected" tools:machine_translated="true">Conectat.</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">Autentificarea a avut succes.</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">Nu se poate deschide o sesiune SSH.</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">Serverul SSH a refuzat cererea de conectare la terminal.</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">Serverul SSH a refuzat cererea de lansare a interfeței.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">Informații despre conexiune</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">Protocol</string>
+  <string name="connection_info_host" tools:machine_translated="true">Nume de host</string>
+  <string name="connection_info_port" tools:machine_translated="true">Port</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">Portul SSH</string>
+  <string name="connection_info_username" tools:machine_translated="true">Nume de utilizator</string>
+  <string name="connection_info_status" tools:machine_translated="true">Stare</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">Se realizează conexiunea.</string>
+  <string name="connection_info_connected" tools:machine_translated="true">Conectat</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">Conexiunea a fost întreruptă.</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">Adresă locală</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">Detalii despre inițializarea SSH.</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">Detalii despre negocierile algoritmilor prin conexiunea SSH.</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">Nu sunt disponibile detalii despre negocierea conexiunii SSH.</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">Schimb de chei</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">Cheia gazdă a serverului</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">Criptare: de la client la server.</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">Criptare: de la server la client.</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">Integritate: de la client la server.</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">Integritate: de la server la client.</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">Integrat cu funcția de criptare.</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">Schimb de chei post-cuantic</string>
+  <string name="connection_info_yes" tools:machine_translated="true">Da.</string>
+  <string name="connection_info_no" tools:machine_translated="true">Nu.</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">Redirecționări de porturi</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">Sursă configurată.</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">Portul alocat</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">Nu este activ.</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">Starea redirecționării</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">Activ</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">Inactiv</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">Adresă de destinație</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">Politica de criptare.</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">Implicit</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">Viitor</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">Vechi</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">Algoritmi FIPS</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">Personalizat</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">Algoritmi și dimensiuni de chei recomandate.</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">Solicită schimbul de chei post-cuantice.</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">Restricționează algoritmii; nu sunt validați conform standardului FIPS.</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">Permite utilizarea algoritmilor mai vechi pentru compatibilitate.</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">Alegeți algoritmi și dimensiuni minime pentru chei.</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">Algoritmi moderni și cerințe privind dimensiunea cheilor, menținute de biblioteca SSH.</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">Necesită schimb de chei hibrid post-cuantic, chei de criptare de 256 de biți și chei RSA mai puternice.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">Restricționează opțiunile de algoritmi; nu stabilește validarea FIPS.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">Permite utilizarea algoritmilor mai vechi și a unor chei RSA și DH mai mici, pentru a asigura compatibilitatea. Algoritmii moderni rămân preferați.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">Personalizați setările implicite. Selecțiile de algoritmi și valorile minime pentru dimensiunea cheii sunt independente.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">Numărul minim de biți RSA.</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">Numărul minim de biți DH.</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">Utilizează setările implicite (%1$d biți)</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">Lăsați câmpul gol pentru a utiliza setările implicite. Se aplică chiar și algoritmilor activați în mod explicit.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">Introduceți cel puțin 1024 de biți. Valoarea DH nu trebuie să depășească 8192 de biți.</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">Algoritmi de schimb de chei</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">Algoritmi de criptare</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">Algoritmi de autentificare a mesajelor</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">Algoritmi pentru cheia gazdă.</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">Algoritmi de autentificare cu cheie publică.</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">Mod de selecție</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">Utilizează setările implicite.</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">Modifică setările implicite.</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">Utilizați doar acestea.</string>
+  <string name="crypto_apply" tools:machine_translated="true">Aplică</string>
+  <string name="crypto_expression" tools:machine_translated="true">Expresia algoritmului</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">Nume separate prin virgulă. În secțiunea Modificare setări implicite, adăugați prefixul ^ (la început), + (la sfârșit) sau - (pentru a exclude) înaintea fiecărui nume.</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">Utilizați nume SSH unice și un singur mod de selecție. Listele exacte nu trebuie să fie goale.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">Ordinea preferințelor aplicată.</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">Nu este disponibil pe acest dispozitiv; a fost păstrat în configurația dumneavoastră.</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">Exclus din cauza dimensiunii minime a cheii.</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">Activat în setările implicite.</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">Disponibil; nu este activat în setările implicite.</string>
+  <string name="crypto_prepend" tools:machine_translated="true">Preferă prima opțiune.</string>
+  <string name="crypto_append" tools:machine_translated="true">Adaugă</string>
+  <string name="crypto_exclude" tools:machine_translated="true">Excludeți</string>
+  <string name="crypto_inherit" tools:machine_translated="true">Urmează setările implicite.</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">nu este implementat de această bibliotecă.</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">indisponibil cu furnizorii criptografici instalați.</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">Grupul DH este mai mic decât valoarea minimă configurată.</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">cheia sau certificatul nu respectă politica RSA sau politica de certificate.</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">Avertisment — %1$s: %2$s: %3$s a fost omis (%4$s).</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">Politica de criptare nu permite utilizarea niciunui %1$s.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">Politica de criptare a eșuat pentru %1$s: %2$s.</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">Politica de criptare — %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">Dimensiunile minime ale cheilor.</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA: %1$d biți; DH cu câmp finit: %2$d biți</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">Afișează ordinea preferințelor aplicată.</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">Ascunde ordinea preferințelor aplicate.</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">Modifică starea pentru %1$s.</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ Prioritizează primul · + Adaugă · ✓ Respectă setările implicite · − Exclude</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">Shift</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">Apăsați Enter.</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">Ștergere (tasta)</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">Șterge</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">Inserare</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">Săgeată în sus.</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">↓</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">Acasă</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">Sfârșit</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">Pagina următoare</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">Pagina următoare</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">Introducerea textului</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">Compoziție</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">Tastatură</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">Configurare tastatură terminal</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">Configurații de tastatură</string>
+  <string name="keyboard_macros" tools:machine_translated="true">Macro-uri partajate</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">Macro lipsă.</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">Configurație neacceptată.</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">Operațiunea cu tastatura a eșuat.</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">Deplasează în sus.</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">Deplasează în jos.</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">Deplasează-te la stânga.</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">Deplasează-te la dreapta.</string>
+  <string name="keyboard_off" tools:machine_translated="true">Dezactivat.</string>
+  <string name="keyboard_once" tools:machine_translated="true">Următoarea tastă</string>
+  <string name="keyboard_locked" tools:machine_translated="true">Blocat.</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">Aspect nou.</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">Macro nouă.</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(copiază)</string>
+  <string name="keyboard_back" tools:machine_translated="true">Înapoi</string>
+  <string name="keyboard_error" tools:machine_translated="true">Nu s-a putut aplica modificarea: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">Adăugați aspectul tastaturii.</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">Adăugați macro.</string>
+  <string name="keyboard_edit" tools:machine_translated="true">Editează</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">Dublu / Duplicat</string>
+  <string name="keyboard_delete" tools:machine_translated="true">Șterge</string>
+  <string name="keyboard_default" tools:machine_translated="true">Utilizați ca setare implicită pentru aplicație.</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">Utilizat în: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">Confirmă.</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">Aplicați această modificare ireversibilă? Este posibil să pierdeți modificările salvate ale aspectului. Macro-urile partajate sunt păstrate la resetarea aspectului.</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">Anulează</string>
+  <string name="keyboard_name" tools:machine_translated="true">Nume</string>
+  <string name="keyboard_width" tools:machine_translated="true">Lățimea butonului (în dp, pentru toate butoanele)</string>
+  <string name="keyboard_height" tools:machine_translated="true">Înălțimea butonului (dp, pentru toate butoanele)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">Atingeți o tastă pentru a o edita. Atingeți și mențineți apăsată, apoi glisați pentru a o muta. Glisați între secțiuni pentru a o fixa sau a o debloca. Dimensiunea butonului se aplică la fiecare tastă.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">Trageți pentru a rearanja butonul.</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">Adaugă tastă</string>
+  <string name="keyboard_visible" tools:machine_translated="true">Vizibil</string>
+  <string name="keyboard_row" tools:machine_translated="true">Rând (începând cu 0)</string>
+  <string name="keyboard_column" tools:machine_translated="true">Coloană (începând cu 0)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">Numărul de rânduri acoperite</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">Numărul de coloane</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">Șterge tasta</string>
+  <string name="keyboard_save" tools:machine_translated="true">Salvează</string>
+  <string name="keyboard_reset" tools:machine_translated="true">Restabilește setările implicite.</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">Utilizați setările implicite ale aplicației.</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">Editor vizual</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">Editor de text</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">O acțiune per linie: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. Textul utilizează caractere speciale pentru a evita interpretarea greșită a șirului JSON.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">Pașii macro.</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">Adăugați text.</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">Adăugați o tastă.</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">Adăugați octeți.</string>
+  <string name="keyboard_text" tools:machine_translated="true">Textul de trimis.</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">Valorile exacte ale octeților (hexazecimal)</string>
+  <string name="keyboard_character" tools:machine_translated="true">Caracter</string>
+  <string name="terminal_key_space" tools:machine_translated="true">Spațiu</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">Tasta %1$s de pe tastatura numerică.</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">Eticheta butonului</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">Citrus</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">Comenzi compacte pentru terminal.</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">Ultima stație.</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">Comenzi intuitive și ușor de utilizat.</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">Gheară</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">Optimizat pentru Claude Code.</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">Scribe</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">Optimizat pentru interfața în linie de comandă Codex.</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">Alegeți un model prestabilit pentru tastatură.</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">Aspectul clasic al tastaturii ConnectBot.</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">Adaptează la lățime.</string>
+  <string name="keyboard_layer" tools:machine_translated="true">Stratul %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">Stratul %1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">Comutare strat</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">Destinația stratului</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">Următorul nivel care conține elemente</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">Stratul destinație este gol.</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">Oprește</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">Istoric (scurtat)</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">Mod</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">NewLine (abreviat)</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">Jurnal</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">Editează</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">Copiază</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">Copiere</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">Întrerupe</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Istoric căutări</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">Comutați între modurile de permisiune.</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">Inserează un rând nou.</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">Activează/dezactivează transcrierea.</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">Deschide editorul extern.</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">Copiază răspunsul</string>
+  <string name="macro_assign" tools:machine_translated="true">Atribuie macro.</string>
+  <string name="macro_import" tools:machine_translated="true">Importă macro</string>
+  <string name="macro_export" tools:machine_translated="true">Exportă macro-ul</string>
+  <string name="macro_none" tools:machine_translated="true">Nu există macro-uri salvate.</string>
+  <string name="automation_run_macro" tools:machine_translated="true">Execută macro-ul.</string>
+  <string name="macro_choose" tools:machine_translated="true">Alegeți macrocomanda.</string>
+  <string name="macro_manage" tools:machine_translated="true">Gestionează macro-urile.</string>
+  <string name="keyboard_selected" tools:machine_translated="true">Selectat</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">Setările implicite ale aplicației</string>
+  <string name="keyboard_select" tools:machine_translated="true">Utilizați această opțiune.</string>
+  <string name="keyboard_change" tools:machine_translated="true">Modifică aspectul.</string>
+  <string name="keyboard_customize" tools:machine_translated="true">Personalizați</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">Editează aspectul partajat.</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">Utilizați ca setare implicită pentru aplicație.</string>
+  <string name="keyboard_saving" tools:machine_translated="true">Se salvează…</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">Personalizat</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">Utilizați tastatura implicită.</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">Din profilul „%1$s”</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">Avansat</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">Tastatură: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">Automatizare după autentificare: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">Profil: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">Gazdă: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">Ștergeți aspectul „%1$s”?</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">Ștergeți macrocomanda „%1$s”?</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">Gazdele și profilurile care utilizează această configurație vor folosi tastatura implicită. Dacă aceasta este configurația implicită a aplicației, o altă configurație va deveni configurația implicită.</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">Aceasta elimină macro-ul din biblioteca partajată.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">Restabiliți aspectul inițial al tastaturii și dimensiunile acesteia? Modificările vor fi aplicate la salvare. Macro-urile partajate vor fi păstrate.</string>
+  <string name="macro_shared_title" tools:machine_translated="true">Editați o macrocomandă partajată?</string>
+  <string name="macro_shared_message" tools:machine_translated="true">Această macrocomandă este utilizată și în alte contexte. Creați o copie separată sau editați versiunea partajată pentru toți utilizatorii.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">Creează o copie.</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">Editează macro-ul partajat.</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">Salvarea actualizărilor va aplica modificările la această macro în toate locurile în care este utilizată, chiar dacă ulterior renunțați la editorul în care ați făcut modificările.</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">Eliminați sau reatribuiți aceste utilizări înainte de a șterge această macrocomandă.</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">Această sesiune.</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">Acest server este în modul „doar pentru citire”. Tastatura acestuia nu poate fi modificată.</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">Gestionează aspectele.</string>
+  <string name="keyboard_done" tools:machine_translated="true">Gata.</string>
+  <string name="automation_draft_host" tools:machine_translated="true">Acești pași vor fi salvați împreună cu noul server.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">Salvați acest server și adăugați redirecționările de port înainte de a utiliza acțiunile de redirecționare.</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">Acțiune</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">Tastă</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">Macrocomandă</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">Modificator</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">Acțiune în aplicație</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">Comută stratul.</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">Aspect comun: actualizările sunt salvate și aplicate tuturor utilizatorilor.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">Această configurație de tastatură nu este disponibilă.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">Rândurile și coloanele încep de la 0 în fiecare secțiune. Fiecare tastă ocupă un rând. Numărul de coloane specifică câte celule ocupă o tastă.</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">Aspect</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">Culoarea de fundal</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">Culoarea textului</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">Culoarea conturului</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">Tema implicită</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Opacitatea fundalului: %1$d%%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">Cu contur</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">Grosimea conturului: %1$.1f dp</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">Resetează aspectul.</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">Modificatorii activi și comutatoarele de straturi folosesc evidențierea tematică.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">Comportament</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">Repetă cât timp este apăsat.</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">Utilizați comportamentul implicit pentru repetarea acțiunilor.</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">Setări aplicație</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">Activat</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">Dezactivat</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">Feedback haptic: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">Tastele fixate</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">Taste care pot fi derulate.</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">Glisați tastele aici.</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">Fixează în partea dreaptă.</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">Alegeți aspecte, personalizați tastele și gestionați macrocomenzile.</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">Editează aspectul</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">Editează eticheta tastei.</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">Setări pentru aspectul tastaturii</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">Cu posibilitatea de derulare.</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">Adaptează la lățime.</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">Tastatură</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">Atingeți pentru a edita · Țineți apăsat și glisați pentru a muta.</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">Tastele fixate rămân la capătul tastaturii (în partea stângă, în interfețele de la dreapta la stânga).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">Glisați o tastă în secțiunea „Taste fixate” pentru a o menține la sfârșitul tastaturii. Glisați-o înapoi în secțiunea „Taste cu defilare” pentru a o elimina din lista de taste fixate.</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">Extins</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">Redus/pliat/strâns</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">Editează o copie.</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">Continuă să editezi.</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">Creează o schemă de aspect pentru %1$s. Ceilalți utilizatori își păstrează schema de aspect actuală.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">Modificările vor fi aplicate atunci când salvați acest dispozitiv sau profil.</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">Salvarea acestei setări actualizează schița aspectului. Salvați aspectul pentru a păstra modificările.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">Amplasare</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">Afișează tasta.</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">Fixat la final.</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">Modifică comanda rapidă.</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">Alegeți ce acțiune va fi efectuată atunci când această tastă este apăsată.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">Fundal, text și contur.</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · Feedback haptic: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">Apăsați o singură dată.</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">Se repetă cât timp este apăsată.</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">Rând, coloană și lățimea tastei.</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">Utilizat de %1$d</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">Eliminați această tastă din schița aspectului?</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">Aplicați modificările tastelor?</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">Aplică aceste modificări la aspectul general sau anulează-le.</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">Aplică modificările.</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">Editează aspectul.</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">Tastă sau comandă rapidă</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">Previzualizare</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">Selecție personalizată</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">Utilizați aspectul implicit.</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">Acțiuni de configurare a aspectului</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">Previzualizare culoare</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">Adăugați o tastă pentru a activa această funcție.</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">Modificările se aplică acestei sesiuni de lucru atunci când salvați configurația.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">Salvarea acestei configurații actualizează configurația pentru toți utilizatorii. Puteți edita o copie în schimb.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">Modificați configurația partajată?</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">această configurație</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">Șabloane predefinite.</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Șabloanele predefinite rămân neschimbate. Modificarea acestora creează o copie personală.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">Setare prestabilită integrată.</string>
 </resources>

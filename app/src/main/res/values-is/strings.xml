@@ -726,4 +726,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">Tókst ekki að búa til flýtileiðina. Vinsamlegast reyndu aftur.</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">Keðjan af millistýriþjónum inniheldur hringrás. Athugaðu stillingar millistýriþjónanna.</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">Keðja milliþjóna fer yfir hámarkið, sem er 32 þjónar.</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">Staðbundin endurtenging</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">Veldu hvort það sem skrifað er inn skuli birt á tækinu. Ef þessi valkostur er alltaf virkur, getur það leitt til þess að texti birtist tvisvar, þar sem þjóninn endursendir hann.</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">Sjálfvirkt</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">Alltaf virkt</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">Alltaf af.</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">Heimfararstilling fyrir samningaviðræður.</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">Rættu við um getu tækjabúnaðar þegar tengist er, eða bíðu þar til netþjónninn biður um þær.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">Semja um tengingu.</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">Bíð eftir svar frá netþjóni.</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">Gagn sem ekki er hægt að flokka sem annaðhvort bit eða byte.</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">Ef netþjónninn samþykkir ekki tvíundargögn, leyfðu eldri, átta bita stór gögn eða krefst ASCII-sniðs. Bæði endalokin verða að nota sama tegundarset.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">Leyfðu eldri, átta bita stórri táknrænum einingum.</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">Krefst ASCII-staðals.</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">Línuskil sem afrituð voru</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">Þegar ekki er notað binárlagi, skiptu um nýju línu (LF) í CRLF eða hafðu LF óbreytt. Þetta á einnig við um texta sem notaður er í sjálfvirkniverkefnum.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">Umbreyttu LF í CRLF.</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">Varðveittu LF</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">Inntakinu var ekki sent. Þessi tenging krefst ASCII-formats þar til netþjónninn virkjar tvíundarformatið.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">Ekki var hægt að senda innsláttinn til þessa Telnet-þjóns.</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">Tenging mistókst.</string>
+  <string name="terminal_connected" tools:machine_translated="true">Tengingin er komin á.</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">Staðfesting heppnaðist.</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">Ekki tókst að opna SSH-tengingu.</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">SSH-þjónninn hafnaði beiðninni um tengingu við skjáinn.</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">SSH-þjónninn hafnaði beiðninni um að ræsa hugbúnaðarforritið.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">Upplýsingar um tengingu</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">Samsetning</string>
+  <string name="connection_info_host" tools:machine_translated="true">Netþjónn</string>
+  <string name="connection_info_port" tools:machine_translated="true">Tengi</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">SSH-tengi</string>
+  <string name="connection_info_username" tools:machine_translated="true">Notendarnafn</string>
+  <string name="connection_info_status" tools:machine_translated="true">Staða</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">Tengist</string>
+  <string name="connection_info_connected" tools:machine_translated="true">Tengt</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">Tengingin er rofin.</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">Staðbundin IP-tenging</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">Upplýsingar um upphafsferli SSH.</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">Upplýsingar um samningaferli SSH-tengingarinnar.</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">Ekki er hægt að fá upplýsingar um samninginn sem gerður var í gegnum SSH.</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">Skipti á lyklum</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">Algoritmur fyrir auðkennistakk SSH-þjónsins</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">Dulkóðun: frá viðmóti til þjóns.</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">Dulkóðun: frá netþjóni til notanda</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">Heilleika: frá viðtakanda til þjónustu.</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">Heilleika: frá netþjóni til notanda</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">Samþætt við dulkóðun.</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">Skráaskipti sem er öruggt gegn árásum kvikreikniritanna.</string>
+  <string name="connection_info_yes" tools:machine_translated="true">Já</string>
+  <string name="connection_info_no" tools:machine_translated="true">Nei</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">Umstafanir á tengiliðum</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">Stillt uppsendingarheimild.</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">Port sem er úthlutað við umrætt tengi.</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">Ekki tengt</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">Staða umræddar tengingar.</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">Virkt</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">Óvirkt</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">Endastaður</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">Stýringarreglur um dulritun.</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">Sjálfgefið</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">Framtíð</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">Gamalt kerfi</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">FIPS-algoritmar</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">Sérsniðið</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">Ráðlagðir reiknigreinar og lyklastærðir</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">Krefst þess að notað sé lykilskiptiaðferð sem er örugg gegn kviktölvutölvum.</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">Takmarka notkun reiknirita; ekki staðfest í samræmi við FIPS-staðal.</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">Leyfðu eldri kerfisreglur til að tryggja samhæfni.</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">Veldu reikniriti og lágmarksstærð fyrir auðkenningarlykla.</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">Nútímalegir reikniritar og kröfur um stærð lykla, sem SSH-bókasafnið heldur við.</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">Krefst notendastýrtrar lykilskiptaaðferðar sem er viðbúin kvikreiknitækninni, 256-bita dulkunnlykla og sterkari RSA-lykla.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">Takmarkar val á reikniritum; staðfestir ekki FIPS-staðla.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">Gerir kleift að nota eldri kerfisreglur og minni RSA- og DH-lykla til að tryggja samhæfni. Nútímalegar kerfisreglur eru þó enn fremur en þær eldri.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">Sérsníddu sjálfgefnar stillingar. Val á dulkóðunaraðferðum og lágmarksstærð lykla eru óháðar.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">Lágmarksfjöldi RSA-bita</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">Lágmarksfjöldi DH-bita</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">Nota sjálfgefnar stillingar (%1$d bitar)</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">Láttu tómt til að nota sjálfgefnar stillingar. Gildir jafnvel þó að algoritmarnir séu sérstaklega virkjaðir.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">Sláðu inn að minnsta kosti 1024 bita. DH má ekki vera meira en 8192 bitar.</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">Algoritmar fyrir skipti á dulritunarjöklum</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">Dulkóðunaralgoritmar</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">Algoritmar til staðfestingar skilaboða</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">Algoritmar fyrir lykla fyrir vefþjón.</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">Auðkenningaralgoritmar fyrir almannlega lykla</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">Valhamur</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">Nota sjálfgefnar stillingar</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">Breyta sjálfgefinni stillingu</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">Notaðu aðeins þessa</string>
+  <string name="crypto_apply" tools:machine_translated="true">Sækja um</string>
+  <string name="crypto_expression" tools:machine_translated="true">Formúla fyrir reiknirit</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">Nöfnin eru aðskilin með kommu. Í „Breyta sjálfgefinni stillingu“ skaltu setja tákn fyrir hvert nafn: ^ (setja í byrjun), + (bæta við í lok) eða - (eyða).</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">Notaðu einstök SSH-nöfn og einn valham. Listarnir mega ekki vera tómir.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">Röð ákvarðandi valkosta</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">Ekki í boði á þessari tækjabúnaði; geymt í stillingum þínum.</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">Útlimað vegna lágmarksstærðar lykilsins.</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">Virkt í sjálfgefinni stillingu</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">Í boði; ekki virkt í sjálfgefinni stillingu.</string>
+  <string name="crypto_prepend" tools:machine_translated="true">Veldu fyrst.</string>
+  <string name="crypto_append" tools:machine_translated="true">Bæta við</string>
+  <string name="crypto_exclude" tools:machine_translated="true">Útlima</string>
+  <string name="crypto_inherit" tools:machine_translated="true">Notaðu sjálfgefnar stillingar</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">er ekki innifalt í þessu forritarpakkningu.</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">ekki í boði með uppsettu dulmálsbúnaðinum.</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">DH-hópurinn er minni en lágmarkið sem stillt er.</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">lykillinn eða vottorðið uppfyllir ekki RSA-kröfurnar eða vottorðastefnu.</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">Vara — %1$s: %2$s: %3$s var sleppt (%4$s).</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">Stýringaraðferðir fyrir dulkóðun gera það ekki mögulegt að nota %1$s.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">Ekki tókst að beita dulritunarreglum fyrir %1$s: %2$s</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">Dulkóðunarregla — %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">Lágmarksstærðir fyrir auðkenningarlykla.</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA: %1$d bitar; DH með takmörkuðu sviði: %2$d bitar</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">Sýna raðlagningu á valkostum eftir áhrifamæli</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">Falir inn stilltu forgangsrað.</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">Breyttu stöðu fyrir %1$s</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ Gefðu forgang fyrsta valinu · + Bættu við · ✓ Fylgdu sjálfgefinni stillingu · − Útrýmdu</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">Shift-takinn</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">Tab-takkur</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">Haltu niður Enter-takkanum.</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">Backspace-takkurinn</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">Eyða</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">Setja inn</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">↑</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">↓</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">Heim</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">Loki</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">Blaðsíða upp</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">Stigfærðu niður</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">Textainntak</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">Samsetja</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">Tastatur</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">Tastatur fyrir terminal</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">Tastaturuppsetningar</string>
+  <string name="keyboard_macros" tools:machine_translated="true">Deild verkefni</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">Skortir stýrihanna</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">Stillingin er ekki studd.</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">Aðgerð á lyklaborðinu mistókst.</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">Færðu upp</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">Færðu niður</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">Farðu til vinstri.</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">Farðu til hægri.</string>
+  <string name="keyboard_off" tools:machine_translated="true">Slökkt</string>
+  <string name="keyboard_once" tools:machine_translated="true">Næsta takki</string>
+  <string name="keyboard_locked" tools:machine_translated="true">Lástað</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">Nýtt skipulag</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">Nýtt stærðarstýringarforset</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(afrita)</string>
+  <string name="keyboard_back" tools:machine_translated="true">Til baka</string>
+  <string name="keyboard_error" tools:machine_translated="true">Tókst ekki að beita breytingunni: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">Bæta við útlitsstillingum</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">Bæta við stórskrá.</string>
+  <string name="keyboard_edit" tools:machine_translated="true">Breyta</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">Tvístöðuð.</string>
+  <string name="keyboard_delete" tools:machine_translated="true">Eyða</string>
+  <string name="keyboard_default" tools:machine_translated="true">Notað sem sjálfgefið fyrir forritið.</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">Notað í: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">Staðfesta</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">Ákvaða að beita þessari breytingu sem eyðir gögnum? Mögulegt er að breytingar sem hafa verið gerðar á útlitinu verði glataðar. Deildar stýringaraðgerðir verða varðveittar þegar útlit er endurstillað.</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">Hætta við</string>
+  <string name="keyboard_name" tools:machine_translated="true">Nafn</string>
+  <string name="keyboard_width" tools:machine_translated="true">Breidd hnappa (dp, fyrir öll hnöppin)</string>
+  <string name="keyboard_height" tools:machine_translated="true">Hæð hnappa (dp, fyrir öll hnöppin)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">Bankaðu á takka til að breyta honum. Haldu á takkanum og dragðu til að færa hann. Dragðu á milli hluta til að festa eða losa hann. Stærð takka á við um alla takkana.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">Dragðu til að breyta röð hnappa</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">Bæta við takka</string>
+  <string name="keyboard_visible" tools:machine_translated="true">Sýnilegt</string>
+  <string name="keyboard_row" tools:machine_translated="true">Rað (byrjar á 0)</string>
+  <string name="keyboard_column" tools:machine_translated="true">Dálkur (byrjar á 0)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">Röðin nær yfir.</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">Breidd dálks</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">Eyða takki</string>
+  <string name="keyboard_save" tools:machine_translated="true">Vista</string>
+  <string name="keyboard_reset" tools:machine_translated="true">Endurstilltu sjálfgefin stillingar.</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">Notaðu sjálfgefið kerfi forritsins.</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">Sjónrænn ritstjóri</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">Textritstjóri</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">Ein aðgerð á hverri línu: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. Textinn notar JSON-formið til að forðast sérstök tákn.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">Skref í fyrirhuguðu ferli</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">Bættu við texta</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">Bæta við lykli</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">Bættu við bitum</string>
+  <string name="keyboard_text" tools:machine_translated="true">Texti sem á að senda</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">Nákvæm bætagildi (á sextándakerfi)</string>
+  <string name="keyboard_character" tools:machine_translated="true">Stafur</string>
+  <string name="terminal_key_space" tools:machine_translated="true">Bílbil</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">Tölustýring %1$s</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">Heiti takka</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">Sitrus</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">Þétt og hönnuð stýrieining.</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">Síðasta stöð.</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">Rýmisleg stýrikerfi.</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">Kló</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">Hannað og stillt fyrir Claude Code.</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">Ritari</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">Hannað og stillt fyrir Codex CLI.</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">Veldu forstilling fyrir lyklaborðið.</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">Heimildaruppsetning ConnectBot</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">Stilltu innihaldinu að breidd skjásins.</string>
+  <string name="keyboard_layer" tools:machine_translated="true">Lag %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">L%1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">Skipta um lag</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">Áfangastaður laga</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">Næsta lag sem inniheldur efni</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">Áfangalagið er tómt.</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">Hættu</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">Stutt söguyfirlit</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">Stilling</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">Ný lína</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">Skrá</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">Breyta</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">Afrita</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">Límdu</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">Röf</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Leita í síðustu leitarförum</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">Skipta á milli stillinga fyrir leyfi</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">Setja inn línubrot</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">Ræsa/slökkva á texta</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">Opna ytri ritstjór</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">Afrita svar</string>
+  <string name="macro_assign" tools:machine_translated="true">Veldu fyrirhönnuð forrit.</string>
+  <string name="macro_import" tools:machine_translated="true">Flytja inn forrit.</string>
+  <string name="macro_export" tools:machine_translated="true">Senda stóra forrit í JSON-skrá</string>
+  <string name="macro_none" tools:machine_translated="true">Engin vistað forrit.</string>
+  <string name="automation_run_macro" tools:machine_translated="true">Keyrðu stærri forrit.</string>
+  <string name="macro_choose" tools:machine_translated="true">Veldu makró</string>
+  <string name="macro_manage" tools:machine_translated="true">Stýra stórskrám</string>
+  <string name="keyboard_selected" tools:machine_translated="true">Valt</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">Sjálfgefið fyrir appið</string>
+  <string name="keyboard_select" tools:machine_translated="true">Notaðu þetta</string>
+  <string name="keyboard_change" tools:machine_translated="true">Breyta útliti</string>
+  <string name="keyboard_customize" tools:machine_translated="true">Sérsníddu</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">Breyta sameiginlegu útlitinu</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">Notað sem sjálfgefið fyrir forritið.</string>
+  <string name="keyboard_saving" tools:machine_translated="true">Er er staðfest…</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">Sérsniðin</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">Notaðu lyklaborðið sem er í notkun.</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">Úr stillingarsniðinu „%1$s“</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">Ítarlegt</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">Tastatur: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">Sjálfvirkni eftir innskráningu: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">Snið: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">Tæki: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">Eyða útlagsmyndinni „%1$s“?</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">Eyða makróinu „%1$s“?</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">Tæki og stillingar sem nota þetta útlagsform munu nota sjálfgefið lyklaborð. Ef þetta er sjálfgefið útlagsform fyrir forritið, verður annað útlagsform sjálfgefið.</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">Þetta fjarlægir makóið úr sameiginlegu skjalasafninu.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">Endurreista upprunalegu hnappa- og stærðarstillingar þessara útlags? Breytingar verða gildi þegar þú vistar. Deilt stýriheldur verða áfram.</string>
+  <string name="macro_shared_title" tools:machine_translated="true">Einnu hvað?</string>
+  <string name="macro_shared_message" tools:machine_translated="true">Þetta stórforrit er notað annars staðar. Búðu til aðra afrit eða breyttu útgáunni sem deilt er með öllum notendum.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">Gerðu afrit</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">Breyta sameiginlegu stærri fyrirskipun</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">Með því að vista uppfærslurnar verður þessi stærri eining (macro) uppfærð alls staðar þar sem hún er notuð, jafnvel þótt þú ákveðir síðar að hætta við breytingarnar í tengdanum ritstjóri.</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">Hættu að nota þessa stillingu eða úthlutaðu henni annars stað áður en þú eyðir þessari stærri stillingu.</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">Þessi lota</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">Þessi tæki er aðeins fyrir lesið. Ekki er hægt að breyta innsláttartækinu (lyklaborðinu).</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">Stýra útlitsstillingum</string>
+  <string name="keyboard_done" tools:machine_translated="true">Búið.</string>
+  <string name="automation_draft_host" tools:machine_translated="true">Þessar aðgerðir verða vistaðar ásamt nýju tækinu.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">Vistaðu þessa tæki og bættu við porttengingum áður en þú notar aðgerðir sem miða að því að beina umferð.</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">Aðgerð</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">Takkur</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">Forritað aðgerð</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">Breytingarsták</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">Aðgerð í appi</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">Skipta um lag</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">Samnotuð uppsetning: uppfærslur vistaðar og allir sem nota hana hafa aðgang að þeim.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">Þetta lýsing fyrir lyklaborðið er ekki í boði.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">Röðir og dálkar hefjast á 0 innan hverrar einingar. Hver takki er einn röð hátt. Dálkafjöldi ákvarðar hversu margar reitir takkið tekur upp.</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">Útlitsstillingar</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">Bakgrunnarlitur</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">Litur textans</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">Litur á útlínuna</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">Sjálfgefið útlit</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Opaleika bakgrunnar: %1$d%%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">Með útlínur</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">Breidd útlínunnar: %1$.1f dp</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">Endurstilltu útlit</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">Virkar breytingar og skiptingar á lögum nota þemaúthlutan.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">Hegðun</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">Endurtaka þegar haldið er niður</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">Notaðu sjálfgefið endurtökuhamfar.</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">Stillingar í forritinu</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">Virkt</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">Slökkt</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">Snertiviðbrögð: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">Fastsettar takar</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">Lyklarnir sem hægt er að skrolla í gegnum</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">Dragðu tákn hér.</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">Festu til hægri</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">Veldu útlitsstillingar, sérsníddu takkana og stýrðu stuttu-leiðum.</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">Breyta útliti</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">Breyta heiti takans</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">Stillingar fyrir útlitsuppsetningu</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">Hægt er að skrolla</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">Stilltu við breiddina.</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">Tastatur</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">Bankaðu til að breyta · Haltu og dragðu til að færa</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">Lokuð takki eru alltaf staðsett í endann á lyklaborðinu (til vinstri í tengi þar sem lest er frá hægri til vinstri).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">Dragðu tákninn á „Fest tákn“ til að hafa hann alltaf í endann á lyklaborðinu. Dragðu hann aftur á „Táknaflokka“ til að losa hann.</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">Stækkað</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">Lokað</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">Breyttu afrit</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">Haltu áfram að breyta.</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">Býr til nýtt útlit fyrir %1$s. Önnur notendur halda áfram að nota sitt núverandi útlit.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">Breytingar verða þegar þú vistar þessa stillingu eða sniðmát.</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">Með því að vista þessa breytingu er uppfærð útgáfa af skipulaginu búin til. Vistaðu skipulagið til að varðveita breytingarnar þínar.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">Staðsetning</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">Sýna takka</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">Fest við enda</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">Breyttu stuturlínunni.</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">Veldu hvað skal gerast þegar þessi takki er ýtt á.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">Bakgrunnur, textinn og útlínan</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · Snertitenging: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">Ýttu einu sinni.</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">Endurtakast þegar haldið er niður.</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">Röð, dálkur og breidd lykla</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">Notað af %1$d</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">Skal ég fjarlægja þennan takka úr útdrættinum?</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">Á vinstri er breytt útliti lyklaborðs: titill fyrir valmöguleikann „Hægt er að fjarlægja lykla“.</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">Notaðu þessar breytingar á útlitinu, eða hafnaðu þeim.</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">Vista breytingar</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">Breyta útlitinu</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">Takkur eða flýtistakkur</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">Forskotssýning</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">Sérsniðin valmöguleiki</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">Notaðu arflega útlögun.</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">Aðgerðir fyrir skipulag</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">Forskot af litum</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">Bættu við takka til að ræsa þetta lag.</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">Þegar þú vistar breytingarnar á skipulaginu, verða þær virkar í þessu tengitæki.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">Með því að vista þessa útlögun eru allir notendur uppfærðir. Þú getur í staðinn breytt afriti.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">Viltu breyta útliti lyklaborðsins sem deilt er?</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">þessi stilling</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">Forstillingar sem eru fyrirfram stilltar.</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Forstillingar sem eru fyrirfram stilltar í kerfinu breytast ekki. Með því að breyta forstillingunni býrðu til þína eigin afrit.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">Forstillt snið</string>
 </resources>

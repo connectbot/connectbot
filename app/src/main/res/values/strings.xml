@@ -2100,7 +2100,7 @@
 	<string name="keyboard_visual_editor">Visual editor</string>
 	<!-- Terminal keyboard configuration: text editor. -->
 	<string name="keyboard_text_editor">Text editor</string>
-	<!-- Terminal keyboard configuration: macro help. -->
+	<!-- Macro syntax help. Keep the example commands, lowercase key identifiers, and JSON quotes literal; only translate the surrounding explanation. -->
 	<string name="keyboard_macro_help">One action per line: key ctrl+b, text \"hello\", key enter, or bytes 1b 5b 41. Text uses JSON string escaping.</string>
 	<!-- Terminal keyboard configuration: steps. -->
 	<string name="keyboard_steps">Macro steps</string>
@@ -2216,8 +2216,8 @@
     <string name="keyboard_customize">Customize</string>
     <!-- Terminal keyboard and automation workflow: keyboard edit shared. -->
     <string name="keyboard_edit_shared">Edit shared layout</string>
-    <!-- Terminal keyboard and automation workflow: keyboard make default. -->
-    <string name="keyboard_make_default">Make app default</string>
+    <!-- Menu action that makes the selected keyboard layout the default layout for this app. -->
+    <string name="keyboard_make_default">Use as app default</string>
     <!-- Terminal keyboard and automation workflow: keyboard saving. -->
     <string name="keyboard_saving">Saving…</string>
     <!-- Terminal keyboard and automation workflow: keyboard context name. -->
@@ -2348,7 +2348,7 @@
     <string name="keyboard_mode_scrollable">Scrollable</string>
     <!-- Terminal keyboard redesign: mode fit. -->
     <string name="keyboard_mode_fit">Fit to width</string>
-    <!-- Terminal keyboard redesign: dimensions summary. -->
+    <!-- Keyboard layout dimensions in density-independent pixels. Preserve the unit dp. -->
     <string name="keyboard_dimensions_summary">%1$s · %2$s × %3$s dp</string>
     <!-- Terminal keyboard redesign: canvas title. -->
     <string name="keyboard_canvas_title">Keyboard</string>

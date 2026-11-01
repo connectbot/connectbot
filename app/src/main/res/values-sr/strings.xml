@@ -730,4 +730,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">Није било могуће креирати пречицу. Молимо покушајте поново.</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">У ланцу хостова за преусмеравање постоји циклус. Проверите подешавања хостова за преусмеравање.</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">Ланац хостова за преусмеравање премашује ограничење од 32 хоста.</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">Локално приказивање унетих података.</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">Odaberite da li će se uneti tekst prikazivati lokalno. Ako je opcija „Uvek uključeno“ aktivna, tekst može da se duplira kada server šalje povratnu informaciju.</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">Аутоматски</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">Увек укључено.</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">Увек искључено.</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">Покретање преговора.</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">Pregovarajte o mogućnostima terminala pri uspostavljanju veze ili sačekajte da server zatraži te mogućnosti.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">Преговарајте при успостављању везе.</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">Сачекајте одговор сервера.</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">Небинарни подаци</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">Ако сервер одбија бинарни режим, дозволите коришћење старих осамбитниx бајтова или захтевајте коришћење ASCII кодирања. Обе стране морају да користе исто кодирање.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">Дозволите употребу старих осмобитних карактера.</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">Захтевај ASCII.</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">Убачене крајнице редова</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">Izvan binarnog režima, pretvorite zaljepljeni znak za novi red (LF) u CRLF ili zadržite znak LF. Ovo se takođe primenjuje i na tekst koji se koristi za automatizaciju.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">Претвори LF у CRLF.</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">Задржи LF.</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">Унос није послат. За ову везу потребан је ASCII формат док сервер не омогући бинарни режим.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">Није могуће послати унос на овај Telnet сервер.</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">Повезивање није успело.</string>
+  <string name="terminal_connected" tools:machine_translated="true">Успостављена веза.</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">Аутентификација је успешна.</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">Није могуће отворити SSH сесију.</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">SSH сервер је одбио захтев за отварање терминала.</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">SSH сервер је одбио захтев за покретање интерактивне љуске.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">Информације о вези</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">Протокол</string>
+  <string name="connection_info_host" tools:machine_translated="true">Домаћин</string>
+  <string name="connection_info_port" tools:machine_translated="true">Порт</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">SSH порт</string>
+  <string name="connection_info_username" tools:machine_translated="true">Корисничко име</string>
+  <string name="connection_info_status" tools:machine_translated="true">Статус</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">Успоставља се веза.</string>
+  <string name="connection_info_connected" tools:machine_translated="true">Повезано</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">Веза прекинута.</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">Локална адреса</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">Подешавања за почетну SSH комуникацију која се користи за покретање Mosh-а, а не за активну Mosh везу.</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">Детаљи о преговорима алгоритма преко SSH везе.</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">Detalji o uspostavljanju SSH konekcije nisu dostupni.</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">Razmena ključeva</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">Кључ хоста сервера</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">Шифровање: од клијента до сервера.</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">Шифровање: од сервера до клијента.</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">Целост: од клијента до сервера.</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">Целост: од сервера do клијента.</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">Интегрисано са шифровањем.</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">Размена кључева за постквантни период</string>
+  <string name="connection_info_yes" tools:machine_translated="true">Да.</string>
+  <string name="connection_info_no" tools:machine_translated="true">Не.</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">Прослеђивање портова</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">Конфигурисан извор.</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">Додељени порт</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">Није повезано.</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">Статус прослеђивања</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">Активно</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">Неактивно</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">Одредиште</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">Криптографска политика</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">Podrazumevano</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">У будућности</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">Стара верзија</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">FIPS алгоритми</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">Прилагођено</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">Preporučeni algoritmi i veličine ključeva.</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">Захтевај размену кључева након квантног периода.</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">Ograničite algoritme; nisu potvrđeni prema standardu FIPS.</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">Дозволите коришћење старијих алгоритама ради компатибилности.</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">Изаберите алгоритме и минималне величине кључева.</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">Савремени алгоритми и захтеви за величину кључа које подржава SSH библиотека.</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">Захтева хибридну размену кључева отпорну на квантне напада, 256-битне кључеве за шифровање и јаче RSA кључеве.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">Ограничава избор алгоритама; не успоставља FIPS валидацију.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">Omogućava korišćenje starijih algoritama i manjih RSA i DH ključeva radi kompatibilnosti. Moderni algoritmi i dalje ostaju preferirani.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">Прилагодите подразумеване подешавања. Избор алгоритма и минималне величине кључа су независни.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">Минимални број битова за RSA.</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">Минимални број битова за Дифи-Хелманову криптографију.</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">Преузми подразумеване вредности (%1$d бита)</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">Оставите поље празно да бисте користили подразумеване подешаване. Важи и за алгоритме који су експлицитно омогућени.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">Унесите најмање 1024 бита. Вредност за DH не сме да премаши 8192 бита.</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">Алгоритми за размену кључева</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">Algoritmi za šifrovanje</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">Алгоритми за аутентификацију порука</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">Алгоритми за хост кључ</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">Алгоритми за аутентификацију помоћу јавног кључа</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">Режим избора</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">Преузми подразумеване вредности.</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">Измените подразумеване вредности.</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">Користите само ове.</string>
+  <string name="crypto_apply" tools:machine_translated="true">Примени</string>
+  <string name="crypto_expression" tools:machine_translated="true">Израз алгоритма</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">Имена раздвојена запетама. У опцији „Измени подразумеване вредности“, додајте префикс сваком имену са ^ (на почетку), + (на крају) или - (искључите).</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">Користите јединствена имена за SSH и један режим избора. Листе не смеју бити празне.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">Важећи редослед приоритета.</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">Није доступно на овом уређају; задржано у вашој конфигурацији.</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">Искључено због минималне дозвољене величине кључа.</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">Omogućeno u podešavanjima po zadatku.</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">Доступно; није омогућено у подразумеваним подешавањима.</string>
+  <string name="crypto_prepend" tools:machine_translated="true">Предност има први.</string>
+  <string name="crypto_append" tools:machine_translated="true">Додај</string>
+  <string name="crypto_exclude" tools:machine_translated="true">Изузми</string>
+  <string name="crypto_inherit" tools:machine_translated="true">Prati podrazumevana podešavanja.</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">није имплементирано у овој библиотеци.</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">није доступно са инсталираним криптографским провајдерима.</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">Група DH је мања од конфигурисаног минималног броја.</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">кључ или сертификат не испуњава услове за РСА или политику сертификата.</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">Упозорење — %1$s: %2$s: %3$s је прескочено (%4$s).</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">Криптографска политика не дозвољава коришћење ниједног од %1$s.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">Криптографска политика није успела за %1$s: %2$s</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">Криптографска политика — %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">Минималне величине кључева</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA: %1$d bitova; DH sa konačnim poljem: %2$d bitova</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">Прикажи ефективни редослед преференција.</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">Sakrij važeći redosled preferencija.</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">Промените стање за %1$s.</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ Prednost prvom · + Dodaj · ✓ Prati zadane postavke · − Izuzmi</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">Пребацивање</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">Таб</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">Притисните Enter.</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">Тастер за брисање</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">Избриши</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">Уметни</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">↑</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">↓</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">Почетна страница</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">Кraj</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">Str. gore</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">Str. dole</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">Унос текста</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">Компонуј</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">Тастатура</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">Конфигурација тастатуре терминала</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">Конфигурације распореда тастатуре</string>
+  <string name="keyboard_macros" tools:machine_translated="true">Заједничке макро команде</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">Недостаје макро.</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">Неподржана конфигурација.</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">Операција са тастатуром није успела.</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">Pomakni se nagore.</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">Премести надоле.</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">Pomeri ulevo.</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">Pomakni se udesno.</string>
+  <string name="keyboard_off" tools:machine_translated="true">Искључено.</string>
+  <string name="keyboard_once" tools:machine_translated="true">Следећи тастер</string>
+  <string name="keyboard_locked" tools:machine_translated="true">Закључано.</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">Нова раскладна схема</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">Нова макрокоманда.</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(копирај)</string>
+  <string name="keyboard_back" tools:machine_translated="true">Назад</string>
+  <string name="keyboard_error" tools:machine_translated="true">Није могуће применити промену: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">Додај распоред</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">Додај макро.</string>
+  <string name="keyboard_edit" tools:machine_translated="true">Измени</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">Дупликат</string>
+  <string name="keyboard_delete" tools:machine_translated="true">Избриши</string>
+  <string name="keyboard_default" tools:machine_translated="true">Користи као подразумевану опцију за апликацију.</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">Користи се у: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">Потврди.</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">Da li želite da primenite ovu štetnu izmenu? Sačuvane izmene rasporeda mogu biti izgubljene. Zajedničke makrokomande se čuvaju prilikom resetovanja rasporeda.</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">Откажи.</string>
+  <string name="keyboard_name" tools:machine_translated="true">Назив</string>
+  <string name="keyboard_width" tools:machine_translated="true">Ширина дугмета (dp, за сва дугмад)</string>
+  <string name="keyboard_height" tools:machine_translated="true">Висина дугмета (dp, за сва дугмад)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">Dodirnite taster da biste ga uredili. Dodirnite i zadržite, a zatim povucite da biste ga premestili. Povucite između sekcija da biste ga „prikačili“ ili „otkačili“. Veličina dugmeta primenjuje se na svaki taster.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">Превуците да бисте променили редослед дугмета.</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">Додај тастер</string>
+  <string name="keyboard_visible" tools:machine_translated="true">Приказује се.</string>
+  <string name="keyboard_row" tools:machine_translated="true">Ред (почиње од 0)</string>
+  <string name="keyboard_column" tools:machine_translated="true">Колумна (почиње од 0)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">Обим реда</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">Обим колоне</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">Уклони дугме</string>
+  <string name="keyboard_save" tools:machine_translated="true">Сачувајте</string>
+  <string name="keyboard_reset" tools:machine_translated="true">Вратити подразумеване подешавања.</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">Koristite podrazumevane postavke aplikacije.</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">Визуелни едитор</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">Текстуални едитор</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">Једна радња по реду: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. Текст користи JSON ескејпинг низова.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">Кораци макроа</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">Додајте текст.</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">Додајте тастер.</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">Додај бајтове.</string>
+  <string name="keyboard_text" tools:machine_translated="true">Текст за слање.</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">Тачне вредности бајтова (хексадецимално)</string>
+  <string name="keyboard_character" tools:machine_translated="true">Карактер</string>
+  <string name="terminal_key_space" tools:machine_translated="true">Размак</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">Тастер %1$s</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">Натпис на дугмету</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">Цитрус</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">Kompaktni elementi za upravljanje terminalom.</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">Последња станица</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">Prostrane kontrole terminala</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">Канџа</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">Оптимизовано за Claude Code.</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">Scribe</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">Оптимизовано за Codex CLI.</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">Изаберите задани избор за тастатуру.</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">Класична конфигурација тастатуре CB</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">Прилагоди ширину</string>
+  <string name="keyboard_layer" tools:machine_translated="true">Слој %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">Слој %1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">Прелазак на други слој</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">Одредиште слоја</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">Следећи слој који садржи податке</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">Odredišni sloj je prazan.</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">Заустави</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">Историја (кратка верзија)</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">Режим</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">Нови ред</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">Евидентирај</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">Уреди</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">Копирај</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">Налепи</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">Прекини</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Историја претрага</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">Прелазите између режима дозвола.</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">Уметни нови ред</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">Prikaži/sakrij transkript.</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">Otvori spoljni uređivač.</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">Копирај одговор</string>
+  <string name="macro_assign" tools:machine_translated="true">Додели макро.</string>
+  <string name="macro_import" tools:machine_translated="true">Увези макро</string>
+  <string name="macro_export" tools:machine_translated="true">Извезите макро.</string>
+  <string name="macro_none" tools:machine_translated="true">Нема сачуваних макроа.</string>
+  <string name="automation_run_macro" tools:machine_translated="true">Покрени макро.</string>
+  <string name="macro_choose" tools:machine_translated="true">Изаберите макро.</string>
+  <string name="macro_manage" tools:machine_translated="true">Upravljajte макроима</string>
+  <string name="keyboard_selected" tools:machine_translated="true">Изабрано</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">Podrazumevana postavka aplikacije</string>
+  <string name="keyboard_select" tools:machine_translated="true">Koristite ovo.</string>
+  <string name="keyboard_change" tools:machine_translated="true">Промените распоред тастера.</string>
+  <string name="keyboard_customize" tools:machine_translated="true">Прилагодите</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">Уредите заједнички распоред.</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">Користи као подразумевану опцију за апликацију.</string>
+  <string name="keyboard_saving" tools:machine_translated="true">Сачувава се…</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">Прилагођено</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">Koristite tastaturu koju ste nasledili.</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">Из профила „%1$s“</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">Napredno</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">Тастатура: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">Аутоматизација након пријављивања: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">Профил: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">Домаћин: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">Brisanje rasporeda „%1$s“?</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">Brisanje makroa „%1$s“?</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">Рачунари и профили који користе ову поставку тастатуре користиће подразумевану тастатуру. Ако је ово подразумевана поставка апликације, друга поставка постаје подразумевана.</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">Ово уклања макро из заједничке библиотеке.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">Vratiti originalne tastere i dimenzije ove konfiguracije? Izmene se primenjuju prilikom čuvanja. Zajedničke makrokomande se čuvaju.</string>
+  <string name="macro_shared_title" tools:machine_translated="true">Уреди дељену макро команду?</string>
+  <string name="macro_shared_message" tools:machine_translated="true">Ова макро команда се користи и на другим местима. Направите посебну копију или уредите заједничку верзију за све кориснике.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">Направи копију.</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">Уреди дељену макро команду.</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">Čuvanje izmena primenjuje se na ovu makro-komandu svuda gde se koristi, čak i ako kasnije uklonite okolni uređivač.</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">Uklonite ili ponovo dodelite ove primene pre nego što obrišete ovu makrokomandu.</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">Ова сесија</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">Овај сервер је у режиму само за читање. Његова тастатура се не може мењати.</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">Upravljajte rasporedima.</string>
+  <string name="keyboard_done" tools:machine_translated="true">Готово.</string>
+  <string name="automation_draft_host" tools:machine_translated="true">Ови кораци ће бити сачувани уз нови хост.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">Sačuvajte ovaj host i dodajte pravila za prosljeđivanje portova pre nego što počnete da koristite akcije za prosljeđivanje.</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">Акција</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">Тастер</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">Макро</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">Модификатор</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">Акција апликације</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">Пребаците на други слој.</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">Заједнички распоред: чување ажурирања за све кориснике.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">Ova konfiguracija tastature nije dostupna.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">Редови и колоне почињу од 0 у сваком одељку. Висина тастера је један ред. Опција „Обим колоне“ одређује колико ће ћелија тастер заузимати.</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">Изглед</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">Боја позадине</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">Боја текста</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">Боја ивице</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">Podrazumevana tema</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Провидност позадине: %1$d%%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">Означено ивицом</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">Дебљина ивице: %1$.1f dp</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">Vrati podrazumevani izgled.</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">Aktivni modifikatori i prekidači slojeva koriste vizuelni stil teme.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">Ponašanje</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">Ponovi dok je pritisnuto.</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">Koristite podrazumevano ponašanje pri ponavljanju.</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">Подешавање апликације</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">Укључено</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">Искључено</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">Такtilna povratna sprega: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">Прикачене тастере</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">Ključevi koji se mogu pomerati.</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">Превуците тастере овде.</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">Fiksiraj desno</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">Изаберите распоред, прилагодите тастере и управљајте макросима.</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">Уреди распоред</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">Измени назив дугмета.</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">Подешавања распореда</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">Može se skrolovati.</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">Прилагоди ширини.</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">Тастатура</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">Dodirnite da biste uredili · Dodirnite i povucite da biste premestili.</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">Причвршћене тастере треба да се налазе на крају тастатуре (на левој страни у интерфејсима који се читају с десна на лево).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">Превуците тастер у одељак „Прикачене тастере“ да би га задржали на крају тастатуре. Превуците га назад у одељак „Тастери за померање“ да бисте га уклонили из списка прикачених тастера.</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">Проширено</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">Склопљено.</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">Uredite kopiju.</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">Nastavite sa uređivanjem.</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">Прави нови распоред за %1$s. Остали корисници задржавају свој тренутни распоред.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">Измене se primenjuju kada sačuvate ovaj uređaj ili profil.</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">Čuvanje ove postavke ažurira nacrt rasporeda. Sačuvajte raspored da biste zadržali svoje izmene.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">Положај</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">Прикажи тастер.</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">Прикачен на крају.</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">Промените пречицу.</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">Izaberite koju funkciju će ovaj taster obavljati kada se pritisne.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">Позадина, текст и ивица.</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · Тактилна повратна информација: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">Притисните једном.</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">Ponavlja dok se drži.</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">Ред, колона и ширина тастера.</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">Користи %1$d корисника.</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">Da li da uklonim ovaj taster iz nacrta rasporeda?</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">Primeni izmene na tasterima?</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">Primeni ove izmene na raspored ili ih poništi.</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">Primeni izmene.</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">Уреди распоред</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">Тастер или пречица</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">Преглед</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">Прилагођени избор</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">Koristite nasleđeni raspored.</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">Акције за распоред</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">Преглед боја</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">Dodajte taster za pokretanje ovog sloja.</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">Измене će se primeniti na ovaj terminal kada sačuvate raspored.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">Čuvanje ove konfiguracije ažurira je za sve korisnike. Umesto toga, možete urediti kopiju.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">Желите да измените подешавања за заједнички распоред тастатуре?</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">ова конфигурација</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">Уграђени шаблони</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Ugrađene unapred podešene postavke ostaju nepromenjene. Izmenom kreirate sopstvenu kopiju.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">Уграђена подразумевана поставка.</string>
 </resources>

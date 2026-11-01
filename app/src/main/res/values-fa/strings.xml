@@ -726,4 +726,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">ایجاد میانبر امکان‌پذیر نبود. لطفاً دوباره امتحان کنید.</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">زنجیره سرورهای واسط، یک حلقه دارد. تنظیمات سرورهای واسط را بررسی کنید.</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">تعداد هاست‌های واسط در زنجیره از حد مجاز (۳۲ هاست) فراتر رفته است.</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">نمایش محلی ورودی‌ها</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">انتخاب کنید که آیا ورودی تایپ‌شده به‌صورت محلی نمایش داده شود یا خیر. اگر گزینه «همیشه فعال» را انتخاب کنید، ممکن است متن در صورت تکرار توسط سرور، دو بار نمایش داده شود.</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">خودکار</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">همیشه روشن باشد</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">همیشه غیرفعال باشد.</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">شروع مذاکره</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">هنگام برقراری اتصال، قابلیت‌های ترمینال را تعیین کنید، یا منتظر بمانید تا سرور درخواست آن‌ها را ارائه دهد.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">در زمان برقراری اتصال، مذاکره کنید.</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">منتظر بمانید تا سرور پاسخ دهد.</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">داده‌های غیردودویی</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">اگر سرور حالت باینری را نپذیرد، اجازه دهید از حالت هشت بیتی قدیمی استفاده شود یا حالت ASCII را اجباری کنید. هر دو طرف باید از یک نوع رمزگذاری استفاده کنند.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">اجازه استفاده از بایت‌های هشت‌بیتی قدیمی را بدهید.</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">اجبار به استفاده از کاراکترهای ASCII</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">خطوط کپی‌شده</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">در حالت غیر باینری، کاراکترهای خط جدید (LF) کپی‌شده را به کاراکترهای CRLF تبدیل کنید یا کاراکترهای LF را حفظ کنید. این تنظیمات همچنین برای متن‌های خودکار نیز اعمال می‌شود.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">تبدیل LF به CRLF</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">حفظ کاراکتر LF</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">ورودی ارسال نشد. این اتصال تا زمانی که سرور حالت باینری را فعال نکند، به فرمت ASCII نیاز دارد.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">امکان ارسال داده به این سرور Telnet وجود ندارد.</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">اتصال برقرار نشد.</string>
+  <string name="terminal_connected" tools:machine_translated="true">اتصال برقرار شد.</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">احراز هویت با موفقیت انجام شد.</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">امکان برقراری ارتباط SSH وجود ندارد.</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">سرور SSH درخواست ترمینال را رد کرد.</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">سرور SSH درخواست ایجاد پوسته را رد کرد.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">اطلاعات اتصال</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">پروتکل</string>
+  <string name="connection_info_host" tools:machine_translated="true">میزبان</string>
+  <string name="connection_info_port" tools:machine_translated="true">پورت</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">پورت SSH</string>
+  <string name="connection_info_username" tools:machine_translated="true">نام کاربری</string>
+  <string name="connection_info_status" tools:machine_translated="true">وضعیت</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">در حال برقراری ارتباط</string>
+  <string name="connection_info_connected" tools:machine_translated="true">برقرار شده</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">قطع شد.</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">آدرس محلی</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">جزئیات مربوط به مرحله اولیه برقراری ارتباط SSH که برای راه‌اندازی Mosh استفاده می‌شود (و نه ارتباط فعال Mosh).</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">جزئیات مربوط به مذاکرات الگوریتم‌ها از طریق اتصال SSH</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">جزئیات مربوط به مذاکرات SSH در دسترس نیست.</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">تبادل کلید</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">کلید میزبان سرور</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">رمزنگاری: از کلاینت به سرور</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">رمزنگاری: از سرور به کاربر</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">یکپارچگی: از کاربر به سرور</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">یکپارچگی: از سرور به کلاینت</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">با رمزنگاری یکپارچه شده</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">تبادل کلید پساکوانتومی</string>
+  <string name="connection_info_yes" tools:machine_translated="true">بله</string>
+  <string name="connection_info_no" tools:machine_translated="true">نه</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">پورت‌های فوروارد شده</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">منبع پیکربندی شد.</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">پورتی که به آن اختصاص داده شده است</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">به هیچ پورت فعالی متصل نیست.</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">وضعیت فوروارد کردن</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">فعال</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">غیرفعال</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">مقصد</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">سیاست رمزنگاری</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">پیش‌فرض</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">آینده</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">قدیمی</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">الگوریتم‌های FIPS</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">سفارشی</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">الگوریتم‌ها و اندازه‌های کلید پیشنهادی</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">اجبار به استفاده از روش تبادل کلید مقاوم در برابر حملات کوانتومی</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">الگوریتم‌ها را محدود کنید؛ این الگوریتم‌ها، مطابق با استانداردهای FIPS نیستند.</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">اجازه استفاده از الگوریتم‌های قدیمی‌تر برای سازگاری بیشتر</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">الگوریتم‌ها و حداقل اندازه کلید را انتخاب کنید.</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">الگوریتم‌های مدرن و الزامات مربوط به اندازه کلید که توسط کتابخانه SSH پشتیبانی می‌شوند.</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">نیاز به تبادل کلید ترکیبی پساکوانتومی، کلیدهای رمزنگاری ۲۵۶ بیتی و کلیدهای قوی‌تر RSA دارد.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">انتخاب الگوریتم‌ها را محدود می‌کند؛ اعتبارسنجی FIPS را انجام نمی‌دهد.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">به منظور حفظ سازگاری، استفاده از الگوریتم‌های قدیمی‌تر و کلیدهای کوچکتر RSA و DH مجاز است. با این حال، الگوریتم‌های مدرن همچنان ترجیح داده می‌شوند.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">تنظیمات پیش‌فرض را سفارشی کنید. انتخاب الگوریتم و حداقل اندازه کلید، مستقل از یکدیگر هستند.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">حداقل تعداد بیت‌های RSA</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">حداقل تعداد بیت‌های DH</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">مقادیر پیش‌فرض را به ارث ببر (%1$d بیت)</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">اگر این فیلد را خالی بگذارید، تنظیمات پیش‌فرض اعمال می‌شود. این تنظیمات حتی برای الگوریتم‌هایی که به‌طور صریح فعال شده‌اند نیز اعمال می‌شود.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">حداقل 1024 بیت وارد کنید. مقدار DH نباید از 8192 بیت بیشتر باشد.</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">الگوریتم‌های تبادل کلید</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">الگوریتم‌های رمزنگاری</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">الگوریتم‌های احراز هویت پیام</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">الگوریتم‌های کلید میزبان</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">الگوریتم‌های احراز هویت مبتنی بر کلید عمومی</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">حالت انتخاب</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">از حالت پیش‌فرض استفاده کن</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">تغییر تنظیمات پیش‌فرض</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">فقط از این موارد استفاده کنید.</string>
+  <string name="crypto_apply" tools:machine_translated="true">اعمال کن</string>
+  <string name="crypto_expression" tools:machine_translated="true">بیان الگوریتم</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">نام‌ها را با کاما از هم جدا کنید. در بخش «تغییر تنظیمات پیش‌فرض»، پیشوند هر نام را با یکی از موارد زیر تعیین کنید: ^ (اضافه کردن در ابتدا)، + (اضافه کردن در انتها) یا - (حذف کردن).</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">از نام‌های منحصربه‌فرد SSH و یک حالت انتخاب استفاده کنید. فهرست‌ها نباید خالی باشند.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">ترتیب اولویت‌بندیِ موثر</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">در این دستگاه در دسترس نیست؛ در تنظیمات شما حفظ می‌شود.</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">به دلیل حداقل اندازه کلید، از این مورد مستثنی شده است.</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">در حالت پیش‌فرض فعال است.</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">در دسترس است؛ اما در حالت پیش‌فرض فعال نیست.</string>
+  <string name="crypto_prepend" tools:machine_translated="true">اولویت را به مورد اول بدهید.</string>
+  <string name="crypto_append" tools:machine_translated="true">افزودن</string>
+  <string name="crypto_exclude" tools:machine_translated="true">استثنا قائل شوید.</string>
+  <string name="crypto_inherit" tools:machine_translated="true">از تنظیمات پیش‌فرض پیروی کن</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">این قابلیت در این کتابخانه پیاده‌سازی نشده است.</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">در دسترس نیست، زیرا ارائه‌دهنده‌های رمزنگاری نصب‌شده، این قابلیت را ندارند.</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">گروه DH کوچکتر از حداقل مقدار پیکربندی‌شده است.</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">کلید یا گواهی‌نامه، الزامات مربوط به RSA یا سیاست گواهی‌نامه را برآورده نمی‌کند.</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">هشدار — %1$s: %2$s: %3$s نادیده گرفته شد (%4$s).</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">سیاست رمزنگاری هیچ الگوریتم قابل استفاده‌ای برای %1$s باقی نمی‌گذارد.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">اعمال سیاست رمزنگاری برای %1$s با شکست مواجه شد: %2$s</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">سیاست رمزنگاری — %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">حداقل اندازه کلیدها</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA: %1$d بیت؛ DH با میدان محدود: %2$d بیت</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">نمایش ترتیب اولویت‌بندی مؤثر</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">پنهان کردن ترتیب اولویت‌های موثر</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">تغییر حالت برای %1$s</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ اولویت دادن به گزینه اول · + افزودن · ✓ پیروی از تنظیمات پیش‌فرض · − حذف</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">کلید Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">شیفت</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">Esc (کلید خروج)</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">کلید تب</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">وارد شوید</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">کلید حذف (بک‌اسپیس)</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">حذف</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">درج کن</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">بالا</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">فلش پایین</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">صفحه اصلی</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">پایان</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">صفحه قبل</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">صفحه پایین</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">ورودی متن</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">ترکیب‌سازی</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">صفحه کلید</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">صفحه کلید ترمینال</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">طرح‌بندی‌های صفحه‌کلید</string>
+  <string name="keyboard_macros" tools:machine_translated="true">ماکروهای مشترک</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">ماکروی مورد نظر یافت نشد.</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">پیکربندی پشتیبانی نمی‌شود.</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">عملیات مربوط به صفحه‌کلید با خطا مواجه شد.</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">به بالا حرکت کن</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">به پایین بروید</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">به سمت چپ حرکت کنید</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">به سمت راست حرکت کن</string>
+  <string name="keyboard_off" tools:machine_translated="true">خاموش</string>
+  <string name="keyboard_once" tools:machine_translated="true">کلید بعدی</string>
+  <string name="keyboard_locked" tools:machine_translated="true">قفل‌شده</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">طرح‌بندی جدید</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">ماکروی جدید</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(کپی)</string>
+  <string name="keyboard_back" tools:machine_translated="true">بازگشت</string>
+  <string name="keyboard_error" tools:machine_translated="true">اعمال تغییرات امکان‌پذیر نبود: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">طرح‌بندی را اضافه کنید.</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">افزودن ماکرو</string>
+  <string name="keyboard_edit" tools:machine_translated="true">ویرایش</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">تکراری</string>
+  <string name="keyboard_delete" tools:machine_translated="true">حذف</string>
+  <string name="keyboard_default" tools:machine_translated="true">به‌عنوان تنظیمات پیش‌فرض برنامه استفاده شود.</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">در موارد زیر استفاده می‌شود: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">تأیید کنید</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">آیا می‌خواهید این تغییر مخرب را اعمال کنید؟ ممکن است ویرایش‌های ذخیره شده در طرح‌بندی از بین بروند. هنگام بازنشانی یک طرح‌بندی، ماکروهای مشترک حفظ می‌شوند.</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">لغو</string>
+  <string name="keyboard_name" tools:machine_translated="true">نام</string>
+  <string name="keyboard_width" tools:machine_translated="true">عرض دکمه (به واحد «دی‌پی»، برای همه دکمه‌ها)</string>
+  <string name="keyboard_height" tools:machine_translated="true">ارتفاع دکمه‌ها (واحد dp، برای همه دکمه‌ها)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">برای ویرایش، روی یک کلید ضربه بزنید. برای جابه‌جا کردن، روی آن لمس کنید و نگه دارید، سپس آن را بکشید. برای ثابت یا جدا کردن، بین بخش‌ها بکشید. اندازه دکمه برای همه کلیدها اعمال می‌شود.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">برای تغییر ترتیب دکمه‌ها، آن را بکشید و رها کنید.</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">کلید را اضافه کنید</string>
+  <string name="keyboard_visible" tools:machine_translated="true">قابل مشاهده</string>
+  <string name="keyboard_row" tools:machine_translated="true">ردیف (شروع از ۰)</string>
+  <string name="keyboard_column" tools:machine_translated="true">ستون (شروع از 0)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">تعداد ردیف‌ها</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">گستره ستون</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">حذف کلید</string>
+  <string name="keyboard_save" tools:machine_translated="true">ذخیره کنید</string>
+  <string name="keyboard_reset" tools:machine_translated="true">بازگرداندن به تنظیمات پیش‌فرض</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">از تنظیمات پیش‌فرض برنامه استفاده کنید.</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">ویرایشگر بصری</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">ویرایشگر متن</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">هر دستور در یک خط: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. در متن، از روش فرار دادن رشته‌های JSON استفاده می‌شود.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">مراحل اجرای ماکرو</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">متن را اضافه کنید</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">کلید را اضافه کنید</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">بایت‌ها را اضافه کنید.</string>
+  <string name="keyboard_text" tools:machine_translated="true">متنی که می‌خواهید ارسال کنید</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">مقادیر دقیق بایت‌ها (هگزادسیمال)</string>
+  <string name="keyboard_character" tools:machine_translated="true">کاراکتر</string>
+  <string name="terminal_key_space" tools:machine_translated="true">کلید فاصله</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">کلید %1$s در صفحه کلید عددی</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">برچسب دکمه</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">مرکبات</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">کنترل‌های جمع‌وجور ترمینال</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">آخرین ایستگاه</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">کنترل‌های ترمینال با فضای کافی</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">پنجه</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">بهینه‌سازی‌شده برای Claude Code</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">اسکریب</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">بهینه‌سازی‌شده برای رابط خط فرمان (CLI) کدکس</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">یک طرح‌بندی از پیش تعیین‌شده برای صفحه‌کلید انتخاب کنید.</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">طرح‌بندی کلاسیک کیبورد ConnectBot</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">تنظیم عرض</string>
+  <string name="keyboard_layer" tools:machine_translated="true">لایه %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">لایه %1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">تغییر لایه</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">مقصد لایه</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">لایه بعدی که خالی نباشد</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">لایه مقصد خالی است.</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">متوقف کن</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">تاریخچه (مختصر)</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">حالت</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">خط جدید (مختصر)</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">ثبت</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">ویرایش</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">کپی کن</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">چسباندن</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">متوقف کردن</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">تاریخچه جستجو</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">حالت‌های مختلف مجوز را تغییر دهید</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">درج خط جدید</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">فعال/غیرفعال کردن متن پیاده‌شده</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">باز کردن ویرایشگر خارجی</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">پاسخ را کپی کنید</string>
+  <string name="macro_assign" tools:machine_translated="true">انتخاب ماکرو</string>
+  <string name="macro_import" tools:machine_translated="true">وارد کردن ماکرو</string>
+  <string name="macro_export" tools:machine_translated="true">خروجی گرفتن از ماکرو</string>
+  <string name="macro_none" tools:machine_translated="true">هیچ ماکرویی ذخیره نشده است.</string>
+  <string name="automation_run_macro" tools:machine_translated="true">اجرای ماکرو</string>
+  <string name="macro_choose" tools:machine_translated="true">ماکرو را انتخاب کنید</string>
+  <string name="macro_manage" tools:machine_translated="true">مدیریت ماکروها</string>
+  <string name="keyboard_selected" tools:machine_translated="true">انتخاب‌شده</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">تنظیمات پیش‌فرض برنامه</string>
+  <string name="keyboard_select" tools:machine_translated="true">از این استفاده کنید.</string>
+  <string name="keyboard_change" tools:machine_translated="true">تغییر طرح‌بندی</string>
+  <string name="keyboard_customize" tools:machine_translated="true">سفارشی‌سازی کنید</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">ویرایش طرح‌بندی مشترک</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">به‌عنوان تنظیمات پیش‌فرض برنامه استفاده شود.</string>
+  <string name="keyboard_saving" tools:machine_translated="true">در حال ذخیره...</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">سفارشی</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">از کیبورد پیش‌فرض استفاده کنید.</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">از پروفایل «%1$s»</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">پیشرفته</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">صفحه کلید: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">اتوماسیون پس از ورود به سیستم: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">پروفایل: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">میزبان: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">آیا می‌خواهید طرح‌بندی «%1$s» را حذف کنید؟</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">آیا می‌خواهید ماکروی «%1$s» را حذف کنید؟</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">میزبان‌ها و پروفایل‌هایی که از این طرح‌بندی استفاده می‌کنند، به جای آن از طرح‌بندی صفحه‌کلید پیش‌فرض خود استفاده خواهند کرد. اگر این طرح‌بندی، طرح‌بندی پیش‌فرض برنامه باشد، طرح‌بندی دیگری به عنوان طرح‌بندی پیش‌فرض انتخاب می‌شود.</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">این دستور، ماکرو را از کتابخانه مشترک حذف می‌کند.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">آیا می‌خواهید کلیدها و ابعاد اصلی این طرح‌بندی را بازیابی کنید؟ تغییرات هنگام ذخیره اعمال می‌شوند. ماکروهای مشترک حفظ می‌شوند.</string>
+  <string name="macro_shared_title" tools:machine_translated="true">آیا می‌خواهید یک ماکروی به اشتراک گذاشته شده را ویرایش کنید؟</string>
+  <string name="macro_shared_message" tools:machine_translated="true">این ماکرو در جاهای دیگر نیز استفاده می‌شود. یک نسخه جداگانه ایجاد کنید، یا نسخه مشترک را ویرایش کنید تا برای همه کاربران قابل استفاده باشد.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">یک نسخه ایجاد کنید</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">ویرایش ماکروی مشترک</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">با ذخیره تغییرات، این ماکرو در همه مکان‌هایی که استفاده می‌شود، به‌روزرسانی می‌شود، حتی اگر بعداً ویرایشگر اصلی را حذف کنید.</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">قبل از حذف این ماکرو، این موارد استفاده را حذف یا به موارد دیگر اختصاص دهید.</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">این جلسه</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">این دستگاه فقط برای خواندن اطلاعات است. نمی‌توان تنظیمات صفحه‌کلید آن را تغییر داد.</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">مدیریت طرح‌بندی‌ها</string>
+  <string name="keyboard_done" tools:machine_translated="true">انجام شد</string>
+  <string name="automation_draft_host" tools:machine_translated="true">این مراحل با میزبان جدید ذخیره می‌شوند.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">این میزبان را ذخیره کنید و قبل از استفاده از عملیات‌های فوروارد، پورت‌های مورد نیاز را به آن اضافه کنید.</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">عمل/اقدام</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">کلید</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">ماکرو</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">تغییردهنده</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">عملکرد برنامه</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">لایه را تغییر دهید</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">طرح مشترک: ذخیره به‌روزرسانی‌ها برای همه کاربران.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">این طرح‌بندی صفحه‌کلید در دسترس نیست.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">در هر بخش، ردیف‌ها و ستون‌ها از 0 شروع می‌شوند. ارتفاع هر کلید یک ردیف است. با تنظیم «گستره ستون»، می‌توانید تعیین کنید که یک کلید چند خانه را اشغال می‌کند.</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">شکل ظاهری</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">رنگ پس‌زمینه</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">رنگ متن</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">رنگ حاشیه</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">رنگ پیش‌فرض تم</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">میزان شفافیت پس‌زمینه: %1$d%%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">با حاشیه</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">ضخامت حاشیه: %1$.1f پیکسل (با در نظر گرفتن تراکم نمایشگر)</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">بازنشانی ظاهر</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">تغییردهنده‌های فعال و کلیدهای تغییر لایه، از رنگ برجسته موضوع استفاده می‌کنند.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">رفتار</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">تکرار در حین نگه داشتن</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">از حالت تکرار پیش‌فرض استفاده کنید.</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">تنظیمات برنامه</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">روشن</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">غیرفعال</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">بازخورد لمسی: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">کلیدهای ثابت‌شده</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">کلیدهای قابل پیمایش</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">کلیدها را به اینجا بکشید.</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">ثابت نگه داشتن در سمت راست</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">طرح‌بندی‌ها را انتخاب کنید، کلیدها را سفارشی‌سازی کنید و ماکروها را مدیریت کنید.</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">ویرایش طرح‌بندی</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">ویرایش کلید</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">تنظیمات طرح‌بندی</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">قابل پیمایش</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">متناسب با عرض</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">صفحه کلید</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">برای ویرایش، ضربه بزنید · برای جابه‌جا کردن، نگه دارید و بکشید</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">کلیدهای پین‌شده در انتهای صفحه کلید باقی می‌مانند (در رابط‌های راست‌به‌چپ، در سمت چپ).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">یک کلید را به بخش «کلیدهای ثابت‌شده» بکشید تا در انتهای صفحه کلید باقی بماند. برای حذف حالت ثابت‌شده، آن را دوباره به بخش «کلیدهای قابل پیمایش» بکشید.</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">گسترش یافته</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">فشرده‌شده</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">ویرایش یک نسخه</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">ویرایش را ادامه دهید.</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">یک طرح‌بندی برای %1$s ایجاد می‌کند. سایر کاربران از طرح‌بندی فعلی خود استفاده می‌کنند.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">تغییرات هنگام ذخیره این میزبان یا پروفایل اعمال می‌شوند.</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">ذخیره کردن این کلید، پیش‌نویس طرح‌بندی را به‌روزرسانی می‌کند. برای حفظ تغییرات، طرح‌بندی را ذخیره کنید.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">چیدمان</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">کلید را نشان بده</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">در انتهای صفحه ثابت شده است.</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">تغییر میانبر</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">انتخاب کنید که با فشردن این کلید، چه عملی انجام شود.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">پس‌زمینه، متن و حاشیه</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · بازخورد لمسی: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">یک بار فشار دهید.</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">هنگامی که دکمه را نگه می‌دارید، تکرار می‌شود.</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">تعداد ردیف‌ها، ستون‌ها و عرض کلیدها</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">توسط %1$d کاربر استفاده می‌شود.</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">آیا می‌خواهید این کلید را از طرح اولیه حذف کنید؟</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">آیا می‌خواهید تغییرات اعمال‌شده روی کلیدها را ذخیره کنید؟</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">این تغییرات را در طرح‌بندی اعمال کنید یا آن‌ها را لغو کنید.</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">تغییرات را اعمال کنید</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">ویرایش طرح‌بندی</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">کلید یا میان‌بر</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">پیش‌نمایش</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">انتخاب سفارشی</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">از طرح‌بندی پیش‌فرض استفاده کنید.</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">اقدامات مربوط به طرح‌بندی</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">پیش‌نمایش رنگ</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">یک کلید برای شروع این لایه اضافه کنید.</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">هنگامی که طرح‌بندی را ذخیره می‌کنید، تغییرات در این ترمینال اعمال می‌شوند.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">ذخیره کردن این طرح‌بندی، آن را برای همه کاربران به‌روزرسانی می‌کند. می‌توانید به جای آن، یک نسخه را ویرایش کنید.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">آیا می‌خواهید طرح‌بندی مشترک را ویرایش کنید؟</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">این پیکربندی</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">تنظیمات پیش‌فرض داخلی</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">تنظیمات پیش‌فرض داخلی بدون تغییر باقی می‌مانند. با ویرایش، یک نسخه شخصی‌سازی‌شده ایجاد می‌شود.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">تنظیمات پیش‌فرض داخلی</string>
 </resources>

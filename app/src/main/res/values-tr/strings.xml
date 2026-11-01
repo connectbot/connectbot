@@ -726,4 +726,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">Kısayol oluşturulamadı. Lütfen tekrar deneyin.</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">Atlama ana bilgisayar zincirinde bir döngü var. Atlama ana bilgisayar ayarlarını kontrol edin.</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">Bağlantı için gereken ara sunucu sayısı 32\'yi aştı.</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">Yerel yankılama</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">Girilen metnin yerel olarak görüntülenip görüntülenmeyeceğine karar verin. Her zaman açık seçeneği, sunucu tarafından yankılanan metnin tekrarlanmasına neden olabilir.</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">Otomatik</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">Her zaman açık</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">Her zaman kapalı.</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">Müzakere başlatma</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">Bağlantı kurulduğunda terminal özelliklerini belirleyin veya sunucunun bu özellikleri talep etmesini bekleyin.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">Bağlantı kurulduğunda anlaşmaya var.</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">Sunucunun yanıtını bekleyin.</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">İkili olmayan veri</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">Sunucu ikili modu kabul etmiyorsa, eski sekiz bitlik baytların kullanılmasına izin verin veya ASCII kullanılmasını zorunlu tutun. Her iki taraf da aynı kodlamayı kullanmalıdır.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">Eski sekiz bitlik baytların kullanılmasına izin ver.</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">ASCII gereklidir.</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">Yapıştırılan metindeki satır sonları</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">İkili modun dışındaki durumlarda, yapıştırılan LF karakterini CRLF\'ye dönüştürün veya LF karakterini olduğu gibi bırakın. Bu aynı zamanda otomatikleştirilmiş metinler için de geçerlidir.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">LF karakterini CRLF\'ye dönüştür.</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">LF karakterini koru.</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">Girdi gönderilmedi. Bu bağlantı, sunucu ikili modu etkinleştirene kadar ASCII kullanmayı gerektiriyor.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">Girdi, bu Telnet sunucusuna gönderilemedi.</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">Bağlantı başarısız oldu.</string>
+  <string name="terminal_connected" tools:machine_translated="true">Bağlantı kuruldu.</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">Kimlik doğrulama başarılı.</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">SSH oturumu açılamadı.</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">SSH sunucusu, terminal isteğini reddetti.</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">SSH sunucusu, kabuk oturumu isteğini reddetti.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">Bağlantı bilgileri</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">Protokol</string>
+  <string name="connection_info_host" tools:machine_translated="true">Ana bilgisayar</string>
+  <string name="connection_info_port" tools:machine_translated="true">Port</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">SSH bağlantı noktası</string>
+  <string name="connection_info_username" tools:machine_translated="true">Kullanıcı adı</string>
+  <string name="connection_info_status" tools:machine_translated="true">Durum</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">Bağlanıyor</string>
+  <string name="connection_info_connected" tools:machine_translated="true">Bağlantı kuruldu.</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">Bağlantı kesildi.</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">Yerel adres</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">Mosh\'u başlatmak için kullanılan ilk SSH bağlantı aşamasına ait ayrıntılar.</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">SSH bağlantısı üzerinden yürütülen algoritmaların ayrıntıları</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">SSH bağlantı bilgileri bulunamadı.</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">Anahtar değişimi</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">Sunucu anahtarı</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">Şifreleme: istemciden sunucuya</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">Şifreleme: sunucudan istemciye</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">Bütünlük: istemciden sunucuya</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">Bütünlük: sunucudan istemciye</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">Şifreleme ile entegre edildi.</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">Kuantum sonrası anahtar değişimi</string>
+  <string name="connection_info_yes" tools:machine_translated="true">Evet</string>
+  <string name="connection_info_no" tools:machine_translated="true">Hayır</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">Yönlendirilen portlar</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">Kaynak yapılandırıldı.</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">Atanan port</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">Bağlanmadı</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">Yönlendirme durumu</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">Etkin</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">Etkin değil</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">Hedef</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">Kriptografik politika</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">Varsayılan</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">Gelecek</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">Eski sürüm</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">FIPS algoritmaları</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">Özel</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">Önerilen algoritmalar ve anahtar boyutları</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">Kuantum sonrası anahtar değişimi gerektir.</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">Algoritmaları sınırlandır; FIPS doğrulaması yapılmamıştır.</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">Uyumluluk için eski algoritmaların kullanılmasına izin ver.</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">Algoritmaları ve minimum anahtar boyutlarını seçin.</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">SSH kitaplığı tarafından desteklenen modern algoritmalar ve anahtar boyutu gereksinimleri.</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">Kuantum sonrası hibrit anahtar değişimi, 256 bitlik şifreleme anahtarları ve daha güçlü RSA anahtarları gerektirir.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">Algoritma seçeneklerini sınırlar; FIPS doğrulama işlemi gerçekleştirmez.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">Uyumluluk için eski algoritmaların ve daha küçük RSA ve DH anahtarlarının kullanılmasını sağlar. Modern algoritmalar öncelikli olarak kullanılmaya devam eder.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">Varsayılan ayarları özelleştirin. Algoritma seçimleri ve anahtar boyutu minimumları birbirinden bağımsızdır.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">Minimum RSA bit sayısı</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">Minimum DH bit sayısı</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">Varsayılan değeri kullan (%1$d bit)</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">Varsayılan ayarı kullanmak için boş bırakın. Açıkça etkinleştirilmiş algoritmalar için de geçerlidir.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">En az 1024 bit girin. DH değeri 8192 bitin üzerine çıkmamalıdır.</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">Anahtar değişimi algoritmaları</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">Şifreleme algoritmaları</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">Mesaj kimlik doğrulama algoritmaları</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">Ana bilgisayar anahtarı algoritmaları</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">Herkese açık anahtar kimlik doğrulama algoritmaları</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">Seçim modu</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">Varsayılan Ayarları Kullan</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">Varsayılanı Değiştir</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">Yalnızca bunları kullanın.</string>
+  <string name="crypto_apply" tools:machine_translated="true">Uygula</string>
+  <string name="crypto_expression" tools:machine_translated="true">Algoritma ifadesi</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">Virgülle ayrılmış adlar. Varsayılan Ayarları Değiştir bölümünde, her adın başına şu karakterlerden birini ekleyin: ^ (ilk kısım), + (sona ekle) veya - (hariç tut).</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">Benzersiz SSH adları kullanın ve tek bir seçim modu seçin. Kesin listeler boş olmamalıdır.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">Geçerli öncelik sırası</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">Bu cihazda kullanılamıyor; yapılandırmanızda saklandı.</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">Anahtar boyutu minimumu nedeniyle hariç tutuldu.</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">Varsayılan olarak etkinleştirildi.</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">Kullanılabilir; Varsayılan ayarda etkin değil.</string>
+  <string name="crypto_prepend" tools:machine_translated="true">Öncelikle şunu tercih edin.</string>
+  <string name="crypto_append" tools:machine_translated="true">Ekle</string>
+  <string name="crypto_exclude" tools:machine_translated="true">Hariç tut</string>
+  <string name="crypto_inherit" tools:machine_translated="true">Varsayılan Ayarları Kullan</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">bu kitaplık tarafından desteklenmiyor</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">yüklenmiş şifreleme sağlayıcılarıyla kullanılamıyor.</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">DH grubu, yapılandırılmış minimum değerden daha küçüktür.</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">anahtar veya sertifika, RSA veya sertifika politikası gereksinimlerini karşılamıyor.</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">Uyarı — %1$s: %2$s: %3$s atlandı (%4$s).</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">Kriptografik politika, kullanılabilecek hiçbir %1$s bırakmıyor.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">%1$s için şifreleme politikası başarısız oldu: %2$s</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">Kriptografik politika — %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">Minimum anahtar boyutları</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA: %1$d bit; sonlu alanlı DH: %2$d bit</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">Etkili tercih sıralamasını göster.</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">Etkili tercih sıralamasını gizle</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">%1$s için durumu değiştir.</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ İlk seçeneği tercih et · + Ekle · ✓ Varsayılanı uygula · − Hariç tut</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">Shift tuşu</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">Sekme</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">Giriş yap</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">Geri Silme</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">Sil</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">Ekle</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">Yukarı ok tuşu.</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">↓</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">Ana Sayfa</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">Son</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">Sayfa Yukarı</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">Sayfa Aşağı</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">Metin girişi</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">Birleştir</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">Klavye</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">Terminal klavyesi</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">Klavye düzenleri</string>
+  <string name="keyboard_macros" tools:machine_translated="true">Paylaşılan makrolar</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">Eksik makro</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">Desteklenmeyen yapılandırma</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">Klavye işlemi başarısız oldu.</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">Yukarı kaydır</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">Aşağı kaydır</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">Sola kaydır</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">Sağa kaydır</string>
+  <string name="keyboard_off" tools:machine_translated="true">Kapalı</string>
+  <string name="keyboard_once" tools:machine_translated="true">Sonraki tuş</string>
+  <string name="keyboard_locked" tools:machine_translated="true">Kilitli</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">Yeni düzen</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">Yeni makro</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(kopyala)</string>
+  <string name="keyboard_back" tools:machine_translated="true">Geri</string>
+  <string name="keyboard_error" tools:machine_translated="true">Değişiklik uygulanamadı: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">Klavye düzenini ekle.</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">Makro ekle</string>
+  <string name="keyboard_edit" tools:machine_translated="true">Düzenle</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">Yinelenen</string>
+  <string name="keyboard_delete" tools:machine_translated="true">Sil</string>
+  <string name="keyboard_default" tools:machine_translated="true">Uygulamanın varsayılan düzeni olarak kullan</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">Şurada kullanıldı: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">Onayla</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">Bu kalıcı değişikliği uygulamak ister misiniz? Kaydedilmiş düzen düzenlemeleri kaybolabilir. Bir düzeni sıfırlarken paylaşılan makrolar korunur.</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">İptal et</string>
+  <string name="keyboard_name" tools:machine_translated="true">Ad</string>
+  <string name="keyboard_width" tools:machine_translated="true">Düğme genişliği (dp, tüm düğmeler)</string>
+  <string name="keyboard_height" tools:machine_translated="true">Düğme yüksekliği (dp, tüm düğmeler)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">Bir tuşu düzenlemek için üzerine dokunun. Tuşa dokunup basılı tutun, ardından hareket ettirmek için sürükleyin. Sabitlemek veya sabitlemeyi kaldırmak için bölümler arasında sürükleyin. Düğme boyutu tüm tuşlar için geçerlidir.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">Düğmelerin sırasını değiştirmek için sürükleyin.</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">Tuş ekle</string>
+  <string name="keyboard_visible" tools:machine_translated="true">Görünür</string>
+  <string name="keyboard_row" tools:machine_translated="true">Satır (0\'dan başlayarak)</string>
+  <string name="keyboard_column" tools:machine_translated="true">Sütun (0\'dan başlar)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">Satır aralığı</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">Sütun genişliği</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">Silme tuşu</string>
+  <string name="keyboard_save" tools:machine_translated="true">Kaydet</string>
+  <string name="keyboard_reset" tools:machine_translated="true">Varsayılan ayarlara geri dön</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">Uygulamanın varsayılan ayarlarını kullanın.</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">Görsel düzenleyici</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">Metin düzenleyici</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">Her satırda bir işlem: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. Metin, JSON dizesi kaçış karakterlerini kullanır.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">Makro adımları</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">Metin ekle</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">Tuşu ekle</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">Bayt ekle</string>
+  <string name="keyboard_text" tools:machine_translated="true">Gönderilecek metin</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">Kesin byte değeri (onaltılık).</string>
+  <string name="keyboard_character" tools:machine_translated="true">Karakter</string>
+  <string name="terminal_key_space" tools:machine_translated="true">Boşluk</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">Tuş Takımı %1$s</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">Düğme etiketi</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">Narenciye</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">Kompakt terminal kontrolleri</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">Son Durak</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">Geniş terminal kontrolleri</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">Pençe</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">Claude Code için optimize edilmiştir.</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">Kodex CLI klavye ön ayarı için kısa ad.</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">Codex CLI için optimize edilmiştir.</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">Bir klavye ön ayarı seçin.</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">Klasik CB</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">Ekran genişliğine göre ayarla</string>
+  <string name="keyboard_layer" tools:machine_translated="true">Katman %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">Katman %1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">Katman değiştirme</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">Katman hedefi</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">Sonraki dolu katman</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">Hedef katman boş.</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">Durdur</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">Kısaltılmış Geçmiş</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">Mod</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">Yeni Satır</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">Günlük</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">Düzenle</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">Kopyala</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">Yapıştır</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">Kesintiye uğrat</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Arama geçmişi</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">İzin modlarını değiştirin.</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">Yeni satır ekle</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">Altyazıyı aç/kapat</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">Harici düzenleyiciyi aç</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">Yanıtı kopyala</string>
+  <string name="macro_assign" tools:machine_translated="true">Makroyu ata</string>
+  <string name="macro_import" tools:machine_translated="true">Makroyu içe aktar</string>
+  <string name="macro_export" tools:machine_translated="true">Makroyu dışa aktar</string>
+  <string name="macro_none" tools:machine_translated="true">Kaydedilmiş makro bulunmuyor.</string>
+  <string name="automation_run_macro" tools:machine_translated="true">Makroyu çalıştır</string>
+  <string name="macro_choose" tools:machine_translated="true">Makro seçin</string>
+  <string name="macro_manage" tools:machine_translated="true">Makroları yönet</string>
+  <string name="keyboard_selected" tools:machine_translated="true">Seçildi</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">Uygulama varsayılanı</string>
+  <string name="keyboard_select" tools:machine_translated="true">Bunu kullanın.</string>
+  <string name="keyboard_change" tools:machine_translated="true">Klavye düzenini değiştir</string>
+  <string name="keyboard_customize" tools:machine_translated="true">Özelleştir</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">Paylaşılan düzeni düzenle</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">Uygulamanın varsayılan düzeni olarak kullan</string>
+  <string name="keyboard_saving" tools:machine_translated="true">Kaydediliyor…</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">Özel</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">Devralınan klavyeyi kullanın.</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">\"%1$s\" profilinden</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">Gelişmiş</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">Klavye: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">Giriş yaptıktan sonraki otomasyon: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">Profil: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">Ana bilgisayar: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">\"%1$s\" düzenini silmek ister misiniz?</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">“%1$s” adlı makroyu silmek istiyor musunuz?</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">Bu düzeni kullanan ana makineler ve profiller, varsayılan klavyelerini kullanacaktır. Bu, uygulamanın varsayılan düzeni ise, başka bir düzen varsayılan olarak ayarlanır.</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">Bu, makroyu paylaşılan kitaplıktan kaldırır.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">Bu düzenin orijinal tuşlarını ve boyutlarını geri yükle? Değişiklikler kaydederken uygulanır. Paylaşılan makrolar korunur.</string>
+  <string name="macro_shared_title" tools:machine_translated="true">Paylaşılan bir makroyu düzenle?</string>
+  <string name="macro_shared_message" tools:machine_translated="true">Bu makro başka yerlerde de kullanılıyor. Ayrı bir kopya oluşturun veya tüm kullanıcılar için paylaşılan sürümü düzenleyin.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">Kopyasını oluşturun.</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">Paylaşılan makroyu düzenle</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">Güncellemeleri kaydederek bu makroyu, kullanıldığı her yerde güncellersiniz; böylece daha sonra düzenleyiciyi silmeniz durumunda bile makro korunur.</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">Bu makroyu silmeden önce bu kullanımları kaldırın veya yeniden atayın.</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">Bu oturum</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">Bu ana bilgisayar salt okunur durumdadır. Klavyesi değiştirilemez.</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">Klavye düzenlerini yönet</string>
+  <string name="keyboard_done" tools:machine_translated="true">Tamamlandı.</string>
+  <string name="automation_draft_host" tools:machine_translated="true">Bu adımlar yeni ana bilgisayarda kaydedilecektir.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">Bu sunucuyu kaydedin ve yönlendirme işlemlerini kullanmadan önce port yönlendirmelerini ekleyin.</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">İşlem</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">Tuş</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">Makro</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">Değiştirici</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">Uygulama eylemi</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">Katmanı değiştir</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">Paylaşılan düzen: güncellemeler kaydedilir ve bu düzeni kullanan herkes bu güncellemelerden yararlanır.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">Bu klavye düzeni kullanılamıyor.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">Her bölüm içinde satırlar ve sütunlar 0\'dan başlar. Tuşların yüksekliği bir satır kadardır. Sütun genişliği, bir tuşun kaç hücre kapladığını belirler.</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">Görünüm</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">Arka plan rengi</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">Metin rengi</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">Kenar rengi</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">Varsayılan tema</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Arka plan saydamlığı: %1$d%%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">Kenarlıklı</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">Kenarlık kalınlığı: %1$.1f dp</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">Görünümü sıfırla</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">Etkin değiştiriciler ve katman geçişleri, tema vurgulamasını kullanır.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">Davranış</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">Tuş basılı tutulduğu sürece tekrarla.</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">Varsayılan tekrar davranışını kullanın.</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">Uygulama ayarı</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">Açık</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">Kapalı</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">Dokunsal geri bildirim: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">Sabitlenmiş tuşlar</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">Kaydırılabilir tuşlar</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">Tuşları buraya sürükleyin.</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">Sağa sabitle</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">Klavye düzenlerini seçin, tuşları özelleştirin ve makroları yönetin.</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">Düzeni düzenle</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">Tuşu düzenle</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">Düzen ayarları</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">Kaydırılabilir</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">Genişliğe göre ayarla</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">Klavye</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">Düzenlemek için dokunun · Sürükleyerek taşıyın.</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">Sabitlenmiş tuşlar klavyenin sonunda kalır (sağdan sola okuma yönünde olan arayüzlerde solda).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">Bir tuşu \"Sabitlenmiş Tuşlar\" bölümüne sürükleyerek klavyenin sonunda kalmasını sağlayın. Tuşu tekrar \"Kaydırılabilir Tuşlar\" bölümüne sürükleyerek sabitlemeyi kaldırın.</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">Genişletildi</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">Daraltıldı.</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">Bir kopyayı düzenle</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">Düzenlemeye devam edin.</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">%1$s için yeni bir düzen oluşturur. Diğer kullanıcılar mevcut düzenlerini korur.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">Değişiklikler, bu ana bilgisayarı veya profili kaydettiğinizde uygulanır.</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">Bu tuşu kaydederek düzen şemasını güncelleyin. Yaptığınız değişiklikleri korumak için düzen şemasını kaydedin.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">Yerleşim</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">Tuşu göster</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">Sonuca sabitlendi.</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">Kısayolu değiştir</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">Bu tuşa basıldığında ne olacağını seçin.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">Arka plan, metin ve kenarlık</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · Dokunsal geri bildirim: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">Tek kez basın.</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">Tuş basılı tutulduğu sürece tekrar eder.</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">Satır, sütun ve tuş genişliği</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">%1$d kullanıcı tarafından kullanılıyor.</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">Bu tuşu düzen şemasından kaldıralım mı?</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">Tuş değişikliklerini uygula?</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">Bu değişiklikleri düzen düzenine uygulayın veya değişiklikleri iptal edin.</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">Değişiklikleri uygula</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">Düzeni düzenle</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">Tuş veya kısayol</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">Önizleme</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">Özel seçim</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">Mevcut düzeni kullanın.</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">Düzenleme işlemleri</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">Renk önizlemesi</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">Bu katmanı başlatmak için bir tuş ekleyin.</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">Düzeni kaydettiğinizde, değişiklikler bu terminalde uygulanır.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">Bu düzeni kaydederek, tüm kullanıcılar için güncellemeler yapılır. Bunun yerine, düzenin bir kopyasını düzenleyebilirsiniz.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">Paylaşılan klavye düzenini düzenle?</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">bu yapılandırma</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">Yerleşik ön ayarlar</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Yerleşik ön ayarlar değişmeden kalır. Düzenleme yaptığınızda kendi kopyanız oluşturulur.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">Yerleşik ön ayar</string>
 </resources>

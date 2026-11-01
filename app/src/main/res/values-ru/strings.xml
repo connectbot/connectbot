@@ -734,4 +734,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">Не удалось создать ярлык. Пожалуйста, повторите попытку.</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">В цепочке промежуточных серверов обнаружена циклическая зависимость. Проверьте настройки промежуточных серверов.</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">Превышен лимит в 32 промежуточных сервера в цепочке подключения.</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">Локальное отображение вводимых символов.</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">Выберите, нужно ли отображать вводимый текст локально. Если эта функция всегда включена, текст может дублироваться, когда сервер выполняет эхо-ответ.</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">Автоматический</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">Всегда включено.</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">Всегда выключено.</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">Начало согласования параметров.</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">При установлении соединения определите возможности терминала или дождитесь, пока сервер запросит их.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">Установить параметры при подключении.</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">Ожидание ответа от сервера.</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">Недвоичные данные.</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">Если сервер не поддерживает бинарный режим, разрешите использование устаревших восьмибитных байтов или потребуйте использование кодировки ASCII. Обе стороны должны использовать одну и ту же кодировку.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">Разрешить использование устаревших восьмибитных байтов.</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">Требовать использование кодировки ASCII.</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">Вставленные символы конца строки.</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">В режиме, отличном от двоичного, преобразуйте вставленные символы новой строки (LF) в CRLF или сохраните их в формате LF. Это также относится к автоматизированному тексту.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">Преобразуйте символ новой строки (LF) в CRLF.</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">Сохранить символ новой строки (LF).</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">Ввод не был отправлен. Для данного подключения требуется использование кодировки ASCII до тех пор, пока сервер не включит двоичный режим.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">Не удалось отправить данные на этот Telnet-сервер.</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">Не удалось установить соединение.</string>
+  <string name="terminal_connected" tools:machine_translated="true">Соединение установлено.</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">Аутентификация прошла успешно.</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">Не удалось открыть SSH-сессию.</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">SSH-сервер отклонил запрос на подключение к терминалу.</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">SSH-сервер отклонил запрос на запуск интерактивной оболочки.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">Информация о подключении</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">Протокол</string>
+  <string name="connection_info_host" tools:machine_translated="true">Хост</string>
+  <string name="connection_info_port" tools:machine_translated="true">Порт</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">Порт SSH</string>
+  <string name="connection_info_username" tools:machine_translated="true">Имя пользователя</string>
+  <string name="connection_info_status" tools:machine_translated="true">Статус</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">Устанавливается соединение.</string>
+  <string name="connection_info_connected" tools:machine_translated="true">Соединение установлено.</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">Соединение разорвано.</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">Локальный адрес</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">Подробная информация о начальной SSH-сессии, используемой для запуска Mosh (а не об активном соединении Mosh).</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">Подробная информация об алгоритмах, согласованных по SSH-соединению.</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">Информация об установке SSH-соединения недоступна.</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">Обмен ключами</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">Ключ хоста сервера</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">Шифрование: от клиента к серверу.</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">Шифрование: от сервера к клиенту.</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">Целостность: от клиента к серверу.</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">Целостность: от сервера к клиенту.</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">Интегрировано с функцией шифрования.</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">Квантово-устойчивый алгоритм обмена ключами</string>
+  <string name="connection_info_yes" tools:machine_translated="true">Да</string>
+  <string name="connection_info_no" tools:machine_translated="true">Нет</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">Настройки перенаправления портов</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">Настроены параметры источника.</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">Назначенный порт</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">Не привязан.</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">Статус перенаправления</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">Активен</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">Неактивно.</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">Адрес назначения</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">Политика в области криптографии.</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">По умолчанию</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">В будущем.</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">Устаревший</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">Алгоритмы FIPS</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">Настраиваемый</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">Рекомендуемые алгоритмы и размеры ключей.</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">Требовать использование постквантового обмена ключами.</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">Ограничить список алгоритмов; не соответствует требованиям FIPS.</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">Разрешить использование устаревших алгоритмов для обеспечения совместимости.</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">Выберите алгоритмы и минимальный размер ключа.</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">Современные алгоритмы и требования к размеру ключей, поддерживаемые библиотекой SSH.</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">Требуется использование гибридного обмена ключами, устойчивого к квантовым вычислениям, 256-битных ключей шифрования и более надежных ключей RSA.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">Ограничивает выбор алгоритмов; не предусматривает проверку на соответствие стандарту FIPS.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">Разрешает использование устаревших алгоритмов и более коротких ключей RSA и DH для обеспечения совместимости. При этом предпочтение по-прежнему отдается современным алгоритмам.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">Настройте параметры по умолчанию. Выбор алгоритмов и минимальный размер ключа — независимые параметры.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">Минимальная длина ключа RSA (в битах)</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">Минимальное количество бит для алгоритма Диффи — Хеллмана.</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">Использовать настройки по умолчанию (%1$d бит)</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">Оставьте поле пустым, чтобы использовать настройки по умолчанию. Применяется даже к явно включенным алгоритмам.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">Введите не менее 1024 бит. Длина ключа DH не должна превышать 8192 бит.</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">Алгоритмы обмена ключами</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">Алгоритмы шифрования</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">Алгоритмы аутентификации сообщений</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">Алгоритмы для ключей хоста.</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">Алгоритмы аутентификации с использованием открытого ключа.</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">Режим выбора</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">Использовать настройки по умолчанию.</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">Изменить настройки по умолчанию.</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">Используйте только эти.</string>
+  <string name="crypto_apply" tools:machine_translated="true">Применить</string>
+  <string name="crypto_expression" tools:machine_translated="true">Выражение алгоритма.</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">Имена, разделенные запятыми. В разделе «Изменить параметры по умолчанию» добавьте к каждому имени префикс: ^ (в начало), + (в конец) или - (исключить).</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">Используйте уникальные имена SSH и один режим выбора. Списки не должны быть пустыми.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">Применяемый порядок приоритетов.</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">Недоступно на данном устройстве; сохранено в вашей конфигурации.</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">Исключено из-за минимального размера ключа.</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">Включено по умолчанию.</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">Доступно; не включено в настройках по умолчанию.</string>
+  <string name="crypto_prepend" tools:machine_translated="true">Предпочтительнее использовать первым.</string>
+  <string name="crypto_append" tools:machine_translated="true">Добавить</string>
+  <string name="crypto_exclude" tools:machine_translated="true">Исключить</string>
+  <string name="crypto_inherit" tools:machine_translated="true">Использовать настройки по умолчанию.</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">не реализовано в данной библиотеке.</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">недоступно при использовании установленных криптографических провайдеров.</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">Размер группы DH меньше установленного минимального значения.</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">ключ или сертификат не соответствуют требованиям политики RSA или политики сертификатов.</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">Предупреждение — %1$s: %2$s: %3$s пропущен (%4$s).</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">Настройки криптографической политики не позволяют использовать ни один из доступных алгоритмов %1$s.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">Ошибка при применении криптографической политики для %1$s: %2$s.</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">Криптографическая политика — %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">Минимальные размеры ключей.</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA: %1$d бит; DH с конечным полем: %2$d бит.</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">Показать эффективный порядок предпочтений.</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">Скрыть отсортированный список предпочтительных алгоритмов.</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">Изменить состояние для %1$s.</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ Отдавать предпочтение первому · + Добавить · ✓ Следовать настройкам по умолчанию · − Исключить</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">Shift (клавиша)</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">Tab (клавиша)</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">Нажмите клавишу «Ввод».</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">Клавиша «Назад»</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">Удалить</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">Вставить</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">↑</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">↓</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">Главная</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">Конец</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">Page Up</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">Page Down</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">Ввод текста</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">Композиция</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">Клавиатура</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">Клавиатура терминала</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">Раскладки клавиатуры</string>
+  <string name="keyboard_macros" tools:machine_translated="true">Общие макросы</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">Отсутствует макрос.</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">Неподдерживаемая конфигурация.</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">Действие с клавиатурой не выполнено.</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">Переместить вверх.</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">Переместить вниз.</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">Переместитесь влево.</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">Переместить вправо.</string>
+  <string name="keyboard_off" tools:machine_translated="true">Выкл.</string>
+  <string name="keyboard_once" tools:machine_translated="true">Следующая клавиша</string>
+  <string name="keyboard_locked" tools:machine_translated="true">Заблокировано.</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">Новая раскладка</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">Новый макрос.</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(копировать)</string>
+  <string name="keyboard_back" tools:machine_translated="true">Назад</string>
+  <string name="keyboard_error" tools:machine_translated="true">Не удалось применить изменения: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">Добавить раскладку</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">Добавить макрос.</string>
+  <string name="keyboard_edit" tools:machine_translated="true">Редактировать</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">Дубликат</string>
+  <string name="keyboard_delete" tools:machine_translated="true">Удалить</string>
+  <string name="keyboard_default" tools:machine_translated="true">Использовать как настройку по умолчанию для приложения.</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">Используется в: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">Подтвердить</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">Применить эти изменения, которые могут привести к потере данных? Сохраненные изменения в настройках могут быть утеряны. Общие макросы сохраняются при сбросе настроек.</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">Отменить</string>
+  <string name="keyboard_name" tools:machine_translated="true">Название</string>
+  <string name="keyboard_width" tools:machine_translated="true">Ширина кнопки (в единицах измерения dp, для всех кнопок).</string>
+  <string name="keyboard_height" tools:machine_translated="true">Высота кнопки (в единицах измерения dp, для всех кнопок).</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">Нажмите на клавишу, чтобы изменить её. Коснитесь и удерживайте, затем перетащите, чтобы переместить. Перетащите между разделами, чтобы закрепить или открепить. Размер кнопки применяется ко всем клавишам.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">Перетащите, чтобы изменить порядок кнопок.</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">Добавить клавишу</string>
+  <string name="keyboard_visible" tools:machine_translated="true">Отображается.</string>
+  <string name="keyboard_row" tools:machine_translated="true">Ряд (нумерация начинается с 0)</string>
+  <string name="keyboard_column" tools:machine_translated="true">Столбец (индексация начинается с 0)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">Количество строк, занимаемых элементом.</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">Ширина столбца.</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">Удалить клавишу</string>
+  <string name="keyboard_save" tools:machine_translated="true">Сохранить</string>
+  <string name="keyboard_reset" tools:machine_translated="true">Восстановить настройки по умолчанию.</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">Использовать настройки приложения по умолчанию.</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">Визуальный редактор</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">Текстовый редактор</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">Одно действие в каждой строке: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. В тексте используется экранирование строк в формате JSON.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">Шаги макроса</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">Добавить текст.</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">Добавить клавишу.</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">Добавить байты.</string>
+  <string name="keyboard_text" tools:machine_translated="true">Текст для отправки.</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">Точные значения байтов (шестнадцатеричные)</string>
+  <string name="keyboard_character" tools:machine_translated="true">Символ</string>
+  <string name="terminal_key_space" tools:machine_translated="true">Пробел</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">Клавиша цифровой панели %1$s</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">Надпись на кнопке</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">Цитрусовые</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">Компактные элементы управления терминалом.</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">Последняя остановка.</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">Просторные элементы управления терминалом.</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">Коготь</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">Оптимизировано для Claude Code.</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">Писец</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">Оптимизировано для интерфейса командной строки Codex.</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">Выберите предустановку раскладки клавиатуры.</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">Классическая раскладка CB</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">Автоматически подстроить ширину.</string>
+  <string name="keyboard_layer" tools:machine_translated="true">Слой %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">Слой %1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">Переключение слоев</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">Назначение слоя</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">Следующий непустой слой.</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">Целевой слой пуст.</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">Остановить</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">История (сокращ.)</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">Режим</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">Новая строка</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">Журнал</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">Редактировать</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">Копировать</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">Вставить</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">Прервать</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">История поиска</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">Переключение режимов разрешений</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">Вставить символ новой строки</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">Включить/выключить расшифровку</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">Открыть внешний редактор</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">Скопировать ответ</string>
+  <string name="macro_assign" tools:machine_translated="true">Назначить макрос</string>
+  <string name="macro_import" tools:machine_translated="true">Импортировать макрос</string>
+  <string name="macro_export" tools:machine_translated="true">Экспортировать макрос</string>
+  <string name="macro_none" tools:machine_translated="true">Сохраненных макросов нет.</string>
+  <string name="automation_run_macro" tools:machine_translated="true">Выполнить макрос.</string>
+  <string name="macro_choose" tools:machine_translated="true">Выберите макрос.</string>
+  <string name="macro_manage" tools:machine_translated="true">Управление макросами</string>
+  <string name="keyboard_selected" tools:machine_translated="true">Выбрано</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">Настройки приложения по умолчанию.</string>
+  <string name="keyboard_select" tools:machine_translated="true">Используйте это.</string>
+  <string name="keyboard_change" tools:machine_translated="true">Изменить раскладку</string>
+  <string name="keyboard_customize" tools:machine_translated="true">Настроить</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">Редактировать общую раскладку.</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">Использовать как настройку по умолчанию для приложения.</string>
+  <string name="keyboard_saving" tools:machine_translated="true">Сохранение…</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">Настраиваемый</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">Использовать клавиатуру по умолчанию.</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">Из профиля «%1$s»</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">Расширенные возможности</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">Клавиатура: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">Автоматизация после входа в систему: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">Профиль: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">Устройство: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">Удалить раскладку «%1$s»?</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">Удалить макрос «%1$s»?</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">Для хостов и профилей, использующих эту раскладку, будет применяться стандартная раскладка клавиатуры, установленная в системе. Если это стандартная раскладка для приложения, то другая раскладка станет стандартной.</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">Это удаляет макрос из общей библиотеки.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">Восстановить исходную раскладку клавиш и размеры? Изменения будут применены после сохранения. Общие макросы сохраняются.</string>
+  <string name="macro_shared_title" tools:machine_translated="true">Редактировать общий макрос?</string>
+  <string name="macro_shared_message" tools:machine_translated="true">Этот макрос используется в других местах. Создайте отдельную копию или измените общую версию, чтобы изменения были видны всем пользователям.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">Создать копию.</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">Редактировать общую макрокоманду.</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">При сохранении изменений текущая версия макроса будет обновлена во всех местах его использования, даже если впоследствии вы закроете редактор.</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">Удалите или переназначьте эти элементы, прежде чем удалять макрос.</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">В этом сеансе</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">Этот хост доступен только для чтения. Его клавиатуру нельзя изменить.</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">Управление раскладками клавиатуры.</string>
+  <string name="keyboard_done" tools:machine_translated="true">Готово.</string>
+  <string name="automation_draft_host" tools:machine_translated="true">Эти действия будут сохранены вместе с данными о новом хосте.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">Сохраните текущий хост и добавьте правила перенаправления портов перед использованием функций перенаправления.</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">Действие</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">Клавиша</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">Макрос</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">Модификатор</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">Действие приложения.</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">Переключить слой</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">Общая раскладка: сохранение обновлений для всех пользователей.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">Эта раскладка клавиатуры недоступна.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">В каждой секции нумерация строк и столбцов начинается с 0. Высота клавиши составляет одну строку. Параметр «Количество столбцов» определяет, сколько ячеек занимает клавиша.</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">Внешний вид</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">Цвет фона</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">Цвет текста</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">Цвет контура</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">Тема по умолчанию.</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Прозрачность фона: %1$d%%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">Обозначено контуром.</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">Толщина обводки: %1$.1f условных единиц.</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">Сбросить настройки внешнего вида.</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">Активные модификаторы и переключатели слоев используют цветовую схему оформления.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">Поведение</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">Повторять, пока нажата</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">Использовать стандартные настройки повторения.</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">Настройки приложения</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">Включено</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">Выкл.</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">Тактильная отдача: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">Закрепленные клавиши</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">Клавиши, которые можно прокручивать.</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">Перетащите сюда клавиши.</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">Закрепить справа</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">Выбирайте раскладки, настраивайте клавиши и управляйте макросами.</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">Изменить раскладку</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">Изменить название клавиши</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">Настройки раскладки</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">Прокручиваемый</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">По ширине.</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">Клавиатура</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">Нажмите, чтобы изменить · Удерживайте и перетаскивайте, чтобы переместить.</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">Закреплённые клавиши остаются в конце клавиатуры (слева в интерфейсах с направлением текста справа налево).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">Перетащите клавишу в раздел «Закрепленные клавиши», чтобы она всегда оставалась в конце клавиатуры. Перетащите ее обратно в раздел «Прокручиваемые клавиши», чтобы открепить.</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">Расширенный</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">Свернуто.</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">Отредактировать копию.</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">Продолжите редактирование.</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">Создает макет для %1$s. У других пользователей сохраняется текущий макет.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">Изменения вступают в силу после сохранения текущего хоста или профиля.</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">Сохранение этой клавиши обновляет черновик макета. Сохраните макет, чтобы сохранить внесенные изменения.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">Расположение</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">Отобразить клавишу.</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">Закреплено в конце.</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">Изменить сочетание клавиш.</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">Выберите, какое действие должна выполнять эта клавиша при нажатии.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">Фон, текст и контур.</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · Тактильная отдача: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">Нажмите один раз.</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">Повторяет нажатие, пока кнопка удерживается.</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">Ряд, столбец и ширина клавиши.</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">Используется %1$d пользователями.</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">Удалить эту клавишу из макета?</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">Применить изменения к клавишам?</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">Примените эти изменения к макету или отмените их.</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">Применить изменения.</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">Редактировать раскладку</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">Клавиша или сочетание клавиш.</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">Предварительный просмотр</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">Выбор по индивидуальным параметрам.</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">Использовать унаследованную раскладку.</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">Действия с макетом</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">Предварительный просмотр цвета</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">Добавьте клавишу для активации этого слоя.</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">Изменения будут применены к текущему терминалу после сохранения макета.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">Сохранение этой раскладки обновит её для всех пользователей. Вместо этого можно изменить копию.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">Изменить общую раскладку клавиатуры?</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">эта конфигурация</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">Встроенные шаблоны.</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Встроенные предустановки остаются без изменений. При редактировании создается ваша собственная копия.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">Встроенный предустановленный шаблон.</string>
 </resources>

@@ -726,4 +726,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">Không thể tạo lối tắt. Vui lòng thử lại.</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">Chuỗi máy chủ trung gian chứa một vòng lặp. Vui lòng kiểm tra cài đặt của máy chủ trung gian.</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">Chuỗi máy chủ trung gian vượt quá giới hạn 32 máy chủ.</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">Hiển thị cục bộ các ký tự đã nhập.</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">Chọn xem có hiển thị nội dung nhập liệu cục bộ hay không. Nếu luôn bật, có thể xảy ra tình trạng lặp lại nội dung khi máy chủ phản hồi.</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">Tự động</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">Luôn bật.</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">Luôn tắt.</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">Khởi tạo quá trình thương lượng.</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">Khi kết nối, hãy thương lượng về các tính năng của thiết bị đầu cuối hoặc đợi máy chủ yêu cầu.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">Thỏa thuận khi kết nối.</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">Đợi máy chủ.</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">Dữ liệu không phải nhị phân.</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">Nếu máy chủ từ chối chế độ nhị phân, hãy cho phép sử dụng chế độ tám bit cũ hoặc yêu cầu sử dụng ASCII. Cả hai phía phải sử dụng cùng một kiểu mã hóa.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">Cho phép sử dụng các byte tám bit cũ.</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">Yêu cầu định dạng ASCII.</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">Các ký tự kết thúc dòng đã được dán.</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">Ngoài chế độ nhị phân, hãy chuyển đổi ký tự xuống dòng (LF) đã sao chép thành CRLF hoặc giữ nguyên LF. Quy tắc này cũng áp dụng cho văn bản tự động hóa.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">Chuyển đổi LF thành CRLF.</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">Giữ nguyên ký tự xuống dòng (LF).</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">Dữ liệu nhập vào không được gửi. Kết nối này yêu cầu sử dụng định dạng ASCII cho đến khi máy chủ bật chế độ nhị phân.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">Không thể gửi dữ liệu đến máy chủ Telnet này.</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">Kết nối không thành công.</string>
+  <string name="terminal_connected" tools:machine_translated="true">Đã kết nối.</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">Xác thực thành công.</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">Không thể mở phiên SSH.</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">Máy chủ SSH từ chối yêu cầu kết nối đến thiết bị đầu cuối.</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">Máy chủ SSH từ chối yêu cầu mở phiên làm việc.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">Thông tin kết nối</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">Giao thức</string>
+  <string name="connection_info_host" tools:machine_translated="true">Máy chủ</string>
+  <string name="connection_info_port" tools:machine_translated="true">Cổng</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">Cổng SSH</string>
+  <string name="connection_info_username" tools:machine_translated="true">Tên người dùng</string>
+  <string name="connection_info_status" tools:machine_translated="true">Trạng thái</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">Đang kết nối.</string>
+  <string name="connection_info_connected" tools:machine_translated="true">Đã kết nối.</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">Kết nối bị ngắt.</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">Địa chỉ cục bộ</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">Thông tin chi tiết về quá trình khởi tạo SSH.</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">Chi tiết đàm phán qua kết nối SSH.</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">Không có thông tin chi tiết về quá trình thương lượng SSH.</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">Thuật toán trao đổi khóa</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">Khóa máy chủ của máy chủ.</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">Mã hóa: từ máy khách đến máy chủ.</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">Mã hóa: từ máy chủ đến máy khách.</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">Tính toàn vẹn: từ máy khách đến máy chủ.</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">Tính toàn vẹn: từ máy chủ đến máy khách.</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">Tích hợp với mã hóa.</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">Trao đổi khóa lượng tử sau này</string>
+  <string name="connection_info_yes" tools:machine_translated="true">Có.</string>
+  <string name="connection_info_no" tools:machine_translated="true">Không</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">Chuyển tiếp cổng</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">Đã cấu hình nguồn.</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">Cổng được gán.</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">Chưa được liên kết.</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">Trạng thái chuyển tiếp</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">Đang hoạt động.</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">Không hoạt động.</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">Địa chỉ đích.</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">Chính sách mật mã</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">Mặc định</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">Trong tương lai</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">Cũ</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">Các thuật toán FIPS</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">Tùy chỉnh</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">Các thuật toán và kích thước khóa được đề xuất.</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">Yêu cầu trao đổi khóa sau thời đại lượng tử.</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">Giới hạn các thuật toán; chưa được chứng nhận theo tiêu chuẩn FIPS.</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">Cho phép sử dụng các thuật toán cũ hơn để đảm bảo khả năng tương thích.</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">Chọn thuật toán và kích thước khóa tối thiểu.</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">Các thuật toán hiện đại và yêu cầu về kích thước khóa được duy trì bởi thư viện SSH.</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">Yêu cầu sử dụng phương pháp trao đổi khóa kết hợp giữa thuật toán lượng tử và thuật toán truyền thống, khóa mã hóa 256-bit và khóa RSA mạnh hơn.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">Hạn chế các lựa chọn thuật toán; không thiết lập quy trình kiểm tra FIPS.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">Cho phép sử dụng các thuật toán cũ hơn và các khóa RSA và DH có kích thước nhỏ hơn để đảm bảo khả năng tương thích. Các thuật toán hiện đại vẫn được ưu tiên sử dụng.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">Tùy chỉnh mặc định. Việc chọn thuật toán và kích thước khóa tối thiểu là độc lập với nhau.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">Số lượng bit RSA tối thiểu</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">Số bit tối thiểu của DH.</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">Sử dụng giá trị mặc định (%1$d bit)</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">Để trống để sử dụng cài đặt mặc định. Áp dụng ngay cả đối với các thuật toán được bật rõ ràng.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">Nhập ít nhất 1024 bit. DH không được vượt quá 8192 bit.</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">Các thuật toán trao đổi khóa.</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">Các thuật toán mã hóa</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">Các thuật toán xác thực thông điệp</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">Các thuật toán khóa máy chủ</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">Các thuật toán xác thực bằng khóa công khai.</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">Chế độ chọn</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">Sử dụng cấu hình mặc định.</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">Chỉnh sửa mặc định</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">Chỉ sử dụng những cái này.</string>
+  <string name="crypto_apply" tools:machine_translated="true">Áp dụng</string>
+  <string name="crypto_expression" tools:machine_translated="true">Biểu thức thuật toán</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">Các tên được phân tách bằng dấu phẩy. Trong mục Sửa đổi mặc định, thêm tiền tố ^ (để đặt ở đầu), + (để thêm vào cuối) hoặc - (để loại trừ) vào mỗi tên.</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">Sử dụng các tên SSH duy nhất và chỉ chọn một chế độ. Danh sách chính xác không được để trống.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">Thứ tự ưu tiên hiệu quả.</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">Không khả dụng trên thiết bị này; vẫn được giữ lại trong cấu hình của bạn.</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">Loại trừ do kích thước khóa tối thiểu.</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">Đã bật theo mặc định.</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">Có sẵn; chưa được kích hoạt trong cấu hình mặc định.</string>
+  <string name="crypto_prepend" tools:machine_translated="true">Ưu tiên lựa chọn đầu tiên.</string>
+  <string name="crypto_append" tools:machine_translated="true">Thêm vào.</string>
+  <string name="crypto_exclude" tools:machine_translated="true">Loại trừ</string>
+  <string name="crypto_inherit" tools:machine_translated="true">Sử dụng cài đặt mặc định.</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">không được hỗ trợ bởi thư viện này.</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">không khả dụng với các nhà cung cấp dịch vụ mã hóa đã cài đặt.</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">Nhóm DH nhỏ hơn giá trị tối thiểu đã được cấu hình.</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">khóa hoặc chứng chỉ không đáp ứng các yêu cầu của chính sách RSA hoặc chính sách chứng chỉ.</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">Cảnh báo — %1$s: %2$s: %3$s đã bị bỏ qua (%4$s).</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">Chính sách mật mã không cho phép sử dụng bất kỳ %1$s nào.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">Chính sách mã hóa không thành công đối với %1$s: %2$s</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">Chính sách mật mã — %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">Kích thước khóa tối thiểu</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA: %1$d bit; DH trên trường hữu hạn: %2$d bit</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">Hiển thị thứ tự ưu tiên hiệu quả.</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">Ẩn danh sách các thuật toán được sắp xếp theo thứ tự ưu tiên đã chọn.</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">Thay đổi trạng thái cho %1$s</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ Ưu tiên thuật toán đầu tiên · + Thêm vào · ✓ Tuân theo mặc định · − Loại trừ</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">Phím Shift</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">Phím Tab</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">Nhấn Enter.</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">Phím xóa lùi</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">Xóa</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">Chèn</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">Mũi tên chỉ lên.</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">Mũi tên chỉ xuống.</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">Trang chủ</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">Kết thúc.</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">Lật trang lên</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">PgDn</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">Nhập văn bản</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">Tạo tổ hợp phím.</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">Bàn phím</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">Bàn phím của thiết bị đầu cuối</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">Bố cục bàn phím</string>
+  <string name="keyboard_macros" tools:machine_translated="true">Các macro được chia sẻ.</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">Thiếu macro.</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">Cấu hình không được hỗ trợ.</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">Thao tác trên bàn phím không thành công.</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">Di chuyển lên.</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">Di chuyển xuống.</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">Di chuyển sang trái.</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">Di chuyển sang phải.</string>
+  <string name="keyboard_off" tools:machine_translated="true">Tắt</string>
+  <string name="keyboard_once" tools:machine_translated="true">Phím tiếp theo</string>
+  <string name="keyboard_locked" tools:machine_translated="true">Đã khóa.</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">Bố cục mới.</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">Tạo macro mới.</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(sao chép)</string>
+  <string name="keyboard_back" tools:machine_translated="true">Quay lại</string>
+  <string name="keyboard_error" tools:machine_translated="true">Không thể áp dụng thay đổi: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">Thêm bố cục.</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">Thêm macro.</string>
+  <string name="keyboard_edit" tools:machine_translated="true">Chỉnh sửa</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">Trùng lặp</string>
+  <string name="keyboard_delete" tools:machine_translated="true">Xóa</string>
+  <string name="keyboard_default" tools:machine_translated="true">Sử dụng làm cấu hình mặc định cho ứng dụng.</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">Được sử dụng trong: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">Xác nhận.</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">Có áp dụng thay đổi này không? Các chỉnh sửa bố cục đã lưu có thể bị mất. Các macro được chia sẻ sẽ được giữ lại khi đặt lại bố cục.</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">Hủy bỏ</string>
+  <string name="keyboard_name" tools:machine_translated="true">Tên</string>
+  <string name="keyboard_width" tools:machine_translated="true">Chiều rộng của nút (dp, áp dụng cho tất cả các nút)</string>
+  <string name="keyboard_height" tools:machine_translated="true">Chiều cao của nút (dp, áp dụng cho tất cả các nút)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">Chạm vào một phím để chỉnh sửa. Chạm và giữ, sau đó kéo để di chuyển. Kéo giữa các phần để ghim hoặc bỏ ghim. Kích thước nút áp dụng cho tất cả các phím.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">Kéo để sắp xếp lại vị trí của nút.</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">Thêm phím</string>
+  <string name="keyboard_visible" tools:machine_translated="true">Hiển thị</string>
+  <string name="keyboard_row" tools:machine_translated="true">Hàng (bắt đầu từ 0)</string>
+  <string name="keyboard_column" tools:machine_translated="true">Cột (bắt đầu từ 0)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">Số lượng hàng trải dài.</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">Số lượng cột.</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">Xóa phím</string>
+  <string name="keyboard_save" tools:machine_translated="true">Lưu</string>
+  <string name="keyboard_reset" tools:machine_translated="true">Khôi phục cài đặt mặc định.</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">Sử dụng cài đặt mặc định của ứng dụng.</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">Trình chỉnh sửa trực quan.</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">Trình soạn thảo văn bản</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">Mỗi dòng chứa một hành động: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. Văn bản sử dụng phương pháp thoát chuỗi JSON.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">Các bước trong macro</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">Thêm văn bản.</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">Thêm phím</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">Thêm byte.</string>
+  <string name="keyboard_text" tools:machine_translated="true">Văn bản cần gửi.</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">Giá trị byte chính xác (hệ thập lục phân)</string>
+  <string name="keyboard_character" tools:machine_translated="true">Ký tự</string>
+  <string name="terminal_key_space" tools:machine_translated="true">Phím cách</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">Phím số %1$s</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">Nhãn nút</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">Cam quýt</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">Các điều khiển thiết bị đầu cuối nhỏ gọn.</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">Điểm dừng cuối cùng</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">Các nút điều khiển bố trí rộng rãi.</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">Móng vuốt</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">Được tối ưu hóa cho Claude Code.</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">Scribe</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">Được tối ưu hóa cho giao diện dòng lệnh (CLI) Codex.</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">Chọn một kiểu bố cục bàn phím.</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">Bố cục bàn phím CB cổ điển.</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">Điều chỉnh để vừa với chiều rộng.</string>
+  <string name="keyboard_layer" tools:machine_translated="true">Lớp %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">Lớp bàn phím số %1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">Chuyển đổi lớp phím</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">Điểm đến của lớp</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">Lớp tiếp theo không trống</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">Lớp đích trống.</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">Dừng lại</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">Lịch sử (ngắn gọn)</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">Chế độ</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">Xuống dòng</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">Nhật ký</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">Chỉnh sửa</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">Sao chép</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">Dán</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">Ngắt.</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Lịch sử tìm kiếm</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">Chuyển đổi giữa các chế độ quyền.</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">Chèn dòng mới</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">Bật/tắt bản ghi</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">Mở trình soạn thảo bên ngoài.</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">Sao chép phản hồi</string>
+  <string name="macro_assign" tools:machine_translated="true">Gán macro.</string>
+  <string name="macro_import" tools:machine_translated="true">Nhập macro</string>
+  <string name="macro_export" tools:machine_translated="true">Xuất macro</string>
+  <string name="macro_none" tools:machine_translated="true">Không có macro nào đã được lưu.</string>
+  <string name="automation_run_macro" tools:machine_translated="true">Chạy macro.</string>
+  <string name="macro_choose" tools:machine_translated="true">Chọn macro</string>
+  <string name="macro_manage" tools:machine_translated="true">Quản lý macro.</string>
+  <string name="keyboard_selected" tools:machine_translated="true">Đã chọn</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">Mặc định của ứng dụng</string>
+  <string name="keyboard_select" tools:machine_translated="true">Sử dụng tính năng này.</string>
+  <string name="keyboard_change" tools:machine_translated="true">Thay đổi bố cục.</string>
+  <string name="keyboard_customize" tools:machine_translated="true">Tùy chỉnh</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">Chỉnh sửa bố cục dùng chung.</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">Sử dụng làm cấu hình mặc định cho ứng dụng.</string>
+  <string name="keyboard_saving" tools:machine_translated="true">Đang lưu…</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">Tùy chỉnh</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">Sử dụng bàn phím được kế thừa.</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">Từ cấu hình “%1$s”</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">Nâng cao</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">Bàn phím: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">Tự động hóa sau khi đăng nhập: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">Hồ sơ: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">Máy chủ: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">Xóa bố cục “%1$s”?</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">Xóa macro “%1$s”?</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">Các máy chủ và cấu hình sử dụng bố cục này sẽ sử dụng bố cục bàn phím mặc định của chúng. Nếu đây là bố cục mặc định của ứng dụng, thì một bố cục khác sẽ trở thành bố cục mặc định.</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">Thao tác này sẽ xóa macro khỏi thư viện dùng chung.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">Khôi phục bố cục ban đầu, bao gồm cả vị trí và kích thước của các phím? Các thay đổi sẽ được áp dụng khi bạn lưu. Các macro đã chia sẻ sẽ được giữ nguyên.</string>
+  <string name="macro_shared_title" tools:machine_translated="true">Chỉnh sửa một macro đã chia sẻ?</string>
+  <string name="macro_shared_message" tools:machine_translated="true">Macro này đã được sử dụng ở nơi khác. Hãy tạo một bản sao riêng hoặc chỉnh sửa bản dùng chung để tất cả người dùng có thể sử dụng.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">Tạo bản sao.</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">Chỉnh sửa macro đã chia sẻ.</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">Lưu các thay đổi vào macro này ở mọi nơi nó được sử dụng, ngay cả khi sau đó bạn xóa bỏ các phần xung quanh trong trình soạn thảo.</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">Xóa hoặc gán lại các mục này trước khi xóa macro.</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">Phiên này</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">Máy chủ này chỉ cho phép đọc dữ liệu. Không thể thay đổi cài đặt bàn phím của máy.</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">Quản lý bố cục</string>
+  <string name="keyboard_done" tools:machine_translated="true">Hoàn tất.</string>
+  <string name="automation_draft_host" tools:machine_translated="true">Các bước này sẽ được lưu cùng với máy chủ mới.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">Lưu máy chủ này và thêm các cấu hình chuyển tiếp cổng trước khi sử dụng các thao tác chuyển tiếp.</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">Hành động</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">Phím</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">Macro (tổ hợp phím)</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">Bộ điều chỉnh</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">Thao tác của ứng dụng</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">Chuyển lớp.</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">Bố cục dùng chung: lưu các bản cập nhật để tất cả mọi người đều có thể sử dụng.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">Bố cục bàn phím này hiện không khả dụng.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">Các hàng và cột bắt đầu từ 0 trong mỗi phần. Mỗi phím chiếm một hàng. Số lượng cột được xác định số lượng ô mà một phím chiếm.</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">Giao diện hiển thị</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">Màu nền</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">Màu chữ</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">Màu viền.</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">Giao diện mặc định</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Độ trong suốt của nền: %1$d%%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">Đã viền đường bao</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">Độ dày đường viền: %1$.1f dp</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">Khôi phục giao diện.</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">Các tùy chọn đang hoạt động và các công cụ chuyển đổi lớp sử dụng hiệu ứng làm nổi bật theo chủ đề.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">Hành vi</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">Lặp lại khi giữ.</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">Sử dụng chế độ lặp mặc định.</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">Cài đặt ứng dụng</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">Bật</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">Tắt</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">Phản hồi xúc giác: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">Các phím đã ghim</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">Các phím có thể cuộn.</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">Kéo các phím đến đây.</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">Cố định ở bên phải</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">Chọn bố cục, tùy chỉnh phím và quản lý các macro.</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">Chỉnh sửa bố cục</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">Chỉnh sửa tiêu đề phím</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">Cài đặt bố cục</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">Có thể cuộn.</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">Điều chỉnh theo chiều rộng.</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">Bàn phím</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">Chạm để chỉnh sửa · Giữ và kéo để di chuyển.</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">Các phím được ghim sẽ luôn nằm ở cuối bàn phím (bên trái trong giao diện từ phải sang trái).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">Kéo một phím vào phần “Phím được ghim” để giữ phím đó ở cuối bàn phím. Kéo phím đó trở lại phần “Phím có thể cuộn” để bỏ ghim.</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">Mở rộng</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">Đã thu gọn.</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">Chỉnh sửa bản sao.</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">Tiếp tục chỉnh sửa.</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">Tạo bố cục cho %1$s. Những người dùng khác vẫn giữ bố cục hiện tại của họ.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">Các thay đổi sẽ được áp dụng khi bạn lưu máy chủ hoặc cấu hình này.</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">Lưu thay đổi của phím này sẽ cập nhật bản nháp bố cục. Lưu bố cục để giữ lại các thay đổi của bạn.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">Vị trí sắp xếp.</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">Hiển thị phím.</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">Đã ghim ở cuối.</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">Thay đổi phím tắt.</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">Chọn chức năng của phím này khi được nhấn.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">Nền, chữ và đường viền.</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · Phản hồi xúc giác: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">Nhấn một lần.</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">Lặp lại khi nhấn và giữ.</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">Hàng, cột và độ rộng của phím</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">Đã được %1$d người sử dụng.</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">Xóa phím này khỏi bản nháp bố cục bàn phím?</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">Áp dụng các thay đổi cho phím?</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">Áp dụng những thay đổi này vào bố cục hoặc hủy bỏ chúng.</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">Áp dụng các thay đổi.</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">Chỉnh sửa bố cục.</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">Phím hoặc phím tắt</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">Xem trước</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">Lựa chọn tùy chỉnh</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">Sử dụng bố cục kế thừa.</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">Các thao tác bố cục</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">Xem trước màu sắc</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">Thêm một phím để kích hoạt lớp này.</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">Các thay đổi sẽ được áp dụng cho cửa sổ lệnh hiện tại khi bạn lưu bố cục.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">Lưu bố cục này sẽ cập nhật cho tất cả người dùng. Bạn có thể chỉnh sửa một bản sao thay vì bản gốc.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">Chỉnh sửa bố cục dùng chung?</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">cấu hình này</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">Các mẫu có sẵn.</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Các cài đặt sẵn có mặc định sẽ không thay đổi. Việc chỉnh sửa sẽ tạo ra một bản sao riêng của bạn.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">Cài đặt sẵn.</string>
 </resources>

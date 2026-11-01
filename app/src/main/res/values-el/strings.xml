@@ -726,4 +726,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">Δεν κατέστη δυνατή η δημιουργία της συντόμευσης. Παρακαλούμε δοκιμάστε ξανά.</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">Η αλυσίδα διαδοχικών διακομιστών-μεταβατικών σημείων περιέχει έναν κύκλο. Ελέγξτε τις ρυθμίσεις των διακομιστών-μεταβατικών σημείων.</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">Η αλυσίδα διαδοχικών διακομιστών (jump hosts) υπερβαίνει το όριο των 32 διακομιστών.</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">Τοπική αντήχηση.</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">Επιλέξτε αν η πληκτρολογημένη είσοδος θα εμφανίζεται τοπικά. Εάν είναι πάντα ενεργοποιημένη, ενδέχεται να προκαλείται διπλή εμφάνιση του κειμένου όταν ο διακομιστής το επαναλαμβάνει.</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">Αυτόματο</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">Πάντα ενεργό.</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">Πάντα απενεργοποιημένο.</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">Έναρξη διαπραγμάτευσης</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">Διαπραγματευτείτε τις δυνατότητες του τερματικού κατά τη σύνδεση ή περιμένετε να τις ζητήσει ο διακομιστής.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">Διαπραγματευτείτε κατά τη σύνδεση.</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">Περιμένετε για την απάντηση του διακομιστή.</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">Μη δυαδικά δεδομένα</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">Εάν ο διακομιστής αρνηθεί τη χρήση δυαδικής μορφής, επιτρέψτε τη χρήση της παλαιότερης μορφής οκταβίτων ή απαιτήστε τη χρήση της μορφής ASCII. Και οι δύο πλευρές πρέπει να χρησιμοποιούν την ίδια κωδικοποίηση.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">Επιτρέψτε τη χρήση παλαιών οκταβίτων χαρακτήρων.</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">Απαιτείται η χρήση κωδικοποίησης ASCII.</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">Επικολλημένα τέλη γραμμής</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">Εκτός της δυαδικής λειτουργίας, μετατρέψτε τα εισαγόμενα σύμβολα νέας γραμμής (LF) σε σύμβολα αλλαγής γραμμής και επιστροφής στοιχείου (CRLF) ή διατηρήστε τα σύμβολα LF. Αυτό ισχύει επίσης για το κείμενο που χρησιμοποιείται στην αυτοματοποίηση.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">Μετατρέψτε το LF σε CRLF.</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">Διατηρήστε το LF.</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">Η εισαγωγή δεν αποστάληκε. Αυτή η σύνδεση απαιτεί τη χρήση κωδικοποίησης ASCII έως ότου ο διακομιστής ενεργοποιήσει τη δυαδική λειτουργία.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">Δεν ήταν δυνατή η αποστολή των δεδομένων εισόδου σε αυτόν τον διακομιστή Telnet.</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">Η σύνδεση απέτυχε.</string>
+  <string name="terminal_connected" tools:machine_translated="true">Συνδέθηκε.</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">Η διαδικασία αυθεντικοποίησης ολοκληρώθηκε με επιτυχία.</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">Δεν είναι δυνατή η έναρξη μιας συνεδρίας SSH.</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">Ο διακομιστής SSH απέρριψε το αίτημα για σύνδεση στο τερματικό.</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">Ο διακομιστής SSH απέρριψε το αίτημα για εκκίνηση του περιβάλλοντος γραμμής εντολών.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">Πληροφορίες σύνδεσης</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">Πρωτόκολλο</string>
+  <string name="connection_info_host" tools:machine_translated="true">Διακομιστής</string>
+  <string name="connection_info_port" tools:machine_translated="true">Θύρα</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">Θύρα SSH</string>
+  <string name="connection_info_username" tools:machine_translated="true">Όνομα χρήστη</string>
+  <string name="connection_info_status" tools:machine_translated="true">Κατάσταση</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">Συνδέομαι.</string>
+  <string name="connection_info_connected" tools:machine_translated="true">Συνδεδεμένο</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">Αποσυνδέθηκε</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">Τοπική διεύθυνση</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">Λεπτομέρειες για την αρχική διαδικασία εγκατάστασης SSH που χρησιμοποιείται για την εκκίνηση του Mosh, και όχι για την τρέχουσα σύνδεση Mosh.</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">Λεπτομέρειες σχετικά με τη διαπραγμάτευση αλγορίθμων μέσω της σύνδεσης SSH.</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">Δεν είναι διαθέσιμες λεπτομέρειες σχετικά με τη διαπραγμάτευση SSH.</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">Ανταλλαγή κλειδιών</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">Κλειδί υποδοχής διακομιστή</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">Κρυπτογράφηση: από τον πελάτη προς τον διακομιστή.</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">Κρυπτογράφηση: από τον διακομιστή προς τον πελάτη</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">Ακεραιότητα: από τον πελάτη προς τον διακομιστή.</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">Ακεραιότητα: από τον διακομιστή προς τον πελάτη.</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">Ενσωματωμένο με κρυπτογράφηση.</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">Ανταλλαγή κλειδιών με ανθεκτικότητα στην κβαντική υπολογιστική</string>
+  <string name="connection_info_yes" tools:machine_translated="true">Ναι</string>
+  <string name="connection_info_no" tools:machine_translated="true">Όχι</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">Ενεργοποίηση προώθησης θυρών</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">Διαμορφωμένη πηγή.</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">Θύρα στην οποία έχει συνδεθεί η υπηρεσία.</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">Δεν έχει συσχετιστεί.</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">Κατάσταση προώθησης</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">Ενεργό</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">Ανενεργό</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">Προορισμός</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">Κρυπτογραφική πολιτική</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">Προεπιλογή</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">Μελλοντικό</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">Παλαιότερη έκδοση</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">Αλγόριθμοι FIPS</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">Προσαρμοσμένο</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">Προτεινόμενοι αλγόριθμοι και μεγέθη κλειδιών.</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">Απαιτείται ανταλλαγή κλειδιών με ανθεκτικότητα στην κβαντική υπολογιστική.</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">Περιορίστε τους αλγορίθμους· δεν έχουν πιστοποιηθεί σύμφωνα με το πρότυπο FIPS.</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">Επιτρέψτε τη χρήση παλαιότερων αλγορίθμων για λόγους συμβατότητας.</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">Επιλέξτε αλγορίθμους και ελάχιστο μέγεθος κλειδιού.</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">Σύγχρονοι αλγόριθμοι και απαιτήσεις για το μέγεθος των κλειδιών, όπως ορίζονται από τη βιβλιοθήκη SSH.</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">Απαιτεί υβριδική ανταλλαγή κλειδιών ανθεκτική στην κβαντική υπολογιστική, κρυπτογραφικά κλειδιά 256 bit και ισχυρότερα κλειδιά RSA.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">Περιορίζει τις επιλογές αλγορίθμων· δεν καθιερώνει διαδικασία επικύρωσης σύμφωνα με το πρότυπο FIPS.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">Επιτρέπει τη χρήση παλαιότερων αλγορίθμων και μικρότερων κλειδιών RSA και DH για λόγους συμβατότητας. Οι σύγχρονοι αλγόριθμοι παραμένουν η προτιμώμενη επιλογή.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">Προσαρμόστε τις προεπιλεγμένες ρυθμίσεις. Οι επιλογές αλγορίθμων και οι ελάχιστες τιμές μεγέθους κλειδιού είναι ανεξάρτητες μεταξύ τους.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">Ελάχιστος αριθμός bit για το RSA.</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">Ελάχιστος αριθμός bit για το DH.</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">Χρήση προεπιλεγμένων ρυθμίσεων (%1$d bits)</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">Αφήστε το κενό για να χρησιμοποιηθεί η προεπιλεγμένη ρύθμιση. Ισχύει ακόμη και για αλγορίθμους που έχουν ενεργοποιηθεί ρητά.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">Εισαγάγετε τουλάχιστον 1024 bit. Το DH δεν πρέπει να υπερβαίνει τα 8192 bit.</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">Αλγόριθμοι ανταλλαγής κλειδιών</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">Αλγόριθμοι κρυπτογράφησης</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">Αλγόριθμοι ελέγχου αυθεντικότητας μηνυμάτων</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">Αλγόριθμοι κλειδιού κεντρικού υπολογιστή</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">Αλγόριθμοι αυθεντικοποίησης με χρήση δημόσιου κλειδιού</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">Λειτουργία επιλογής</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">Χρήση της προεπιλεγμένης ρύθμισης</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">Τροποποίηση προεπιλογών</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">Χρησιμοποιήστε μόνο αυτά.</string>
+  <string name="crypto_apply" tools:machine_translated="true">Εφαρμογή</string>
+  <string name="crypto_expression" tools:machine_translated="true">Έκφραση αλγορίθμου</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">Ονόματα που διαχωρίζονται με κόμμα. Στην ενότητα «Τροποποίηση προεπιλογών», προσθέστε στην αρχή κάθε ονόματος το σύμβολο ^ (πρώτο), στο τέλος το σύμβολο + (προσθήκη) ή αφαιρέστε το όνομα χρησιμοποιώντας το σύμβολο - (αποκλεισμός).</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">Χρησιμοποιήστε μοναδικά ονόματα SSH και μία μόνο επιλογή λειτουργίας. Οι ακριβείς λίστες δεν πρέπει να είναι κενές.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">Ισχύουσα σειρά προτεραιότητας.</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">Δεν είναι διαθέσιμο σε αυτή τη συσκευή· διατηρείται στη διαμόρφωσή σας.</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">Αποκλείστηκε λόγω της ελάχιστης απαιτούμενης τιμής για το μέγεθος του κλειδιού.</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">Ενεργοποιημένο στην προεπιλεγμένη ρύθμιση.</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">Διαθέσιμο· δεν είναι ενεργοποιημένο στις προεπιλεγμένες ρυθμίσεις.</string>
+  <string name="crypto_prepend" tools:machine_translated="true">Προτιμήστε το πρώτο.</string>
+  <string name="crypto_append" tools:machine_translated="true">Προσθήκη</string>
+  <string name="crypto_exclude" tools:machine_translated="true">Αποκλείστε</string>
+  <string name="crypto_inherit" tools:machine_translated="true">Χρησιμοποιήστε τις προεπιλεγμένες ρυθμίσεις.</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">δεν έχει υλοποιηθεί σε αυτή τη βιβλιοθήκη.</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">δεν είναι διαθέσιμο με τις εγκατεστημένες κρυπτογραφικές υπηρεσίες.</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">Η ομάδα DH είναι μικρότερη από το ελάχιστο όριο που έχει οριστεί.</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">το κλειδί ή το πιστοποιητικό δεν πληροί τις απαιτήσεις της πολιτικής RSA ή της πολιτικής πιστοποιητικών.</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">Προειδοποίηση — %1$s: %2$s: Η διαδικασία %3$s παραλείφθηκε (%4$s).</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">Η πολιτική κρυπτογράφησης δεν επιτρέπει τη χρήση κανενός από τα %1$s.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">Η εφαρμογή της πολιτικής κρυπτογράφησης απέτυχε για το %1$s: %2$s</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">Κρυπτογραφική πολιτική — %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">Ελάχιστα μεγέθη κλειδιών</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA: %1$d bit·s·; DH πεπερασμένου πεδίου: %2$d bit·s·</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">Εμφάνιση της αποτελεσματικής σειράς προτεραιότητας.</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">Απόκρυψη της σειράς προτεραιότητας των αποτελεσματικών αλγορίθμων.</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">Αλλαγή κατάστασης για το %1$s.</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ Προτεραιότητα στην πρώτη επιλογή · + Προσθήκη · ✓ Ακολουθήστε την προεπιλογή · − Αποκλεισμός</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">Shift (πλήκτρο μετατόπισης)</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">Πλήκτρο Tab.</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">Εισαγωγή / Πάτησε Enter</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">Πλήκτρο διαγραφής</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">Διαγραφή</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">Εισαγωγή</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">↑</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">↓</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">Αρχική σελίδα</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">Τέλος</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">Προηγούμενη σελίδα</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">Επόμενη σελίδα.</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">Εισαγωγή κειμένου</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">Ενεργοποίηση/απενεργοποίηση λειτουργίας σύνθεσης χαρακτήρων.</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">Πληκτρολόγιο</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">Διάταξη πληκτρολογίου τερματικού</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">Διατάξεις πληκτρολογίου</string>
+  <string name="keyboard_macros" tools:machine_translated="true">Κοινόχρηστες μακροεντολές</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">Λείπει η μακροεντολή.</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">Μη υποστηριζόμενη διαμόρφωση.</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">Η ενέργεια που εκτελέστηκε μέσω του πληκτρολογίου απέτυχε.</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">Μετακινήστε προς τα πάνω.</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">Μετακινηθείτε προς τα κάτω.</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">Μετακινήστε αριστερά.</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">Μετακινήστε προς τα δεξιά.</string>
+  <string name="keyboard_off" tools:machine_translated="true">Απενεργοποιημένο.</string>
+  <string name="keyboard_once" tools:machine_translated="true">Επόμενο πλήκτρο</string>
+  <string name="keyboard_locked" tools:machine_translated="true">Κλειδωμένο</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">Νέα διάταξη.</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">Νέα μακροεντολή.</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(αντιγραφή)</string>
+  <string name="keyboard_back" tools:machine_translated="true">Επιστροφή</string>
+  <string name="keyboard_error" tools:machine_translated="true">Δεν ήταν δυνατή η εφαρμογή της αλλαγής: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">Προσθήκη διάταξης.</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">Προσθήκη μακροεντολής.</string>
+  <string name="keyboard_edit" tools:machine_translated="true">Επεξεργασία</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">Διπλότυπο</string>
+  <string name="keyboard_delete" tools:machine_translated="true">Διαγραφή</string>
+  <string name="keyboard_default" tools:machine_translated="true">Χρησιμοποιήστε ως προεπιλογή για την εφαρμογή.</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">Χρησιμοποιείται σε: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">Επιβεβαιώστε.</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">Εφαρμόζω αυτή την αλλαγή που θα προκαλέσει απώλεια δεδομένων; Οι αποθηκευμένες αλλαγές στη διάταξη ενδέχεται να χαθούν. Οι κοινόχρηστες μακροεντολές διατηρούνται κατά την επαναφορά μιας διάταξης.</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">Ακύρωση</string>
+  <string name="keyboard_name" tools:machine_translated="true">Όνομα</string>
+  <string name="keyboard_width" tools:machine_translated="true">Πλάτος κουμπιού (σε μονάδες dp, για όλα τα κουμπιά)</string>
+  <string name="keyboard_height" tools:machine_translated="true">Ύψος κουμπιού (σε μονάδες dp, για όλα τα κουμπιά)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">Πατήστε ένα πλήκτρο για να το επεξεργαστείτε. Αγγίξτε και κρατήστε πατημένο, και στη συνέχεια σύρετε για να το μετακινήσετε. Σύρετε μεταξύ των τμημάτων για να το «καρφιτσώσετε» ή να το «αποκαρφιτσώσετε». Το μέγεθος του κουμπιού εφαρμόζεται σε κάθε πλήκτρο.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">Σύρετε για να αλλάξετε τη σειρά των κουμπιών.</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">Προσθήκη πλήκτρου</string>
+  <string name="keyboard_visible" tools:machine_translated="true">Ορατό</string>
+  <string name="keyboard_row" tools:machine_translated="true">Γραμμή (ξεκινά από το 0)</string>
+  <string name="keyboard_column" tools:machine_translated="true">Στήλη (αρχίζει από το 0)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">Εύρος γραμμής</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">Εύρος στηλών</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">Αφαίρεση πλήκτρου</string>
+  <string name="keyboard_save" tools:machine_translated="true">Αποθήκευση</string>
+  <string name="keyboard_reset" tools:machine_translated="true">Επαναφορά στις προεπιλεγμένες ρυθμίσεις.</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">Χρησιμοποιήστε τις προεπιλεγμένες ρυθμίσεις της εφαρμογής.</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">Οπτικός επεξεργαστής</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">Επεξεργαστής κειμένου</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">Μία ενέργεια ανά γραμμή: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. Το κείμενο χρησιμοποιεί διαφυγή συμβολοσειράς JSON.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">Βήματα μακροεντολής</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">Προσθήκη κειμένου</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">Προσθήκη πλήκτρου</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">Προσθήκη byte.</string>
+  <string name="keyboard_text" tools:machine_translated="true">Κείμενο προς αποστολή</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">Ακριβείς τιμές byte (δεκαεξαδικές)</string>
+  <string name="keyboard_character" tools:machine_translated="true">Χαρακτήρας</string>
+  <string name="terminal_key_space" tools:machine_translated="true">Διάστημα</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">Πλήκτρο αριθμητικού πληκτρολογίου %1$s</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">Ετικέτα κουμπιού</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">Εσπεριδοειδή</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">Συμπαγείς ρυθμίσεις τερματικού</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">Τελευταίος Σταθμός</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">Ευρύχωρα χειριστήρια τερματικού.</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">Νύχι</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">Βελτιστοποιημένο για το Claude Code.</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">Σύντομο όνομα για την προκαθορισμένη ρύθμιση πληκτρολογίου του Codex CLI.</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">Βελτιστοποιημένο για το περιβάλλον γραμμής εντολών Codex.</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">Επιλέξτε μια προκαθορισμένη διάταξη πληκτρολογίου.</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">Κλασική διάταξη πληκτρολογίου CB</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">Προσαρμογή στο πλάτος</string>
+  <string name="keyboard_layer" tools:machine_translated="true">Επίπεδο %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">Επίπεδο %1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">Αλλαγή επιπέδου</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">Προορισμός στρώματος</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">Επόμενη μη κενή στρώση.</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">Η προοριζόμενη στρώση είναι κενή.</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">Διακοπή</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">Ιστορικό</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">Λειτουργία</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">Νέα γραμμή</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">Αρχείο καταγραφής</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">Επεξεργασία</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">Αντιγραφή</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">Επικόλληση</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">Διακόπτω</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Ιστορικό αναζητήσεων</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">Εναλλαγή μεταξύ των διαθέσιμων τρόπων ρύθμισης δικαιωμάτων.</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">Εισαγωγή νέας γραμμής</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">Ενεργοποίηση/απενεργοποίηση υποτίτλων</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">Άνοιγμα εξωτερικού επεξεργαστή</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">Αντιγραφή απάντησης</string>
+  <string name="macro_assign" tools:machine_translated="true">Αντιστοιχίστε μακροεντολή.</string>
+  <string name="macro_import" tools:machine_translated="true">Εισαγωγή μακροεντολής</string>
+  <string name="macro_export" tools:machine_translated="true">Εξαγωγή μακροεντολής</string>
+  <string name="macro_none" tools:machine_translated="true">Δεν υπάρχουν αποθηκευμένες μακροεντολές.</string>
+  <string name="automation_run_macro" tools:machine_translated="true">Εκτέλεση μακροεντολής</string>
+  <string name="macro_choose" tools:machine_translated="true">Επιλέξτε μακροεντολή.</string>
+  <string name="macro_manage" tools:machine_translated="true">Διαχείριση μακροεντολών</string>
+  <string name="keyboard_selected" tools:machine_translated="true">Επιλέχθηκε</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">Προεπιλεγμένη ρύθμιση εφαρμογής</string>
+  <string name="keyboard_select" tools:machine_translated="true">Χρησιμοποιήστε αυτό.</string>
+  <string name="keyboard_change" tools:machine_translated="true">Αλλαγή διάταξης</string>
+  <string name="keyboard_customize" tools:machine_translated="true">Προσαρμογή</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">Επεξεργασία κοινόχρηστης διάταξης.</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">Χρησιμοποιήστε ως προεπιλογή για την εφαρμογή.</string>
+  <string name="keyboard_saving" tools:machine_translated="true">Αποθήκευση…</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">Προσαρμοσμένο</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">Χρησιμοποιήστε το προεπιλεγμένο πληκτρολόγιο.</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">Από το προφίλ «%1$s»</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">Προηγμένο</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">Πληκτρολόγιο: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">Αυτοματοποίηση μετά τη σύνδεση: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">Προφίλ: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">Υπολογιστής: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">Διαγραφή διάταξης πληκτρολογίου «%1$s»;</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">Διαγραφή της μακροεντολής «%1$s»;</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">Οι υπολογιστές και τα προφίλ που χρησιμοποιούν αυτή τη διάταξη θα χρησιμοποιούν την προεπιλεγμένη διάταξη πληκτρολογίου που έχουν κληρονομήσει. Εάν αυτή είναι η προεπιλεγμένη διάταξη της εφαρμογής, τότε μια άλλη διάταξη θα οριστεί ως προεπιλεγμένη.</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">Αυτό αφαιρεί τη μακροεντολή από την κοινόχρηστη βιβλιοθήκη.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">Επαναφέρετε τις αρχικές διατάξεις και διαστάσεις αυτού του προτύπου; Οι αλλαγές θα εφαρμοστούν όταν αποθηκεύσετε. Οι κοινόχρηστες μακροεντολές θα διατηρηθούν.</string>
+  <string name="macro_shared_title" tools:machine_translated="true">Επεξεργασία κοινόχρηστου μακροεντολής;</string>
+  <string name="macro_shared_message" tools:machine_translated="true">Αυτή η μακροεντολή χρησιμοποιείται και σε άλλα μέρη. Δημιουργήστε ένα ξεχωριστό αντίγραφο ή επεξεργαστείτε την κοινόχρηστη έκδοση για όλους τους χρήστες της.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">Δημιουργήστε ένα αντίγραφο.</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">Επεξεργασία κοινόχρηστης μακροεντολής</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">Η αποθήκευση των ενημερώσεων θα εφαρμοστεί σε αυτό το μακροεντολή σε όλα τα σημεία όπου χρησιμοποιείται, ακόμη και αν αργότερα διαγράψετε το περιβάλλον στο οποίο βρίσκεται.</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">Αφαιρέστε ή επαναπροσδιορίστε αυτές τις χρήσεις πριν διαγράψετε αυτό το μακροεντολή.</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">Αυτή η συνεδρία</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">Αυτός ο υπολογιστής είναι σε λειτουργία μόνο για ανάγνωση. Δεν είναι δυνατή η αλλαγή της διάταξης του πληκτρολογίου του.</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">Διαχείριση διατάξεων</string>
+  <string name="keyboard_done" tools:machine_translated="true">Ολοκληρώθηκε.</string>
+  <string name="automation_draft_host" tools:machine_translated="true">Αυτά τα βήματα θα αποθηκευτούν μαζί με τον νέο κεντρικό υπολογιστή.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">Αποθηκεύστε αυτόν τον διακομιστή και προσθέστε τις απαραίτητες προωθήσεις θυρών πριν χρησιμοποιήσετε τις ενέργειες προώθησης.</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">Ενέργεια</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">Πλήκτρο</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">Μακροεντολή</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">Τροποποιητής</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">Ενέργεια εφαρμογής</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">Αλλαγή επιπέδου</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">Κοινόχρηστη διάταξη: αποθήκευση των ενημερώσεων για όλους τους χρήστες.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">Η συγκεκριμένη διάταξη πληκτρολογίου δεν είναι διαθέσιμη.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">Οι γραμμές και οι στήλες ξεκινούν από το 0 σε κάθε ενότητα. Το ύψος κάθε πλήκτρου αντιστοιχεί σε μία γραμμή. Η παράμετρος «Εύρος στήλης» καθορίζει πόσα κελιά καταλαμβάνει ένα πλήκτρο.</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">Εμφάνιση</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">Χρώμα φόντου</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">Χρώμα κειμένου</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">Χρώμα περιγράμματος</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">Προεπιλεγμένο θέμα</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Διαφάνεια φόντου: %1$d%%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">Με περίγραμμα</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">Πάχος περιγράμματος: %1$.1f dp</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">Επαναφορά εμφάνισης</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">Τα ενεργά στοιχεία τροποποίησης και οι διακόπτες επιπέδων χρησιμοποιούν την επισήμανση του θέματος.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">Συμπεριφορά</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">Επανάληψη όσο είναι πατημένο.</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">Χρησιμοποιήστε την προεπιλεγμένη συμπεριφορά για την επανάληψη.</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">Ρύθμιση εφαρμογής</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">Ενεργοποίηση</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">Απενεργοποίηση</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">Απτική ανάδραση: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">Σταθερά πλήκτρα</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">Πλήκτρα που μπορούν να μετακινηθούν.</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">Σύρετε τα πλήκτρα εδώ.</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">Καρφώστε στα δεξιά.</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">Επιλέξτε διατάξεις, προσαρμόστε τα πλήκτρα και διαχειριστείτε τις μακροεντολές.</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">Επεξεργασία διάταξης</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">Επεξεργασία της ετικέτας του πλήκτρου.</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">Ρυθμίσεις διάταξης</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">Με δυνατότητα κύλισης.</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">Προσαρμογή στο πλάτος.</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">Πληκτρολόγιο</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">Πατήστε για να επεξεργαστείτε · Πατήστε και σύρετε για να μετακινήσετε.</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">Τα πλήκτρα που έχουν οριστεί ως «καρφιτσωμένα» παραμένουν στο τέλος του πληκτρολογίου (στο αριστερό μέρος σε διεπαφές που διαβάζονται από δεξιά προς τα αριστερά).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">Μετακινήστε ένα πλήκτρο στην ενότητα «Σταθερά πλήκτρα» για να το διατηρήσετε στο τέλος της διάταξης του πληκτρολογίου. Μετακινήστε το ξανά στην ενότητα «Πλήκτρα με δυνατότητα κύλισης» για να το αφαιρέσετε από τη λίστα των σταθερών πλήκτρων.</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">Επεκτάθηκε</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">Συρρικνωμένο/α</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">Επεξεργαστείτε ένα αντίγραφο.</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">Συνεχίστε την επεξεργασία.</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">Δημιουργεί μια νέα διάταξη για το %1$s. Οι υπόλοιποι χρήστες διατηρούν την τρέχουσα διάταξή τους.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">Οι αλλαγές θα εφαρμοστούν όταν αποθηκεύσετε αυτόν τον υπολογιστή ή αυτό το προφίλ.</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">Η αποθήκευση αυτής της ρύθμισης ενημερώνει το προσχέδιο της διάταξης. Αποθηκεύστε τη διάταξη για να διατηρήσετε τις αλλαγές σας.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">Τοποθέτηση</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">Εμφάνιση πλήκτρου</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">Στερεωμένο στο τέλος.</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">Αλλαγή συντόμευσης</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">Επιλέξτε τι θα κάνει αυτό το πλήκτρο όταν πατηθεί.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">Φόντο, κείμενο και περίγραμμα.</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · Απτική ανάδραση: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">Πατήστε μία φορά.</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">Επαναλαμβάνει όσο είναι πατημένο.</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">Γραμμή, στήλη και πλάτος πλήκτρου.</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">Χρησιμοποιείται από %1$d</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">Να αφαιρεθεί αυτό το πλήκτρο από το προσχέδιο της διάταξης;</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">Εφαρμογή των αλλαγών στα πλήκτρα;</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">Εφαρμόστε αυτές τις αλλαγές στη διάταξη ή ακυρώστε τις.</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">Εφαρμογή αλλαγών</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">Επεξεργασία διάταξης.</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">Πλήκτρο ή συντόμευση</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">Προεπισκόπηση</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">Προσαρμοσμένη επιλογή</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">Χρησιμοποιήστε την προεπιλεγμένη διάταξη.</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">Ενέργειες διάταξης</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">Προεπισκόπηση χρωμάτων</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">Προσθέστε ένα πλήκτρο για να ενεργοποιήσετε αυτήν την επιλογή.</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">Οι αλλαγές θα εφαρμοστούν σε αυτό το τερματικό όταν αποθηκεύσετε τη διάταξη.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">Αποθηκεύοντας αυτή τη διάταξη, θα ενημερωθούν όλοι οι χρήστες της. Μπορείτε να επεξεργαστείτε ένα αντίγραφο αντί αυτού.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">Επεξεργασία της κοινής διάταξης πληκτρολογίου;</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">αυτή η διαμόρφωση</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">Προεπιλεγμένες ρυθμίσεις</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Οι προεπιλεγμένες ρυθμίσεις που περιλαμβάνονται στο πρόγραμμα παραμένουν αμετάβλητες. Η επεξεργασία δημιουργεί ένα δικό σας αντίγραφο.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">Προεπιλεγμένη ρύθμιση</string>
 </resources>

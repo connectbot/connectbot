@@ -734,4 +734,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">Nepodařilo se vytvořit zástupce. Zkuste to prosím znovu.</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">Řetězec skokových hostitelů obsahuje smyčku. Zkontrolujte nastavení skokových hostitelů.</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">Řetězec přechodových hostitelů překročil limit 32 hostitelů.</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">Lokální zobrazení zadaného textu.</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">Vyberte, zda se zadaný text zobrazuje lokálně. Pokud je tato možnost trvale aktivní, může dojít k duplikaci textu, pokud server odesílá stejný text zpět.</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">Automatický</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">Vždy zapnuto.</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">Vždy vypnuto.</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">Spuštění vyjednávání.</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">Při připojení vyjednejte možnosti terminálu, nebo počkejte, až si je server vyžádá.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">Vyjednávejte při připojování.</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">Čekejte na server.</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">Data, která nejsou v binárním formátu.</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">Pokud server nepodporuje binární režim, povolte starší osmibitové bajty nebo vyžadujte použití formátu ASCII. Obě strany musí používat stejné kódování.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">Povolit používání starších osmibitových znaků.</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">Vyžadovat znakovou sadu ASCII.</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">Vložené konce řádků</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">Mimo binární režim převede vložený znak konce řádku LF na CRLF nebo zachová původní znak LF. Platí také pro automatizovaný text.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">Převeďte znak LF na CRLF.</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">Zachovat znak LF.</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">Vstup nebyl odeslán. Toto připojení vyžaduje použití znakové sady ASCII, dokud server neaktivuje binární režim.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">Nelze odeslat data na tento Telnet server.</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">Připojení se nezdařilo.</string>
+  <string name="terminal_connected" tools:machine_translated="true">Připojeno.</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">Ověření proběhlo úspěšně.</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">Nepodařilo se otevřít SSH relaci.</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">SSH server odmítl požadavek na otevření terminálu.</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">SSH server odmítl požadavek na spuštění shellu.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">Informace o připojení</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">Protokol</string>
+  <string name="connection_info_host" tools:machine_translated="true">Hostitel</string>
+  <string name="connection_info_port" tools:machine_translated="true">Port</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">Port SSH</string>
+  <string name="connection_info_username" tools:machine_translated="true">Uživatelské jméno</string>
+  <string name="connection_info_status" tools:machine_translated="true">Stav</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">Probíhá připojování.</string>
+  <string name="connection_info_connected" tools:machine_translated="true">Připojeno.</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">Připojení ukončeno.</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">Lokální adresa</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">Podrobnosti o počáteční fázi SSH, která se používá pro spuštění Mosh, nikoli o aktivním připojení Mosh.</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">Podrobnosti o vyjednávání algoritmů přes SSH připojení.</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">Informace o proběhlém vyjednávání pro SSH připojení nejsou k dispozici.</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">Výměna klíčů</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">Klíč hostitele serveru</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">Šifrování: od klienta k serveru</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">Šifrování: ze serveru do klienta</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">Integrita: od klienta k serveru</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">Integrita: od serveru k klientovi</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">Integrované se šifrováním.</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">Výměna klíčů s využitím postkvantových algoritmů</string>
+  <string name="connection_info_yes" tools:machine_translated="true">Ano.</string>
+  <string name="connection_info_no" tools:machine_translated="true">Ne.</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">Přesměrování portů</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">Konfigurovaný zdroj.</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">Přiřazený port</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">Není aktivní.</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">Stav přesměrování</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">Aktivní</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">Neaktivní.</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">Cílová adresa</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">Kryptografická zásada</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">Výchozí</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">Budoucí</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">Starší verze</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">Algoritmy FIPS</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">Vlastní</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">Doporučené algoritmy a velikosti klíčů.</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">Vyžadovat výměnu klíčů odolnou vůči kvantovým počítačům.</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">Omezte algoritmy; nejedná se o algoritmy, které prošly certifikací FIPS.</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">Povolit starší algoritmy pro zajištění kompatibility.</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">Vyberte algoritmy a minimální velikost klíčů.</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">Moderní algoritmy a požadavky na velikost klíčů, které jsou podporovány knihovnou SSH.</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">Vyžaduje postkvantový hybridní výměnný klíč, 256bitové šifrovací klíče a silnější klíče RSA.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">Omezuje výběr algoritmů; neprovádí ověření podle standardu FIPS.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">Umožňuje používat starší algoritmy a menší klíče RSA a DH pro zajištění kompatibility. Moderní algoritmy jsou stále preferovány.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">Přizpůsobte výchozí nastavení. Výběr algoritmů a minimální velikost klíče jsou nezávislé parametry.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">Minimální počet bitů RSA</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">Minimální počet bitů pro DH.</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">Použít výchozí nastavení (%1$d bitů)</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">Nechte pole prázdné, pokud chcete použít výchozí nastavení. Platí i pro algoritmy, které jsou explicitně povoleny.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">Zadejte minimálně 1024 bitů. Hodnota DH nesmí překročit 8192 bitů.</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">Algoritmy pro výměnu klíčů</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">Šifrovací algoritmy</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">Algoritmy pro ověřování zpráv</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">Algoritmy pro generování klíčů hostitele</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">Algoritmy pro ověřování pomocí veřejného klíče</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">Režim výběru</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">Použít výchozí nastavení.</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">Upravit výchozí nastavení</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">Používejte pouze tyto.</string>
+  <string name="crypto_apply" tools:machine_translated="true">Použít</string>
+  <string name="crypto_expression" tools:machine_translated="true">Výraz algoritmu</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">Názvy oddělené čárkami. V části Upravit výchozí nastavení přidejte před každý název znak ^ (přidat na začátek), + (přidat na konec) nebo - (vyloučit).</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">Používejte jedinečná jména SSH a jeden režim výběru. Přesné seznamy nesmí být prázdné.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">Pořadí preferencí, které má být uplatněno.</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">Na tomto zařízení není dostupné; zůstává v konfiguraci.</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">Vyloučeno kvůli minimální požadované délce klíče.</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">Povoleno ve výchozím nastavení.</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">Dostupné; není aktivováno v nastavení „Výchozí“.</string>
+  <string name="crypto_prepend" tools:machine_translated="true">Upřednostnit první možnost.</string>
+  <string name="crypto_append" tools:machine_translated="true">Připojit</string>
+  <string name="crypto_exclude" tools:machine_translated="true">Vyloučit</string>
+  <string name="crypto_inherit" tools:machine_translated="true">Použít výchozí nastavení.</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">tato knihovna tuto funkci nepodporuje.</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">nedostupné, protože jsou nainstalovány určité kryptografické moduly.</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">Skupina DH je menší, než je nastavené minimum.</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">klíč nebo certifikát nesplňuje požadavky zásad pro RSA nebo certifikáty.</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">Upozornění – %1$s: %2$s: %3$s bylo přeskočeno (%4$s).</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">Kryptografická zásada neumožňuje použití žádných algoritmů typu %1$s.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">Kryptografická zásada se nepodařila pro %1$s: %2$s</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">Kryptografická zásada – %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">Minimální velikosti klíčů</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA: %1$d bitů; DH s konečným polem: %2$d bitů</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">Zobrazit preferované pořadí algoritmů.</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">Skrýt seřazený seznam preferovaných algoritmů.</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">Změnit stav pro %1$s</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ Upřednostnit první · + Přidat · ✓ Dodržovat výchozí nastavení · − Vyloučit</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">Shift (klávesa)</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">Tabulátor</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">Stiskněte Enter.</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">Klávesa „Backspace“.</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">Smazat</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">Vložit</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">Šipka nahoru.</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">↓</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">Domů</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">Konec</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">Stránka nahoru</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">Stránka dolů</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">Zadávání textu.</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">Přepnout klávesu pro vkládání speciálních znaků.</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">Klávesnice</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">Klávesnice terminálu</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">Rozložení klávesnice</string>
+  <string name="keyboard_macros" tools:machine_translated="true">Sdílená makra</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">Chybí makro.</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">Nepodporovaná konfigurace.</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">Akce s klávesnicí se nezdařila.</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">Posuňte nahoru.</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">Posuňte dolů.</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">Posuňte se doleva.</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">Posuňte vpravo.</string>
+  <string name="keyboard_off" tools:machine_translated="true">Vypnuto.</string>
+  <string name="keyboard_once" tools:machine_translated="true">Další klávesa</string>
+  <string name="keyboard_locked" tools:machine_translated="true">Zamčeno.</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">Nové rozložení.</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">Nová makrodefinice.</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(kopírovat)</string>
+  <string name="keyboard_back" tools:machine_translated="true">Zpět</string>
+  <string name="keyboard_error" tools:machine_translated="true">Nepodařilo se aplikovat změnu: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">Přidat rozložení klávesnice.</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">Přidat makro.</string>
+  <string name="keyboard_edit" tools:machine_translated="true">Upravit</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">Duplikát</string>
+  <string name="keyboard_delete" tools:machine_translated="true">Smazat</string>
+  <string name="keyboard_default" tools:machine_translated="true">Použít jako výchozí nastavení aplikace.</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">Použito v: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">Potvrdit</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">Použít tuto destruktivní změnu? Uložené úpravy rozložení mohou být ztraceny. Sdílená makra zůstanou zachována při obnovení rozložení.</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">Zrušit</string>
+  <string name="keyboard_name" tools:machine_translated="true">Název</string>
+  <string name="keyboard_width" tools:machine_translated="true">Šířka tlačítka (dp, pro všechna tlačítka)</string>
+  <string name="keyboard_height" tools:machine_translated="true">Výška tlačítek (dp, všechna tlačítka)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">Klepnutím na klávesu ji upravíte. Dotkněte se a podržte, poté ji přesuňte tažením. Přesuňte ji mezi sekcemi, abyste ji připevnili nebo odepnuli. Velikost tlačítka se vztahuje na všechny klávesy.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">Přetáhněte pro změnu pořadí tlačítka.</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">Přidat klávesu</string>
+  <string name="keyboard_visible" tools:machine_translated="true">Viditelné</string>
+  <string name="keyboard_row" tools:machine_translated="true">Řádek (počínaje číslem 0)</string>
+  <string name="keyboard_column" tools:machine_translated="true">Sloupec (začíná od 0)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">Rozsah řádků</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">Šířka sloupce.</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">Odstranit klávesu</string>
+  <string name="keyboard_save" tools:machine_translated="true">Uložit</string>
+  <string name="keyboard_reset" tools:machine_translated="true">Obnovit výchozí nastavení.</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">Použít výchozí nastavení aplikace.</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">Grafický editor.</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">Textový editor</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">Jedna akce na jeden řádek: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. Text používá JSON formátování s únikovými sekvencemi.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">Kroky makra</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">Přidejte text.</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">Přidat klávesu</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">Přidejte bajty.</string>
+  <string name="keyboard_text" tools:machine_translated="true">Text, který se má odeslat.</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">Přesné hodnoty bajtů (hexadecimálně)</string>
+  <string name="keyboard_character" tools:machine_translated="true">Znak</string>
+  <string name="terminal_key_space" tools:machine_translated="true">Mezera</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">Klávesa číselné klávesnice %1$s</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">Popis tlačítka</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">Citrus</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">Kompaktní ovládací prvky terminálu</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">Poslední zastávka</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">Prostorné ovládací prvky terminálu</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">Drápek</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">Optimalizováno pro Claude Code.</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">Scribe</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">Optimalizováno pro rozhraní příkazového řádku Codex.</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">Vyberte přednastavené rozložení klávesnice.</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">Klasické rozložení klávesnice CB</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">Přizpůsobit šířce.</string>
+  <string name="keyboard_layer" tools:machine_translated="true">Vrstva %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">Vrstva %1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">Přepínač vrstev</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">Cílová vrstva</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">Další vrstva, která není prázdná.</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">Cílová vrstva je prázdná.</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">Přerušit</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">Historie (zkráceně)</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">Režim</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">Nový řádek</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">Záznam</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">Upravit</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">Kopírovat</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">Vložit</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">Přerušit</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Historie vyhledávání</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">Procházet režimy oprávnění</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">Vložit nový řádek</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">Přepnout zobrazení přepisu.</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">Otevřít externí editor.</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">Zkopírovat odpověď</string>
+  <string name="macro_assign" tools:machine_translated="true">Přiřadit makro</string>
+  <string name="macro_import" tools:machine_translated="true">Importovat makro</string>
+  <string name="macro_export" tools:machine_translated="true">Exportovat makro</string>
+  <string name="macro_none" tools:machine_translated="true">Nenalezeny žádné uložené makra.</string>
+  <string name="automation_run_macro" tools:machine_translated="true">Spustit makro.</string>
+  <string name="macro_choose" tools:machine_translated="true">Vyberte makro.</string>
+  <string name="macro_manage" tools:machine_translated="true">Spravovat makra</string>
+  <string name="keyboard_selected" tools:machine_translated="true">Vybráno</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">Výchozí nastavení aplikace</string>
+  <string name="keyboard_select" tools:machine_translated="true">Použijte toto.</string>
+  <string name="keyboard_change" tools:machine_translated="true">Změnit rozložení.</string>
+  <string name="keyboard_customize" tools:machine_translated="true">Přizpůsobit</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">Upravit sdílené rozložení.</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">Použít jako výchozí nastavení aplikace.</string>
+  <string name="keyboard_saving" tools:machine_translated="true">Ukládám…</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s – %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">Vlastní</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">Použijte výchozí klávesnici.</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s – %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">Z profilu „%1$s“</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">Pokročilé</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">Klávesnice: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">Automatizace po přihlášení: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">Profil: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">Hostitel: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">Smazat rozložení „%1$s“?</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">Smazat makro „%1$s“?</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">Hosty a profily, které používají toto rozložení, budou používat výchozí rozložení klávesnice. Pokud je toto výchozí rozložení aplikace, stane se výchozím rozložení jiné.</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">Tímto se makro odstraní ze sdílené knihovny.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">Obnovit původní rozložení kláves a rozměry? Změny se projeví po uložení. Sdílená makra zůstanou zachována.</string>
+  <string name="macro_shared_title" tools:machine_translated="true">Upravit sdílené makro?</string>
+  <string name="macro_shared_message" tools:machine_translated="true">Tato makro je používána i jinde. Vytvořte samostatnou kopii, nebo upravte sdílenou verzi pro všechny její uživatele.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">Vytvořte kopii.</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">Upravit sdílené makro</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">Aktualizace se uloží globálně pro toto makro, takže se projeví všude, kde je použito, i když později editor, ve kterém se nachází, zavřete.</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">Před odstraněním této makra odstraňte nebo znovu přiřaďte všechny její použití.</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">Toto sezení.</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">Tento host je v režimu pouze pro čtení. Jeho klávesnice nelze měnit.</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">Spravovat rozložení.</string>
+  <string name="keyboard_done" tools:machine_translated="true">Hotovo.</string>
+  <string name="automation_draft_host" tools:machine_translated="true">Tyto kroky budou uloženy společně s novým hostitelem.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">Uložte tuto konfiguraci hostitele a přidejte pravidla pro přesměrování portů ještě před použitím akcí přesměrování.</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">Akce</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">Klávesa</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">Makro</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">Modifikátor</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">Akce aplikace</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">Přepnout vrstvu.</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">Sdílené rozložení: ukládání aktualizací, ke kterým mají přístup všichni uživatelé.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">Toto rozložení klávesnice není k dispozici.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">Řádky a sloupce začínají na pozici 0 v každé sekci. Výška klávesy odpovídá jedné řadě. Parametr „Šířka sloupce“ určuje, kolik buněk klávesa zabírá.</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">Vzhled</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">Barva pozadí</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">Barva textu</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">Barva obrysu</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">Výchozí motiv</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Průhlednost pozadí: %1$d %%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">S obrysem.</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">Šířka obrysu: %1$.1f dp</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">Obnovit vzhled</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">Aktivní modifikátory a přepínače vrstev používají zvýraznění podle aktuálního vzhledu.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">Chování</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">Opakovat, dokud je stisknuté</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">Použijte výchozí nastavení pro opakování.</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">Nastavení aplikace</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">Zapnuto</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">Vypnout</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">Haptická odezva: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">Připnuté klávesy</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">Klávesy, které lze posouvat.</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">Přetáhněte klávesy sem.</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">Připnout vpravo.</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">Vyberte rozložení, upravte klávesy a spravujte makra.</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">Upravit rozložení</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">Upravit název klávesy</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">Nastavení rozložení klávesnice</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">Posuvné</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">Přizpůsobit šířce.</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">Klávesnice</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">Klepnutím upravte · Podržte a táhněte pro přesunutí</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">Připnutá tlačítka zůstávají na konci klávesnice (v rozhraních, kde se text čte zprava doleva, jsou na levé straně).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">Přetáhněte klávesu do sekce „Připnuté klávesy“, aby zůstala na konci klávesnice. Přetáhněte ji zpět do sekce „Klávesy, které lze posouvat“, abyste ji odepnuli.</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">Rozšířeno.</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">Sbaleno.</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">Upravte kopii.</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">Pokračujte v úpravách.</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">Vytvoří rozložení pro %1$s. Ostatní uživatelé si ponechají své stávající rozložení.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">Změny se projeví, až tento hostitel nebo profil uložíte.</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">Uložení této klávesy aktualizuje návrh rozložení. Uložte rozložení, aby se vaše změny zachovaly.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">Umístění</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">Zobrazit klávesu.</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">Připnuto na konci.</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">Změnit zkratku</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">Vyberte, jakou akci má toto tlačítko provést, když je stisknuto.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">Pozadí, text a obrys.</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · Haptická odezva: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">Stiskněte jednou.</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">Opakuje se, dokud je stisknuté.</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">Řádek, sloupec a šířka klávesy.</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">Používá %1$d uživatelů.</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">Odstranit tuto klávesu z návrhu rozložení?</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">Použít změny kláves?</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">Použijte tyto změny na rozložení, nebo je zrušte.</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">Použít změny.</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">Upravit rozložení</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">Klávesa nebo zkratka</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">Náhled</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">Vlastní výběr</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">Použijte zděděné rozložení.</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">Akce pro uspořádání prvků</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">Náhled barev</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">Přidejte klávesu, která spustí tuto vrstvu.</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">Změny se projeví v tomto terminálu po uložení rozložení.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">Uložení tohoto rozložení aktualizuje všechna jeho nastavení u všech uživatelů. Místo toho můžete upravit kopii.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">Upravit sdílené rozložení klávesnice?</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">toto nastavení</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">Přednastavené šablony</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Přednastavené šablony zůstávají nezměněny. Úpravou vytvoříte vlastní kopii.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">Přednastavená hodnota</string>
 </resources>

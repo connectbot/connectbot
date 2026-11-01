@@ -726,4 +726,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">მალსახმობის შექმნა ვერ მოხერხდა. გთხოვთ, სცადეთ ხელახლა.</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">ჯამპ-ჰოსტის სერიაში არის ციკლი. გადაამოწმეთ ჯამპ-ჰოსტის პარამეტრები.</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">შუალედური ჰოსტების ჯაჭვი აჭარბებს 32 ჰოსტის ლიმიტს.</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">ლოკალური გამოსახვა.</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">აირჩიეთ, უნდა თუ არა, რომ ადგილობრივად იხილოთ შეტყუებული ტექსტი. თუ ეს პარამეტრი ყოველთვის ჩართულია, შესაძლოა ტექსტი ორმაგად გამოჩნდეს, როდესაც სერვერი ტექსტს იმეორებს.</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">ავტომატური</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">ყოველთვის ჩართული</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">ყოველთვის გამორთული.</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">მოლაპარაკების დაწყება</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">დაიწყეთ კავშირის დამყარებისას ტერმინალის შესაძლებლობების შესახებ მოლაპარاقات, ან დაელოდეთ, სანამ სერვერი მათ მოითხოვს.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">დაკავშირებისას მოლაპარაკება დაიწყე.</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">დაელოდეთ სერვერს.</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">არაბინარული მონაცემები</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">თუ სერვერი არ იღებს ბინარულ რეჟიმს, დაუშვით ძველი, რვაბიტიანი ბაიტების გამოყენება ან მოითხოვეთ ASCII-ის გამოყენება. ორივე მხარემ უნდა გამოიყენოს ერთი და იგივე კოდირება.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">ნება დართეთ ძველი, რვა ბიტიანი ბაიტების გამოყენებას.</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">აუცილებელია ASCII-ის გამოყენება.</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">გადაკოპირებული ტექსტის სტრიქონის ბოლოები</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">ბინარული რეჟიმის გარეთ, ჩასმული ტექსტის LF (line feed) CRLF-ად (carriage return + line feed) გადაიყვანეთ ან შეინარჩუნეთ LF. ასევე, ეს პოლიტიკა ავტომატიზაციის ტექსტზეც ვრცელდება.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">შეცვალეთ LF, CRLF-ად.</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">შეინარჩუნე LF.</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">მომხმარებლის შეყვანილობა არ გადაიგზავნა. ამ კავშირს ASCII კოდირება სჭირდება, სანამ სერვერი ბინარულ რეჟიმს არ ჩართავს.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">შესაძლებელი არ არის ამ Telnet სერვერზე მონაცემების გადაგზავნა.</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">დაკავშირება ვერ მოხერხდა.</string>
+  <string name="terminal_connected" tools:machine_translated="true">დაკავშირება დაწ establishmentდა.</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">ავტორიზაცია წარმატებით განხორციელდა.</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">SSH სესიის გახსნა ვერ მოხერხდა.</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">SSH სერვერმა ტერმინალის მოთხოვნა უარყო.</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">SSH სერვერმა უარყო შეკვეთა ინტერაქტიული ინტერფეისის გასახსნელად.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">დაკავშირების ინფორმაცია</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">პროტოკოლი</string>
+  <string name="connection_info_host" tools:machine_translated="true">სერვერი</string>
+  <string name="connection_info_port" tools:machine_translated="true">პორტი</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">SSH პორტი</string>
+  <string name="connection_info_username" tools:machine_translated="true">მომხმარებლის სახელი</string>
+  <string name="connection_info_status" tools:machine_translated="true">სტატუსი</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">დაკავშირება ხორციელდება.</string>
+  <string name="connection_info_connected" tools:machine_translated="true">დაკავშირებულია</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">წყვეტილია.</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">ლოკალური მისამართი</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">SSH-ის პირველადი დაყენების დეტალები.</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">SSH კავშირის საშუალებით შეთანხმებული ალგორითმების დეტალური ინფორმაცია</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">SSH კავშირის დადების შესახებ ინფორმაცია არ არის ხელმისაწვდომი.</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">კლუჩების გაცვლა</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">სერვერის მასპინძელი კლუჩი</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">შიფრაცია: კლიენტიდან სერვერამდე</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">შიფრაცია: სერვერიდან კლიენტამდე</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">ინტეგრიტეტი: კლიენტიდან სერვერამდე</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">ინტეგრიტეტი: სერვერიდან კლიენტამდე</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">შიფრთან ინტეგრირებული</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">პოსტ-კვანტური გასაღების გაცვლა</string>
+  <string name="connection_info_yes" tools:machine_translated="true">დიახ</string>
+  <string name="connection_info_no" tools:machine_translated="true">არა</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">პორტის გადაგზავნა</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">დაყენებულია წყარო.</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">დანიშნული პორტი</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">დაკავშირებული არ არის.</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">ფორვარდინგის სტატუსი</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">აქტიური</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">არაქტიური.</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">დანიშნულების ადგილი.</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">კრიპტოგრაფიული პოლიტიკა</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">ნაგულისხმევი</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">მომავალი</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">წინასწარი ვერსია/ძველი ვერსია</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">FIPS ალგორითმები</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">ინდივიდუალური/მომხმარებლის მიერ განსაზღვრული</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">რეკომენდებული ალგორითმები და გასაღების ზომები</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">მოითხოვს პოსტ-კვანტურ კლუჩების გაცვლას.</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">ალგორითმების გამოყენება შეზღუდულია; FIPS-ის სერტიფიკატი არ გააჩნია.</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">მოგვცეთ საშუალება, გამოვიყენოთ ძველი ალგორითმები, რათა უზრუნველყოფილი იყოს თავსებადობა.</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">აირჩიეთ ალგორითმები და მინიმალური გასაღების ზომები.</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">თანამედროვე ალგორითმები და SSH ბიბლიოთეკის მიერ მხარდაჭერილი გასაღების ზომის მოთხოვნები.</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">აუცილებელია პოსტ-კვანტური ჰიბრიდული გასაღების გაცვლა, 256-ბიტიანი დაშიფრვის გასაღები და უფრო ძლიერი RSA გასაღები.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">ალგორითმების არჩევას ზღრუჭავს; FIPS-ის ვალდებულებას არ ადგენს.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">აძლევს ძველი ალგორითმების და უფრო მცირე ზომის RSA და DH გასაღებების გამოყენებას, რაც თავსებადობისთვის არის საჭირო. თანამედროვე ალგორითმები კვლავ სასურველად რჩება.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">დააყენეთ სასურველი პარამეტრები. ალგორითმების არჩევა და მინიმალური გასაღების ზომა ერთმანეთից დამოუკიდებელია.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">მინიმალური RSA ბიტი.</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">მინიმალური DH ბიტი.</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">სტანდარტული პარამეტრების გამოყენება (%1$d ბიტი).</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">დატოვეთ ცარიელი, რათა გამოიყენოთ ნაგულისხმევი პარამეტრები. ვრცელდება ყველა აქტიურ ალგორითმზე, მათ შორის, რომლებიც ცალსახად არის ჩართული.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">შეიყვანეთ მინიმუმ 1024 ბიტი. DH-ის ზომა არ უნდა აღემატებოდეს 8192 ბიტს.</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">კლუჩების გაცვლის ალგორითმები</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">შიფრაციის ალგორითმები</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">მესიჯის ავთენტიკაციის ალგორითმები</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">მასპინძელი კომპიუტერის გასაღების ალგორითმები</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">პუბლიკური გასაღების ავთენტიკაციის ალგორითმები</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">არჩევის რეჟიმი</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">გამოიყენეთ ნაგულისხმევი პარამეტრები.</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">სტანდარტული პარამეტრების შეცვლა</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">გამოიყენეთ მხოლოდ ეს.</string>
+  <string name="crypto_apply" tools:machine_translated="true">გამოიყენეთ</string>
+  <string name="crypto_expression" tools:machine_translated="true">ალგორითმის გამოსახულება</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">მძინვრებით გამოყოფილი სახელები. განყოფაში „სტანდარტული პარამეტრების რედაქტირება“ თითოეული სახელის წინ დაამატეთ სიმბოლო: ^ (პირველი), + (დამატება) ან - (გამორიცხვა).</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">გამოიყენეთ უნიკალური SSH სახელები და ერთი არჩევის რეჟიმი. სიების სია არ უნდა იყოს ცარიელი.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">ეფექტური პრიორიტეტების თანმიმდევრობა</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">ამ მოწყობილობაზე ხელმისაწვდომი არ არის; თქვენს კონფიგურაციაში შეინახულია.</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">გამორიცხულია მინიმალური გასაღების ზომის გამო.</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">აქტივირებულია, ნაგულისხმევი პარამეტრი.</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">ხმისმომცემია; არ არის ჩართული პარამეტრებში „ნაგულისხმევი“.</string>
+  <string name="crypto_prepend" tools:machine_translated="true">პირველ რიგში გამოიყენეთ.</string>
+  <string name="crypto_append" tools:machine_translated="true">დამატება</string>
+  <string name="crypto_exclude" tools:machine_translated="true">ამოიღეთ</string>
+  <string name="crypto_inherit" tools:machine_translated="true">ნაგულისხმევი პარამეტრების გამოყენება</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">ეს ბიბლიოთეკა არ მხარს უჭერს ამ ფუნქციას.</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">მიუწვდომელია დაინსტალირებული კრიპტოპროვაიდერების გამო.</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">DH ჯგუფი ნაკლებია, ვიდრე დაწესებული მინიმალური ზომა.</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">კლუჩი ან სერტიფიკატი არ შეესაბამება RSA-ს ან სერტიფიკატების პოლიტიკას.</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">გაფრთხილება — %1$s: %2$s: %3$s — გამოტოვებულია (%4$s).</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">კრიპტოგრაფიული პოლიტიკა არ იძლევა %1$s-ის გამოყენების შესაძლებლობას.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">კრიპტოგრაფიული პოლიტიკის დაცვა %1$s-ისთვის ვერ მოხერხდა: %2$s</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">კრიპტოგრაფიული პოლიტიკა — %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">მინიმალური გასაღების ზომები</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA: %1$d ბიტი; შეზღუდული ველის DH: %2$d ბიტი</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">ჩვენიხეთ ალგორითმების მიერ არჩეული, ოპტიმალური თანმიმდევრობა.</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">ეფექტური პრეფერენსების სია დაფარული სახით.</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">%1$s-ისთვის სტატუსის შეცვლა</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ პირველობა მიანიჭეთ · + დაამატეთ · ✓ გამოიყენეთ ნაგულისხმევი პარამეტრები · − გამორიცხეთ</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">Shift (ბგერა)</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">ტაბულაცია</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">შეიყვანეთ</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">უკანა სივრცე/წინა სიმბოლო წაშლის კლავიში.</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">წაშლა</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">ჩასმა</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">↑</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">↓</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">მთავარი გვერდი</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">დასასრული</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">გვერდის წინ გადასვლა</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">გვერდის გადახვევა ქვემოთ</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">ტექსტის შეყვანა</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">კომპოზიცია</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">კლავიატურა</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">ტერმინალის კლავიატურა</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">კლავიატურის განლაგებები</string>
+  <string name="keyboard_macros" tools:machine_translated="true">გააზიარებული მაკროები</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">მეკრო არ არის.</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">არ არის მხარდაჭერული კონფიგურაცია.</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">კლავიატურის მოქმედება ჩაიშალა.</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">გადაადგილება ზემოთ</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">შემოიხედეთ ქვემოთ.</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">გადაადგილდით მარცხნივ</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">გადაადგილდით მარჯვნივ</string>
+  <string name="keyboard_off" tools:machine_translated="true">გამორთული</string>
+  <string name="keyboard_once" tools:machine_translated="true">შემდეგი კლავიშა</string>
+  <string name="keyboard_locked" tools:machine_translated="true">დაბლოკილი.</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">ახალი განლაგება</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">ახალი მაკრო.</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(კოპირება)</string>
+  <string name="keyboard_back" tools:machine_translated="true">უკან</string>
+  <string name="keyboard_error" tools:machine_translated="true">შეცდომა: ცვლილების განხორციელება ვერ მოხერხდა: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">დაამატეთ განლაგება</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">დამატეთ მაკრო.</string>
+  <string name="keyboard_edit" tools:machine_translated="true">რედაქტირება</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">დუბლიკატი</string>
+  <string name="keyboard_delete" tools:machine_translated="true">წაშლა</string>
+  <string name="keyboard_default" tools:machine_translated="true">დანიშნეთ აპლიკაციის სტანდარტულ კონფიგურაციად.</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">გამოიყენება: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">დადასტურება</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">დავაპლიროთ ეს მავნე ცვლილება? შესაძლოა, შენახული რედაქტირებები წავა. საერთო მაკროები ინახება, როდესაც განლაგება გადატვირთება.</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">გაუქმება</string>
+  <string name="keyboard_name" tools:machine_translated="true">სახელი</string>
+  <string name="keyboard_width" tools:machine_translated="true">ბტონის სიგანე (dp, ყველა ბტონი)</string>
+  <string name="keyboard_height" tools:machine_translated="true">ბტონის სიმაღლე (dp, ყველა ბტონი)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">დააკლიკეთ კლავიშზე, რათა რედაქტირება გაუკეთოთ. შეხეთ და ხანგრძლივად დააჭირეთ, შემდეგ გადაიტანეთ, რათა გადაადგილოთ. გადაიტანეთ სექციებს შორის, რათა დააფიქსიროთ ან მოხსნათ ფიქსაცია. ღილაკის ზომა გამოიყენება ყველა კლავიშზე.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">გადაიტანეთ, რათა შეცვალოთ ღილაკების თანმიმდევრობა.</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">დამატება</string>
+  <string name="keyboard_visible" tools:machine_translated="true">ხილვადი.</string>
+  <string name="keyboard_row" tools:machine_translated="true">რიგი (0-დან იწყება)</string>
+  <string name="keyboard_column" tools:machine_translated="true">სვეტი (0-დან იწყება)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">სხივების რაოდენობა</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">სვეტის სიგანე</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">კლავიშის წაშლა</string>
+  <string name="keyboard_save" tools:machine_translated="true">შენახვა</string>
+  <string name="keyboard_reset" tools:machine_translated="true">დააბრუნე საწყისი პარამეტრები</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">გამოიყენეთ აპლიკაციის სტანდარტული პარამეტრები.</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">ვიზუალური რედაქტორი</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">ტექსტური რედაქტორი</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">ერთი მოქმედება თითო სტრიქონში: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. ტექსტი იყენებს JSON-ის სტრიქის ფორმატირებას.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">მაკროსის ნაბიჯები</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">დაამატეთ ტექსტი</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">დამატება: კლავიშა</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">დამატეთ ბაიტები</string>
+  <string name="keyboard_text" tools:machine_translated="true">გაგზავნისთვის განკუთვნილი ტექსტი</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">ბაიტების ზუსტი მნიშვნელობები (თექვსმეტობითი)</string>
+  <string name="keyboard_character" tools:machine_translated="true">სიმბოლო</string>
+  <string name="terminal_key_space" tools:machine_translated="true">სივრცე</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">ციფრული კლავიატურის %1$s</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">ბატონის წარწერა</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">ციტრუსი</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">კომპაქტური ტერმინალის მართვის პანელი</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">უკანასკნელი გაჩერება</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">მომავლის ტერმინალის კონტროლები</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">კლავიატურის გამართული და სახალისო სახელწოდება.</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">ოპტიმიზებულია Claude Code-ისთვის.</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">სკრიბი</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">ოპტიმიზებულია Codex CLI-ისთვის.</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">აირჩიეთ კლავიატურის წინასწარ განსაზღვრული პარამეტრი.</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">კლასიკური CB</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">ეკრანზე ყველა სვეტის მოქცევა, გადახვევის გარეშე.</string>
+  <string name="keyboard_layer" tools:machine_translated="true">შრის %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">შრიგ%1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">შრის გადართვა</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">შრის დანიშნულების ადგილი</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">შემდეგი, არცთუ ცარიელი ფენა</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">მიზნობრივი ფენა ცარიელია.</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">შეაჩერე</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">ისტორია</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">რეჟიმი</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">ახალი სტრიქონი</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">დოკუმენტი</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">რედაქტირება</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">კოპირება</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">გააკეთე ჩასწორება</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">შეაჩერე</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">ძიების ისტორია</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">გადართეთ უფლებების რეჟიმები</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">ახალი სტრიქის ჩასმა</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">ტრანსკრიპტის ჩართვა/გამორთვა</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">გარე რედაქტორის გახსნა</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">პასუხის კოპირება</string>
+  <string name="macro_assign" tools:machine_translated="true">დანიშნეთ მაკრო.</string>
+  <string name="macro_import" tools:machine_translated="true">მაკროსის იმპორტირება</string>
+  <string name="macro_export" tools:machine_translated="true">მაკროსის ექსპორტი</string>
+  <string name="macro_none" tools:machine_translated="true">შენახული მაკრო არ არის.</string>
+  <string name="automation_run_macro" tools:machine_translated="true">მაკროს გაშვება</string>
+  <string name="macro_choose" tools:machine_translated="true">აირჩიეთ მაკრო.</string>
+  <string name="macro_manage" tools:machine_translated="true">მაკროსების მართვა</string>
+  <string name="keyboard_selected" tools:machine_translated="true">შერჩეულია</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">აპლიკაციის სტანდარტული პარამეტრები</string>
+  <string name="keyboard_select" tools:machine_translated="true">გამოიყენეთ ეს.</string>
+  <string name="keyboard_change" tools:machine_translated="true">გადააკეთეთ განლაგება</string>
+  <string name="keyboard_customize" tools:machine_translated="true">დააკონფიგურიროთ</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">გააზიარე განლაგების რედაქტირება</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">დანიშნეთ აპლიკაციის სტანდარტულ კონფიგურაციად.</string>
+  <string name="keyboard_saving" tools:machine_translated="true">შენახვა…</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">ინდივიდუალური/მორგებული</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">გამოიყენეთ ნაგულისხმევი კლავიატურა.</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">პროფილებიდან: „%1$s“</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">გაუმჯობესებული</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">კლავიატურა: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">ავტორიზაციის შემდეგ ავტომატიზაცია: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">პროფილი: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">მასპინძელი: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">გაუქმება „%1$s“?</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">შლილი იქნას მაკრო „%1$s“?</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">ამ განლაგებას მომხმარებელი კომპიუტერები და პროფილი გამოიყენებენ, ამიტომ მათ საკუთარი, წინასწარ დაყენებული კლავიატურა ექნებათ. თუ ეს არის აპლიკაციის სტანდარტული განლაგება, მაშინ სხვა განლაგება ხდება სტანდარტული.</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">ეს მოქმედებას აცილებს საერთო ბიბლიოთეკიდან.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">დააბრუნეთ ამ განლაგის თავდაპირველი კლავიშები და ზომები? ცვლილებები ძალაში შევა, როდესაც შეინახებთ. გაზიარებული მაკროები შენარჩუნდება.</string>
+  <string name="macro_shared_title" tools:machine_translated="true">გააზიარე მაკროს რედაქტირება?</string>
+  <string name="macro_shared_message" tools:machine_translated="true">ეს მაკრო სხვაგან გამოიყენება. შექმენით ცალკე ასლი ან შეარჩიეთ საერთო ვერსია, რათა ყველა მომხმარებელს შეეძლოს მისი რედაქტირება.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">კოპირება</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">გააზიარე და რედაქტირე მაკრო.</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">ახლა განახლებების შენახვა ხდება, რის შედეგადაც ეს მაკრო სრულად შენახულია იქ, სადაც ის გამოიყენება, თუნდაც მოგვიანებით წაშალოთ გარშემორტული რედაქტორის ნაწილი.</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">ეს მაკროს წაშლიანად, ჯერ მოაცილეთ ან გადაანაწილეთ მასში გამოყენებული ფუნქციები.</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">ეს სესიա.</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">ეს მოწყობილობა მხოლოდ კითხვის რეჟიმშია. მისი კლავიატურა არ შეიძლება შეცვალოს.</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">გაერთიანებული განლაგებების მართვა</string>
+  <string name="keyboard_done" tools:machine_translated="true">მზადაა.</string>
+  <string name="automation_draft_host" tools:machine_translated="true">ეს ნაბიჯები დაინახავთ ახალ ჰოსტში.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">შენახეთ ეს ჰოსტი და დაამატეთ პორტის გადაგზავნის პარამეტრები, სანამ გადაგზავნის ფუნქციებს გამოიყენებთ.</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">მოქმედება</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">კლავიშა</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">მაკრო</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">მოდიფიკატორი</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">აპლიკაციის მოქმედება</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">შრის გადართვა</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">ერთობლივი განლაგება: განახლებების შენახვა, რათა ყველა მომხმარებელს ჰქონდეს წვდომა.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">ეს კლავიატურის განლაგება ამჟამად არ არის ხელმისაწვდომი.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">რიგები და სვეტები იწყება 0-დან თითოეულ განყოფილებაში. კლავიშები სიმაღლით ერთ რიგს მოიცავს. სვეტის სიგანე განსაზღვრავს, რამდენი უჯრედის სიგანეზეა განლაგებული კლავიში.</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">გარეგნობა</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">ფონის ფერი</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">ტექსტის ფერი</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">კონტურის ფერი</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">სტანდარტული თემა</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">ფონის გამჭვირვალობის დონე: %1$d%%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">გამოსახულია კონტური.</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">გარჩევის სისქე: %1$.1f დპ</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">გარეკნის პარამეტრების აღდგენა</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">აქტიური მოდიფიკატორები და ფენების გადამრთველები იყენებენ თემის აქცენტს.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">ქცევა</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">გაიმეორე, სანამ ღილაკს მიჭერით.</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">გამოიყენეთ სტანდარტული გამეორების რეჟიმი.</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">აპლიკაციის პარამეტრები</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">ჩართულია</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">გამორთული</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">ტაქტილური უკუქავშირი: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">ფირიპინებული კლავიშები</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">გადახვევადი კლავიშები</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">გადაიტანეთ კლავიშები აქ.</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">დააფიქსირეთ მარჯვენა მხარეს.</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">აირჩიეთ განლაგებები, დააკონფიგურირეთ კლავიშები და მართეთ მაკროები.</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">გადააკეთეთ განლაგება</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">რედაქტირება კლავიშის</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">გადასაწყობის პარამეტრები</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">გადახვევადი</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">სიგანეზე მორგება</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">კლავიატურა</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">შეხეთ, რათა რედაქტირება მოახდინოთ · დააჭირეთ და გადაიტანეთ, რათა გადაადგილდეს.</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">ფიქსირებული კლავიშები კლავიატურის ბოლოში რჩება (მარჯვენა-მარცხნივ მიმავალ ინტერფეისებში, ისინი მარცხნივ არის განლაგებული).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">გადაიტანეთ კლავიშა განყოფილებაში „მონიშნული კლავიშები“, რათა ის კლავიატურის ბოლოს რჩეს. გადაიტანეთ ის უკან, განყოფილებაში „გადახვევადი კლავიშები“, რათა მონიშვნა მოიხსნას.</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">გაფართოებული</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">დახურული.</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">რედაქტირება</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">გააგრძელეთ რედაქტირება</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">ქმნის %1$s-ისთვის განკუთვნილ განლაგებას. სხვა მომხმარებლები ინარჩუნებენ თავიანთ არსებულ განლაგებას.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">ცვლილებები ამოქმედდება ამ ჰოსტის ან პროფილის შენახვისას.</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">ამ ღილაკის შენახვა განახლებს განლაგების პროექტს. შეინახეთ განლაგება, რათა შეინარჩუნოთ თქვენი ცვლილებები.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">განლაგება</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">ჩვენიხეთ კლავიშა</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">დასასრულში დამაგრებული</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">მალეჭრილის შეცვლა</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">აირჩიეთ, რა ფუნქცია უნდა შესრულდეს ამ ღილაკის დაჭერისას.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">ფონი, ტექსტი და კონტური.</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · ტაქტილური უკუკავშირი: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">ერთხელ დააწკაპეთ.</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">გაგრძელდება, სანამ ღილაკს მიჭერით.</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">ხაზი, სვეტი და კლავიშის სიგანე.</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">გამოიყენა %1$d-მა</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">შლილი ეს ღილაკი განლაგების ესკიზიდან?</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">დავაწესოთ თუ არა კლავიშების ცვლილებები?</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">გამოიყენეთ ეს ცვლილებები განლაგებაში, ან უარყავით ისინი.</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">ცვლილებების გამოყენება</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">გადააკეთეთ განლაგება</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">ბტონი ან სწრაფი გასაღები.</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">წინასწარი ჩვენება</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">მომხმარებლის მიერ არჩეული</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">გამოიყენეთ მემკვიდრეობითი განლაგება.</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">გადასაწყობის ფუნქციები</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">ფერის წინასწარი ჩვენება</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">დაამატეთ ღილაკი, რომლითაც ამ ფენის ჩართვა მოხდება.</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">ცვლილებები ამ ტერმინალზე ამოქმედდება განლაგების შენახვისას.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">ამ განლაგების შენახვა ავტომატურად განახლებს ყველა მომხმარებელს. შეგიძლიათ, შეცვალოთ მისი ასლი.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">სხვაზიარებული განლაგების რედაქტირება?</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">ეს კონფიგურაცია.</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">ჩაშენებული პარამეტრები</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">წინასწარ დაყენებული პარამეტრები უცვლელად რჩება. რედაქტირების შედეგად შეიქმნება თქვენი საკუთარი ასლი.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">წინასწარ დაყენებული პარამეტრი</string>
 </resources>

@@ -726,4 +726,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">सर्टकट बनाउन सकिएन। कृपया फेरि प्रयास गर्नुहोस्।</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">जम्प होस्ट चेनमा एक चक्र समावेश छ। जम्प होस्ट सेटिङहरू जाँच गर्नुहोस्।</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">जम्प होस्ट शृङ्खलाले ३२ होस्टको अधिकतम सीमा नाघ्यो।</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">स्थानीय प्रतिध्वनि</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">टाइप गरिएको इनपुट स्थानीय रूपमा प्रदर्शन गर्ने वा न गर्ने छनौट गर्नुहोस्। यदि सर्भरले प्रतिध्वनि गर्छ भने, सधैँ सक्रिय राख्नाले पाठ दोहोर्याउन सक्छ।</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">स्वचालित</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">सधैँ सक्रिय</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">सधैँ बन्द गर्नुहोस्।</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">सम्पर्क स्थापित गर्ने प्रक्रिया सुरु गर्नुहोस्।</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">जडान गर्दा टर्मिनलको क्षमताहरू बारे कुरा गर्नुहोस्, वा सर्भरले ती क्षमताहरू अनुरोध नगरेसम्म पर्खनुहोस्।</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">जडान गर्दा कुरा गरौँ।</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">सर्भरको लागि पर्खनुहोस्।</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">न-बाइनरी डेटा</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">यदि सर्भरले बाइनरी मोड स्वीकार गर्दैन भने, पुरानो आठ-बिट बाइट्स प्रयोग गर्न अनुमति दिनुहोस् वा ASCII आवश्यक पर्दछ। दुवै पक्षले एउटै एनकोडिङ प्रयोग गर्नुपर्छ।</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">पुरानो आठ-बिट बाइटहरू प्रयोग गर्न अनुमति दिनुहोस्।</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">एएससीआईआई आवश्यक पर्छ।</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">कपी गरिएका लाइनहरूको अन्त्य।</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">बाइनरी मोड बाहेक, टाँसिएको एलएफलाई सीआरएलएफमा बदल्नुहोस् वा एलएफलाई जसै छ त्यस्तै राख्नुहोस्। यसै गरी स्वचालन पाठमा पनि लागू हुन्छ।</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">एलएफलाई सीआरएलएफमा बदल्नुहोस्।</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">एलएफ सुरक्षित राख्नुहोस्।</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">इनपुट पठाइएन। यो जडानका लागि सर्भरले बाइनरी मोड सक्रिय नगरेसम्म एएससीआईआई आवश्यक पर्छ।</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">यो टेलनेट सर्भरमा इनपुट पठाउन सकिएन।</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">जडान असफल भयो।</string>
+  <string name="terminal_connected" tools:machine_translated="true">जोडिएको।</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">प्रमाणीकरण सफल भयो।</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">एसएसएच सत्र खोल्न असमर्थ।</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">एसएसएच सर्भरले टर्मिनल अनुरोध अस्वीकार गर्‍यो।</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">एसएसएच सर्भरले शेल अनुरोध अस्वीकार गर्‍यो।</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">जडान जानकारी</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">प्रोटोकल</string>
+  <string name="connection_info_host" tools:machine_translated="true">होस्ट</string>
+  <string name="connection_info_port" tools:machine_translated="true">पोर्ट</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">एसएसएच पोर्ट</string>
+  <string name="connection_info_username" tools:machine_translated="true">प्रयोगकर्ता नाम</string>
+  <string name="connection_info_status" tools:machine_translated="true">स्थिति</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">जोडिएको छ</string>
+  <string name="connection_info_connected" tools:machine_translated="true">जुडिएको</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">जडान विच्छेद भयो।</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">स्थानीय ठेगाना</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">SSH बूटस्ट्र्याप विवरणहरू</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">SSH जडानद्वारा सहमति गरिएका एल्गोरिदमका विवरणहरू</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">एसएसएच वार्तालापको विवरण उपलब्ध छैन।</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">कुञ्जी आदानप्रदान</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">सर्भर होस्ट कुञ्जी</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">एन्क्रिप्शन: क्लाइन्टबाट सर्भरसम्म</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">एन्क्रिप्शन: सर्भरबाट क्लाइन्टसम्म</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">अखण्डता: क्लाइन्टदेखि सर्भरसम्म</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">अखण्डता: सर्भरदेखि क्लाइन्टसम्म</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">एन्क्रिप्शनसँग एकीकृत।</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">पोस्ट-क्वांटम कुञ्जी आदानप्रदान</string>
+  <string name="connection_info_yes" tools:machine_translated="true">हो।</string>
+  <string name="connection_info_no" tools:machine_translated="true">होइन।</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">पोर्ट अग्रेषण</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">स्रोत सेट गरियो।</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">निर्दिष्ट गरिएको पोर्ट</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">जोडिएको छैन।</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">पोर्ट फार्वर्डको हालको अवस्था</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">सक्रिय</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">निष्क्रिय</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">गन्तव्य</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">क्रिप्टोग्राफिक नीति</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">पूर्वनिर्धारित</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">भविष्य</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">पुरानो</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">एफआइपीएस एल्गोरिदमहरू</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">अनुकूलित</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">सिफारिस गरिएका एल्गोरिदम र कुञ्जी आकारहरू</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">पोस्ट-क्वांटम कुञ्जी आदानप्रदान आवश्यक पर्दछ।</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">एल्गोरिदमहरूलाई सीमित गर्नुहोस्; यो FIPS द्वारा प्रमाणित गरिएको छैन।</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">पुरानो एल्गोरिदमहरूलाई अनुकूलताको लागि अनुमति दिनुहोस्।</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">एल्गोरिदम र न्यूनतम कुञ्जी आकारहरू छान्नुहोस्।</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">आधुनिक एल्गोरिदम र एसएसएच पुस्तकालयद्वारा राखिएका कुञ्जी-आकारका आवश्यकताहरू।</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">पोस्ट-क्वांटम हाइब्रिड कुञ्जी आदानप्रदान, २५६-बिट एन्क्रिप्शन कुञ्जीहरू, र अझ बलियो आर.एस.ए. कुञ्जीहरू आवश्यक पर्दछ।</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">एल्गोरिदमको छनोटलाई सीमित गर्छ; यसले FIPS प्रमाणीकरण स्थापना गर्दैन।</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">पुरानो एल्गोरिदम र सानो RSA र DH कुञ्जीहरूलाई अनुकूलताको लागि अनुमति दिन्छ। आधुनिक एल्गोरिदमहरू अझै पनि प्राथमिकतामा राखिन्छन्।</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">पूर्वनिर्धारित सेटिङहरू अनुकूल गर्नुहोस्। एल्गोरिदम चयन र न्यूनतम कुञ्जी आकारहरू एकअर्काबाट स्वतन्त्र छन्।</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">न्यूनतम आर.एस.ए. बिट्स</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">न्यूनतम डीएच बिट्स</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">पूर्वनिर्धारित मान प्रयोग गर्नुहोस् (%1$d बिट्स)</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">खाली छाडिदिनुहोस्, यसले पूर्वनिर्धारित सेटिङ प्रयोग गर्नेछ। यो स्पष्ट रूपमा सक्रिय गरिएका एल्गोरिदमहरूमा पनि लागू हुन्छ।</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">न्यूनतम १०२४ बिट्स प्रविष्ट गर्नुहोस्। डीएच ८१९२ बिट्सभन्दा बढी हुनु हुँदैन।</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">कुञ्जी आदानप्रदान गर्ने एल्गोरिदमहरू</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">सिफर एल्गोरिदमहरू</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">सन्देश प्रमाणीकरण एल्गोरिदमहरू</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">होस्ट कुञ्जी एल्गोरिदमहरू</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">सार्वजनिक कुञ्जी प्रमाणीकरण एल्गोरिदमहरू</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">चयन मोड</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">पूर्वनिर्धारित सेटिङ प्रयोग गर्नुहोस्।</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">पूर्वनिर्धारित सेटिङ परिमार्जन गर्नुहोस्।</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">केवल यी प्रयोग गर्नुहोस्।</string>
+  <string name="crypto_apply" tools:machine_translated="true">लागू गर्नुहोस्</string>
+  <string name="crypto_expression" tools:machine_translated="true">एल्गोरिदम अभिव्यक्ति</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">कमाद्वारा छुट्टाइएका नामहरू। ‘परिमार्जन गरिएका पूर्वनिर्धारित’ खण्डमा, प्रत्येक नामको अगाडि ^ (पहिलो), + (जोड), वा - (बाहेक) उपसर्ग राख्नुहोस्।</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">अद्वितीय एसएसएच नामहरू प्रयोग गर्नुहोस् र एउटा मात्र चयन मोड छनौट गर्नुहोस्। सूचीहरू खाली हुनु हुँदैन।</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">प्राथमिकताको क्रम</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">यो उपकरणमा उपलब्ध छैन; तपाईंको सेटिङमा राखिएको छ।</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">न्यूनतम कुञ्जी आकारले अस्वीकार गरियो।</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">पूर्वनिर्धारितमा सक्रिय गरिएको।</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">उपलब्ध; पूर्वनिर्धारित सेटिङमा सक्रिय गरिएको छैन।</string>
+  <string name="crypto_prepend" tools:machine_translated="true">पहिलोलाई प्राथमिकता दिनुहोस्।</string>
+  <string name="crypto_append" tools:machine_translated="true">जोड्नुहोस्</string>
+  <string name="crypto_exclude" tools:machine_translated="true">छोडनुहोस्</string>
+  <string name="crypto_inherit" tools:machine_translated="true">पूर्वनिर्धारित सेटिङ प्रयोग गर्नुहोस्।</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">यो पुस्तकालयले कार्यान्वयन गरेको छैन।</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">स्थापित क्रिप्टो प्रदायकहरूसँग उपलब्ध छैन।</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">डीएच समूह, निर्धारित न्यूनतम समूहभन्दा सानो छ।</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">कुञ्जी वा प्रमाणपत्रले RSA वा प्रमाणपत्र नीतिलाई पूरा गर्दैन।</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">चेतावनी — %1$s: %2$s: %3$s लाई छोडियो (%4$s)।</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">क्रिप्टोग्राफिक नीतिको कारणले कुनै पनि उपयोगी %1$s उपलब्ध छैन।</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">क्रिप्टोग्राफिक नीतिको कार्यान्वयन %1$s का लागि असफल भयो: %2$s</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">क्रिप्टोग्राफिक नीति — %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">न्यूनतम कुञ्जी आकार</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">आरएसए: %1$d बिट्स; सीमित-क्षेत्र डीएच: %2$d बिट्स</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">कार्यान्वयन गरिएको प्राथमिकताको क्रम देखाउनुहोस्।</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">सफलतापूर्वक चयन गरिएका प्राथमिकताहरूको सूचीलाई संक्षिप्त गर्नुहोस्।</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">%1$s का लागि अवस्था परिवर्तन गर्नुहोस्।</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ पहिलोलाई प्राथमिकता दिनुहोस् · + थप्नुहोस् · ✓ पूर्वनिर्धारित सेटिङलाई पछ्याउनुहोस् · − बाहिर निकाल्नुहोस्</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">कtrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">अल्ट</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">शिफ्ट</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">एस्केप</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">ट्याब</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">प्रवेश गर्नुहोस्</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">ब्याकस्पेस</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">मेट गर्नुहोस्</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">प्रविष्ट गर्नुहोस्</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">माथिल्लो तीर कुञ्जी।</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">तल तीर</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">होम</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">अन्तिम।</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">पृष्ठ माथि</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">पृष्ठ तल</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">पाठ प्रविष्ट गर्नुहोस्</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">सृजना गर्नुहोस्</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">कीबोर्ड</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">एफ १</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">एफ २</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">एफ3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">एफ४</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">एफ पाँच</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">एफ छ</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">एफ ७</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">एफ८</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">एफ९</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">एफ१०</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">एफ ११</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">एफ १२</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">टर्मिनल कीबोर्ड</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">कीबोर्ड लेआउटहरू</string>
+  <string name="keyboard_macros" tools:machine_translated="true">साझा गरिएका म्याक्रोहरू</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">म्याक्रो फेला परेको छैन।</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">समर्थन नभएको ढाँचा</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">कीबोर्डको कार्य असफल भयो।</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">माथि सार्नुहोस्।</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">तलतिर सार्नुहोस्।</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">बायाँतिर सार्नुहोस्।</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">दायाँतिर सार्नुहोस्।</string>
+  <string name="keyboard_off" tools:machine_translated="true">बन्द</string>
+  <string name="keyboard_once" tools:machine_translated="true">अर्को कुञ्जी</string>
+  <string name="keyboard_locked" tools:machine_translated="true">लक गरिएको।</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">नयाँ लेआउट</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">नयाँ म्याक्रो</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(प्रतिलिपि गर्नुहोस्)</string>
+  <string name="keyboard_back" tools:machine_translated="true">पछाडि</string>
+  <string name="keyboard_error" tools:machine_translated="true">परिवर्तन लागू गर्न सकिएन: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">लेआउट थप्नुहोस्।</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">म्याक्रो थप्नुहोस्।</string>
+  <string name="keyboard_edit" tools:machine_translated="true">परिवर्तन गर्नुहोस्</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">दोहोरो</string>
+  <string name="keyboard_delete" tools:machine_translated="true">मेट गर्नुहोस्</string>
+  <string name="keyboard_default" tools:machine_translated="true">एपको पूर्वनिर्धारित रूपमा प्रयोग गर्नुहोस्।</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">प्रयोग गरिएको: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">पुष्टि गर्नुहोस्।</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">के यो परिवर्तन लागू गर्ने? बचत गरिएका लेआउट सम्पादनहरू हराउन सक्छन्। लेआउट रिसेट गर्दा साझा म्याक्रोहरू सुरक्षित राखिन्छ।</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">रद्द गर्नुहोस्</string>
+  <string name="keyboard_name" tools:machine_translated="true">नाम</string>
+  <string name="keyboard_width" tools:machine_translated="true">बटनको चौडाइ (डीपी, सबै बटनहरू)</string>
+  <string name="keyboard_height" tools:machine_translated="true">बटनको उचाइ (डीपी, सबै बटनहरू)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">त्यो कुञ्जीलाई सम्पादन गर्न त्यसमा ट्याप गर्नुहोस्। त्यसलाई छोएर होल्ड गर्नुहोस्, अनि सार्न तान्नुहोस्। पिन गर्न वा अनपिन गर्न खण्डहरू बीचमा तान्नुहोस्। बटनको आकार प्रत्येक कुञ्जीमा लागू हुन्छ।</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">बटनको क्रम परिवर्तन गर्न ड्र्याग गर्नुहोस्।</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">कुञ्जी थप्नुहोस्</string>
+  <string name="keyboard_visible" tools:machine_translated="true">देख्न सकिन्छ।</string>
+  <string name="keyboard_row" tools:machine_translated="true">पंक्ति (० बाट सुरु हुन्छ)</string>
+  <string name="keyboard_column" tools:machine_translated="true">स्तम्भ (० बाट सुरु हुन्छ)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">पंक्ति फैलिएको छ</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">स्तम्भको दायरा</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">कुञ्जी हटाउनुहोस्</string>
+  <string name="keyboard_save" tools:machine_translated="true">सेभ गर्नुहोस्</string>
+  <string name="keyboard_reset" tools:machine_translated="true">पूर्वनिर्धारित सेटिङहरू पुनर्स्थापित गर्नुहोस्।</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">एपको पूर्वनिर्धारित सेटिङ प्रयोग गर्नुहोस्।</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">दृश्य सम्पादक</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">पाठ सम्पादक</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">प्रत्येक लाइनमा एक कार्य: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. पाठले JSON स्ट्रिङ एस्केपिङ प्रयोग गर्दछ.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">म्याक्रो चरणहरू</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">पाठ थप्नुहोस्।</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">कुञ्जी थप्नुहोस्।</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">बाइटहरू थप्नुहोस्।</string>
+  <string name="keyboard_text" tools:machine_translated="true">पठाउनका लागि पाठ</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">ठ्याक्कै बाइट्स (हेक्साडेसिमल)</string>
+  <string name="keyboard_character" tools:machine_translated="true">अक्षर</string>
+  <string name="terminal_key_space" tools:machine_translated="true">स्पेस</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">कीप्याड %1$s</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">बटनको नाम</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">साइट्रस</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">सानो टर्मिनल नियन्त्रणहरू</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">अन्तिम गन्तव्य</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">पर्याप्त स्थान भएको टर्मिनल नियन्त्रणहरू</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">नङ</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">क्लाउड कोडका लागि अनुकूलित।</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">स्क्राइब</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">कोडक्स सीएलआईका लागि अनुकूलित।</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">एउटा कीबोर्ड प्रिसेट छान्नुहोस्।</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">क्लासिक सीबी</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">चौडाइ अनुसार मिलाउनुहोस्</string>
+  <string name="keyboard_layer" tools:machine_translated="true">लेयर %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">L%1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">लेयर परिवर्तन गर्नुहोस्</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">लेयर गन्तव्य</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">अर्को खाली नभएको लेयर</string>
+  <string name="keyboard_fn" tools:machine_translated="true">एफएन</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">गन्तव्य लेयर खाली छ।</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">रोक्नुहोस्</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">इतिहास</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">मोड</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">नयाँ लाइन</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">लग</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">सम्पादन गर्नुहोस्</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">प्रतिलिपि गर्नुहोस्</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">पेस्ट गर्नुहोस्</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">अवरोध गर्नुहोस्</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">खोज इतिहास</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">अनुमति मोडहरू बदल्नुहोस्।</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">नयाँ अनुच्छेद थप्नुहोस्</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">प्रतिलिपि खोल्नुहोस्/बन्द गर्नुहोस्</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">बाह्य सम्पादक खोल्नुहोस्।</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">प्रतिलिपि गरिएको प्रतिक्रिया</string>
+  <string name="macro_assign" tools:machine_translated="true">म्याक्रो असाइन गर्नुहोस्।</string>
+  <string name="macro_import" tools:machine_translated="true">साझा गरिएको म्याक्रो आयात गर्नुहोस्।</string>
+  <string name="macro_export" tools:machine_translated="true">म्याक्रो निर्यात गर्नुहोस्</string>
+  <string name="macro_none" tools:machine_translated="true">कुनै पनि बचत गरिएको म्याक्रो छैन।</string>
+  <string name="automation_run_macro" tools:machine_translated="true">म्याक्रो चलाउनुहोस्।</string>
+  <string name="macro_choose" tools:machine_translated="true">म्याक्रो छान्नुहोस्।</string>
+  <string name="macro_manage" tools:machine_translated="true">म्याक्रोहरू व्यवस्थापन गर्नुहोस्।</string>
+  <string name="keyboard_selected" tools:machine_translated="true">चयन गरिएको</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">एपको पूर्वनिर्धारित सेटिङ</string>
+  <string name="keyboard_select" tools:machine_translated="true">यसलाई प्रयोग गर्नुहोस्।</string>
+  <string name="keyboard_change" tools:machine_translated="true">लेआउट परिवर्तन गर्नुहोस्।</string>
+  <string name="keyboard_customize" tools:machine_translated="true">अनुकूलन गर्नुहोस्</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">साझा गरिएको लेआउट सम्पादन गर्नुहोस्।</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">एपको पूर्वनिर्धारित रूपमा प्रयोग गर्नुहोस्।</string>
+  <string name="keyboard_saving" tools:machine_translated="true">सेभ गर्दैछु…</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">अनुकूल</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">अधिग्रहण गरिएको कीबोर्ड प्रयोग गर्नुहोस्।</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">प्रोफाइल \"%1$s\" बाट।</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">उन्नत</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">कीबोर्ड: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">लগ इन गरेपछि स्वचालित कार्य: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">प्रोफाइल: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">होस्ट: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">“%1$s” लेआउट मेट्नुहोस्?</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">“%1$s” नामक म्याक्रो मेट्नुहोस्?</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">यस लेआउट प्रयोग गर्ने होस्टहरू र प्रोफाइलहरूले उनीहरूको पूर्वनिर्धारित कीबोर्ड प्रयोग गर्नेछन्। यदि यो एपको पूर्वनिर्धारित सेटिङ हो भने, अर्को लेआउट पूर्वनिर्धारित हुनेछ।</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">यसले साझा पुस्तकालयबाट म्याक्रो हटाउँछ।</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">के यो लेआउटका मूल कुञ्जीहरू र आयामहरू पुनर्स्थापित गर्ने? परिवर्तनहरू तपाईंले बचत गर्नुभएपछि लागू हुन्छन्। साझा म्याक्रोहरू सुरक्षित राखिन्छ।</string>
+  <string name="macro_shared_title" tools:machine_translated="true">साझा गरिएको म्याक्रोलाई सम्पादन गर्नुहोस्?</string>
+  <string name="macro_shared_message" tools:machine_translated="true">यो म्याक्रो अन्यत्र प्रयोग गरिएको छ। यसको छुट्टै प्रतिलिपि बनाउनुहोस्, वा यसका सबै प्रयोगकर्ताहरूका लागि साझा संस्करणलाई सम्पादन गर्नुहोस्।</string>
+  <string name="macro_make_copy" tools:machine_translated="true">प्रतिलिपि बनाउनुहोस्।</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">साझा गरिएको म्याक्रो सम्पादन गर्नुहोस्।</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">यस म्याक्रोमा गरिएका परिवर्तनहरू जहाँ जहाँ यो प्रयोग गरिएको छ, सबैतिर बचत गरिनेछ, भले पनि पछि तपाईंले यसको आसपासको सम्पादकलाई हटाउनुहोस्।</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">यो म्याक्रो हटाउनु अघि, यसमा प्रयोग गरिएका कुराहरू हटाउनुहोस् वा पुनः नियुक्त गर्नुहोस्।</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">यो सत्र।</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">यो उपकरणमा केवल पढ्न मिल्छ, यसको कीबोर्ड परिवर्तन गर्न मिल्दैन।</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">लेआउटहरू व्यवस्थापन गर्नुहोस्।</string>
+  <string name="keyboard_done" tools:machine_translated="true">भयो।</string>
+  <string name="automation_draft_host" tools:machine_translated="true">यी चरणहरू नयाँ होस्टमा सुरक्षित गरिनेछ।</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">यो होस्टलाई बचत गर्नुहोस् र फर्वार्डिङ कार्यहरू प्रयोग गर्नु अघि पोर्ट फर्वार्डहरू थप्नुहोस्।</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">कार्य</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">मुख्य</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">म्याक्रो</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">परिवर्तक</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">एप क्रियाकलाप</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">लेयर बदल्नुहोस्।</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">साझा लेआउट: यसलाई प्रयोग गर्ने सबैका लागि अद्यावधिकहरू बचत गरिने।</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">यो कीबोर्ड लेआउट अहिले उपलब्ध छैन।</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">प्रत्येक खण्डमा पङ्क्ति र स्तम्भ ० बाट सुरु हुन्छन्। प्रत्येक कुञ्जी एक पङ्क्ति लामो हुन्छ। स्तम्भको दायराले कुञ्जीले कति कक्षहरू ओगट्छ भनेर निर्धारण गर्दछ।</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">रूप प्रदर्शन</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">पृष्ठभूमि रङ</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">पाठको रङ</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">बाह्य रेखाको रङ</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">थीम पूर्वनिर्धारित</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">पृष्ठभूमि पारदर्शीता: %1$d%%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">रेखांकित गरिएको</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">आउटलाइनको मोटाई: %1$.1f डीपी</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">स्वरूप पुनर्स्थापित गर्नुहोस्।</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">सक्रिय मोडिफायरहरू र लेयर स्विचहरूले विषयवस्तुको हाइलाइट प्रयोग गर्छन्।</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">व्यवहार</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">थचाई रहँदा दोहोर्याउनुहोस्।</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">पूर्वनिर्धारित दोहोर्याउने व्यवहार प्रयोग गर्नुहोस्।</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">एप सेटिङ</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">चालू गर्नुहोस्</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">बन्द गर्नुहोस्।</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">स्पर्श प्रतिक्रिया: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">स्थिर गरिएका कुञ्जीहरू</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">स्क्रोल गर्न सकिने कुञ्जीहरू</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">यहाँ कुञ्जीहरू तान्नुहोस्।</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">दायाँतिर पिन गर्नुहोस्।</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">लेआउटहरू छान्नुहोस्, कुञ्जीहरू अनुकूलित गर्नुहोस्, र म्याक्रोहरू व्यवस्थापन गर्नुहोस्।</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">लेआउट सम्पादन गर्नुहोस्</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">कुञ्जी सम्पादन गर्नुहोस्</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">लेआउट सेटिङहरू</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">स्क्रोल गर्न मिल्ने</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">चौडाइ अनुसार मिलाउनुहोस्।</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">कीबोर्ड</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">संशोधन गर्न ट्याप गर्नुहोस् · सार्नको लागि थिचेर राख्नुहोस् र तान्नुहोस्।</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">निर्धारित कुञ्जीहरू कीबोर्डको अन्तिम भागमा रहनेछन् (दायाँबाट बायाँतिरको इन्टरफेसमा)।</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">कुनै कुञ्जीलाई ‘पिन गरिएको कुञ्जी’ खण्डमा तान्नुहोस्, जसले गर्दा त्यो कुञ्जी कीबोर्डको अन्तिम भागमा रहनेछ। त्यसपछि, त्यो कुञ्जीलाई ‘स्क्रोल गर्न मिल्ने कुञ्जी’ खण्डमा फर्काएर तान्नुहोस्, जसले गर्दा त्यो कुञ्जी ‘पिन’ गरिएको अवस्थाबाट हट्नेछ।</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">बढाइएको</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">संकुचित गरिएको।</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">प्रतिलिपि सम्पादन गर्नुहोस्।</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">सम्पादन जारी राख्नुहोस्।</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">यो %1$s का लागि एउटा नयाँ लेआउट बनाउँछ। अन्य प्रयोगकर्ताहरूले उनीहरूको पुरानो लेआउट नै प्रयोग गर्न सक्छन्।</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">परिवर्तनहरू लागू हुन्छन् जब तपाईं यो होस्ट वा प्रोफाइल बचत गर्नुहुन्छ।</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">यो कुञ्जीलाई बचत गर्नाले लेआउटको मसौदा अद्यावधिक हुन्छ। तपाईंको परिवर्तनहरू सुरक्षित राख्न लेआउट बचत गर्नुहोस्।</string>
+  <string name="keyboard_placement" tools:machine_translated="true">स्थान निर्धारण</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">कुञ्जी देखाउनुहोस्।</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">अन्तिममा पिन गरिएको।</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">शटकट परिवर्तन गर्नुहोस्।</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">यो कुञ्जी थिच्दा के हुन्छ, छनौट गर्नुहोस्।</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">पृष्ठभूमि, पाठ, र रूपरेखा</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · ह्याप्टिक्स: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">एक पटक थिच्नुहोस्।</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">थचाईरहँदा दोहोरिन्छ।</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">पंक्ति, स्तम्भ, र कुञ्जीको चौडाइ</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">%1$d जनाले प्रयोग गरेका छन्।</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">के यो कुञ्जीलाई लेआउटको मसौदाबाट हटाउने?</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">कुञ्जीहरूमा परिवर्तन लागू गर्ने?</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">यी परिवर्तनहरू लेआउटमा लागू गर्नुहोस्, वा त्याग्नुहोस्।</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">परिवर्तनहरू लागू गर्नुहोस्।</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">लेआउट सम्पादन गर्नुहोस्।</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">कुञ्जी वा सर्टकट</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">पूर्वावलोकन गर्नुहोस्।</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">आफ्नो अनुसार छनोट गर्नुहोस्</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">अधिग्रहण गरिएको लेआउट प्रयोग गर्नुहोस्।</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">लेआउट कार्यहरू</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">रङको पूर्वावलोकन</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">यो लेयर सुरु गर्न एउटा कुञ्जी थप्नुहोस्।</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">तपाईँ लेआउट बचत गर्नुहुन्छ, त्यसपछि यस टर्मिनलमा परिवर्तनहरू लागू हुन्छन्।</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">यो लेआउट बचत गर्नाले यसका सबै प्रयोगकर्ताहरूमा परिवर्तनहरू लागू हुन्छ। तपाईंले यसको प्रतिलिपि संपादन गर्न सक्नुहुन्छ।</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">साझा गरिएको लेआउट परिवर्तन गर्नुहुन्छ?</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">यो संरचना</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">अन्तःनिर्मित पूर्वनिर्धारित सेटिङहरू</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">अन्तःनिर्मित पूर्वनिर्धारित सेटिङहरू अपरिवर्तित रहनेछन्। संशोधन गर्नाले तपाईंको आफ्नै प्रतिलिपि तयार हुन्छ।</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">अन्तःनिहित पूर्वनिर्धारित</string>
 </resources>

@@ -742,4 +742,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">لم يتم إنشاء الاختصار. يرجى المحاولة مرة أخرى.</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">يحتوي تسلسل الخوادم الوسيطة على حلقة. يرجى التحقق من إعدادات الخوادم الوسيطة.</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">تجاوزت سلسلة الخوادم الوسيطة الحد الأقصى المسموح به، وهو 32 خادمًا.</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">عرض الإدخال محليًا.</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">اختر ما إذا كان سيتم عرض النص الذي يتم إدخاله محليًا أم لا. قد يؤدي تفعيل هذا الخيار دائمًا إلى تكرار النص عندما يقوم الخادم بإعادة إرساله.</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">تلقائي</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">تشغيل دائم</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">دائمًا في وضع الإيقاف.</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">بدء التفاوض.</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">تفاوض بشأن إمكانيات الجهاز الطرفي عند الاتصال، أو انتظر حتى يطلب الخادم ذلك.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">التفاوض عند الاتصال.</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">انتظر حتى يستجيب الخادم.</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">بيانات غير ثنائية</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">إذا رفض الخادم وضع البيانات الثنائية، فقم بالسماح باستخدام ترميز ثماني بت أو اطلب استخدام ترميز ASCII. يجب أن يستخدم كلا الطرفين نفس الترميز.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">السماح باستخدام البايتات ذات الثمانية بت القديمة.</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">يجب استخدام ترميز ASCII.</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">نهايات الأسطر المنسوخة</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">خارج وضع الملف الثنائي، قم بتحويل أحرف السطر الجديد المنسوخة (LF) إلى أحرف إرجاع السطر وتغيير السطر (CRLF) أو حافظ على أحرف السطر الجديد (LF). وينطبق هذا أيضًا على النصوص المستخدمة في الأتمتة.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">حوّل الأحرف \"LF\" إلى \"CRLF\".</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">احتفظ بـ LF.</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">لم يتم إرسال البيانات المدخلة. يتطلب هذا الاتصال استخدام ترميز ASCII حتى يقوم الخادم بتفعيل وضع البيانات الثنائية.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">لم يتمكن النظام من إرسال البيانات إلى خادم Telnet هذا.</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">فشل الاتصال.</string>
+  <string name="terminal_connected" tools:machine_translated="true">تم الاتصال.</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">تم التحقق بنجاح.</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">تعذر فتح جلسة SSH.</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">رفض خادم SSH طلب الوصول إلى الطرفية.</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">رفض خادم SSH طلب فتح نافذة الأوامر.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">معلومات الاتصال</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">البروتوكول</string>
+  <string name="connection_info_host" tools:machine_translated="true">المضيف</string>
+  <string name="connection_info_port" tools:machine_translated="true">المنفذ</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">منفذ SSH</string>
+  <string name="connection_info_username" tools:machine_translated="true">اسم المستخدم</string>
+  <string name="connection_info_status" tools:machine_translated="true">الحالة</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">جارٍ الاتصال</string>
+  <string name="connection_info_connected" tools:machine_translated="true">متصل</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">تم قطع الاتصال.</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">العنوان المحلي</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">تفاصيل الإعداد الأولي لـ SSH</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">تفاصيل التفاوض عبر بروتوكول SSH</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">لا تتوفر تفاصيل حول عملية التفاوض عبر بروتوكول SSH.</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">تبادل المفاتيح</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">مفتاح مضيف الخادم</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">التشفير: من العميل إلى الخادم.</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">التشفير: من الخادم إلى العميل</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">النزاهة: من العميل إلى الخادم.</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">النزاهة: من الخادم إلى العميل.</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">مدمج مع التشفير.</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">تبادل المفاتيح المقاوم للحوسبة الكمومية</string>
+  <string name="connection_info_yes" tools:machine_translated="true">نعم</string>
+  <string name="connection_info_no" tools:machine_translated="true">لا</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">إعادة توجيه المنافذ</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">تم تكوين المصدر.</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">المنفذ المخصص</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">لم يتم ربطه.</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">حالة إعادة التوجيه</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">نشط</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">غير نشط</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">عنوان الوجهة</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">سياسة التشفير.</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">افتراضي</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">مستقبلاً</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">قديم</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">خوارزميات معيار FIPS.</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">مخصّص</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">الخوارزميات والأحجام المفتاحية الموصى بها</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">تتطلب عملية تبادل المفاتيح ما بعد الحوسبة الكمومية.</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">تقييد الخوارزميات؛ ليست معتمدة وفقًا لمعيار FIPS.</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">السماح باستخدام الخوارزميات القديمة لتحقيق التوافق.</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">اختر الخوارزميات وأقل أحجام للمفاتيح.</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">الخوارزميات الحديثة ومتطلبات حجم المفتاح التي تدعمها مكتبة SSH.</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">يتطلب استخدام تبادل مفاتيح هجين مقاوم للحوسبة الكمومية، ومفاتيح تشفير بحجم 256 بت، ومفاتيح RSA أكثر قوة.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">يُقيّد الخيارات المتاحة للخوارزميات؛ ولا يُنشئ عملية التحقق من معايير FIPS.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">يسمح باستخدام الخوارزميات القديمة ومفاتيح RSA و DH الأصغر حجمًا لتحقيق التوافق. تظل الخوارزميات الحديثة هي الخيار المفضل.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">تخصيص الإعدادات الافتراضية. يمكن تحديد خيارات الخوارزميات وأقل حجم للمفتاح بشكل مستقل.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">الحد الأدنى لعدد البتات في خوارزمية RSA.</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">الحد الأدنى لعدد بتات DH.</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">استخدام الإعدادات الافتراضية (%1$d بت)</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">اتركه فارغًا لتطبيق الإعداد الافتراضي. ينطبق هذا حتى على الخوارزميات التي تم تمكينها بشكل صريح.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">أدخل 1024 بت على الأقل. يجب ألا يتجاوز طول مفتاح \"دي إتش\" 8192 بت.</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">خوارزميات تبادل المفاتيح</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">خوارزميات التشفير</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">خوارزميات التحقق من صحة الرسائل.</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">خوارزميات مفتاح المضيف</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">خوارزميات المصادقة باستخدام المفتاح العام.</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">وضع التحديد</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">استخدام الإعدادات الافتراضية</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">تعديل الإعدادات الافتراضية</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">استخدم هذه العناصر فقط.</string>
+  <string name="crypto_apply" tools:machine_translated="true">تطبيق</string>
+  <string name="crypto_expression" tools:machine_translated="true">تعبير الخوارزمية</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">أسماء مفصولة بفواصل. في \"تعديل الإعدادات الافتراضية\"، أضف بادئة إلى كل اسم باستخدام الرمز ^ (في البداية)، أو + (في النهاية)، أو - (للاستبعاد).</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">استخدم أسماء SSH فريدة وحدد وضع اختيار واحد. يجب ألا تكون القوائم الدقيقة فارغة.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">ترتيب الأولويات الفعال</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">غير متوفر على هذا الجهاز؛ تم الاحتفاظ به في إعداداتك.</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">تم استبعادها بسبب الحد الأدنى لحجم المفتاح.</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">مُفعَّل بشكل افتراضي.</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">متاح؛ ولكنه غير مُفعَّل في الإعدادات الافتراضية.</string>
+  <string name="crypto_prepend" tools:machine_translated="true">أعطِ الأولوية للأول.</string>
+  <string name="crypto_append" tools:machine_translated="true">أضف</string>
+  <string name="crypto_exclude" tools:machine_translated="true">استبعاد</string>
+  <string name="crypto_inherit" tools:machine_translated="true">اتّبِع الإعدادات الافتراضية.</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">لم يتم تنفيذه بواسطة هذه المكتبة.</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">غير متوفر مع موفري التشفير المثبتين.</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">حجم مجموعة DH أصغر من الحد الأدنى المحدد.</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">المفتاح أو الشهادة لا يفي بمتطلبات سياسة RSA أو سياسة الشهادة.</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">تحذير — %1$s: %2$s: تم تخطي %3$s (%4$s).</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">لا تتيح سياسة التشفير استخدام أي من خوارزميات %1$s.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">فشلت سياسة التشفير الخاصة بـ %1$s: %2$s</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">سياسة التشفير — %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">أقل أحجام للمفاتيح</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA: %1$d بت؛ DH ذو الحقل المحدود: %2$d بت</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">عرض ترتيب التفضيلات الفعال.</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">إخفاء ترتيب التفضيلات الفعال.</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">تغيير الحالة لـ %1$s</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ تفضيل الخيار الأول · + إضافة · ✓ اتباع الإعدادات الافتراضية · − استبعاد</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">مفتاح Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">مفتاح Alt.</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">مفتاح الإزاحة</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">مفتاح الهروب</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">مفتاح الجدولة</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">أدخل</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">مفتاح \"حذف للخلف\"</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">حذف</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">إدراج</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">سهم لأعلى</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">↓</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">الصفحة الرئيسية</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">نهاية</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">صفحة للأعلى</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">صفحة لأسفل</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">إدخال النص</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">تكوين</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">لوحة المفاتيح</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">مفتاح F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">مفتاح F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">مفتاح F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">مفتاح F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">مفتاح F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">مفتاح F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">مفتاح F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">مفتاح F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">مفتاح F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">مفتاح F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">مفتاح F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">مفتاح F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">لوحة مفاتيح الجهاز الطرفي</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">تخطيطات لوحة المفاتيح</string>
+  <string name="keyboard_macros" tools:machine_translated="true">الماكرو المشترك</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">المَكْرو غير موجود.</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">التكوين غير مدعوم.</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">فشل تنفيذ الإجراء المطلوب على لوحة المفاتيح.</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">انتقل للأعلى.</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">انتقل للأسفل.</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">تحرّك إلى اليسار.</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">انتقل إلى اليمين.</string>
+  <string name="keyboard_off" tools:machine_translated="true">إيقاف التشغيل.</string>
+  <string name="keyboard_once" tools:machine_translated="true">المفتاح التالي</string>
+  <string name="keyboard_locked" tools:machine_translated="true">مقفل</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">تخطيط جديد</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">ماكرو جديد</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(نسخ)</string>
+  <string name="keyboard_back" tools:machine_translated="true">رجوع</string>
+  <string name="keyboard_error" tools:machine_translated="true">لم يتم تطبيق التغيير: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">إضافة تخطيط.</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">إضافة ماكرو</string>
+  <string name="keyboard_edit" tools:machine_translated="true">تعديل</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">مكرر</string>
+  <string name="keyboard_delete" tools:machine_translated="true">حذف</string>
+  <string name="keyboard_default" tools:machine_translated="true">استخدم كإعداد افتراضي للتطبيق.</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">يُستخدم في: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">تأكيد</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">هل تريد تطبيق هذا التغيير المدمر؟ قد تفقد التعديلات التي أجريتها على التخطيط المحفوظ. سيتم الاحتفاظ بالماكرو المشتركة عند إعادة تعيين التخطيط.</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">إلغاء</string>
+  <string name="keyboard_name" tools:machine_translated="true">الاسم</string>
+  <string name="keyboard_width" tools:machine_translated="true">عرض الزر (بوحدة dp، لجميع الأزرار)</string>
+  <string name="keyboard_height" tools:machine_translated="true">ارتفاع الزر (بوحدة \"دي بي\"، لجميع الأزرار)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">اضغط على مفتاح لتعديله. المس المفتاح باستمرار، ثم اسحبه لتحريكه. اسحب بين الأقسام لتثبيت أو إلغاء تثبيت المفتاح. ينطبق حجم الزر على كل مفتاح.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">اسحب لإعادة ترتيب الزر.</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">إضافة مفتاح</string>
+  <string name="keyboard_visible" tools:machine_translated="true">مرئي</string>
+  <string name="keyboard_row" tools:machine_translated="true">الصف (يبدأ من 0)</string>
+  <string name="keyboard_column" tools:machine_translated="true">عمود (يبدأ من 0)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">عدد الصفوف</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">عدد الأعمدة</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">إزالة المفتاح</string>
+  <string name="keyboard_save" tools:machine_translated="true">حفظ</string>
+  <string name="keyboard_reset" tools:machine_translated="true">استعادة الإعدادات الافتراضية</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">استخدم الإعدادات الافتراضية للتطبيق.</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">محرر مرئي</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">محرر النصوص</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">عملية واحدة في كل سطر: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. يستخدم النص طريقة \"JSON string escaping\" لتنسيق السلاسل النصية.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">خطوات الماكرو</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">أضف نصًا</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">إضافة مفتاح</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">أضف بايتات.</string>
+  <string name="keyboard_text" tools:machine_translated="true">النص المراد إرساله</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">قيم البايتات الدقيقة (بالنظام الست عشري)</string>
+  <string name="keyboard_character" tools:machine_translated="true">حرف</string>
+  <string name="terminal_key_space" tools:machine_translated="true">مسافة</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">مفتاح لوحة الأرقام %1$s</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">تسمية الزر</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">حمضيات</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">عناصر تحكم مدمجة في الجهاز</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">المحطة الأخيرة</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">عناصر تحكم واسعة في واجهة المستخدم</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">مخلب</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">محسّن للاستخدام مع Claude Code.</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">سكرايب</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">محسّن للاستخدام مع واجهة سطر الأوامر Codex.</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">اختر تصميمًا مسبقًا للوحة المفاتيح.</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">تخطيط لوحة مفاتيح ConnectBot الكلاسيكي</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">تعديل العرض ليناسب الشاشة</string>
+  <string name="keyboard_layer" tools:machine_translated="true">الطبقة رقم %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">الطبقة %1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">تبديل الطبقة</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">وجهة الطبقة</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">الطبقة التالية غير الفارغة.</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">الطبقة الهدف فارغة.</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">إيقاف</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">تاريخ مختصر</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">الوضع</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">سطر جديد (مختصر)</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">سجل</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">تحرير</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">نسخ</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">لصق</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">مقاطعة</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">سجل البحث</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">تبديل أوضاع الأذونات</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">إدراج سطر جديد</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">تبديل عرض النص المكتوب</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">افتح المحرر الخارجي.</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">نسخ الرد</string>
+  <string name="macro_assign" tools:machine_translated="true">تعيين ماكرو</string>
+  <string name="macro_import" tools:machine_translated="true">استيراد ماكرو</string>
+  <string name="macro_export" tools:machine_translated="true">تصدير الماكرو</string>
+  <string name="macro_none" tools:machine_translated="true">لا توجد وحدات ماكرو محفوظة.</string>
+  <string name="automation_run_macro" tools:machine_translated="true">تشغيل الماكرو</string>
+  <string name="macro_choose" tools:machine_translated="true">اختر الماكرو</string>
+  <string name="macro_manage" tools:machine_translated="true">إدارة وحدات الماكرو</string>
+  <string name="keyboard_selected" tools:machine_translated="true">محدد</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">الإعدادات الافتراضية للتطبيق</string>
+  <string name="keyboard_select" tools:machine_translated="true">استخدم هذا.</string>
+  <string name="keyboard_change" tools:machine_translated="true">تغيير التخطيط</string>
+  <string name="keyboard_customize" tools:machine_translated="true">تخصيص</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">تحرير التخطيط المشترك</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">استخدم كإعداد افتراضي للتطبيق.</string>
+  <string name="keyboard_saving" tools:machine_translated="true">جارٍ الحفظ...</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">مخصص</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">استخدم لوحة المفاتيح الافتراضية.</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">من الملف الشخصي \"%1$s\"</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">متقدم</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">لوحة المفاتيح: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">أتمتة العمليات بعد تسجيل الدخول: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">الملف الشخصي: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">المضيف: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">هل تريد حذف تخطيط لوحة المفاتيح \"%1$s\"؟</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">هل تريد حذف الماكرو المسمى \"%1$s\"؟</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">ستستخدم الأجهزة وملفات التعريف التي تستخدم هذا التخطيط لوحة المفاتيح الافتراضية الخاصة بها. إذا كان هذا هو التخطيط الافتراضي للتطبيق، فسيصبح تخطيط آخر هو التخطيط الافتراضي.</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">يؤدي هذا إلى إزالة الماكرو من المكتبة المشتركة.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">هل تريد استعادة تخطيط المفاتيح والأبعاد الأصلية لهذا التصميم؟ سيتم تطبيق التغييرات عند الحفظ. سيتم الاحتفاظ بالوحدات الماكرو المشتركة.</string>
+  <string name="macro_shared_title" tools:machine_translated="true">هل تريد تعديل الماكرو المشترك؟</string>
+  <string name="macro_shared_message" tools:machine_translated="true">يتم استخدام هذا الماكرو في أماكن أخرى. قم بإنشاء نسخة منفصلة، أو قم بتحرير النسخة المشتركة لتناسب جميع المستخدمين.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">انسخ</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">تحرير الماكرو المشترك</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">حفظ التحديثات سيؤدي إلى تطبيق هذا الماكرو في كل مكان يُستخدم فيه، حتى إذا قررت لاحقًا حذف المحرر الذي يحيط به.</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">احذف أو أعد تعيين هذه الاستخدامات قبل حذف هذا الماكرو.</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">هذه الجلسة</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">هذا الجهاز في وضع القراءة فقط. لا يمكن تغيير إعدادات لوحة المفاتيح الخاصة به.</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">إدارة التخطيطات</string>
+  <string name="keyboard_done" tools:machine_translated="true">تمّ.</string>
+  <string name="automation_draft_host" tools:machine_translated="true">سيتم حفظ هذه الخطوات مع المضيف الجديد.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">احفظ هذا الجهاز وأضف عمليات إعادة توجيه المنافذ قبل استخدام إجراءات إعادة التوجيه.</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">إجراء</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">مفتاح</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">ماكرو</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">مُعدِّل</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">إجراء التطبيق</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">تبديل الطبقة</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">تخطيط مشترك: حفظ التحديثات ليستفيد منها جميع المستخدمين.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">تخطيط لوحة المفاتيح هذا غير متاح.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">تبدأ الصفوف والأعمدة بالرقم 0 في كل قسم. يبلغ ارتفاع كل مفتاح صفًا واحدًا. يحدد \"نطاق العمود\" عدد الخلايا التي يشغلها المفتاح.</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">المظهر</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">لون الخلفية</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">لون النص</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">لون الحدود الخارجية</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">النمط الافتراضي</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">شفافية الخلفية: %1$d%%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">مُحدَّد</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">سمك حافة المفتاح: %1$.1f وحدة قياس مستقلة عن الكثافة.</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">إعادة تعيين المظهر</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">تستخدم المُعدِّلات النشطة ومفاتيح تغيير الطبقة تظليلًا خاصًا يتماشى مع تصميم البرنامج.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">السلوك</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">كرّر أثناء الضغط.</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">استخدم الإعداد الافتراضي للتكرار.</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">إعدادات التطبيق</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">تشغيل</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">إيقاف التشغيل</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">تأثير اللمس: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">المفاتيح المثبتة</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">المفاتيح القابلة للتمرير</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">اسحب المفاتيح إلى هنا.</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">تثبيت على اليمين.</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">اختر التخطيطات، وخصّص المفاتيح، وقم بإدارة الماكرو.</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">تعديل التخطيط</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">تعديل عنوان المفتاح</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">إعدادات التخطيط</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">قابل للتمرير</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">تغيير الحجم ليناسب العرض.</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">لوحة المفاتيح</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">انقر للتحرير • اضغط مع الاستمرار واسحب لتحريك العنصر.</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">تظل المفاتيح المثبتة في نهاية لوحة المفاتيح (على الجانب الأيسر في واجهات الكتابة من اليمين إلى اليسار).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">اسحب مفتاحًا إلى قائمة \"المفاتيح المثبتة\" لجعله يظهر في نهاية لوحة المفاتيح. واسحبه مرة أخرى إلى قائمة \"المفاتيح القابلة للتمرير\" لإزالته من قائمة \"المفاتيح المثبتة\".</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">مُوسَّع</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">مُطوّي/مُغلَق</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">حرّر نسخة.</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">واصل التحرير.</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">ينشئ تصميمًا جديدًا لواجهة المستخدم لـ %1$s. يحتفظ المستخدمون الآخرون بتصميمهم الحالي.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">سيتم تطبيق التغييرات عند حفظ هذا الجهاز أو الملف الشخصي.</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">حفظ هذا العنصر يحدّث نموذج التصميم. احفظ التصميم للاحتفاظ بالتغييرات التي أجريتها.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">الموضع/التخطيط</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">عرض المفتاح</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">تم تثبيته في النهاية.</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">تغيير الاختصار</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">اختر الوظيفة التي سيؤديها هذا الزر عند الضغط عليه.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">الخلفية، والنص، والحدود.</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · اللمس: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">اضغط مرة واحدة.</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">يكرر الضغط طالما استمر الضغط عليه.</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">الصف، والعمود، وعرض المفتاح</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">يستخدمه %1$d مستخدم.</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">هل نُزيل هذا الزر من التصميم الأولي؟</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">هل تريد تطبيق التغييرات على المفاتيح؟</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">طبِّق هذه التغييرات على التصميم، أو تجاهلها.</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">تطبيق التغييرات</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">تعديل التخطيط</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">مفتاح أو اختصار</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">معاينة</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">تحديد مخصص</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">استخدم التصميم الافتراضي.</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">إجراءات التخطيط</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">معاينة الألوان</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">أضف مفتاحًا لبدء هذه الطبقة.</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">سيتم تطبيق التغييرات على هذا الجهاز الطرفي عند حفظ التخطيط.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">حفظ هذا التخطيط سيحدّث جميع المستخدمين الذين يستخدمونه. يمكنك تعديل نسخة بدلاً من ذلك.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">هل تريد تعديل تخطيط لوحة المفاتيح المشترك؟</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">هذا الإعداد</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">الإعدادات المسبقة المدمجة</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">تظل الإعدادات المسبقة المدمجة كما هي. يؤدي التعديل إلى إنشاء نسخة خاصة بك.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">إعداد مسبق مُضمَّن</string>
 </resources>

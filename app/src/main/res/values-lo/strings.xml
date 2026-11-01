@@ -726,4 +726,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">ບໍ່ສາມາດສ້າງທາງລັດໄດ້. ກະລຸນາລອງອີກເທື່ອ.</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">ສາຍເຊື່ອມຕໍ່ຂອງ jump host ມີການວົນຊ້ຳ. ກະລຸນາກວດສອບການຕັ້ງຄ່າຂອງ jump host.</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">ຈຳນວນເຄື່ອງແມ່ຂ່າຍທີ່ໃຊ້ໃນການເຊື່ອມຕໍ່ເກີນຈຳນວນທີ່ກຳນົດໄວ້, ເຊິ່ງຄື 32 ເຄື່ອງ.</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">ສະແດງການປ້ອນຂໍ້ມູນໃນເຄື່ອງທ້ອງຖິ່ນ</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">ເລືອກວ່າຈະສະແດງຂໍ້ຄວາມທີ່ພິມເຂົ້າໃນເຄື່ອງຫຼືບໍ່ ຖ້າເລືອກໃຫ້ສະແດງຢູ່ສະເໝີ ມັນອາດຈະເຮັດໃຫ້ຂໍ້ຄວາມຊ້ຳກັນເມື່ອເຄື່ອງແມ່ຂ່າຍສົ່ງຂໍ້ຄວາມຄືນ.</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">ໂດຍອັດຕະໂນມັດ</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">ເປີດໄວ້ຕະຫຼອດເວລາ</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">ປິດໄວ້ຕະຫຼອດເວລາ</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">ເລີ່ມຕົ້ນການເຈລະຈາ</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">ເຈລະຈາຕໍ່ລອງກ່ຽວກັບຄວາມສາມາດຂອງເຄື່ອງທຳການໃນເວລາທີ່ເຊື່ອມຕໍ່, ຫຼື ລໍຖ້າໃຫ້ເຄື່ອງແມ່ຂ່າຍຮ້ອງຂໍ.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">ເຈລະຈາໃນຂະນະທີ່ເຊື່ອມຕໍ່</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">ລໍຖ້າການຕອບຮັບຈາກເຊີເວີ</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">ຂໍ້ມູນທີ່ບໍ່ແມ່ນແບບໄບນາລີ</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">ຖ້າເຄື່ອງແມ່ຂ່າຍບໍ່ຍອມຮັບຮູບແບບໄບນາຣີ, ໃຫ້ອະນຸຍາດໃຫ້ໃຊ້ຮູບແບບເກົ່າແກ່ທີ່ໃຊ້ 8-ບິດ ຫຼື ຮ້ອງຂໍໃຫ້ໃຊ້ ASCII. ທັງສອງຝ່າຍຕ້ອງໃຊ້ຮູບແບບການເຂົ້າລະຫັດດຽວກັນ.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">ອະນຸຍາດໃຫ້ໃຊ້ຂໍ້ມູນແບບເກົ່າທີ່ມີ 8 ບິດ</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">ຕ້ອງໃຊ້ລະຫັດ ASCII</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">ສາຍທີ່ຖືກຄັດລອກມາ</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">ເມື່ອບໍ່ຢູ່ໃນຮູບແບບໄບນາຣີ, ປ່ຽນແປງຕົວອັກສອນ LF ທີ່ຖືກຄັດລອກມາເປັນ CRLF ຫຼື ຮັກສາຕົວອັກສອນ LF ໄວ້. ນອກຈາກນັ້ນ, ຍັງໝາຍເຖິງຂໍ້ຄວາມທີ່ໃຊ້ໃນການເຮັດວຽກແບບອັດຕະໂນມັດ.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">ປ່ຽນຈາກ LF ເປັນ CRLF</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">ຮັກສາ LF ໄວ້</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">ບໍ່ສາມາດສົ່ງຂໍ້ມູນໄດ້. ການເຊື່ອມຕໍ່ນີ້ຮອງຮັບພຽງແຕ່ລະບົບ ASCII ຈົນກວ່າເຄື່ອງແມ່ຂ່າຍຈະເປີດໃຊ້ຮູບແບບ binary.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">ບໍ່ສາມາດສົ່ງຂໍ້ມູນໄປຫາເຊີເວີ Telnet ນີ້ໄດ້.</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">ບໍ່ສາມາດເຊື່ອມຕໍ່ໄດ້.</string>
+  <string name="terminal_connected" tools:machine_translated="true">ເຊື່ອມຕໍ່ສຳເລັດ.</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">ການຢັ້ງຢືນຕົວຕົນສຳເລັດ.</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">ບໍ່ສາມາດເປີດເຊັນເຊັນ SSH ໄດ້.</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">ເຊີເວີ SSH ປະຕິເສດການຮ້ອງຂໍສຳລັບການເຂົ້າເຖິງ terminal.</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">ເຊີເວີ SSH ປະຕິເສດຄຳຮ້ອງຂໍເປີດ shell.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">ຂໍ້ມູນການເຊື່ອມຕໍ່</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">ໂປໂຕກອນ</string>
+  <string name="connection_info_host" tools:machine_translated="true">ໂຮສท์</string>
+  <string name="connection_info_port" tools:machine_translated="true">ພອດ</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">ພອດ SSH</string>
+  <string name="connection_info_username" tools:machine_translated="true">ຊື່ຜູ້ໃຊ້</string>
+  <string name="connection_info_status" tools:machine_translated="true">ສະຖານະ</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">ກຳລັງເຊື່ອມຕໍ່</string>
+  <string name="connection_info_connected" tools:machine_translated="true">ເຊື່ອມຕໍ່ແລ້ວ</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">ເຊື່ອມຕໍ່ຖືກຕັດການເຊື່ອມຕໍ່ແລ້ວ</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">ທີ່ຢູ່ຂອງເຄືອນຂ່າຍທ້ອງຖິ່ນ</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">ລາຍລະອຽດຂອງການຕັ້ງຄ່າ SSH ເບື້ອງຕົ້ນ</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">ລາຍລະອຽດກ່ຽວກັບການເຈລະຈາຜ່ານທາງ SSH</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">ຂໍ້ມູນກ່ຽວກັບການເຈລະຈາຕໍ່ຮອງ SSH ບໍ່ມີ.</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">ການແລກປ່ຽນກຸນແຈ</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">ຂໍ້ມູນກ່ຽວກັບການເຊື່ອມຕໍ່, ສະແດງເຖິງອະນຸສານການເຂົ້າລະຫັດຂອງເຄື່ອງແມ່ຂ່າຍ SSH</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">ການເຂົ້າລະຫັດ: ຈາກຜູ້ໃຊ້ໄປຫາເຄື່ອງແມ່ຂ່າຍ</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">ການເຂົ້າລະຫັດ: ຈາກເຄື່ອງແມ່ຂ່າຍໄປຫາຜູ້ໃຊ້</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">ຄວາມຖືກຕ້ອງ: ຈາກຜູ້ໃຊ້ໄປຫາເຄື່ອງແມ່ຂ່າຍ</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">ຄວາມຖືກຕ້ອງ: ຈາກເຄື່ອງແມ່ຂ່າຍໄປຫາຜູ້ໃຊ້</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">ເຊື່ອມໂຍງກັບການເຂົ້າລະຫັດ</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">ການແລກປ່ຽນລະຫັດລັບແບບຫຼັງຍຸກຄວນຕຳ</string>
+  <string name="connection_info_yes" tools:machine_translated="true">ແມ່ນແລ້ວ</string>
+  <string name="connection_info_no" tools:machine_translated="true">ບໍ່ມີ</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">ການສົ່ງຕໍ່ພອດ</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">ໄດ້ກຳນົດແຫຼ່ງຂໍ້ມູນ</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">ພອດທີ່ຖືກກຳນົດ</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">ບໍ່ໄດ້ເຊື່ອມໂຍງ</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">ສະຖານະການສົ່ງຕໍ່ຂໍ້ມູນ</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">ກຳລັງໃຊ້ງານ</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">ບໍ່ເຄື່ອນໄຫວ</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">ທີ່ຢູ່ປາຍທາງ</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">ນະໂຍບາຍດ້ານການເຂົ້າລະຫັດ</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">ຄ່າເລີ່ມຕົ້ນ</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">ໃນອະນາຄົດ</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">ແບບເກົ່າ</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">ອະນຸສັນຍານ FIPS</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">ກຳນົດເອງ</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">ອະນຸຍາດໃຫ້ໃຊ້ການລະຫັດ ແລະ ຂະໜາດຂອງກະແຈທີ່ແນະນຳ</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">ຕ້ອງມີການແລກປ່ຽນລະຫັດຫຼັງຈາກຍຸກຄອມພິວເຕີຄວັນຕຳ</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">ຈຳກັດການນຳໃຊ້ algorithm; ບໍ່ໄດ້ຮັບການຢັ້ງຢືນຕາມມາດຕະຖານ FIPS</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">ອະນຸຍາດໃຫ້ໃຊ້ລະບົບການເຂົ້າລະຫັດແບບເກົ່າເພື່ອຄວາມເຂົ້າກັນໄດ້</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">ເລືອກອະກໍຣິດທຶມ ແລະ ຂະໜາດຄີທີ່ນ້ອຍທີ່ສຸດ</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">ລະບົບ ແລະ ຂະໜາດຂອງລະຫັດທີ່ທັນສະໄໝ ທີ່ຖືກຮັກສາໄວ້ໂດຍຫໍສະໜາມ SSH.</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">ຕ້ອງມີການແລກປ່ຽນລະຫັດແບບປະສົມທີ່ໃຊ້ຫຼັງຈາກລະບົບຄວນຕຳ, ລະຫັດການເຂົ້າລະຫັດ 256-ບິດ, ແລະລະຫັດ RSA ທີ່ແຂງແກ່ນກວ່າ.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">ຈຳກັດທາງເລືອກຂອງການນຳໃຊ້ algorithm; ບໍ່ໄດ້ກຳນົດການຢັ້ງຢືນຕາມມາດຕະຖານ FIPS.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">ອະນຸຍາດໃຫ້ໃຊ້ algorithm ທີ່ເກົ່າກວ່າ ແລະ RSA ແລະ DH keys ທີ່ມີຂະໜາດນ້ອຍກວ່າ ເພື່ອໃຫ້ເຂົ້າກັນໄດ້ກັບລະບົບເກົ່າ. Algorithm ທີ່ທັນສະໄໝຍັງຄົງເປັນທາງເລືອກທີ່ດີທີ່ສຸດ.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">ປັບແຕ່ງຄ່າເລີ່ມຕົ້ນ. ການເລືອກອະນຸສານ ແລະ ຂະໜາດກຸນແຈນ້ອຍສຸດແມ່ນເປັນອິດທິປະ.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">ຈຳນວນບິດ RSA ຕ່ຳສຸດ</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">ຈຳນວນບິດຕ່ຳສຸດຂອງ DH</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">ຮັບເອົາຄ່າເລີ່ມຕົ້ນ (%1$d ບິດ)</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">ປ່ອຍໄວ້ຫວ່າງເພື່ອໃຊ້ຄ່າເລີ່ມຕົ້ນ. ນຳໃຊ້ໄດ້ແນ່ນອນກັບການຕັ້ງຄ່າທີ່ກຳນົດໄວ້ຢ່າງຊັດເຈນ.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">ປ້ອນຢ່າງໜ້ອຍ 1024 ບິດ. DH ຕ້ອງບໍ່ເກີນ 8192 ບິດ.</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">ອະນຸສັນຍານການແລກປ່ຽນລະຫັດ</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">ອະນຸສັນຍານການເຂົ້າລະຫັດ</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">ອະນຸສັນຍານການກວດສອບຂໍ້ຄວາມ</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">ອະນຸສັນຍານການເຂົ້າລະຫັດຂອງເຈົ້າພາບ</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">ອະນຸສານການກວດສອບຄວາມຖືກຕ້ອງໂດຍໃຊ້ລະບົບກຸນແຈສາທາລະນະ</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">ຮູບແບບການເລືອກ</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">ຮັບເອົາຄ່າເລີ່ມຕົ້ນ</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">ປ່ຽນແປງຄ່າເລີ່ມຕົ້ນ</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">ໃຊ້ພຽງແຕ່ສິ່ງເຫຼົ່ານີ້ເທົ່ານັ້ນ</string>
+  <string name="crypto_apply" tools:machine_translated="true">ນຳໃຊ້</string>
+  <string name="crypto_expression" tools:machine_translated="true">ການສະແດງອອກຂອງອະນຸກຳ</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">ຊື່ທີ່ແຍກດ້ວຍເຄື່ອງໝາຍจุລະພາກ (comma). ໃນສ່ວນ \"ແກ້ໄຂຄ່າເລີ່ມຕົ້ນ\", ໃຫ້ໃສ່ຕົວອັກສອນ ^ (ຕົວອັກສອນທຳອິດ), + (ເພີ່ມຕໍ່ທ້າຍ), ຫຼື - (ບໍ່ລວມ) ໄວ້ທາງໜ້າຊື່ທຸກຊື່.</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">ໃຊ້ຊື່ SSH ທີ່ເປັນເອກະລັກ ແລະ ໃຊ້ຮູບແບບການເລືອກແບບດຽວ. ລາຍການທີ່ຖືກຕ້ອງຕ້ອງບໍ່ຫວ່າງ.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">ລຳດັບຄວາມສຳຄັນທີ່ໃຊ້ໄດ້ຜົນ</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">ບໍ່ສາມາດໃຊ້ໄດ້ໃນອຸປະກອນນີ້; ຍັງຄົງຢູ່ໃນການຕັ້ງຄ່າຂອງທ່ານ</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">ຖືກຍົກເວັ້ນເນື່ອງຈາກຂະໜາດຂອງຄີຕໍ່າສຸດ</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">ເປີດໃຊ້ໃນຄ່າເລີ່ມຕົ້ນ</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">ສາມາດໃຊ້ໄດ້; ບໍ່ໄດ້ເປີດໃຊ້ໃນຄ່າເລີ່ມຕົ້ນ</string>
+  <string name="crypto_prepend" tools:machine_translated="true">ເລືອກກ່ອນ</string>
+  <string name="crypto_append" tools:machine_translated="true">ເພີ່ມຕື່ມ</string>
+  <string name="crypto_exclude" tools:machine_translated="true">ຍົກເວັ້ນ</string>
+  <string name="crypto_inherit" tools:machine_translated="true">ປະຕິບັດຕາມຄ່າເລີ່ມຕົ້ນ</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">ຍັງບໍ່ໄດ້ຖືກຈັດຕັ້ງໂດຍຫໍສະໝຸດນີ້</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">ບໍ່ສາມາດໃຊ້ໄດ້ກັບຜູ້ໃຫ້ບໍລິການລະຫັດລັບທີ່ຕິດຕັ້ງໄວ້</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">ກຸ່ມ DH ມີຂະໜາດນ້ອຍກວ່າຂະໜາດຕ່ຳສຸດທີ່ກຳນົດໄວ້</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">ກະແຈ ຫຼື ໃບຢັ້ງຢືນບໍ່ເປັນໄປຕາມມາດຕະຖານ RSA ຫຼື ນະໂຍບາຍໃບຢັ້ງຢືນ</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">ຄຳເຕືອນ — %1$s: %2$s: %3$s ຖືກຂ້າມໄປ (%4$s).</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">ນະໂຍບາຍດ້ານການເຂົ້າລະຫັດບໍ່ອະນຸຍາດໃຫ້ມີການນຳໃຊ້ %1$s ໃດໆ.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">ນະໂຍບາຍດ້ານການເຂົ້າລະຫັດບໍ່ສຳເລັດສຳລັບ %1$s: %2$s</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">ນະໂຍບາຍດ້ານການເຂົ້າລະຫັດ — %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">ຂະໜາດຄີທີ່ນ້ອຍທີ່ສຸດ</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">RSA: %1$d ບິດ; DH ທີ່ໃຊ້ຟີລ໌ຈຳກັດ: %2$d ບິດ</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">ສະແດງລໍາດັບຄວາມຖືກຕ້ອງທີ່ສຸດ</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">ເຊື່ອງລາຍການຈັດລໍາດັບທີ່ຖືກຕ້ອງແລ້ວ</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">ປ່ຽນສະຖານະຂອງ %1$s</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ ໃຫ້ຄວາມສໍາຄັນກັບທາງເລືອກທໍາອິດ · + ເພີ່ມ · ✓ ປະຕິບັດຕາມຄ່າເລີ່ມຕົ້ນ · − ຍົກເວັ້ນ</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">ປຸ່ມ Alt</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">ປ່ຽນ​ປຸ່ມ</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">ແຖບ</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">ກົດ Enter</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">ປຸ່ມລຶບຕົວອັກສອນ</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">ລຶບ</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">ໃສ່</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">ເປີດເມນູ</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">↓</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">ໜ້າຫຼັກ</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">ສິ້ນສຸດ</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">ໜ້າຂຶ້ນ</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">ໜ້າລຸ່ມ</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">ປ້ອນຂໍ້ຄວາມ</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">ກົດປຸ່ມເພື່ອສ້າງຕົວອັກສອນພິເສດ</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">ແປ້ນພິມ</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">ແປ້ນພິມຂອງເຄື່ອງ​ສະ​ແດງ​ຜົນ</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">ຮູບແບບການຈັດແຖວຂອງແປ້ນພິມ</string>
+  <string name="keyboard_macros" tools:machine_translated="true">ແມກໂຣທີ່ໃຊ້ຮ່ວມກັນ</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">ບໍ່ມີແມກໂຣ</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">ການຕັ້ງຄ່າບໍ່ຖືກຮອງຮັບ</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">ການກະທຳກ່ຽວກັບແປ້ນພິມບໍ່ສຳເລັດ</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">ເລື່ອນຂຶ້ນເທິງ</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">ເລື່ອນລົງ</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">ເລື່ອນໄປທາງຊ້າຍ</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">ເລື່ອນໄປທາງຂວາ</string>
+  <string name="keyboard_off" tools:machine_translated="true">ປິດ</string>
+  <string name="keyboard_once" tools:machine_translated="true">ປຸ່ມຕໍ່ໄປ</string>
+  <string name="keyboard_locked" tools:machine_translated="true">ລັອກແລ້ວ</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">ຮູບແບບການຈັດແຖວ ໃໝ່</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">ແມກໂຣໃໝ່</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(ຄັດລອກ)</string>
+  <string name="keyboard_back" tools:machine_translated="true">ກັບຄືນ</string>
+  <string name="keyboard_error" tools:machine_translated="true">ບໍ່ສາມາດບັນທຶກການປ່ຽນແປງໄດ້: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">ເພີ່ມຮູບແບບການຈັດແຈງ</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">ເພີ່ມແມກໂຣ</string>
+  <string name="keyboard_edit" tools:machine_translated="true">ແກ້ໄຂ</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">ເຮັດຊ້ຳ</string>
+  <string name="keyboard_delete" tools:machine_translated="true">ລຶບ</string>
+  <string name="keyboard_default" tools:machine_translated="true">ໃຊ້ເປັນຄ່າເລີ່ມຕົ້ນຂອງແອັບ</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">ໃຊ້ໃນ: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">ຢືນຢັນ</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">ຕ້ອງການຢືນຢັນການປ່ຽນແປງນີ້ບໍ? ການແກ້ໄຂຮູບແບບທີ່ບັນທຶກໄວ້ອາດຈະສູນຫາຍ. ມັກໂຄຣທີ່ໃຊ້ຮ່ວມກັນຈະຖືກເກັບໄວ້ເມື່ອຣີເຊັດຮູບແບບ.</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">ຍົກເລີກ</string>
+  <string name="keyboard_name" tools:machine_translated="true">ຊື່</string>
+  <string name="keyboard_width" tools:machine_translated="true">ຄວາມກວ້າງຂອງປຸ່ມ (dp, ໃຊ້ກັບປຸ່ມທຸກອັນ)</string>
+  <string name="keyboard_height" tools:machine_translated="true">ຄວາມສູງຂອງປຸ່ມ (dp, ໃຊ້ກັບປຸ່ມທຸກອັນ)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">ແຕະປຸ່ມເພື່ອແກ້ໄຂ. ແຕະຄ້າງໄວ້, ຫຼັງຈາກນັ້ນເລື່ອນເພື່ອຍ້າຍ. ເລື່ອນລະຫວ່າງສ່ວນຕ່າງໆເພື່ອລັອກ ຫຼື ປົດລັອກ. ຂະໜາດຂອງປຸ່ມຈະຖືກນຳໃຊ້ກັບປຸ່ມທຸກປຸ່ມ.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">ລາກເພື່ອຈັດລຽງປຸ່ມໃຫມ່</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">ເພີ່ມປຸ່ມ</string>
+  <string name="keyboard_visible" tools:machine_translated="true">ສາມາດເຫັນໄດ້</string>
+  <string name="keyboard_row" tools:machine_translated="true">ແຖວ (ເລີ່ມຕົ້ນທີ່ 0)</string>
+  <string name="keyboard_column" tools:machine_translated="true">ຄໍລຳ (ເລີ່ມຕົ້ນທີ່ 0)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">ໄລຍະຂອງແຖວ</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">ຂະໜາດຂອງຄໍລຳ</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">ລຶບປຸ່ມ</string>
+  <string name="keyboard_save" tools:machine_translated="true">ບັນທຶກ</string>
+  <string name="keyboard_reset" tools:machine_translated="true">ຟື້ນຟູການຕັ້ງຄ່າເລີ່ມຕົ້ນ</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">ໃຊ້ຄ່າເລີ່ມຕົ້ນຂອງແອັບ</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">ຕົວແກ້ໄຂແບບເບິ່ງດ້ວຍຕາ</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">ໂປຣແກຣມແກ້ໄຂຂໍ້ຄວາມ</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">ໜຶ່ງການກະທຳຕໍ່ແຖວ: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. ຂໍ້ຄວາມໃຊ້ການລະຫັດ JSON.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">ຂັ້ນຕອນຂອງແມກໂຣ</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">ເພີ່ມຂໍ້ຄວາມ</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">ເພີ່ມປຸ່ມ</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">ເພີ່ມບາຍຕ໌</string>
+  <string name="keyboard_text" tools:machine_translated="true">ຂໍ້ຄວາມທີ່ຈະສົ່ງ</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">ຄ່າບາຍຕ໌ທີ່ແນ່ນອນ (ເລກຖານສິບຫົກ)</string>
+  <string name="keyboard_character" tools:machine_translated="true">ຕົວອັກສອນ</string>
+  <string name="terminal_key_space" tools:machine_translated="true">ຊ່ອງຫວ່າງ</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">ປຸ່ມຕົວເລກ %1$s</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">ປ້າຍຊື່ຂອງປຸ່ມ</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">ໝາກສົ້ມ</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">ການຄວບຄຸມອຸປະກອນຂະໜາດນ້ອຍ</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">ປາຍທາງສຸດທ້າຍ</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">ການຄວບຄຸມທີ່ສະດວກ ແລະ ງ່າຍຕໍ່ການໃຊ້</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">ກ້າມ</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">ຖືກປັບປຸງໃຫ້ເໝາະສົມກັບ Claude Code</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">ສະຄຣິບ</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">ຖືກປັບປຸງໃຫ້ເໝາະສົມກັບ Codex CLI</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">ເລືອກຮູບແບບຂອງແປ້ນພິມ</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">ຮູບແບບການປ້ອນຂໍ້ມູນແບບດັ້ງເດີມຂອງ ConnectBot</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">ປັບໃຫ້ກວ້າງເທົ່າໜ້າຈໍ</string>
+  <string name="keyboard_layer" tools:machine_translated="true">ເລີ້ນ %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">L%1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">ປ່ຽນຊັ້ນຄີບອດ</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">ປາຍທາງຂອງຊັ້ນ</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">ເລື່ອນໄປຍັງຊັ້ນຕໍ່ໄປທີ່ບໍ່ຫວ່າງ</string>
+  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">ເລີ້ນທີ່ປາຍທາງຫວ່າງเปล່າ</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">ຢຸດ</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">ປະຫວັດສັງເຂັບ</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">ໂໝດ</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">ແຖວໃໝ່</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">ບັນທຶກ</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">ແກ້ໄຂ</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">ຄັດລອກ</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">ຄັດລອກ</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">ຢຸດການເຮັດວຽກ</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">ຄົ້ນຫາປະຫວັດ</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">ປ່ຽນຮູບແບບການອະນຸຍາດ</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">ເພີ່ມແຖວໃໝ່</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">ສະຫຼັບສະແດງ/ເຊື່ອງຄຳບັນທຶກ</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">ເປີດໂປຼແກຼມແກ້ໄຂທີ່ຢູ່ທາງນອກ</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">ຄັດລອກການຕອບ</string>
+  <string name="macro_assign" tools:machine_translated="true">ກຳນົດແມກໂຣ</string>
+  <string name="macro_import" tools:machine_translated="true">ນຳເຂົ້າແມກໂຣ</string>
+  <string name="macro_export" tools:machine_translated="true">ສົ່ງອອກແມກໂຣ</string>
+  <string name="macro_none" tools:machine_translated="true">ບໍ່ມີແມກໂຣທີ່ບັນທຶກໄວ້</string>
+  <string name="automation_run_macro" tools:machine_translated="true">ສັ່ງໃຫ້ໂປຣແກຣມປະຕິບັດຕາມຄຳສັ່ງທີ່ກຳນົດໄວ້</string>
+  <string name="macro_choose" tools:machine_translated="true">ເລືອກແມກໂຣ</string>
+  <string name="macro_manage" tools:machine_translated="true">ຈັດການແມກໂຣ</string>
+  <string name="keyboard_selected" tools:machine_translated="true">ເລືອກແລ້ວ</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">ຄ່າເລີ່ມຕົ້ນຂອງແອັບ</string>
+  <string name="keyboard_select" tools:machine_translated="true">ໃຊ້ສິ່ງນີ້</string>
+  <string name="keyboard_change" tools:machine_translated="true">ປ່ຽນຮູບແບບ</string>
+  <string name="keyboard_customize" tools:machine_translated="true">ປັບແຕ່ງ</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">ແກ້ໄຂຮູບແບບທີ່ໃຊ້ຮ່ວມກັນ</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">ໃຊ້ເປັນຄ່າເລີ່ມຕົ້ນຂອງແອັບ</string>
+  <string name="keyboard_saving" tools:machine_translated="true">ກຳລັງບັນທຶກ…</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">ກຳນົດເອງ</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">ໃຊ້ຄີບອດທີ່ໄດ້ຮັບມ້າງສືບ</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">ຈາກໂປຣໄຟລ໌ \"%1$s\"</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">ຊັ້ນສູງ</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">ແປ້ນພິມ: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">ການເຮັດວຽກແບບອັດຕະໂນມັດຫຼັງຈາກເຂົ້າສູ່ລະບົບ: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">ຂໍ້ມູນ: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">ເຈົ້າພາບ: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">ລຶບຮູບແບບຈັດແຈງ “%1$s” ບໍ?</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">ລຶບແມກໂຣ “%1$s” ບໍ?</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">ຜູ້ໃຊ້ ແລະໂປຣໄຟລ໌ທີ່ໃຊ້ຮູບແບບນີ້ຈະໃຊ້ແປ້ນພິມທີ່ຖືກກຳນົດໄວ້ແລ້ວ. ຖ້າຫາກວ່າຮູບແບບນີ້ແມ່ນຮູບແບບເລີ່ມຕົ້ນຂອງແອັບຯ, ຮູບແບບອື່ນຈະກາຍເປັນຮູບແບບເລີ່ມຕົ້ນ.</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">ສິ່ງນີ້ຈະລຶບແມກໂຣອອກຈາກຫໍສະສົມທີ່ໃຊ້ຮ່ວມກັນ.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">ກູ້ຄືນການຈັດລຽງຄີ ແລະ ຂະໜາດຕົ້ນສະບັບຂອງແຜນວາດນີ້ບໍ? ການປ່ຽນແປງຈະຖືກບັນທຶກເມື່ອທ່ານບັນທຶກ. ແມກໂຣທີ່ໃຊ້ຮ່ວມກັນຈະຖືກເກັບໄວ້.</string>
+  <string name="macro_shared_title" tools:machine_translated="true">ຕ້ອງການແກ້ໄຂແມກໂຄທີ່ໃຊ້ຮ່ວມກັນບໍ?</string>
+  <string name="macro_shared_message" tools:machine_translated="true">ແມກໂຣນີ້ຖືກນຳໃຊ້ໃນບ່ອນອື່ນ. ກະລຸນາສ້າງສຳເນົາທີ່ແຍກຕ່າງຫາກ, ຫຼືແກ້ໄຂສະບັບທີ່ຖືກແບ່ງປັນເພື່ອຜູ້ໃຊ້ທຸກຄົນ.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">ສ້າງສຳເນົາ</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">ແກ້ໄຂແມກໂຣທີ່ໃຊ້ຮ່ວມກັນ</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">ບັນທຶກການປັບປຸງຂອງແມກໂຣນີ້ໄວ້ໃນທຸກບ່ອນທີ່ມັນຖືກນຳໃຊ້, ເຖິງແມ່ນວ່າຕໍ່ມາທ່ານຈະລຶບເອົາສ່ວນທີ່ກ່ຽວຂ້ອງອອກ.</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">ລຶບ ຫຼື ປ່ຽນການນຳໃຊ້ເຫຼົ່ານີ້ ກ່ອນທີ່ຈະລຶບແມກໂຣນີ້.</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">ໃນໄລຍະນີ້</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">ເຄື່ອງນີ້ສາມາດໃຊ້ໄດ້ໃນໂໝດອ່ານຢ່າງດຽວ. ບໍ່ສາມາດປ່ຽນແປງຄີບອດຂອງມັນໄດ້.</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">ຈັດການຮູບແບບ</string>
+  <string name="keyboard_done" tools:machine_translated="true">ສຳເລັດແລ້ວ</string>
+  <string name="automation_draft_host" tools:machine_translated="true">ຂັ້ນຕອນເຫຼົ່ານີ້ຈະຖືກບັນທຶກໄວ້ກັບເຈົ້າພາບໃໝ່.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">ບັນທຶກເຄື່ອງນີ້ ແລະເພີ່ມການສົ່ງຕໍ່ພອດກ່ອນທີ່ຈະໃຊ້ມາຕການສົ່ງຕໍ່.</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">ການກະທຳ</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">ປຸ່ມ</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">ແມກໂຣ</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">ຕົວປ່ຽນແປງ</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">ການກະທຳຂອງແອັບ</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">ປ່ຽນຊັ້ນ</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">ຮູບແບບທີ່ໃຊ້ຮ່ວມກັນ: ບັນທຶກການປັບປຸງເພື່ອໃຫ້ທຸກຄົນທີ່ໃຊ້ສາມາດເຂົ້າເຖິງໄດ້.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">ຮູບແບບການຈັດແຖວຂອງຄີບອດນີ້ບໍ່ສາມາດໃຊ້ໄດ້.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">ແຖວ ແລະ ຄໍລຳ ຈະເລີ່ມຕົ້ນທີ່ 0 ພາຍໃນແຕ່ລະສ່ວນ. ແຕ່ລະປຸ່ມຈະມີຄວາມສູງເທົ່າກັບໜຶ່ງແຖວ. ຈຳນວນຄໍລຳທີ່ກຳນົດໄວ້, ຈະຊີ້ບອກວ່າປຸ່ມໜຶ່ງຈະໃຊ້ພື້ນທີ່ເທົ່າໃດ.</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">ຮູບແບບການສະແດງຜົນ</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">ສີພື້ນຫຼັງ</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">ສີຂອງຕົວອັກສອນ</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">ສີຂອງຂອບຮູບ</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">ຮູບແບບເລີ່ມຕົ້ນ</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">ລະດັບຄວາມໂປ່ງໃສຂອງພື້ນຫຼັງ: %1$d%%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">ມີຂອບແນວ</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">ຄວາມໜາຂອງຂອບ: %1$.1f dp</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">ຣີເຊັດຮູບແບບ</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">ຕົວປ່ຽນແປງທີ່ຖືກເລືອກ ແລະ ການປ່ຽນຊັ້ນຈະໃຊ້ສີເນັ້ນເພື່ອສະແດງໃຫ້ເຫັນ.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">ພຶດຕິກຳ</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">ເຮັດຊ້ຳໃນຂະນະທີ່ກົດຄ້າງໄວ້</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">ໃຊ້ການເຮັດຊ້ຳແບບເລີ່ມຕົ້ນ</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">ການຕັ້ງຄ່າຂອງແອັບ</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">ເປີດ</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">ປິດ</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">ການສະໜອງການສັ່ນສະເທືອນ: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">ປຸ່ມທີ່ຖືກກຳນົດໄວ້</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">ປຸ່ມທີ່ສາມາດເລື່ອນໄດ້</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">ລາກເອົາປຸ່ມມາໄວ້ທີ່ນີ້</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">ປິດໄວ້ທາງຂວາ</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">ເລືອກຮູບແບບ, ກຳນົດຄ່າປຸ່ມ ແລະ ຈັດການແມກໂຣ</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">ແກ້ໄຂຮູບແບບ</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">ແກ້ໄຂຊື່ຂອງປຸ່ມ</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">ການຕັ້ງຄ່າຮູບແບບ</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">ສາມາດເລື່ອນໄດ້</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">ປັບໃຫ້ກວ້າງເທົ່າກັບຄວາມກວ້າງ</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">ແປ້ນພິມ</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">ແຕະເພື່ອແກ້ໄຂ · ກົດຄ້າງໄວ້ ແລະ ລາກເພື່ອຍ້າຍ</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">ປຸ່ມທີ່ຖືກໝາຍໄວ້ຈະຢູ່ສຸດຂອງແປ້ນພິມ (ຢູ່ດ້ານຊ້າຍໃນສ່ວນຕິດຕໍ່ທີ່ໃຊ້ຈາກຂວາໄປຊ້າຍ).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">ລາກປຸ່ມໃດໜຶ່ງໄປໃສ່ພາກ \"ປຸ່ມທີ່ຖືກໝາຍໄວ້\" ເພື່ອເຮັດໃຫ້ປຸ່ມນັ້ນຢູ່ສຸດຂອງແຖວປຸ່ມ. ລາກມັນກັບໄປໃສ່ພາກ \"ປຸ່ມທີ່ສາມາດເລື່ອນໄດ້\" ເພື່ອຖອດມັນອອກຈາກການໝາຍໄວ້.</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">ຂະໜາດໃຫຍ່ຂຶ້ນ</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">ຫົດຕົວລົງ</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">ແກ້ໄຂເນື້ອຫາ</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">ສືບຕໍ່ແກ້ໄຂ</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">ສ້າງຮູບແບບການຈັດແຖວສຳລັບ %1$s. ຜູ້ໃຊ້ອື່ນໆຈະໃຊ້ຮູບແບບການຈັດແຖວທີ່ພວກເຂົາໃຊ້ຢູ່.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">ການປ່ຽນແປງຈະຖືກນຳໃຊ້ເມື່ອທ່ານບັນທຶກຂໍ້ມູນຂອງໂຮສ ຫຼື ໂປຣໄຟລ໌ນີ້.</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">ການບັນທຶກຄີນີ້ຈະປັບປຸງຮູບແບບການຈັດລຽງ. ບັນທຶກຮູບແບບການຈັດລຽງເພື່ອຮັກສາການປ່ຽນແປງຂອງທ່ານໄວ້.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">ການຈັດວາງ</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">ສະແດງປຸ່ມ</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">ຕິດຢູ່ສຸດ</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">ປ່ຽນທາງລັດ</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">ເລືອກວ່າປຸ່ມນີ້ຈະເຮັດຫຍັງເມື່ອຖືກກົດ.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">ພື້ນຫຼັງ, ຂໍ້ຄວາມ, ແລະ ຮູບສ້າງ</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · ການສຳພັດ: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">ກົດໜຶ່ງຄັ້ງ</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">ເຮັດຊ້ຳໃນຂະນະທີ່ກົດຄ້າງໄວ້</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">ແຖວ, ຄໍລຳ ແລະ ຄວາມກວ້າງຂອງປຸ່ມ</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">ໃຊ້ໂດຍ %1$d</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">ເອົາປຸ່ມນີ້ອອກຈາກຮູບແບບຕົວຢ່າງບໍ?</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">ຕ້ອງການປ່ຽນແປງການຕັ້ງຄ່າປຸ່ມບໍ?</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">ນຳໃຊ້ການປ່ຽນແປງເຫຼົ່ານີ້ກັບຮູບແບບ ຫຼື ຍົກເລີກມັນ.</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">ບັນທຶກການປ່ຽນແປງ</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">ແກ້ໄຂຮູບແບບ</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">ປຸ່ມ ຫຼື ທາງລັດ</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">ຕົວຢ່າງ</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">ເລືອກຕາມໃຈມັກ</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">ໃຊ້ຮູບແບບທີ່ໄດ້ຮັບມາ</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">ການກະທຳກ່ຽວກັບຮູບແບບ</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">ຕົວຢ່າງສີ</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">ເພີ່ມປຸ່ມເພື່ອເລີ່ມໃຊ້ງານຊັ້ນນີ້.</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">ການປ່ຽນແປງຈະຖືກນຳໃຊ້ກັບໜ້າຈໍນີ້ເມື່ອທ່ານບັນທຶກຮູບແບບ.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">ການບັນທຶກການຈັດຮຽງນີ້ຈະປັບປຸງໃຫ້ຜູ້ໃຊ້ທຸກຄົນ. ທ່ານສາມາດແກ້ໄຂສຳເນົາແທນ.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">ຕ້ອງການແກ້ໄຂຮູບແບບການຈັດລຽງທີ່ໃຊ້ຮ່ວມກັນບໍ?</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">ການຕັ້ງຄ່າແບບນີ້</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">ແມ່ແບບທີ່ຕິດຕັ້ງໄວ້ແລ້ວ</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">ແມ່ແບບທີ່ຕິດຕັ້ງໄວ້ຈະບໍ່ມີການປ່ຽນແປງ. ການແກ້ໄຂຈະສ້າງສຳເນົາສ່ວນຕົວຂອງທ່ານ.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">ຕັ້ງຄ່າໄວ້ລ່ວງໜ້າ</string>
 </resources>

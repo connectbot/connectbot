@@ -726,4 +726,361 @@
   <string name="shortcut_create_failed" tools:machine_translated="true">குறுக்குவழியை உருவாக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.</string>
   <string name="terminal_jump_cycle" tools:machine_translated="true">ஜம்ப் ஹோஸ்ட் சங்கிலியில் ஒரு சுழற்சி உள்ளது. ஜம்ப் ஹோஸ்ட் அமைப்புகளைச் சரிபார்க்கவும்.</string>
   <string name="terminal_jump_too_deep" tools:machine_translated="true">ஜம்ப் ஹோஸ்ட் சங்கிலி 32 ஹோஸ்ட்கள் என்ற வரம்பை மீறுகிறது.</string>
+  <string name="telnet_echo_title" tools:machine_translated="true">உள்ளூர் எதிரொலி</string>
+  <string name="telnet_echo_summary" tools:machine_translated="true">உள்ளீடு உள்ளிடப்படும்போது, அது உள்ளூரிலேயே காட்டப்பட வேண்டுமா என்பதைத் தேர்ந்தெடுக்கவும். எப்போதும் இயக்கப்பட்டிருந்தால், சேவையகம் பதிலளிக்கும்போது உரை மீண்டும் மீண்டும் காட்டப்படலாம்.</string>
+  <string name="telnet_echo_auto" tools:machine_translated="true">தானியங்கி</string>
+  <string name="telnet_echo_on" tools:machine_translated="true">எப்போதும் இயங்கும்</string>
+  <string name="telnet_echo_off" tools:machine_translated="true">எப்போதும் அணைத்து வைக்கவும்.</string>
+  <string name="telnet_negotiation_title" tools:machine_translated="true">பேச்சுவார்த்தை தொடக்கம்.</string>
+  <string name="telnet_negotiation_summary" tools:machine_translated="true">இணைப்பில், முனையத்தின் திறன்களைப் பற்றிப் பேசி முடிவு செய்யுங்கள், அல்லது சேவையகம் அவற்றைக் கோரும் வரை காத்திருங்கள்.</string>
+  <string name="telnet_negotiation_interactive" tools:machine_translated="true">இணைப்பில் உடன்பாடு காணுங்கள்.</string>
+  <string name="telnet_negotiation_passive" tools:machine_translated="true">சேவையகத்திற்காக காத்திருங்கள்.</string>
+  <string name="telnet_nonbinary_title" tools:machine_translated="true">பைனரி அல்லாத தரவு</string>
+  <string name="telnet_nonbinary_summary" tools:machine_translated="true">சேவையகம் பைனரி பயன்முறையை ஏற்க மறுத்தால், பழைய எட்டு-பிட் பைட்களை அனுமதிக்கவும் அல்லது ASCII ஐப் பயன்படுத்தவும். இரு முனைகளும் ஒரே குறியீட்டு முறையைப் பயன்படுத்த வேண்டும்.</string>
+  <string name="telnet_nonbinary_legacy" tools:machine_translated="true">பழைய எட்டு-பிட் பைட்களை அனுமதிக்கவும்.</string>
+  <string name="telnet_nonbinary_ascii" tools:machine_translated="true">ஏ.எஸ்.சி.ஐ.ஐ கட்டாயம்.</string>
+  <string name="telnet_newline_title" tools:machine_translated="true">ஒட்டப்பட்ட வரியின் முடிவுகள்</string>
+  <string name="telnet_newline_summary" tools:machine_translated="true">பைனரி பயன்முறைக்கு வெளியே, ஒட்டப்பட்ட உரைக்குள்ள LF-ஐ CRLF ஆக மாற்றவும் அல்லது LF-ஐ அப்படியே வைத்திருக்கவும். இது தானியங்கி உரைக்கும் பொருந்தும்.</string>
+  <string name="telnet_newline_crlf" tools:machine_translated="true">எல்எஃப்-ஐ சிஆர்எல்எஃப் ஆக மாற்றுக</string>
+  <string name="telnet_newline_lf" tools:machine_translated="true">எல்எஃப்-ஐ அப்படியே வைத்திருங்கள்.</string>
+  <string name="telnet_ascii_input_rejected" tools:machine_translated="true">உள்ளீடு அனுப்பப்படவில்லை. இந்த இணைப்புக்கு, சேவையகம் பைனரி பயன்முறையை இயக்கும் வரை, ASCII குறியீட்டைப் பயன்படுத்த வேண்டும்.</string>
+  <string name="telnet_input_rejected" tools:machine_translated="true">இந்த டெல்நெட் சேவையகத்திற்கு உள்ளீட்டை அனுப்ப முடியவில்லை.</string>
+  <string name="terminal_connection_failed" tools:machine_translated="true">இணைப்பு தோல்வியடைந்தது.</string>
+  <string name="terminal_connected" tools:machine_translated="true">இணைக்கப்பட்டது.</string>
+  <string name="terminal_auth_success" tools:machine_translated="true">அங்கீகாரம் வெற்றிகரமாக முடிந்தது.</string>
+  <string name="terminal_session_failed" tools:machine_translated="true">எஸ்எஸ்ஹெச் அமர்வை திறக்க முடியவில்லை.</string>
+  <string name="terminal_pty_rejected" tools:machine_translated="true">எஸ்எஸ்ஹெச் சேவையகம், கோரப்பட்ட டெர்மினல் கோரிக்கையை நிராகரித்தது.</string>
+  <string name="terminal_shell_rejected" tools:machine_translated="true">எஸ்எஸ்ஹெச் சேவையகம், ஷெல் கோரிக்கையை நிராகரித்தது.</string>
+  <string name="console_menu_connection_info" tools:machine_translated="true">இணைப்புத் தகவல்</string>
+  <string name="connection_info_protocol" tools:machine_translated="true">நெறிமுறை</string>
+  <string name="connection_info_host" tools:machine_translated="true">ஹோஸ்ட்</string>
+  <string name="connection_info_port" tools:machine_translated="true">துறை எண்</string>
+  <string name="connection_info_ssh_port" tools:machine_translated="true">எஸ்எஸ்ஹெச் போர்ட்</string>
+  <string name="connection_info_username" tools:machine_translated="true">பயனர் பெயர்</string>
+  <string name="connection_info_status" tools:machine_translated="true">நிலை</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">இணைக்கப்படுகிறது</string>
+  <string name="connection_info_connected" tools:machine_translated="true">இணைக்கப்பட்டது</string>
+  <string name="connection_info_disconnected" tools:machine_translated="true">இணைப்பு துண்டிக்கப்பட்டது.</string>
+  <string name="connection_info_local_address" tools:machine_translated="true">உள்ளூர் முகவரி</string>
+  <string name="connection_info_ssh_bootstrap" tools:machine_translated="true">மோஷ் பயன்பாட்டைத் தொடங்கப் பயன்படுத்தப்படும் ஆரம்ப SSH இணைப்பு விவரங்கள்.</string>
+  <string name="connection_info_ssh_negotiation" tools:machine_translated="true">SSH இணைப்பு மூலம் உடன்படுத்தப்பட்ட வழிமுறைகளின் விவரங்கள்.</string>
+  <string name="connection_info_unavailable" tools:machine_translated="true">SSH இணைப்பு விவரங்கள் கிடைக்கவில்லை.</string>
+  <string name="connection_info_key_exchange" tools:machine_translated="true">சாவி பரிமாற்றம்</string>
+  <string name="connection_info_host_key" tools:machine_translated="true">சேவையகத்தின் ஹோஸ்ட் சாவி</string>
+  <string name="connection_info_cipher_outbound" tools:machine_translated="true">குறியாக்கம்: வாடிக்கையாளர் முதல் சேவையகம் வரை</string>
+  <string name="connection_info_cipher_inbound" tools:machine_translated="true">குறியாக்கம்: சேவையகம் முதல் வாடிக்கையாளர்</string>
+  <string name="connection_info_mac_outbound" tools:machine_translated="true">ஒருமைப்பாடு: வாடிக்கையாளர் முதல் சேவையகம் வரை</string>
+  <string name="connection_info_mac_inbound" tools:machine_translated="true">ஒருமைப்பாடு: சேவையகம் முதல் வாடிக்கையாளர் வரை</string>
+  <string name="connection_info_integrated_mac" tools:machine_translated="true">குறியாக்கத்துடன் ஒருங்கிணைக்கப்பட்டது.</string>
+  <string name="connection_info_post_quantum" tools:machine_translated="true">குவாண்டம்-க்குட்பட்ட பாதுகாப்பற்ற முக்கிய பரிமாற்றம்</string>
+  <string name="connection_info_yes" tools:machine_translated="true">ஆம்</string>
+  <string name="connection_info_no" tools:machine_translated="true">இல்லை</string>
+  <string name="connection_info_port_forwards" tools:machine_translated="true">போர்ட் ஃபார்வர்டிங் (போர்ட் திசைமாற்றம்)</string>
+  <string name="connection_info_configured_source" tools:machine_translated="true">மூலத்தை அமைத்தது.</string>
+  <string name="connection_info_bound_port" tools:machine_translated="true">ஒதுக்கப்பட்ட துறை எண்</string>
+  <string name="connection_info_not_bound" tools:machine_translated="true">இணைக்கப்படவில்லை.</string>
+  <string name="connection_info_forward_status" tools:machine_translated="true">தற்போதைய போர்ட் ஃபார்வர்டிங் நிலை</string>
+  <string name="connection_info_forward_active" tools:machine_translated="true">செயலில் உள்ளது</string>
+  <string name="connection_info_forward_inactive" tools:machine_translated="true">செயல்படாத நிலை</string>
+  <string name="connection_info_forward_destination" tools:machine_translated="true">சேரும் முகவரி</string>
+  <string name="crypto_policy_title" tools:machine_translated="true">குறியாக்கக் கொள்கை</string>
+  <string name="crypto_policy_default" tools:machine_translated="true">இயல்புநிலை</string>
+  <string name="crypto_policy_future" tools:machine_translated="true">எதிர்காலம்</string>
+  <string name="crypto_policy_legacy" tools:machine_translated="true">பழைய அமைப்பு</string>
+  <string name="crypto_policy_fips" tools:machine_translated="true">எஃப்ஐபிஎஸ் வழிமுறைகள்</string>
+  <string name="crypto_policy_custom" tools:machine_translated="true">தனிப்பயன்</string>
+  <string name="crypto_policy_default_subtitle" tools:machine_translated="true">பரிந்துரைக்கப்படும் வழிமுறைகள் மற்றும் சாவி அளவுகள்</string>
+  <string name="crypto_policy_future_subtitle" tools:machine_translated="true">குவாண்டம் அல்லாத பிந்தைய குறியாக்க முறைக்கு முக்கிய பரிமாற்றத்தை கட்டாயமாக்கு.</string>
+  <string name="crypto_policy_fips_subtitle" tools:machine_translated="true">அல்காரிதம்களைக் கட்டுப்படுத்து; இது FIPS தரச்சான்றிதழ் பெற்றதல்ல.</string>
+  <string name="crypto_policy_legacy_subtitle" tools:machine_translated="true">பழைய வழிமுறைகளை இணக்கத்தன்மைக்காக அனுமதிக்கவும்.</string>
+  <string name="crypto_policy_custom_subtitle" tools:machine_translated="true">அல்காரிதம்கள் மற்றும் குறைந்தபட்ச சாவி அளவுகளைத் தேர்ந்தெடுக்கவும்.</string>
+  <string name="crypto_policy_default_summary" tools:machine_translated="true">நவீன வழிமுறைகள் மற்றும் SSH நூலகத்தால் பராமரிக்கப்படும் முக்கிய அளவு தேவைகள்.</string>
+  <string name="crypto_policy_future_summary" tools:machine_translated="true">குவாண்டம்-எதிர்ப்பு கலப்பின முக்கிய பரிமாற்றம், 256-பிட் மறையாக்க விசைகள் மற்றும் மேம்படுத்தப்பட்ட RSA விசைகள் தேவை.</string>
+  <string name="crypto_policy_fips_summary" tools:machine_translated="true">வழிமுறைகளைத் தேர்ந்தெடுப்பதைக் கட்டுப்படுத்துகிறது; FIPS சரிபார்ப்பை நிறுவவில்லை.</string>
+  <string name="crypto_policy_legacy_summary" tools:machine_translated="true">பழைய வழிமுறைகள் மற்றும் சிறிய RSA மற்றும் DH விசைகளை இணக்கத்தன்மைக்காக அனுமதிக்கிறது. நவீன வழிமுறைகளே விரும்பத்தக்கவை.</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">இயல்புநிலையைத் தனிப்பயனாக்கு. வழிமுறைத் தேர்வுகள் மற்றும் குறைந்தபட்ச முக்கிய அளவு ஆகியவை ஒன்றுக்கொன்று தொடர்பில்லாதவை.</string>
+  <string name="crypto_minimum_rsa" tools:machine_translated="true">குறைந்தபட்ச RSA பிட்கள்</string>
+  <string name="crypto_minimum_dh" tools:machine_translated="true">குறைந்தபட்ச டி.எச் பிட்கள்</string>
+  <string name="crypto_inherit_bits" tools:machine_translated="true">இயல்புநிலை அமைப்பை அப்படியே பயன்படுத்து (%1$d பிட்கள்)</string>
+  <string name="crypto_minimum_summary" tools:machine_translated="true">எதுவும் உள்ளிடாமல் விட்டால், இயல்புநிலை அமைப்பைப் பின்பற்றும். இது, வெளிப்படையாக இயக்கப்பட்டுள்ள வழிமுறைகளுக்கும் பொருந்தும்.</string>
+  <string name="crypto_minimum_invalid" tools:machine_translated="true">குறைந்தபட்சம் 1024 பிட்கள் உள்ளிடவும். DH 8192 பிட்களை தாண்டக்கூடாது.</string>
+  <string name="crypto_category_kex" tools:machine_translated="true">முக்கிய பரிமாற்ற வழிமுறைகள்</string>
+  <string name="crypto_category_cipher" tools:machine_translated="true">குறியாக்க வழிமுறைகள்</string>
+  <string name="crypto_category_mac" tools:machine_translated="true">செய்தி அங்கீகார வழிமுறைகள்</string>
+  <string name="crypto_category_hostkey" tools:machine_translated="true">ஹோஸ்ட் சாவி வழிமுறைகள்</string>
+  <string name="crypto_category_pubkey" tools:machine_translated="true">பொது-சாவி அங்கீகார வழிமுறைகள்</string>
+  <string name="crypto_mode_title" tools:machine_translated="true">தேர்வு முறை</string>
+  <string name="crypto_mode_default" tools:machine_translated="true">இயல்புநிலையை அப்படியே பயன்படுத்து.</string>
+  <string name="crypto_mode_delta" tools:machine_translated="true">இயல்புநிலையை மாற்றவும்</string>
+  <string name="crypto_mode_exact" tools:machine_translated="true">இவற்றை மட்டும் பயன்படுத்துங்கள்.</string>
+  <string name="crypto_apply" tools:machine_translated="true">பயன்படுத்து</string>
+  <string name="crypto_expression" tools:machine_translated="true">வழிமுறை வெளிப்பாடு</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">காமாவால் பிரிக்கப்பட்ட பெயர்கள். \"இயல்புநிலையை மாற்றியமை\" பகுதியில், ஒவ்வொரு பெயரின் முன்னும் ^ (முதலில் சேர்க்க), + (இறுதியில் சேர்க்க), அல்லது - (நீக்க) ஆகிய குறிகளைச் சேர்க்கவும்.</string>
+  <string name="crypto_expression_invalid" tools:machine_translated="true">தனித்துவமான SSH பெயர்களையும், ஒரே ஒரு தேர்வு முறையையும் பயன்படுத்தவும். சரியான பட்டியல்கள் காலியாக இருக்கக்கூடாது.</string>
+  <string name="crypto_effective_order" tools:machine_translated="true">செயல்படும் விருப்ப வரிசை</string>
+  <string name="crypto_algorithm_unavailable" tools:machine_translated="true">இந்தச் சாதனத்தில் கிடைக்கவில்லை; உங்கள் அமைப்பில் சேமிக்கப்பட்டுள்ளது.</string>
+  <string name="crypto_algorithm_filtered" tools:machine_translated="true">குறைந்தபட்ச சாவி அளவால் தவிர்க்கப்பட்டது.</string>
+  <string name="crypto_algorithm_default" tools:machine_translated="true">இயல்புநிலையாக இயக்கப்பட்டிருக்கிறது.</string>
+  <string name="crypto_algorithm_optional" tools:machine_translated="true">கிடைக்கிறது; இயல்புநிலை அமைப்பில் செயல்படுத்தப்படவில்லை.</string>
+  <string name="crypto_prepend" tools:machine_translated="true">முதலில் இதைத் தேர்ந்தெடுக்கவும்.</string>
+  <string name="crypto_append" tools:machine_translated="true">இணைக்கவும்</string>
+  <string name="crypto_exclude" tools:machine_translated="true">விலக்கு</string>
+  <string name="crypto_inherit" tools:machine_translated="true">இயல்புநிலையை பின்பற்றவும்.</string>
+  <string name="crypto_reason_unsupported" tools:machine_translated="true">இந்த நூலகத்தில் இது செயல்படுத்தப்படவில்லை.</string>
+  <string name="crypto_reason_unavailable" tools:machine_translated="true">நிறுவப்பட்ட மறையாக்க வழங்குநர்களுடன் கிடைக்கவில்லை.</string>
+  <string name="crypto_reason_dh_small" tools:machine_translated="true">DH குழு, அமைக்கப்பட்ட குறைந்தபட்ச அளவை விட சிறியதாக உள்ளது.</string>
+  <string name="crypto_reason_rsa_small" tools:machine_translated="true">சாவி அல்லது சான்றிதழ், ஆர்எஸ்ஏ அல்லது சான்றிதழ் கொள்கையை பூர்த்தி செய்யவில்லை.</string>
+  <string name="crypto_connection_warning" tools:machine_translated="true">எச்சரிக்கை — %1$s: %2$s: %3$s தவிர்க்கப்பட்டது (%4$s).</string>
+  <string name="crypto_no_algorithms" tools:machine_translated="true">குறியாக்கக் கொள்கை, பயன்படுத்தக்கூடிய %1$s எதுவும் இல்லாமல் உள்ளது.</string>
+  <string name="crypto_policy_failed" tools:machine_translated="true">%1$s க்கான மறையாக்கக் கொள்கை தோல்வியடைந்தது: %2$s</string>
+  <string name="crypto_policy_host" tools:machine_translated="true">குறியாக்கக் கொள்கை — %1$s</string>
+  <string name="crypto_minimums" tools:machine_translated="true">குறைந்தபட்ச சாவி அளவுகள்</string>
+  <string name="crypto_minimum_values" tools:machine_translated="true">ஆர்எஸ்ஏ: %1$d பிட்கள்; வரையறுக்கப்பட்ட-புல டிஎச்: %2$d பிட்கள்</string>
+  <string name="crypto_show_effective_order" tools:machine_translated="true">செயல்படும் விருப்ப வரிசையைக் காட்டு.</string>
+  <string name="crypto_hide_effective_order" tools:machine_translated="true">செயல்படும் விருப்ப வரிசையை மறை</string>
+  <string name="crypto_change_algorithm_state" tools:machine_translated="true">%1$s-க்கான நிலையை மாற்றுக</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ முதலில் பயன்படுத்து · + சேர் · ✓ இயல்புநிலையைப் பின்பற்று · − தவிர்க்கவும்</string>
+  <string name="keyboard_key_ctrl" tools:machine_translated="true">கண்ட்ரோல்</string>
+  <string name="keyboard_key_alt" tools:machine_translated="true">ஆல்ட்</string>
+  <string name="keyboard_key_shift" tools:machine_translated="true">ஷிஃப்ட்</string>
+  <string name="keyboard_key_escape" tools:machine_translated="true">எஸ்கேப்</string>
+  <string name="keyboard_key_tab" tools:machine_translated="true">டேப்</string>
+  <string name="keyboard_key_enter" tools:machine_translated="true">உள்ளீடு செய்</string>
+  <string name="keyboard_key_backspace" tools:machine_translated="true">பின்புலத்திற்குச் செல்</string>
+  <string name="keyboard_key_delete" tools:machine_translated="true">நீக்கு</string>
+  <string name="keyboard_key_insert" tools:machine_translated="true">செருகு</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">மேல் அம்புக்குறி</string>
+  <string name="keyboard_key_arrow_down" tools:machine_translated="true">↓</string>
+  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
+  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
+  <string name="keyboard_key_home" tools:machine_translated="true">முகப்பு</string>
+  <string name="keyboard_key_end" tools:machine_translated="true">முடிவு</string>
+  <string name="keyboard_key_page_up" tools:machine_translated="true">பக்கம் மேலே</string>
+  <string name="keyboard_key_page_down" tools:machine_translated="true">பக்கம் கீழிறக்கு</string>
+  <string name="keyboard_key_text_input" tools:machine_translated="true">உரை உள்ளீடு</string>
+  <string name="keyboard_key_toggle_compose" tools:machine_translated="true">உருவாக்கு</string>
+  <string name="keyboard_key_toggle_ime" tools:machine_translated="true">விசைப்பலகை</string>
+  <string name="keyboard_key_f1" tools:machine_translated="true">எஃப்1</string>
+  <string name="keyboard_key_f2" tools:machine_translated="true">எஃப்2</string>
+  <string name="keyboard_key_f3" tools:machine_translated="true">எஃப்3</string>
+  <string name="keyboard_key_f4" tools:machine_translated="true">எஃப்4</string>
+  <string name="keyboard_key_f5" tools:machine_translated="true">எஃப்5</string>
+  <string name="keyboard_key_f6" tools:machine_translated="true">எஃப்6</string>
+  <string name="keyboard_key_f7" tools:machine_translated="true">எஃப்7</string>
+  <string name="keyboard_key_f8" tools:machine_translated="true">எஃப்8</string>
+  <string name="keyboard_key_f9" tools:machine_translated="true">எஃப்9</string>
+  <string name="keyboard_key_f10" tools:machine_translated="true">எஃப்10</string>
+  <string name="keyboard_key_f11" tools:machine_translated="true">எஃப்11</string>
+  <string name="keyboard_key_f12" tools:machine_translated="true">எஃப்12</string>
+  <string name="keyboard_settings_title" tools:machine_translated="true">டெர்மினல் விசைப்பலகை</string>
+  <string name="keyboard_layouts" tools:machine_translated="true">விசைப்பலகை அமைப்புகள்</string>
+  <string name="keyboard_macros" tools:machine_translated="true">பகிரப்பட்ட மேக்ரோக்கள்</string>
+  <string name="keyboard_missing_macro" tools:machine_translated="true">இழந்துபோன மேக்ரோ.</string>
+  <string name="keyboard_unsupported" tools:machine_translated="true">ஆதரவற்ற கட்டமைப்பு</string>
+  <string name="keyboard_action_failed" tools:machine_translated="true">விசைப்பலகை செயல்பாடு தோல்வியடைந்தது.</string>
+  <string name="keyboard_move_up" tools:machine_translated="true">மேலே நகர்த்து</string>
+  <string name="keyboard_move_down" tools:machine_translated="true">கீழே நகர்த்தவும்.</string>
+  <string name="keyboard_move_left" tools:machine_translated="true">இடதுபுறம் நகர்த்தவும்.</string>
+  <string name="keyboard_move_right" tools:machine_translated="true">வலது பக்கம் நகர்த்தவும்.</string>
+  <string name="keyboard_off" tools:machine_translated="true">அணைக்கப்பட்டது</string>
+  <string name="keyboard_once" tools:machine_translated="true">அடுத்த பொத்தான்</string>
+  <string name="keyboard_locked" tools:machine_translated="true">பூட்டப்பட்டது.</string>
+  <string name="keyboard_new_layout" tools:machine_translated="true">புதிய அமைப்பு</string>
+  <string name="keyboard_new_macro" tools:machine_translated="true">புதிய மேக்ரோ</string>
+  <string name="keyboard_copy_suffix" tools:machine_translated="true">(நகல்)</string>
+  <string name="keyboard_back" tools:machine_translated="true">பின்</string>
+  <string name="keyboard_error" tools:machine_translated="true">மாற்றத்தை செயல்படுத்த முடியவில்லை: %1$s</string>
+  <string name="keyboard_add_layout" tools:machine_translated="true">வடிவமைப்பைச் சேர்.</string>
+  <string name="keyboard_add_macro" tools:machine_translated="true">மேக்ரோவைச் சேர்.</string>
+  <string name="keyboard_edit" tools:machine_translated="true">திருத்து</string>
+  <string name="keyboard_duplicate" tools:machine_translated="true">நகல்</string>
+  <string name="keyboard_delete" tools:machine_translated="true">நீக்கு</string>
+  <string name="keyboard_default" tools:machine_translated="true">இதை பயன்பாட்டின் இயல்புநிலை அமைப்பாகப் பயன்படுத்தவும்.</string>
+  <string name="keyboard_used_by" tools:machine_translated="true">பயன்படுத்தப்பட்டது: %1$s</string>
+  <string name="keyboard_confirm" tools:machine_translated="true">உறுதிப்படுத்துங்கள்.</string>
+  <string name="keyboard_confirm_message" tools:machine_translated="true">இந்த மாற்றத்தை உறுதிப்படுத்தவா? சேமித்த வடிவமைப்பில் செய்யப்பட்ட மாற்றங்கள் இழக்கப்படலாம். வடிவமைப்பை மீட்டமைக்கும்போது, பகிரப்பட்ட மேக்ரோக்கள் அப்படியே இருக்கும்.</string>
+  <string name="keyboard_cancel" tools:machine_translated="true">ரத்து செய்</string>
+  <string name="keyboard_name" tools:machine_translated="true">பெயர்</string>
+  <string name="keyboard_width" tools:machine_translated="true">பொத்தானின் அகலம் (டிபி, அனைத்து பொத்தான்களுக்கும்)</string>
+  <string name="keyboard_height" tools:machine_translated="true">பொத்தானின் உயரம் (டிபி, அனைத்து பொத்தான்களுக்கும்)</string>
+  <string name="keyboard_grid_help" tools:machine_translated="true">ஒரு பொத்தானைத் தட்டி அதைத் திருத்தவும். அழுத்திப் பிடித்து, பின்னர் அதை நகர்த்தவும். பிரிவுகளுக்கு இடையே இழுத்து, அதை நிலையாக வைக்கவும் அல்லது நிலையிலிருந்து நீக்கவும். பொத்தான் அளவு ஒவ்வொரு பொத்தானுக்கும் பொருந்தும்.</string>
+  <string name="keyboard_drag_button" tools:machine_translated="true">பொத்தானை மறுவரிசைப்படுத்த இழுக்கவும்.</string>
+  <string name="keyboard_add_button" tools:machine_translated="true">சாவியைச் சேர்</string>
+  <string name="keyboard_visible" tools:machine_translated="true">தெரியக்கூடியது / காணக்கூடியது</string>
+  <string name="keyboard_row" tools:machine_translated="true">வரிசை (0-ல் தொடங்கி)</string>
+  <string name="keyboard_column" tools:machine_translated="true">நிரல் (0-ல் தொடங்கி)</string>
+  <string name="keyboard_row_span" tools:machine_translated="true">வரி நீட்சி</string>
+  <string name="keyboard_column_span" tools:machine_translated="true">நிரல் நீளம்</string>
+  <string name="keyboard_remove_button" tools:machine_translated="true">நீக்கு பொத்தான்</string>
+  <string name="keyboard_save" tools:machine_translated="true">சேமி.</string>
+  <string name="keyboard_reset" tools:machine_translated="true">இயல்புநிலைக்கு மீட்டமை.</string>
+  <string name="keyboard_use_default" tools:machine_translated="true">பயன்பாட்டின் இயல்புநிலை அமைப்பைப் பயன்படுத்தவும்.</string>
+  <string name="keyboard_visual_editor" tools:machine_translated="true">காட்சி எடிட்டர்</string>
+  <string name="keyboard_text_editor" tools:machine_translated="true">உரை திருத்தி</string>
+  <string name="keyboard_macro_help" tools:machine_translated="true">ஒவ்வொரு வரியிலும் ஒரு செயல்: key ctrl+b, text \"hello\", key enter, bytes 1b 5b 41. உரை JSON சர எஸ்கேப்பிங் முறையைப் பயன்படுத்துகிறது.</string>
+  <string name="keyboard_steps" tools:machine_translated="true">மேக்ரோவின் படிநிலைகள்</string>
+  <string name="keyboard_add_text" tools:machine_translated="true">உரையைச் சேர்.</string>
+  <string name="keyboard_add_key" tools:machine_translated="true">விசையைச் சேர்.</string>
+  <string name="keyboard_add_bytes" tools:machine_translated="true">பைட்களைச் சேர்.</string>
+  <string name="keyboard_text" tools:machine_translated="true">அனுப்ப வேண்டிய உரை</string>
+  <string name="keyboard_bytes" tools:machine_translated="true">சரியான பைட்டுகள் (எக்சாடெசிமல்).</string>
+  <string name="keyboard_character" tools:machine_translated="true">எழுத்து</string>
+  <string name="terminal_key_space" tools:machine_translated="true">இடைவெளி</string>
+  <string name="terminal_key_keypad" tools:machine_translated="true">எண் விசைப்பலகை %1$s</string>
+  <string name="keyboard_button_label" tools:machine_translated="true">பொத்தானின் பெயர்</string>
+  <string name="keyboard_preset_citrus" tools:machine_translated="true">சிட்ரஸ்</string>
+  <string name="keyboard_preset_citrus_subtitle" tools:machine_translated="true">சிறிய அளவு டெர்மினல் கட்டுப்பாடுகள்</string>
+  <string name="keyboard_preset_last_stop" tools:machine_translated="true">கடைசி நிறுத்தம்</string>
+  <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">பரந்த இடவசதி கொண்ட டெர்மினல் கட்டுப்பாடுகள்</string>
+  <string name="keyboard_preset_claw" tools:machine_translated="true">கிளி</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">கிளாட் கோட் பயன்பாட்டிற்காக மேம்படுத்தப்பட்டது.</string>
+  <string name="keyboard_preset_scribe" tools:machine_translated="true">ஸ்கிரைப்</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">கோடெக்ஸ் கட்டளை வரி இடைமுகத்திற்காக மேம்படுத்தப்பட்டது.</string>
+  <string name="keyboard_choose_preset" tools:machine_translated="true">ஒரு விசைப்பலகை அமைப்பைத் தேர்ந்தெடுக்கவும்.</string>
+  <string name="keyboard_original_layout" tools:machine_translated="true">பாரம்பரிய சிபி</string>
+  <string name="keyboard_fit_to_width" tools:machine_translated="true">திரையின் அகலத்திற்கு ஏற்ப மாற்றுக</string>
+  <string name="keyboard_layer" tools:machine_translated="true">அடுக்கு %1$d</string>
+  <string name="keyboard_layer_short" tools:machine_translated="true">எண் வரிசை %1$d</string>
+  <string name="keyboard_add_layer_switch" tools:machine_translated="true">அடுக்கு மாற்ற பொத்தான்</string>
+  <string name="keyboard_layer_destination" tools:machine_translated="true">அடுக்குக்கான இலக்கு</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">அடுத்த காலியான அடுக்கு</string>
+  <string name="keyboard_fn" tools:machine_translated="true">எஃப்.என்.</string>
+  <string name="keyboard_layer_empty" tools:machine_translated="true">சேருமிட அடுக்கு காலியாக உள்ளது.</string>
+  <string name="keyboard_action_stop" tools:machine_translated="true">நிறுத்து</string>
+  <string name="keyboard_action_history" tools:machine_translated="true">சுருக்கமான வரலாறு</string>
+  <string name="keyboard_action_mode" tools:machine_translated="true">முறை</string>
+  <string name="keyboard_action_newline" tools:machine_translated="true">புதிய வரி</string>
+  <string name="keyboard_action_log" tools:machine_translated="true">பதிவு</string>
+  <string name="keyboard_action_edit" tools:machine_translated="true">திருத்து</string>
+  <string name="keyboard_action_copy" tools:machine_translated="true">நகலெடு</string>
+  <string name="keyboard_key_paste" tools:machine_translated="true">ஒட்டவும்</string>
+  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
+  <string name="keyboard_action_stop_full" tools:machine_translated="true">தடைசெய்</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">தேடல் வரலாறு</string>
+  <string name="keyboard_action_mode_full" tools:machine_translated="true">அனுமதி முறைகளை மாற்றவும்</string>
+  <string name="keyboard_action_newline_full" tools:machine_translated="true">புதிய வரியைச் செருகு</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">உரைப்பிரதியை மாற்று</string>
+  <string name="keyboard_action_edit_full" tools:machine_translated="true">வெளிப்புற எடிட்டரைத் திறக்கவும்</string>
+  <string name="keyboard_action_copy_full" tools:machine_translated="true">பதிலை நகலெடு</string>
+  <string name="macro_assign" tools:machine_translated="true">ஏற்கனவே உள்ள பகிரப்பட்ட மேக்ரோவைத் தேர்ந்தெடுக்கவும்.</string>
+  <string name="macro_import" tools:machine_translated="true">பகிர்வு செய்யப்பட்ட மேக்ரோவை இறக்குமதி செய்க</string>
+  <string name="macro_export" tools:machine_translated="true">மேக்ரோவை ஏற்றுமதி செய்க</string>
+  <string name="macro_none" tools:machine_translated="true">சேமிக்கப்பட்ட மேக்ரோக்கள் எதுவும் இல்லை.</string>
+  <string name="automation_run_macro" tools:machine_translated="true">மேக்ரோவை இயக்கு.</string>
+  <string name="macro_choose" tools:machine_translated="true">மேக்ரோவைத் தேர்ந்தெடுக்கவும்.</string>
+  <string name="macro_manage" tools:machine_translated="true">மேக்ரோக்களை நிர்வகி</string>
+  <string name="keyboard_selected" tools:machine_translated="true">தேர்ந்தெடுக்கப்பட்டது</string>
+  <string name="keyboard_app_default" tools:machine_translated="true">செயலியின் இயல்புநிலை</string>
+  <string name="keyboard_select" tools:machine_translated="true">இதைப் பயன்படுத்துங்கள்.</string>
+  <string name="keyboard_change" tools:machine_translated="true">வடிவமைப்பை மாற்றுக</string>
+  <string name="keyboard_customize" tools:machine_translated="true">தனிப்பயனாக்கு</string>
+  <string name="keyboard_edit_shared" tools:machine_translated="true">பகிரப்பட்ட வடிவமைப்பைத் திருத்து.</string>
+  <string name="keyboard_make_default" tools:machine_translated="true">இதை பயன்பாட்டின் இயல்புநிலை அமைப்பாகப் பயன்படுத்தவும்.</string>
+  <string name="keyboard_saving" tools:machine_translated="true">சேமிக்கப்படுகிறது…</string>
+  <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_copy_name" tools:machine_translated="true">தனிப்பயன்</string>
+  <string name="keyboard_reset_inherited" tools:machine_translated="true">முந்தைய அமைப்பிலிருந்து பெறப்பட்ட விசைப்பலகையைப் பயன்படுத்தவும்.</string>
+  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s — %2$s</string>
+  <string name="keyboard_from_profile" tools:machine_translated="true">“%1$s” என்ற சுயவிவரத்திலிருந்து.</string>
+  <string name="keyboard_advanced" tools:machine_translated="true">மேம்படுத்தப்பட்டது</string>
+  <string name="keyboard_usage_layout" tools:machine_translated="true">விசைப்பலகை: %1$s</string>
+  <string name="keyboard_usage_automation" tools:machine_translated="true">உள்நுழைந்த பிறகு தானியங்கி செயல்பாடு: %1$s</string>
+  <string name="keyboard_usage_profile" tools:machine_translated="true">சுருக்கம்: %1$s</string>
+  <string name="keyboard_usage_host" tools:machine_translated="true">ஹோஸ்ட்: %1$s</string>
+  <string name="keyboard_delete_layout_title" tools:machine_translated="true">\"%1$s\" தளவமைப்பை நீக்கவா?</string>
+  <string name="keyboard_delete_macro_title" tools:machine_translated="true">“%1$s” என்ற மேக்ரோவை நீக்கவா?</string>
+  <string name="keyboard_delete_layout_message" tools:machine_translated="true">இந்த அமைப்பைப் பயன்படுத்தும் கணினிகள் மற்றும் சுயவிவரங்கள், அவற்றின் இயல்புநிலை விசைப்பலகையைத் தொடர்ந்து பயன்படுத்தும். இது பயன்பாட்டின் இயல்புநிலை அமைப்பாக இருந்தால், வேறொரு அமைப்பு இயல்புநிலையாக மாறும்.</string>
+  <string name="keyboard_delete_macro_message" tools:machine_translated="true">இது, பகிரப்பட்ட நூலகத்திலிருந்து மேக்ரோவை நீக்குகிறது.</string>
+  <string name="keyboard_reset_message" tools:machine_translated="true">இந்த அமைப்பின் அசல் விசைகள் மற்றும் அளவுகளை மீட்டெடுக்கவா? நீங்கள் சேமிக்கும்போது மாற்றங்கள் செயல்படுத்தப்படும். பகிரப்பட்ட மேக்ரோக்கள் அப்படியே இருக்கும்.</string>
+  <string name="macro_shared_title" tools:machine_translated="true">பகிரப்பட்ட மேக்ரோவை திருத்தவா?</string>
+  <string name="macro_shared_message" tools:machine_translated="true">இந்த மேக்ரோ வேறு இடங்களில் பயன்படுத்தப்படுகிறது. எனவே, இதன் ஒரு பிரதியை உருவாக்கி, அல்லது அனைத்து பயனர்களுக்கும் ஏற்றவாறு பகிரப்பட்ட பதிப்பைத் திருத்தவும்.</string>
+  <string name="macro_make_copy" tools:machine_translated="true">நகலை உருவாக்குங்கள்.</string>
+  <string name="macro_edit_shared" tools:machine_translated="true">பகிரப்பட்ட மேக்ரோவை திருத்து.</string>
+  <string name="macro_global_save_notice" tools:machine_translated="true">இந்த மேக்ரோவைப் பயன்படுத்தும் அனைத்து இடங்களிலும் புதுப்பிப்புகளைச் சேமிக்கிறது, மேலும் நீங்கள் பின்னர் அதைச் சுற்றியுள்ள எடிட்டரை நீக்கினாலும், அது சேமிக்கப்படும்.</string>
+  <string name="macro_remove_uses_first" tools:machine_translated="true">இந்த மேக்ரோவை நீக்குவதற்கு முன், இந்த பயன்பாடுகளை நீக்கவும் அல்லது வேறு பயன்பாடுகளுக்கு மாற்றவும்.</string>
+  <string name="keyboard_session_only" tools:machine_translated="true">இந்த அமர்வு</string>
+  <string name="keyboard_read_only" tools:machine_translated="true">இந்த கணினி, படிக்க மட்டும் கூடியதாக உள்ளது. இதன் விசைப்பலகையை மாற்ற முடியாது.</string>
+  <string name="keyboard_manage_layouts" tools:machine_translated="true">வடிவமைப்புகளை நிர்வகிக்கவும்.</string>
+  <string name="keyboard_done" tools:machine_translated="true">முடிந்தது.</string>
+  <string name="automation_draft_host" tools:machine_translated="true">இந்த வழிமுறைகள் புதிய ஹோஸ்டில் சேமிக்கப்படும்.</string>
+  <string name="automation_no_forwards_new_host" tools:machine_translated="true">இந்த ஹோஸ்டை சேமித்து, ஃபார்வர்டிங் செயல்பாடுகளைப் பயன்படுத்துவதற்கு முன் போர்ட் ஃபார்வர்டுகளைச் சேர்க்கவும்.</string>
+  <string name="keyboard_action_type" tools:machine_translated="true">செயல்</string>
+  <string name="keyboard_action_key" tools:machine_translated="true">முக்கியம் / விசை</string>
+  <string name="keyboard_action_macro" tools:machine_translated="true">மேக்ரோ</string>
+  <string name="keyboard_action_modifier" tools:machine_translated="true">மாற்றி (அமைக்கும் கருவி)</string>
+  <string name="keyboard_action_app" tools:machine_translated="true">செயலி செயல்பாடு</string>
+  <string name="keyboard_action_layer" tools:machine_translated="true">அடுக்கு மாறவும்</string>
+  <string name="keyboard_usage_shared_layout" tools:machine_translated="true">பொதுவான வடிவமைப்பு: இதைப் பயன்படுத்துபவர்கள் அனைவருக்கும் புதுப்பிப்புகளைச் சேமித்தல்.</string>
+  <string name="keyboard_layout_unavailable" tools:machine_translated="true">இந்த விசைப்பலகை அமைப்பு தற்போது கிடைக்கவில்லை.</string>
+  <string name="keyboard_grid_advanced_help" tools:machine_translated="true">ஒவ்வொரு பிரிவிலும் வரிசைகளும், நிரல்களும் 0-ல் இருந்து தொடங்குகின்றன. ஒவ்வொரு விசையும் ஒரு வரிசை உயரம் கொண்டது. ஒரு விசை எத்தனை நிரல்களை உள்ளடக்கும் என்பதை நிரல் நீட்டிப்பு தீர்மானிக்கிறது.</string>
+  <string name="keyboard_appearance" tools:machine_translated="true">தோற்றம்</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">பின்புல நிறம்</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">உரை நிறம்</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">வெளிக்கோட்டின் நிறம்</string>
+  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="keyboard_theme_color" tools:machine_translated="true">தீம் இயல்புநிலை</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">பின்புலத்தின் ஒளிபுகும் தன்மை: %1$d%%</string>
+  <string name="keyboard_outlined" tools:machine_translated="true">வடிவமைக்கப்பட்டது</string>
+  <string name="keyboard_outline_thickness" tools:machine_translated="true">வடிவக் கோட்டின் தடிமன்: %1$.1f டிபி</string>
+  <string name="keyboard_reset_appearance" tools:machine_translated="true">தோற்றத்தை மீட்டமை.</string>
+  <string name="keyboard_appearance_state_help" tools:machine_translated="true">செயலில் உள்ள மாற்றிகள் மற்றும் அடுக்கு மாற்றிகள், கருப்பொருளின் சிறப்பம்சத்தைப் பயன்படுத்துகின்றன.</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">செயல்பாடு</string>
+  <string name="keyboard_repeat_on_hold" tools:machine_translated="true">அழுத்திப் பிடித்திருக்கும்போது மீண்டும் செய்யவும்.</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">இயல்புநிலை திரும்பத் திரும்பச் செய்யும் முறையைப் பயன்படுத்தவும்.</string>
+  <string name="keyboard_haptics_app_setting" tools:machine_translated="true">செயலியின் அமைப்பு</string>
+  <string name="keyboard_haptics_on" tools:machine_translated="true">இயக்கு</string>
+  <string name="keyboard_haptics_off" tools:machine_translated="true">அணைக்கப்பட்டது</string>
+  <string name="keyboard_haptics_value" tools:machine_translated="true">தொடு உணர்வு பின்னூட்டம்: %1$s</string>
+  <string name="keyboard_pinned_section" tools:machine_translated="true">நிலையான விசைகள்</string>
+  <string name="keyboard_scrolling_section" tools:machine_translated="true">நகர்த்தக்கூடிய விசைகள்</string>
+  <string name="keyboard_drop_section" tools:machine_translated="true">இங்கே விசைகளை இழுத்து வைக்கவும்.</string>
+  <string name="keyboard_pin_to_right" tools:machine_translated="true">வலது பக்கத்தில் நிலைநிறுத்து.</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">வடிவமைப்புகளைத் தேர்ந்தெடுக்கவும், விசைகளை விருப்பப்படி மாற்றியமைக்கவும், மேக்ரோக்களை நிர்வகிக்கவும்.</string>
+  <string name="keyboard_edit_layout_title" tools:machine_translated="true">வடிவமைப்பைத் திருத்து</string>
+  <string name="keyboard_edit_key_title" tools:machine_translated="true">திருத்து பொத்தான்</string>
+  <string name="keyboard_layout_settings" tools:machine_translated="true">அமைப்பு விருப்பங்கள்</string>
+  <string name="keyboard_mode_scrollable" tools:machine_translated="true">சுருட்டிப் பார்க்கக்கூடியது</string>
+  <string name="keyboard_mode_fit" tools:machine_translated="true">அகலத்திற்கு ஏற்ப மாற்றியமைக்கவும்.</string>
+  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
+  <string name="keyboard_canvas_title" tools:machine_translated="true">விசைப்பலகை</string>
+  <string name="keyboard_canvas_hint" tools:machine_translated="true">திருத்த, தட்டவும் · நகர்த்த, அழுத்திப் பிடித்து இழுக்கவும்</string>
+  <string name="keyboard_pinned_hint" tools:machine_translated="true">குறிப்பிடப்பட்ட விசைகள், விசைப்பலகையின் முடிவில் நிலையாக இருக்கும் (வலமிருந்து இடமாக உள்ள இடைமுகங்களில் இடதுபுறத்தில்).</string>
+  <string name="keyboard_scrolling_hint" tools:machine_translated="true">ஒரு பொத்தானை \"பிணைக்கப்பட்ட பொத்தான்கள்\" பகுதிக்கு இழுத்து, அதை விசைப்பலகையின் இறுதியில் வைக்கவும். அதை \"நகர்த்தக்கூடிய பொத்தான்கள்\" பகுதிக்கு மீண்டும் இழுத்து, பிணைப்பை நீக்கவும்.</string>
+  <string name="keyboard_group_expanded" tools:machine_translated="true">விரிவாக்கப்பட்டது</string>
+  <string name="keyboard_group_collapsed" tools:machine_translated="true">சுருக்கப்பட்டது.</string>
+  <string name="keyboard_edit_copy" tools:machine_translated="true">ஒரு நகலைத் திருத்து.</string>
+  <string name="keyboard_continue_editing" tools:machine_translated="true">தொடர்ந்து திருத்துங்கள்.</string>
+  <string name="keyboard_copy_help" tools:machine_translated="true">%1$s-க்கான ஒரு புதிய வடிவமைப்பை உருவாக்குகிறது. மற்ற பயனர்கள் தற்போதைய வடிவமைப்பையே பயன்படுத்துவார்கள்.</string>
+  <string name="keyboard_parent_save_hint" tools:machine_translated="true">இந்த ஹோஸ்ட் அல்லது சுயவிவரத்தை நீங்கள் சேமிக்கும்போது மாற்றங்கள் நடைமுறைக்கு வரும்.</string>
+  <string name="keyboard_key_save_hint" tools:machine_translated="true">இந்த பொத்தானை சேமிப்பது, வடிவமைப்பின் வரைவுப் பதிப்பை மேம்படுத்தும். உங்கள் மாற்றங்களை வைத்திருக்க, வடிவமைப்பைச் சேமிக்கவும்.</string>
+  <string name="keyboard_placement" tools:machine_translated="true">அமைவிடம்</string>
+  <string name="keyboard_show_key" tools:machine_translated="true">விசையை காட்டு.</string>
+  <string name="keyboard_pin_choice" tools:machine_translated="true">இறுதியில் இணைக்கப்பட்டது.</string>
+  <string name="keyboard_change_shortcut" tools:machine_translated="true">குறுக்குவழியை மாற்றவும்</string>
+  <string name="keyboard_action_help" tools:machine_translated="true">இந்த பொத்தானை அழுத்தும் போது என்ன செயல் நிகழ வேண்டும் என்பதைத் தேர்ந்தெடுக்கவும்.</string>
+  <string name="keyboard_appearance_summary" tools:machine_translated="true">பின்புலம், உரை மற்றும் வெளிப்புறக் கோடு</string>
+  <string name="keyboard_behavior_summary" tools:machine_translated="true">%1$s · தொடு உணர்வு: %2$s</string>
+  <string name="keyboard_repeat_off" tools:machine_translated="true">ஒருமுறை அழுத்தவும்.</string>
+  <string name="keyboard_repeat_on" tools:machine_translated="true">வைத்திருக்கும்போது மீண்டும் மீண்டும் நிகழும்.</string>
+  <string name="keyboard_advanced_summary" tools:machine_translated="true">வரிசை, நிரல் மற்றும் விசையின் அகலம்.</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">%1$d நபர்களால் பயன்படுத்தப்பட்டது</string>
+  <string name="keyboard_remove_key_message" tools:machine_translated="true">வடிவமைப்பு வரைவில் இருந்து இந்த விசையை நீக்கவா?</string>
+  <string name="keyboard_key_discard_title" tools:machine_translated="true">மாற்றியமைக்கப்பட்ட விசைகளைச் சேமிக்கவா?</string>
+  <string name="keyboard_key_discard_message" tools:machine_translated="true">இந்த மாற்றங்களை வடிவமைப்பில் பயன்படுத்துங்கள் அல்லது நிராகரிக்கவும்.</string>
+  <string name="keyboard_apply_key" tools:machine_translated="true">மாற்றங்களைப் பயன்படுத்துக</string>
+  <string name="keyboard_library_edit" tools:machine_translated="true">வடிவமைப்பைத் திருத்து.</string>
+  <string name="keyboard_key_type" tools:machine_translated="true">விசை அல்லது குறுக்குவழி</string>
+  <string name="keyboard_preview_label" tools:machine_translated="true">முன்னோட்டம்</string>
+  <string name="keyboard_own_layout" tools:machine_translated="true">தனிப்பயனாக்கப்பட்ட தேர்வு</string>
+  <string name="keyboard_inherited_selection" tools:machine_translated="true">முந்தைய வடிவமைப்பைப் பயன்படுத்துங்கள்.</string>
+  <string name="keyboard_more_layout_actions" tools:machine_translated="true">அமைப்பு மாற்றங்களுக்கான செயல்கள்</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">நிற மாதிரி</string>
+  <string name="keyboard_empty_layer" tools:machine_translated="true">இந்த அடுக்கைத் தொடங்க ஒரு பொத்தானைச் சேர்க்கவும்.</string>
+  <string name="keyboard_immediate_hint" tools:machine_translated="true">வடிவமைப்பைச் சேமிக்கும்போது, இந்த டெர்மினலில் மாற்றங்கள் உடனடியாகப் பயன்படுத்தப்படும்.</string>
+  <string name="keyboard_shared_confirm" tools:machine_translated="true">இந்த வடிவமைப்பைச் சேமிப்பது, அதைப் பயன்படுத்தும் அனைவரின் அமைப்பையும் புதுப்பிக்கும். அதற்குப் பதிலாக, நகலைத் திருத்தலாம்.</string>
+  <string name="keyboard_shared_title" tools:machine_translated="true">பகிரப்பட்ட அமைப்பை மாற்றியமைக்கவா?</string>
+  <string name="keyboard_this_configuration" tools:machine_translated="true">இந்த அமைப்பு</string>
+  <string name="keyboard_builtin_presets" tools:machine_translated="true">உள்ளமைக்கப்பட்ட முன் வரையறுக்கப்பட்ட அமைப்புகள்</string>
+  <string name="keyboard_builtin_presets_help" tools:machine_translated="true">உள்ளமைக்கப்பட்ட முன் அமைப்புகள் மாறாமல் இருக்கும். திருத்துவதன் மூலம், உங்களுக்கென ஒரு தனி நகலை உருவாக்கலாம்.</string>
+  <string name="keyboard_builtin_preset" tools:machine_translated="true">உள்ளமைக்கப்பட்ட முன் வரையறுக்கப்பட்ட அமைப்பு</string>
 </resources>
