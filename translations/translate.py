@@ -486,6 +486,13 @@ def collect_jobs(
         target_root = target_tree.getroot()
 
     index = build_target_index(target_root)
+    # Hong Kong overrides inherit shared Traditional Chinese resources on Android.
+    # Leave inherited entries absent instead of regenerating redundant overrides.
+    inherited_index = {}
+    if target_file.parent.name == "values-b+zh+Hant+HK":
+        inherited_file = target_file.parent.parent / "values-b+zh+Hant" / target_file.name
+        if inherited_file.exists():
+            inherited_index = build_target_index(load_xml(inherited_file).getroot())
     work = FileWork(source_file, target_file, target_lang, tgt_code, target_tree, target_root)
 
     for src_elem in source_root:
@@ -503,6 +510,9 @@ def collect_jobs(
             continue
 
         existing = index.get(name)
+        inherited = inherited_index.get(name)
+        if existing is None and inherited is not None and inherited.tag == src_elem.tag:
+            continue
         if not needs_translation(existing):
             continue
 
