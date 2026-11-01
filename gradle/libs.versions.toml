@@ -67,6 +67,7 @@ core = "1.19.1"
 
 [libraries]
 zmodemlib = { module = "org.connectbot.zmodemlib:zmodemlib", version.ref = "zmodemlib" }
+sshlib-legacy = { module = "org.connectbot:sshlib", version = "2.2.48" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 desugar = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar" }
 json5 = { module = "de.marhali:json5-java", version.ref = "json5" }

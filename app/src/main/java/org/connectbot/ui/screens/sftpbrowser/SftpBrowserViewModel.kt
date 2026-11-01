@@ -44,6 +44,7 @@ import org.connectbot.sftp.SftpOperations
 import org.connectbot.sftp.SftpPromptHandler
 import org.connectbot.ui.navigation.NavArgs
 import java.io.IOException
+import java.util.UUID
 import javax.inject.Inject
 
 /**
@@ -138,7 +139,7 @@ class SftpBrowserViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    private val hostId: Long = savedStateHandle.get<Long>(NavArgs.HOST_ID) ?: -1L
+    private val hostId: UUID = org.connectbot.data.EntityIds.parse(savedStateHandle.get<String>(NavArgs.HOST_ID))
 
     private val _uiState = MutableStateFlow(SftpBrowserUiState())
     val uiState: StateFlow<SftpBrowserUiState> = _uiState.asStateFlow()

@@ -602,11 +602,23 @@ tasks
         dependsOn(generateExportSchema)
     }
 
+// Lint analyzes Hilt-generated test sources, but AGP does not automatically make its
+// test-analysis tasks depend on the corresponding KSP tasks.
+tasks
+    .matching {
+        it.name.startsWith("lintAnalyze") &&
+            (it.name.endsWith("UnitTest") || it.name.endsWith("AndroidTest"))
+    }.configureEach {
+        val componentName = name.removePrefix("lintAnalyze")
+        dependsOn("ksp${componentName}Kotlin")
+    }
+
 dependencies {
     implementation(libs.zmodemlib)
     coreLibraryDesugaring(libs.desugar)
     implementation(libs.json5)
     implementation(libs.sshlib)
+    implementation(libs.sshlib.legacy)
     implementation(libs.termlib)
     implementation(libs.telnetlib)
     implementation(libs.telnetlib.ktor)
