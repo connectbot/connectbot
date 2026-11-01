@@ -119,9 +119,9 @@ LOCALE_MAP: dict[str, tuple[str, str]] = {
     "tr": ("Turkish", "tr"),
     "uk": ("Ukrainian", "uk"),
     "vi": ("Vietnamese", "vi"),
-    "zh-rCN": ("Simplified Chinese", "zh-CN"),
-    "zh-rHK": ("Traditional Chinese (Hong Kong)", "zh-HK"),
-    "zh-rTW": ("Traditional Chinese (Taiwan)", "zh-TW"),
+    "b+zh+Hans": ("Simplified Chinese", "zh-Hans"),
+    "b+zh+Hant": ("Traditional Chinese", "zh-Hant"),
+    "b+zh+Hant+HK": ("Traditional Chinese (Hong Kong)", "zh-Hant-HK"),
 }
 
 
