@@ -80,7 +80,7 @@ class SftpBrowserViewModelTest {
             hostRepository = hostRepository,
             sftpConnectionManager = connectionManager,
             dispatchers = dispatchers,
-            savedStateHandle = SavedStateHandle(mapOf("hostId" to 7L)),
+            savedStateHandle = SavedStateHandle(mapOf("hostId" to java.util.UUID(0, 7).toString())),
         )
         advanceUntilIdle()
         setConnectedState(viewModel, operations, "/home/test")
