@@ -32,7 +32,9 @@ import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.PreferenceConstants
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -70,8 +72,9 @@ class TerminalManagerForegroundTest {
 
     private fun mockBridges() = mockConstruction(TerminalBridge::class.java) { bridge, construction ->
         val host = construction.arguments()[1] as Host
+        `when`(bridge.sessionId).thenReturn(construction.arguments()[2] as Long)
         `when`(bridge.host).thenReturn(host)
-        `when`(bridge.notificationSessionId).thenReturn("session-${host.id}")
+        `when`(bridge.notificationSessionId).thenReturn("session-${construction.arguments()[2]}")
         `when`(bridge.isSessionOpen).thenReturn(true)
         `when`(bridge.sessionAttention).thenReturn(SessionAttention())
     }
@@ -170,6 +173,77 @@ class TerminalManagerForegroundTest {
             manager.onDisconnected(bridge)
             advanceUntilIdle()
             assertFalse(shadowOf(manager).isForegroundStopped)
+        }
+    }
+
+    @Test
+    fun multipleSessionsTrackIndependentIdsAndLastUsedSession() = runTest(dispatcher) {
+        val host = Host(id = UUID(0, 1), nickname = "shared")
+        `when`(manager.hostRepository.findHostById(host.id)).thenReturn(host)
+        mockBridges().use {
+            val first = manager.openConnectionForHostId(host.id)!!
+            val second = manager.openConnectionForHostId(host.id)!!
+            assertTrue(first.sessionId != second.sessionId)
+            assertEquals(listOf(first, second), manager.getConnectedBridges(host.id))
+            assertEquals(2, manager.getSessionCount(host.id))
+            assertTrue(manager.isHostConnected(host.id))
+            assertEquals(first, manager.getBridgeBySessionId(first.sessionId))
+            assertEquals(second, manager.getLastUsedBridge(host.id))
+            manager.markSessionUsed(first.sessionId)
+            assertEquals(first, manager.getLastUsedBridge(host.id))
+            manager.markSessionUsed(-1L)
+            assertEquals(first, manager.getLastUsedBridge(host.id))
+
+            manager.onDisconnected(first)
+            assertEquals(listOf(second), manager.getConnectedBridges(host.id))
+            assertEquals(second, manager.getLastUsedBridge(host.id))
+            assertNull(manager.getBridgeBySessionId(first.sessionId))
+            manager.onDisconnected(second)
+            assertEquals(0, manager.getSessionCount(host.id))
+            assertFalse(manager.isHostConnected(host.id))
+            assertTrue(manager.getConnectedBridges(host.id).isEmpty())
+            assertNull(manager.getLastUsedBridge(host.id))
+            advanceUntilIdle()
+        }
+    }
+
+    @Test
+    fun disconnectingOlderSessionPreservesMostRecentlyUsedSession() = runTest(dispatcher) {
+        val host = Host(id = UUID(0, 1), nickname = "shared")
+        val other = UUID(0, 2)
+        `when`(manager.hostRepository.findHostById(host.id)).thenReturn(host)
+        mockBridges().use {
+            val first = manager.openConnectionForHostId(host.id)!!
+            val second = manager.openConnectionForHostId(host.id)!!
+            manager.onDisconnected(first)
+            assertEquals(second, manager.getLastUsedBridge(host.id))
+            assertTrue(manager.getConnectedBridges(other).isEmpty())
+            assertEquals(0, manager.getSessionCount(other))
+            assertNull(manager.getLastUsedBridge(other))
+            assertNull(manager.getBridgeBySessionId(-1L))
+            manager.onDisconnected(second)
+            advanceUntilIdle()
+        }
+    }
+
+    @Test
+    fun lastUsedLookupFallsBackWhenPreferredSessionIsUnavailable() = runTest(dispatcher) {
+        val host = Host(id = UUID(0, 1), nickname = "shared")
+        `when`(manager.hostRepository.findHostById(host.id)).thenReturn(host)
+        mockBridges().use {
+            val bridge = manager.openConnectionForHostId(host.id)!!
+
+            @Suppress("UNCHECKED_CAST")
+            val lastUsed = TerminalManager::class.java.getDeclaredField("lastUsedSessionByHost").run {
+                isAccessible = true
+                get(manager) as MutableMap<UUID, Long>
+            }
+            lastUsed[host.id] = -1L
+            assertEquals(bridge, manager.getLastUsedBridge(host.id))
+            lastUsed.clear()
+            assertEquals(bridge, manager.getLastUsedBridge(host.id))
+            manager.onDisconnected(bridge)
+            advanceUntilIdle()
         }
     }
 }

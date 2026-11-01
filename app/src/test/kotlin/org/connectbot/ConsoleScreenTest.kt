@@ -1017,4 +1017,38 @@ class ConsoleScreenTest {
         composeTestRule.onNodeWithText(context.getString(R.string.button_close)).performClick()
         composeTestRule.onNodeWithText("server.example").assertDoesNotExist()
     }
+    private fun interactiveSessionBridge(sessionId: Long): TerminalBridge {
+        val bridge = mockConsoleBridge(sessionId = sessionId)
+        val emulator = TerminalEmulatorFactory.create()
+        `when`(bridge.transportMessages).thenReturn(MutableSharedFlow())
+        `when`(bridge.keyboardErrors).thenReturn(MutableSharedFlow())
+        `when`(bridge.terminalEmulator).thenReturn(emulator)
+        `when`(bridge.fontSizeFlow).thenReturn(MutableStateFlow(14f))
+        `when`(bridge.delKeyModeFlow).thenReturn(MutableStateFlow(DelKeyMode.Backspace))
+        `when`(bridge.promptManager).thenReturn(PromptManager())
+        `when`(bridge.keyHandler).thenReturn(TerminalKeyListener(TerminalEmulatorKeyDispatcher(emulator)))
+        return bridge
+    }
+
+    @Test
+    fun consoleMenuOpensNewSessionAndSwitchesBetweenSessionsForSameHost() {
+        val first = interactiveSessionBridge(10L)
+        val second = interactiveSessionBridge(20L)
+        val viewModel = mock(ConsoleViewModel::class.java)
+        `when`(viewModel.uiState).thenReturn(
+            MutableStateFlow(ConsoleUiState(bridges = listOf(first, second), isLoading = false)),
+        )
+        `when`(viewModel.networkStatusMessages).thenReturn(MutableSharedFlow())
+        setContent(mockConsoleViewModel = viewModel)
+        navigateToConsoleScreen(UUID(0, 1))
+        val context = composeTestRule.activity
+        composeTestRule.onNodeWithContentDescription(context.getString(R.string.button_more_options)).performClick()
+        composeTestRule.onNodeWithText(context.getString(R.string.list_host_new_session)).performClick()
+        org.mockito.Mockito.verify(viewModel).openNewSession()
+        composeTestRule.onNodeWithContentDescription(context.getString(R.string.button_more_options)).performClick()
+        composeTestRule.onNodeWithText(context.getString(R.string.console_menu_switch_session)).performClick()
+        composeTestRule.onNodeWithText(context.getString(R.string.console_menu_session_number, 1)).assertIsNotEnabled()
+        composeTestRule.onNodeWithText(context.getString(R.string.console_menu_session_number, 2)).performClick()
+        org.mockito.Mockito.verify(viewModel).selectBridge(1)
+    }
 }
