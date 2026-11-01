@@ -472,6 +472,9 @@ fun SftpBrowserScreen(
  * Triggers BiometricPrompt when the composable is displayed.
  */
 @Composable
+// These Android Keystore keys use a time-limited authentication window. A CryptoObject
+// is for per-operation keys; the Keystore enforces authorization when SSH signs the request.
+@Suppress("kotlin:S6293")
 private fun SftpBiometricPromptHandler(
     keyName: String,
     onSuccess: () -> Unit,
