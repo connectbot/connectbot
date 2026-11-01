@@ -2501,4 +2501,6 @@
     <string name="zmodem_progress_total">%1$s: %2$d / %3$d bytes</string>
     <!-- Status displayed while the Z-Modem abort sequence is being sent. -->
     <string name="zmodem_cancelling">Cancelling transfer…</string>
+	<!-- Shown in the alert dialog when a user chooses the 'disconnect' item to disconnect from a SSH or Telnet host. -->
+	<string name="disconnect_host_alert">Are you sure you want to disconnect from \'%1$s\'?</string>
 </resources>

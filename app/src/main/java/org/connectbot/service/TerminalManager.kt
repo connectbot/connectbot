@@ -73,6 +73,7 @@ import java.lang.ref.WeakReference
 import java.security.KeyPair
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
 
 /**
@@ -95,13 +96,13 @@ class TerminalManager :
         get() = _bridges.toList()
 
     // Maps for multi-session support: hostId -> list of bridges
-    private val hostBridgesMap: MutableMap<Long, MutableList<WeakReference<TerminalBridge>>> = HashMap()
+    private val hostBridgesMap: MutableMap<UUID, MutableList<WeakReference<TerminalBridge>>> = HashMap()
 
     // Quick lookup by session ID
     private val bridgesBySessionId: MutableMap<Long, WeakReference<TerminalBridge>> = HashMap()
 
     // Track last-used session per host for navigation
-    private val lastUsedSessionByHost: MutableMap<Long, Long> = HashMap()
+    private val lastUsedSessionByHost: MutableMap<UUID, Long> = HashMap()
 
     // Session ID counter (starts at 1)
     private val nextSessionId = AtomicLong(1L)
@@ -557,7 +558,7 @@ class TerminalManager :
      * @param hostId the database ID of the host
      * @return List of connected TerminalBridge objects for this host
      */
-    fun getConnectedBridges(hostId: Long): List<TerminalBridge> {
+    fun getConnectedBridges(hostId: UUID): List<TerminalBridge> {
         synchronized(_bridges) {
             return hostBridgesMap[hostId]?.mapNotNull { it.get() } ?: emptyList()
         }
@@ -581,7 +582,7 @@ class TerminalManager :
      * @param hostId the database ID of the host
      * @return number of active sessions
      */
-    fun getSessionCount(hostId: Long): Int {
+    fun getSessionCount(hostId: UUID): Int {
         synchronized(_bridges) {
             return hostBridgesMap[hostId]?.count { it.get() != null } ?: 0
         }
@@ -594,7 +595,7 @@ class TerminalManager :
      * @param hostId the database ID of the host
      * @return the last-used TerminalBridge, or the first available if none tracked
      */
-    fun getLastUsedBridge(hostId: Long): TerminalBridge? {
+    fun getLastUsedBridge(hostId: UUID): TerminalBridge? {
         synchronized(_bridges) {
             val lastSessionId = lastUsedSessionByHost[hostId]
             if (lastSessionId != null) {
@@ -625,7 +626,7 @@ class TerminalManager :
      * @param hostId the database ID of the host
      * @return true if at least one session is connected
      */
-    fun isHostConnected(hostId: Long): Boolean = getSessionCount(hostId) > 0
+    fun isHostConnected(hostId: UUID): Boolean = getSessionCount(hostId) > 0
 
     /**
      * Called by child bridge when somehow it's been disconnected.
