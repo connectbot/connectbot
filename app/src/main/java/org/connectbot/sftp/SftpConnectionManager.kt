@@ -59,6 +59,9 @@ class SftpConnectionManager @Inject constructor(
     companion object {
         private const val TAG = "CB.SftpConnMgr"
         private const val AUTH_PUBLICKEY = "publickey"
+
+        // SSH protocol authentication method name; this is not a credential.
+        @Suppress("kotlin:S6418")
         private const val AUTH_PASSWORD = "password"
         private const val AUTH_KEYBOARDINTERACTIVE = "keyboard-interactive"
         private const val AUTH_TRIES = 20
