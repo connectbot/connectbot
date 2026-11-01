@@ -36,13 +36,13 @@ import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
-import org.connectbot.transport.JumpHostProxyData
 import org.connectbot.util.HostConstants
 import org.connectbot.util.PubkeyUtils
 import java.io.IOException
 import java.nio.charset.StandardCharsets
 import java.security.KeyPair
 import java.util.Locale
+import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -68,14 +68,14 @@ class SftpConnectionManager @Inject constructor(
      * Represents an active SFTP session.
      */
     data class SftpSession(
-        val hostId: Long,
+        val hostId: UUID,
         val connection: Connection,
         val sftpClient: SFTPv3Client,
         val operations: SftpOperations,
         val jumpConnections: List<Connection> = emptyList(),
     )
 
-    private val activeSessions = mutableMapOf<Long, SftpSession>()
+    private val activeSessions = mutableMapOf<UUID, SftpSession>()
     private val sessionMutex = Mutex()
 
     /**
@@ -100,7 +100,7 @@ class SftpConnectionManager @Inject constructor(
         val keyCache = SftpAuthKeyCache()
         try {
             // Resolve ProxyJump chain before connecting to the target
-            val directJumpConnection = host.jumpHostId?.takeIf { it > 0 }?.let { jumpHostId ->
+            val directJumpConnection = host.jumpHostId?.takeIf { it != org.connectbot.data.EntityIds.NONE }?.let { jumpHostId ->
                 val jumpHost = hostRepository.findHostById(jumpHostId)
                     ?: throw IOException("Jump host (id=$jumpHostId) not found")
                 connectToJumpHost(jumpHost, promptHandler, jumpConnections, keyCache)
@@ -161,7 +161,7 @@ class SftpConnectionManager @Inject constructor(
         val jc = Connection(jumpHost.hostname, jumpHost.port)
 
         // Chained ProxyJump: this jump host itself needs a jump host
-        jumpHost.jumpHostId?.takeIf { it > 0 }?.let { nestedId ->
+        jumpHost.jumpHostId?.takeIf { it != org.connectbot.data.EntityIds.NONE }?.let { nestedId ->
             val nested = hostRepository.findHostById(nestedId)
                 ?: throw IOException("Jump host (id=$nestedId) not found")
             val nestedConnection = connectToJumpHost(nested, promptHandler, jumpConnections, keyCache)
@@ -206,7 +206,7 @@ class SftpConnectionManager @Inject constructor(
      *
      * @param hostId The ID of the host to disconnect from
      */
-    suspend fun disconnect(hostId: Long) {
+    suspend fun disconnect(hostId: UUID) {
         sessionMutex.withLock {
             activeSessions.remove(hostId)?.let { session ->
                 try {
@@ -231,7 +231,7 @@ class SftpConnectionManager @Inject constructor(
      * @param hostId The ID of the host
      * @return SftpOperations if a session exists, null otherwise
      */
-    suspend fun getOperations(hostId: Long): SftpOperations? = sessionMutex.withLock {
+    suspend fun getOperations(hostId: UUID): SftpOperations? = sessionMutex.withLock {
         activeSessions[hostId]?.operations
     }
 
@@ -241,7 +241,7 @@ class SftpConnectionManager @Inject constructor(
      * @param hostId The ID of the host
      * @return True if a session is active
      */
-    suspend fun isConnected(hostId: Long): Boolean = sessionMutex.withLock {
+    suspend fun isConnected(hostId: UUID): Boolean = sessionMutex.withLock {
         activeSessions.containsKey(hostId)
     }
 
@@ -337,7 +337,7 @@ class SftpConnectionManager @Inject constructor(
                     Log.d(TAG, "Key ${pubkey.nickname} failed: ${e.message}")
                 }
             }
-        } else if (pubkeyId > 0) {
+        } else if (pubkeyId != HostConstants.PUBKEYID_NEVER) {
             // Try specific key
             val pubkey = pubkeyRepository.getById(pubkeyId)
             if (pubkey != null) {

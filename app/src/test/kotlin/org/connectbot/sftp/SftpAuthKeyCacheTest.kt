@@ -67,7 +67,7 @@ class SftpAuthKeyCacheTest {
     }
 
     private fun biometricPubkey(id: Long, nickname: String, keystoreAlias: String) = Pubkey(
-        id = id,
+        id = java.util.UUID(0, id),
         nickname = nickname,
         type = "RSA",
         privateKey = null,
@@ -82,7 +82,7 @@ class SftpAuthKeyCacheTest {
     )
 
     private fun exportablePubkey(id: Long, nickname: String) = Pubkey(
-        id = id,
+        id = java.util.UUID(0, id),
         nickname = nickname,
         type = "RSA",
         privateKey = byteArrayOf(1),
