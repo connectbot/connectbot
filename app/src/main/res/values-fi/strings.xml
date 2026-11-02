@@ -1083,4 +1083,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">Valmiit oletusasetukset</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Valmiit oletusasetukset pysyvät ennallaan. Muokkaaminen luo oman kopiosi.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">Valmiiksi määritetty asetus</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">Ota Z-Modem-tiedostonsiirto käyttöön.</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">Tunnista SSH:n ja Telnetin kautta lähetettävät etäkäyttäjän tiedostojen lataus- ja lähetyspyynnöt.</string>
+  <string name="zmodem_title" tools:machine_translated="true">Z-Modem-tiedostonsiirto</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d tavua</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">Peruuta tiedostonsiirto</string>
+  <string name="zmodem_select" tools:machine_translated="true">Valitse tiedostot tai latauskansio.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">Tiedostonsiirto epäonnistui.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">Sulje</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d tavua</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">Siirto keskeytetään…</string>
 </resources>

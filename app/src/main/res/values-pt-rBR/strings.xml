@@ -83,4 +83,6 @@
   <string name="keyboard_delete_macro_message" tools:machine_translated="true">Isso remove a macro da biblioteca compartilhada.</string>
   <string name="keyboard_key_save_hint" tools:machine_translated="true">Salvar esta tecla atualiza o rascunho do layout. Salve o layout para manter suas alterações.</string>
   <string name="keyboard_shared_confirm" tools:machine_translated="true">Ao salvar este layout, todas as suas configurações serão atualizadas para todos os usuários. Em vez disso, você pode editar uma cópia.</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">Detecta solicitações de envio e recebimento de arquivos remotos via SSH e Telnet.</string>
+  <string name="zmodem_title" tools:machine_translated="true">Transferência de arquivo Z-Modem</string>
 </resources>

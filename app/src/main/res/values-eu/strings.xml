@@ -1083,4 +1083,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">Aurrez aurre egindako plantilla-multzoak</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Lehenagotik dauden konfigurazioak aldatu gabe mantentzen dira. Aldatzean, kopia pribatu bat sortzen da.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">Aurrez definitutako konfigurazioa</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">Gaitu Z-Modem fitxategien transferentziak.</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">SSH eta Telnet bidez egindako urruneko fitxategien igoera eta jaitsiera eskaerak hauteman.</string>
+  <string name="zmodem_title" tools:machine_translated="true">Z-Modem fitxategiaren transferentzia</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d byte</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">Transferentzia bertan behera utzi</string>
+  <string name="zmodem_select" tools:machine_translated="true">Hautatu fitxategiak edo deskarga-karpeta.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">Fitxategiaren transferentzia porrot egin du.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">Baztertu</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d byte</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">Transferentzia bertan behera uzten…</string>
 </resources>

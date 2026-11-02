@@ -1083,4 +1083,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">अन्तःनिर्मित पूर्वनिर्धारित सेटिङहरू</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">अन्तःनिर्मित पूर्वनिर्धारित सेटिङहरू अपरिवर्तित रहनेछन्। संशोधन गर्नाले तपाईंको आफ्नै प्रतिलिपि तयार हुन्छ।</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">अन्तःनिहित पूर्वनिर्धारित</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">जेड-मोडेम स्थानान्तरण सक्षम गर्नुहोस्।</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">एसएसएच र टेलनेट मार्फत रिमोट फाइल अपलोड र डाउनलोड अनुरोधहरू पत्ता लगाउनुहोस्।</string>
+  <string name="zmodem_title" tools:machine_translated="true">जेड-मोडेम फाइल स्थानान्तरण</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d बाइट्स</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">स्थानान्तरण रद्द गर्नुहोस्</string>
+  <string name="zmodem_select" tools:machine_translated="true">फाइलहरू छान्नुहोस् वा डाउनलोड फोल्डर छान्नुहोस्।</string>
+  <string name="zmodem_failed" tools:machine_translated="true">फाइल स्थानान्तरण असफल भयो।</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">रद्द गर्नुहोस्</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d बाइट्स</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">स्थानान्तरण रद्द गर्दै…</string>
 </resources>

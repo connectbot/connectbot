@@ -1091,4 +1091,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">Įdiegtieji išankstiniai nustatymai</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Įdiegtieji išankstiniai nustatymai lieka nepakeisti. Redaguodami sukuriate savo asmeninę kopiją.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">Įdiegtas numatytasis nustatymas.</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">Įjunkite Z-Modem failų perdavimą.</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">Aptikite nuotolinius failų įkėlimo ir atsisiuntimo užklausas, siunčiamas per SSH ir Telnet protokolus.</string>
+  <string name="zmodem_title" tools:machine_translated="true">Z-Modem protokolu naudojamas failų perdavimas.</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d baitų</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">Atšaukti perdavimą</string>
+  <string name="zmodem_select" tools:machine_translated="true">Pasirinkite failus arba aplanką atsisiunčiamiems failams.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">Failo perdavimas nepavyko.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">Uždaryti</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d baitų</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">Perkeliamosios operacijos atšaukimas…</string>
 </resources>

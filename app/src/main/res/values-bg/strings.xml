@@ -1083,4 +1083,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">Вградени предварителни настройки</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Вградените предварителни настройки остават непроменени. Редактирането създава ваша собствена версия.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">Вградена предварителна настройка</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">Активиране на трансферите чрез Z-Modem.</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">Открива заявки за качване и изтегляне на файлове от отдалечени устройства през SSH и Telnet.</string>
+  <string name="zmodem_title" tools:machine_translated="true">Прехвърляне на файл чрез Z-Modem.</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d байта</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">Отмени трансфера</string>
+  <string name="zmodem_select" tools:machine_translated="true">Изберете файлове или папка за изтегляне.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">Предаването на файла не успя.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">Затвори</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d байта</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">Прекъсване на трансфера…</string>
 </resources>

@@ -1083,4 +1083,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">Yerleşik ön ayarlar</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Yerleşik ön ayarlar değişmeden kalır. Düzenleme yaptığınızda kendi kopyanız oluşturulur.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">Yerleşik ön ayar</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">Z-Modem ile otomatik dosya aktarımını etkinleştir.</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">SSH ve Telnet üzerinden yapılan uzaktan dosya yükleme ve indirme isteklerini algıla.</string>
+  <string name="zmodem_title" tools:machine_translated="true">Z-Modem ile dosya aktarımı</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d bayt</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">Aktarım işlemini iptal et</string>
+  <string name="zmodem_select" tools:machine_translated="true">Dosya seçin veya indirme klasörü belirleyin.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">Dosya aktarımı başarısız oldu.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">Kapat</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d bayt</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">Aktarım iptal ediliyor…</string>
 </resources>

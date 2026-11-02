@@ -1099,4 +1099,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">الإعدادات المسبقة المدمجة</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">تظل الإعدادات المسبقة المدمجة كما هي. يؤدي التعديل إلى إنشاء نسخة خاصة بك.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">إعداد مسبق مُضمَّن</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">تفعيل عمليات نقل الملفات باستخدام بروتوكول Z-Modem.</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">اكتشاف طلبات تحميل وتنزيل الملفات عن بُعد عبر بروتوكولي SSH و Telnet.</string>
+  <string name="zmodem_title" tools:machine_translated="true">نقل ملفات باستخدام بروتوكول Z-Modem</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d بايت</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">إلغاء النقل</string>
+  <string name="zmodem_select" tools:machine_translated="true">حدد الملفات أو مجلد التنزيل.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">فشل نقل الملف.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">إغلاق</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d من أصل %3$d بايت.</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">جاري إلغاء عملية النقل…</string>
 </resources>

@@ -1083,4 +1083,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">تنظیمات پیش‌فرض داخلی</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">تنظیمات پیش‌فرض داخلی بدون تغییر باقی می‌مانند. با ویرایش، یک نسخه شخصی‌سازی‌شده ایجاد می‌شود.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">تنظیمات پیش‌فرض داخلی</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">فعال‌سازی انتقال فایل از طریق پروتکل Z-Modem</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">درخواست‌های مربوط به بارگذاری و دانلود فایل از راه دور را از طریق SSH و Telnet شناسایی کنید.</string>
+  <string name="zmodem_title" tools:machine_translated="true">انتقال فایل با پروتکل Z-Modem</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d بایت</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">انتقال را لغو کنید</string>
+  <string name="zmodem_select" tools:machine_translated="true">فایل‌ها یا پوشه دانلود را انتخاب کنید.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">انتقال فایل با شکست مواجه شد.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">بستن</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d از %3$d بایت</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">در حال لغو انتقال…</string>
 </resources>

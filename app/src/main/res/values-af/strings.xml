@@ -1083,4 +1083,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">Ingeslote voorafinstellings</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Ingeslote voorafinstellings bly onveranderd. Wanneer jy dit wysig, word jou eie weergawe geskep.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">Ingeslote vooraf ingestelde opsie.</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">Skakel Z-Modem-oordragte in.</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">Bespeur afstandbediende lêer-oplaai- en -aflaaiversoeke oor SSH en Telnet.</string>
+  <string name="zmodem_title" tools:machine_translated="true">Z-Modem-lêeroordrag</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d grepe</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">Kanselleer oordrag</string>
+  <string name="zmodem_select" tools:machine_translated="true">Kies lêers of ’n lêergids vir aflaai.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">Die lêeroordrag het misluk.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">Maak toe</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d grepe</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">Oordrag word gestaak …</string>
 </resources>

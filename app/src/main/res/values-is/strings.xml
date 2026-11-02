@@ -1083,4 +1083,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">Forstillingar sem eru fyrirfram stilltar.</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Forstillingar sem eru fyrirfram stilltar í kerfinu breytast ekki. Með því að breyta forstillingunni býrðu til þína eigin afrit.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">Forstillt snið</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">Virkaðu Z-Modem skráarsendingar.</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">Finna fyrirspurnir um að hlaða upp og niður skrám yfir SSH og Telnet.</string>
+  <string name="zmodem_title" tools:machine_translated="true">Z-Modem skráarsending</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d bæti</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">Hættu við sendingu</string>
+  <string name="zmodem_select" tools:machine_translated="true">Veldu skrá(r) eða möppu til að hlaða niður í.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">Skráarsendingin mistókst.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">Loka</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d bæti</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">Hætt við sendingu…</string>
 </resources>

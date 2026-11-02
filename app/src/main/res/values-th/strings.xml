@@ -1083,4 +1083,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">เทมเพลตเริ่มต้น</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">ค่าเริ่มต้นที่มีอยู่จะไม่เปลี่ยนแปลง การแก้ไขจะสร้างสำเนาส่วนตัวของคุณ</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">ค่าเริ่มต้นที่ตั้งไว้</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">เปิดใช้งานการถ่ายโอนไฟล์ด้วยโปรโตคอล Z-Modem</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">ตรวจจับคำขอการอัปโหลดและดาวน์โหลดไฟล์จากระยะไกลผ่าน SSH และ Telnet</string>
+  <string name="zmodem_title" tools:machine_translated="true">กำลังถ่ายโอนไฟล์ด้วยโปรโตคอล Z-Modem</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: จำนวนไบต์ที่ถ่ายโอน %2$d</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">ยกเลิกการถ่ายโอน</string>
+  <string name="zmodem_select" tools:machine_translated="true">เลือกไฟล์หรือโฟลเดอร์สำหรับดาวน์โหลด</string>
+  <string name="zmodem_failed" tools:machine_translated="true">การถ่ายโอนไฟล์ล้มเหลว</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">ปิด</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d ไบต์</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">กำลังยกเลิกการถ่ายโอนข้อมูล…</string>
 </resources>

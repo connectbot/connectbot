@@ -1087,4 +1087,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">Iebūvētie iestatījumi</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Iebūvētie iestatījumi paliek nemainīgi. Rediģējot, tiek izveidota jūsu personīgā kopija.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">Iebūvēta iepriekš iestatīta opcija.</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">Iespējojiet Z-Modem datu pārraidi.</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">Atklāj attālināto failu augšupielādes un lejupielādes pieprasījumus, izmantojot SSH un Telnet.</string>
+  <string name="zmodem_title" tools:machine_translated="true">Z-Modem failu pārraide</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d baiti</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">Atcelt pārraidi</string>
+  <string name="zmodem_select" tools:machine_translated="true">Atlasiet failus vai lejupielādes mapi.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">Failu pārraide neizdevās.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">Aizvērt</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d baiti</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">Atceļ pārsūtīšanu…</string>
 </resources>

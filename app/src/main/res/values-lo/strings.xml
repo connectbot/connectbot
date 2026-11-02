@@ -1083,4 +1083,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">ແມ່ແບບທີ່ຕິດຕັ້ງໄວ້ແລ້ວ</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">ແມ່ແບບທີ່ຕິດຕັ້ງໄວ້ຈະບໍ່ມີການປ່ຽນແປງ. ການແກ້ໄຂຈະສ້າງສຳເນົາສ່ວນຕົວຂອງທ່ານ.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">ຕັ້ງຄ່າໄວ້ລ່ວງໜ້າ</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">ເປີດການໃຊ້ງານການສົ່ງຕໍ່ຂໍ້ມູນແບບ Z-Modem</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">ກວດພົບຄຳຮ້ອງຂໍສົ່ງ ແລະ ດາວໂຫຼດໄຟລ໌ຈາກໄລຍະໄກຜ່ານ SSH ແລະ Telnet</string>
+  <string name="zmodem_title" tools:machine_translated="true">ການສົ່ງຕໍ່ໄຟລ໌ Z-Modem</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d ໄບ້</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">ຍົກເລີກການສົ່ງຂໍ້ມູນ</string>
+  <string name="zmodem_select" tools:machine_translated="true">ເລືອກໄຟລ໌ ຫຼື ໂຟນເດີເພື່ອດາວໂຫຼດ</string>
+  <string name="zmodem_failed" tools:machine_translated="true">ການສົ່ງຕໍ່ໄຟລ໌ບໍ່ສຳເລັດ.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">ປິດໜ້າຕ່າງການແຈ້ງເຕືອນກ່ຽວກັບຂໍ້ຜິດພາດໃນການສົ່ງໄຟລ໌</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d ໄບ້</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">ກຳລັງຍົກເລີກການສົ່ງຂໍ້ມູນ...</string>
 </resources>

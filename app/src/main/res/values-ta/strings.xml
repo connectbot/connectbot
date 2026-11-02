@@ -1083,4 +1083,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">உள்ளமைக்கப்பட்ட முன் வரையறுக்கப்பட்ட அமைப்புகள்</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">உள்ளமைக்கப்பட்ட முன் அமைப்புகள் மாறாமல் இருக்கும். திருத்துவதன் மூலம், உங்களுக்கென ஒரு தனி நகலை உருவாக்கலாம்.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">உள்ளமைக்கப்பட்ட முன் வரையறுக்கப்பட்ட அமைப்பு</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">Z-Modem பரிமாற்றத்தை இயக்கு.</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">SSH மற்றும் Telnet வழியாக தொலைநிலை கோப்பு பதிவேற்றம் மற்றும் பதிவிறக்கத்திற்கான கோரிக்கைகளைக் கண்டறியவும்.</string>
+  <string name="zmodem_title" tools:machine_translated="true">இஸட்-மோடெம் கோப்பு பரிமாற்றம்</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d பைட்டுகள்</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">தற்போதைய கோப்பு பரிமாற்றத்தை ரத்து செய்.</string>
+  <string name="zmodem_select" tools:machine_translated="true">கோப்புகளைத் தேர்ந்தெடுக்கவும் அல்லது பதிவிறக்க வேண்டிய கோப்புறையைத் தேர்ந்தெடுக்கவும்.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">கோப்பு பரிமாற்றம் தோல்வியடைந்தது.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">தவிர்க்கவும்</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d பைட்டுகள்</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">தரவு பரிமாற்றத்தை ரத்து செய்கிறது…</string>
 </resources>
