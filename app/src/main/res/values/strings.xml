@@ -24,13 +24,13 @@
 	<string name="app_desc">"Simple, powerful, open-source SSH client."</string>
 
 	<!-- Summary of what the ConnectBot service does; displayed in the Android running apps list -->
-	<string name="service_desc">"Maintains SSH connections and loaded pubkeys"</string>
+	<string name="service_desc">"Maintains SSH connections and loaded key pairs"</string>
 
 	<!-- Displayed in the "Help" screen to denote the copyright of this app. -->
 	<string name="app_copyright">Copyright &#xA9; Kenny Root</string>
 
-	<!-- Window title for the Pubkeys List -->
-	<string name="title_pubkey_list">"Pubkeys"</string>
+	<!-- Window title for the Key Pairs list -->
+	<string name="title_pubkey_list">"Key pairs"</string>
 	<!-- Window title for the Port Forwards List -->
 	<string name="title_port_forwards_list">"Port forwards"</string>
 	<!-- Window title for Help index -->
@@ -252,9 +252,9 @@
 	<!-- Message shown when importing font -->
 	<string name="font_importing">"Importing font…"</string>
 
-	<!-- Title of the preference used to enable or disable the back-up of pubkeys. -->
-	<string name="pref_backupkeys_title">Backup pubkeys</string>
-	<!-- Summary for the preference used to enable or disable the back-up of pubkeys. -->
+	<!-- Title of the preference used to enable or disable the back-up of key pairs. -->
+	<string name="pref_backupkeys_title">Back up key pairs</string>
+	<!-- Summary for the preference used to enable or disable the back-up of key pairs. -->
 	<string name="pref_backupkeys_summary">Keep back-ups of the private keys using Android\'s backup mechanism</string>
 
 	<!-- The category title for user interface preferences -->
@@ -691,8 +691,8 @@
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
 	<string name="format_port">"port"</string>
 
-	<!-- Menu item to open the pubkey management screen -->
-	<string name="list_menu_pubkeys">"Manage pubkeys"</string>
+	<!-- Menu item to open the key pair management screen -->
+	<string name="list_menu_pubkeys">"Manage key pairs"</string>
 	<!-- Title of the screen listing trusted SSH host keys -->
 	<string name="known_hosts_title">Known hosts</string>
 	<!-- Host editor action opening the trusted SSH host keys for the current host -->
@@ -1169,7 +1169,7 @@
 	<!-- Empty state messages -->
 	<!-- Message shown when no hosts have been configured yet -->
 	<string name="empty_hosts_message">No hosts configured</string>
-	<!-- Message shown when no public keys have been generated or imported yet -->
+	<!-- Message shown when no key pairs have been generated or imported yet -->
 	<string name="empty_pubkeys_message">No keys found.</string>
 	<!-- Message shown when no port forwards have been configured for a host -->
 	<string name="empty_port_forwards_message">No port forwards configured.</string>
@@ -1280,9 +1280,9 @@
 	<string name="hostpref_save_host">Save host</string>
 	<!-- Title shown in the app bar when editing an existing host's settings. -->
 	<string name="hostpref_setting_title">Host setting</string>
-	<!-- Text for button which, when clicked, brings up picker to import an existing pubkey. -->
-	<string name="pubkey_import_existing">Import existing pubkey</string>
-	<!-- Text for button which, when clicked, imports a pubkey from the clipboard. -->
+	<!-- Text for button which, when clicked, brings up picker to import an existing private key file. -->
+	<string name="pubkey_import_existing">Import existing private key</string>
+	<!-- Text for button which, when clicked, imports a private key from the clipboard. -->
 	<string name="pubkey_import_from_clipboard">Import from clipboard</string>
 	<!-- Label for the key content text field in the import-from-clipboard dialog. -->
 	<string name="pubkey_import_clipboard_key_label">Private key content</string>
@@ -1354,8 +1354,8 @@
 	<string name="delete_host_confirm">Are you sure you want to delete host \'%1$s\'?</string>
 	<!-- Shown in the alert dialog when a user chooses the 'forget host keys' item. -->
 	<string name="forget_host_keys_confirm">Are you sure you want to forget the stored host keys for \'%1$s\'? You will be prompted to verify the host key on the next connection.</string>
-	<!-- Menu selection to edit a pubkey details (e.g., nickname) -->
-	<string name="list_pubkey_edit">Edit pubkey</string>
+	<!-- Menu selection to edit a key pair details (e.g., nickname) -->
+	<string name="list_pubkey_edit">Edit key pair</string>
 
 	<!-- IP Version selection for host connections -->
 	<!-- Title for IP version preference in host editor -->

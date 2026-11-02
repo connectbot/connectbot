@@ -35,8 +35,8 @@
   <string name="shortcut_use_host_color">Use host colour</string>
   <string name="terminal_keyboard_text_input_button">Text entry</string>
   <string name="pref_auth_on_launch_summary">Require fingerprint, face recognition, or device PIN when opening the app</string>
-  <string name="service_desc" tools:machine_translated="true">Maintains SSH connections and loaded public keys.</string>
-  <string name="title_pubkey_list" tools:machine_translated="true">Public keys</string>
+  <string name="service_desc">Maintains SSH connections and loaded key pairs</string>
+  <string name="title_pubkey_list">Key pairs</string>
   <string name="title_port_forwards_list" tools:machine_translated="true">Port forwarding</string>
   <string name="terms_and_conditions" tools:machine_translated="true">Terms and Conditions</string>
   <string name="hints" tools:machine_translated="true">Tips</string>
@@ -80,7 +80,7 @@
   <string name="pref_localfont_title" tools:machine_translated="true">Import local font.</string>
   <string name="pref_localfont_summary" tools:machine_translated="true">Import a font file from storage (TTF, OTF).</string>
   <string name="dialog_localfont_hint" tools:machine_translated="true">Display name for the font.</string>
-  <string name="pref_backupkeys_title" tools:machine_translated="true">Back up public keys</string>
+  <string name="pref_backupkeys_title">Back up key pairs</string>
   <string name="pref_backupkeys_summary" tools:machine_translated="true">Keep backups of the private keys using Android’s backup feature.</string>
   <string name="pref_language_download_failed" tools:machine_translated="true">Download failed, tap to retry.</string>
   <string name="pref_theme_dark" tools:machine_translated="true">Dark theme</string>
@@ -166,7 +166,7 @@
   <string name="console_url_no_handler" tools:machine_translated="true">No app available to open this URL.</string>
   <string name="console_url_not_supported" tools:machine_translated="true">This type of URL is not supported.</string>
   <string name="portforward_pos" tools:machine_translated="true">Create port forwarding</string>
-  <string name="list_menu_pubkeys" tools:machine_translated="true">Manage public keys</string>
+  <string name="list_menu_pubkeys">Manage key pairs</string>
   <string name="known_hosts_title" tools:machine_translated="true">Trusted hosts</string>
   <string name="hostpref_known_hosts_summary" tools:machine_translated="true">View, import or remove the trusted SSH host keys for this host.</string>
   <string name="known_hosts_empty" tools:machine_translated="true">No known hosts found.</string>
@@ -260,7 +260,7 @@
   <string name="portforward_enabled" tools:machine_translated="true">Port forwarding enabled.</string>
   <string name="portforward_disabled" tools:machine_translated="true">Port forwarding disabled.</string>
   <string name="hostpref_setting_title" tools:machine_translated="true">Host settings</string>
-  <string name="pubkey_import_existing" tools:machine_translated="true">Import existing public key</string>
+  <string name="pubkey_import_existing">Import existing private key</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Paste from the clipboard</string>
   <string name="connection_alert_permission_message" tools:machine_translated="true">Allow notifications to see connected devices and receive alerts for terminal beeps and connection losses. Connections can still run in the background even without this permission.</string>
   <string name="connect_anyway" tools:machine_translated="true">Connect anyway.</string>
@@ -274,7 +274,7 @@
   <string name="migration_failed_help" tools:machine_translated="true">If the problem continues, please report it at %1$s, including a copy of the debug log shown above.</string>
   <string name="delete_host_confirm" tools:machine_translated="true">Are you sure you want to delete the host \'%1$s\'?</string>
   <string name="forget_host_keys_confirm" tools:machine_translated="true">Are you sure you want to delete the stored host keys for \'%1$s\'? You will be prompted to verify the host key the next time you connect.</string>
-  <string name="list_pubkey_edit" tools:machine_translated="true">Edit public key</string>
+  <string name="list_pubkey_edit">Edit key pair</string>
   <string name="hostpref_jumphost_summary" tools:machine_translated="true">Connect via another SSH host.</string>
   <string name="terminal_connecting_via_jump" tools:machine_translated="true">Connecting via jump server: %s</string>
   <string name="terminal_jump_authenticated" tools:machine_translated="true">Authenticated to jump server: %s</string>
