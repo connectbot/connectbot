@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <string name="title_eula">Licence</string>
   <string name="title_color_picker">"Pick a colour"</string>
   <string name="hostpref_color_title">"Colour category"</string>
@@ -7,8 +7,8 @@
   <string name="hostpref_colorscheme_title">"Terminal colour scheme"</string>
   <string name="profile_editor_section_icon_color">Icon Colour</string>
   <string name="profile_editor_section_color_scheme">Colour Scheme</string>
-  <string name="profile_bold_as_bright_summary">Use bright ANSI colours for bold text. Applies to new terminal sessions.</string>
-  <string name="profile_icon_color_none">None (use host colour)</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">Use bright ANSI colours for bold text. Applies to new terminal sessions.</string>
+  <string name="profile_icon_color_none" tools:machine_translated="true">None (use host colour)</string>
   <string name="list_menu_sortcolor">"Sort by colour"</string>
   <string name="title_scheme_manager">"Manage Colour Schemes"</string>
   <string name="dialog_title_new_scheme">"New Colour Scheme"</string>
@@ -27,15 +27,15 @@
   <string name="shortcut_customize_title">Customise Shortcut</string>
   <string name="shortcut_icon_color">Icon Colour</string>
   <string name="shortcut_use_host_color">Use host colour</string>
-  <string name="crypto_policy_custom_summary">Customise Default. Algorithm selections and key-size minimums are independent.</string>
-  <string name="keyboard_preset_claw_subtitle">Optimised for Claude Code</string>
-  <string name="keyboard_preset_scribe_subtitle">Optimised for Codex CLI</string>
-  <string name="keyboard_customize">Customise</string>
-  <string name="keyboard_background_color">Background colour</string>
-  <string name="keyboard_text_color">Text colour</string>
-  <string name="keyboard_outline_color">Outline colour</string>
-  <string name="keyboard_behavior">Behaviour</string>
-  <string name="keyboard_repeat_default">Use default repeat behaviour</string>
-  <string name="keyboard_navigation_summary">Choose layouts, customise keys, and manage macros</string>
-  <string name="keyboard_outline_preview">Colour preview</string>
+  <string name="crypto_policy_custom_summary" tools:machine_translated="true">Customise Default. Algorithm selections and key-size minimums are independent.</string>
+  <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">Optimised for Claude Code</string>
+  <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">Optimised for Codex CLI</string>
+  <string name="keyboard_customize" tools:machine_translated="true">Customise</string>
+  <string name="keyboard_background_color" tools:machine_translated="true">Background colour</string>
+  <string name="keyboard_text_color" tools:machine_translated="true">Text colour</string>
+  <string name="keyboard_outline_color" tools:machine_translated="true">Outline colour</string>
+  <string name="keyboard_behavior" tools:machine_translated="true">Behaviour</string>
+  <string name="keyboard_repeat_default" tools:machine_translated="true">Use default repeat behaviour</string>
+  <string name="keyboard_navigation_summary" tools:machine_translated="true">Choose layouts, customise keys, and manage macros</string>
+  <string name="keyboard_outline_preview" tools:machine_translated="true">Colour preview</string>
 </resources>
