@@ -17,11 +17,10 @@
   <string name="increase_font_shortcut">Ctrl +</string>
   <string name="decrease_font_size">Diminuir o Tamanho de Letra</string>
   <string name="decrease_font_shortcut">Ctrl -</string>
-  <string name="paste_shortcut">Ctrl-Shift-V</string>
   <string name="pubkey_generate">Gerar</string>
   <string name="pubkey_delete">Apagar chave</string>
   <string name="pubkey_gather_entropy">A recolher entropia</string>
-  <string name="pubkey_touch_prompt">Toque nesta caixa para gerar aleariedade: %1$d%% completo</string>
+  <string name="pubkey_touch_prompt" tools:machine_translated="true">Toque nesta caixa para gerar aleatoriedade: %1$d%% completo</string>
   <string name="pubkey_touch_hint">Para garantir a aleatoriedade durante a geração da chave, mova o dedo aleatoriamente sobre a caixa abaixo.</string>
   <string name="pubkey_generating">A gerar par de chaves…</string>
   <string name="pubkey_copy_private">Copiar chave privada</string>
@@ -72,7 +71,6 @@
   <string name="host_fingerprint">O servidor %1$s tem a impressão digital %2$s</string>
   <string name="host_key_verification_title">Verificação da chave do host</string>
   <string name="fingerprint_format_header">Formato da impressão digital</string>
-  <string name="host_key_type_and_size">%1$s %2$d bits</string>
   <string name="fingerprint_copy_description">Copie a impressão digital para a área de transferência</string>
   <string name="alert_passwords_do_not_match_msg">As palavras-passe não coincidem!</string>
   <string name="alert_wrong_password_msg">Palavra-passe errada!</string>
@@ -155,7 +153,8 @@
   <string name="color_red">Vermelho</string>
   <string name="color_pink">Rosa</string>
   <string name="color_purple">Roxo</string>
-  <string name="color_deep_purple">Deep Purple</string>
+  <!-- Deep purple host category color, shared by Portuguese locales. -->
+  <string name="color_deep_purple" tools:machine_translated="true">Roxo escuro</string>
   <string name="color_indigo">Índigo</string>
   <string name="color_blue">Azul</string>
   <string name="color_light_blue">Azul claro</string>
@@ -163,7 +162,8 @@
   <string name="color_teal">Azul-esverdeado</string>
   <string name="color_green">Verde</string>
   <string name="color_light_green">Verde claro</string>
-  <string name="color_lime">Lime</string>
+  <!-- Lime green host category color, shared by Portuguese locales. -->
+  <string name="color_lime" tools:machine_translated="true">Verde-lima</string>
   <string name="color_yellow">Amarelo</string>
   <string name="color_amber">Âmbar</string>
   <string name="color_orange">Laranja</string>
@@ -206,7 +206,6 @@
   <string name="profile_editor_section_icon_color">Cor do ícone</string>
   <string name="profile_editor_section_color_scheme">Esquema de cores</string>
   <string name="profile_editor_section_font">Fonte</string>
-  <string name="profile_editor_section_terminal">Terminal</string>
   <string name="profile_editor_font_family_title">Família de fontes</string>
   <string name="profile_editor_font_size_title">Tamanho da fonte: %d</string>
   <string name="profile_editor_force_size_title">Definir tamanho</string>
@@ -348,31 +347,16 @@
   <string name="image_description_down">Seta para baixo</string>
   <string name="image_description_left">Seta para esquerda</string>
   <string name="image_description_right">Seta para direita</string>
-  <string name="button_key_esc">Esc</string>
-  <string name="button_key_ctrl">Ctrl</string>
   <string name="button_key_home">Tecla Início</string>
   <string name="button_key_end">Tecla Fim</string>
   <string name="button_key_pgup">Pág. acima</string>
   <string name="button_key_pgdn">Pág. abaixo</string>
-  <string name="button_key_f1">F1</string>
-  <string name="button_key_f2">F2</string>
-  <string name="button_key_f3">F3</string>
-  <string name="button_key_f4">F4</string>
-  <string name="button_key_f5">F5</string>
-  <string name="button_key_f6">F6</string>
-  <string name="button_key_f7">F7</string>
-  <string name="button_key_f8">F8</string>
-  <string name="button_key_f9">F9</string>
-  <string name="button_key_f10">F10</string>
-  <string name="button_key_f11">F11</string>
-  <string name="button_key_f12">F12</string>
   <string name="terminal_keyboard_text_input_button">Entrada de texto</string>
   <string name="terminal_text_input_dialog_title">Entrada de texto</string>
   <string name="terminal_text_input_dialog_label">Digite o texto a ser enviado para o terminal.</string>
   <string name="terminal_text_input_resize_handle">Redimensionar</string>
   <string name="console_menu_text_input">Entrada de texto</string>
   <string name="button_send">Enviar</string>
-  <string name="button_ok">OK</string>
   <string name="button_close">Fechar</string>
   <string name="button_back">Voltar</string>
   <string name="button_navigate_up">Mova-se para cima</string>
@@ -389,7 +373,6 @@
   <string name="empty_pubkeys_message">Nenhuma chave encontrada.</string>
   <string name="empty_port_forwards_message">Nenhum encaminhamento de porta configurado.</string>
   <string name="empty_urls_message">Nenhuma URL encontrada no buffer do terminal</string>
-  <string name="console_default_title">Console</string>
   <string name="host_editor_show_advanced">Mostrar opções avançadas</string>
   <string name="host_editor_hide_advanced">Ocultar opções avançadas</string>
   <string name="resize_width_label">Largura (colunas)</string>
@@ -411,7 +394,6 @@
   <string name="pubkey_biometric_not_available">A autenticação por impressão digital não está disponível</string>
   <string name="portforward_nickname_placeholder">Servidor Web interno</string>
   <string name="portforward_port_range_error">A porta deve estar entre 1 e 65535</string>
-  <string name="portforward_destination_placeholder">localhost:80</string>
   <string name="portforward_destination_format_error">O formato deve ser: host:porta (por exemplo, localhost:80)</string>
   <string name="portforward_type_label">Tipo: %s</string>
   <string name="portforward_enable">Ativar</string>
@@ -476,7 +458,6 @@
   <string name="help_github">Código-fonte</string>
   <string name="help_report_bug">Relate um erro</string>
   <string name="help_section_donate">Apoie o desenvolvimento.</string>
-  <string name="help_donate_github">GitHub Sponsors</string>
   <string name="help_donate_coffee">Ofereça-me um café</string>
   <string name="colorscheme_default_description">Cores padrão do terminal</string>
   <string name="colorscheme_solarized_dark_description">Cores precisas para máquinas e pessoas</string>
@@ -496,9 +477,6 @@
   <string name="dialog_customterminal_hint">Tipo de terminal (por exemplo, rxvt-unicode)</string>
   <string name="dialog_custom_value_label">Insira um valor personalizado</string>
   <string name="list_camera_ctrlaspace_description">Ctrl+A seguido de Espaço</string>
-  <string name="list_camera_ctrla_description">Ctrl+A</string>
-  <string name="list_camera_esc_description">Esc</string>
-  <string name="list_camera_esc_a_description">Esc+A</string>
   <string name="list_camera_none_description">Nenhum</string>
   <string name="list_camera_text_input_description">Entrada de texto</string>
   <string name="list_menu_export_hosts">Exportar Hosts</string>
@@ -512,7 +490,6 @@
   <string name="shortcut_icon_style">Estilo do ícone</string>
   <string name="shortcut_use_host_color">Use a cor do host.</string>
   <string name="shortcut_create">Criar atalho</string>
-  <string name="icon_style_terminal">Terminal</string>
   <string name="icon_style_server">Servidor</string>
   <string name="icon_style_cloud">Nuvem</string>
   <string name="icon_style_key">Chave</string>
@@ -533,7 +510,6 @@
   <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">Todos os endereços IPv4</string>
   <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">Todos os endereços IPv6</string>
   <string name="portforward_source_addr_specific" tools:machine_translated="true">Endereço específico</string>
-  <string name="portforward_source_addr_specific_placeholder" tools:machine_translated="true">192.168.1.1</string>
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Importar da área de transferência</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Conteúdo da chave privada</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Colar do conteúdo da área de transferência</string>
@@ -550,9 +526,7 @@
   <string name="console_switch_session" tools:machine_translated="true">Alternar sessão</string>
   <string name="console_previous_session" tools:machine_translated="true">Sessão anterior</string>
   <string name="console_next_session" tools:machine_translated="true">Próxima sessão</string>
-  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
   <string name="image_description_toggle_alt_key" tools:machine_translated="true">Alternar a tecla Alt.</string>
-  <string name="button_key_ime" tools:machine_translated="true">IME</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Alternar o modo de composição para a entrada de texto do IME.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Modo de composição (IME)</string>
   <string name="hostpref_profile_edit" tools:machine_translated="true">Editar perfil selecionado</string>
@@ -568,8 +542,8 @@
   <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Caminho ou comando personalizado para o servidor Mosh (deixe em branco para usar a configuração padrão).</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">Porta UDP do Mosh</string>
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Porta UDP fixa para o Mosh (0 para seleção automática no intervalo de 60000 a 61000).</string>
-  <string name="hostpref_locale_title" tools:machine_translated="true">Localização</string>
-  <string name="hostpref_locale_summary" tools:machine_translated="true">Localização para a sessão do Mosh (por exemplo, pt_PT.UTF-8).</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">Localidade</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">Localidade para a sessão do Mosh (por exemplo, pt_PT.UTF-8).</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Versão do Mosh e código-fonte.</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">Preparando o suporte para o Mosh...</string>
@@ -623,10 +597,7 @@
   <string name="automation_progress" tools:machine_translated="true">Automação: %1$d de %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">Ação nº %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Cancelar automação</string>
-  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
-  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
   <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
-  <string name="automation_key_backspace" tools:machine_translated="true">Backspace</string>
   <string name="automation_key_delete" tools:machine_translated="true">Excluir</string>
   <string name="automation_key_up" tools:machine_translated="true">Seta para cima</string>
   <string name="automation_key_down" tools:machine_translated="true">Seta para baixo</string>
@@ -637,7 +608,6 @@
   <string name="automation_key_insert" tools:machine_translated="true">Inserir</string>
   <string name="automation_key_page_up" tools:machine_translated="true">Página Anterior</string>
   <string name="automation_key_page_down" tools:machine_translated="true">Página para baixo</string>
-  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
   <string name="automation_key_shift" tools:machine_translated="true">Tecla Shift</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f segundos</string>
   <plurals name="automation_count" tools:machine_translated="true">
@@ -663,13 +633,10 @@
   <string name="notification_channel_bells" tools:machine_translated="true">Sinais sonoros do terminal</string>
   <string name="notification_channel_connections" tools:machine_translated="true">Conexões perdidas</string>
   <string name="pref_notification_channels_title" tools:machine_translated="true">Gerenciar os canais de notificação nas configurações.</string>
-  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
   <string name="notification_connected" tools:machine_translated="true">Conectado</string>
   <string name="notification_connecting" tools:machine_translated="true">A conectar…</string>
   <string name="notification_disconnected" tools:machine_translated="true">Sessão desconectada</string>
   <string name="notification_bell" tools:machine_translated="true">Sinal sonoro do terminal</string>
-  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
-  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
   <string name="notification_mark_seen" tools:machine_translated="true">Confirmar leitura</string>
   <string name="notification_mute_bells" tools:machine_translated="true">Desativar alertas sonoros.</string>
   <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Notificações de perda de conexão.</string>
@@ -844,19 +811,12 @@
   <string name="crypto_hide_effective_order" tools:machine_translated="true">Ocultar a ordem de preferências eficaz.</string>
   <string name="crypto_change_algorithm_state" tools:machine_translated="true">Alterar o estado de %1$s.</string>
   <string name="crypto_states_help" tools:machine_translated="true">^ Priorizar primeiro · + Adicionar · ✓ Seguir o padrão · − Excluir</string>
-  <string name="keyboard_key_ctrl" tools:machine_translated="true">Ctrl</string>
-  <string name="keyboard_key_alt" tools:machine_translated="true">Alt</string>
   <string name="keyboard_key_shift" tools:machine_translated="true">Shift (tecla)</string>
-  <string name="keyboard_key_escape" tools:machine_translated="true">Esc</string>
   <string name="keyboard_key_tab" tools:machine_translated="true">Tecla Tab</string>
   <string name="keyboard_key_enter" tools:machine_translated="true">Enter/Confirmar</string>
   <string name="keyboard_key_backspace" tools:machine_translated="true">Retroceder</string>
   <string name="keyboard_key_delete" tools:machine_translated="true">Apagar</string>
   <string name="keyboard_key_insert" tools:machine_translated="true">Inserir</string>
-  <string name="keyboard_key_arrow_up" tools:machine_translated="true">↑</string>
-  <string name="keyboard_key_arrow_down" tools:machine_translated="true">↓</string>
-  <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
-  <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
   <string name="keyboard_key_home" tools:machine_translated="true">Início</string>
   <string name="keyboard_key_end" tools:machine_translated="true">Fim</string>
   <string name="keyboard_key_page_up" tools:machine_translated="true">Página Acima</string>
@@ -864,18 +824,6 @@
   <string name="keyboard_key_text_input" tools:machine_translated="true">Entrada de texto</string>
   <string name="keyboard_key_toggle_compose" tools:machine_translated="true">Compor</string>
   <string name="keyboard_key_toggle_ime" tools:machine_translated="true">Teclado</string>
-  <string name="keyboard_key_f1" tools:machine_translated="true">F1</string>
-  <string name="keyboard_key_f2" tools:machine_translated="true">F2</string>
-  <string name="keyboard_key_f3" tools:machine_translated="true">F3</string>
-  <string name="keyboard_key_f4" tools:machine_translated="true">F4</string>
-  <string name="keyboard_key_f5" tools:machine_translated="true">F5</string>
-  <string name="keyboard_key_f6" tools:machine_translated="true">F6</string>
-  <string name="keyboard_key_f7" tools:machine_translated="true">F7</string>
-  <string name="keyboard_key_f8" tools:machine_translated="true">F8</string>
-  <string name="keyboard_key_f9" tools:machine_translated="true">F9</string>
-  <string name="keyboard_key_f10" tools:machine_translated="true">F10</string>
-  <string name="keyboard_key_f11" tools:machine_translated="true">F11</string>
-  <string name="keyboard_key_f12" tools:machine_translated="true">F12</string>
   <string name="keyboard_settings_title" tools:machine_translated="true">Teclado do terminal</string>
   <string name="keyboard_layouts" tools:machine_translated="true">Layouts do teclado</string>
   <string name="keyboard_macros" tools:machine_translated="true">Macros compartilhadas</string>
@@ -938,7 +886,6 @@
   <string name="keyboard_preset_last_stop_subtitle" tools:machine_translated="true">Controles de terminal espaçosos.</string>
   <string name="keyboard_preset_claw" tools:machine_translated="true">Garra</string>
   <string name="keyboard_preset_claw_subtitle" tools:machine_translated="true">Otimizado para Claude Code.</string>
-  <string name="keyboard_preset_scribe" tools:machine_translated="true">Scribe</string>
   <string name="keyboard_preset_scribe_subtitle" tools:machine_translated="true">Otimizado para a interface de linha de comando (CLI) do Codex.</string>
   <string name="keyboard_choose_preset" tools:machine_translated="true">Escolha um modelo de teclado.</string>
   <string name="keyboard_original_layout" tools:machine_translated="true">Layout clássico do ConnectBot.</string>
@@ -948,7 +895,6 @@
   <string name="keyboard_add_layer_switch" tools:machine_translated="true">Alternar camada</string>
   <string name="keyboard_layer_destination" tools:machine_translated="true">Destino da camada</string>
   <string name="keyboard_layer_next" tools:machine_translated="true">Próxima camada com conteúdo.</string>
-  <string name="keyboard_fn" tools:machine_translated="true">FN</string>
   <string name="keyboard_layer_empty" tools:machine_translated="true">A camada de destino está vazia.</string>
   <string name="keyboard_action_stop" tools:machine_translated="true">Parar</string>
   <string name="keyboard_action_history" tools:machine_translated="true">Histórico (abreviado)</string>
@@ -958,7 +904,6 @@
   <string name="keyboard_action_edit" tools:machine_translated="true">Editar</string>
   <string name="keyboard_action_copy" tools:machine_translated="true">Copiar</string>
   <string name="keyboard_key_paste" tools:machine_translated="true">Colar</string>
-  <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
   <string name="keyboard_action_stop_full" tools:machine_translated="true">Interromper</string>
   <string name="keyboard_action_history_full" tools:machine_translated="true">Histórico de pesquisa</string>
   <string name="keyboard_action_mode_full" tools:machine_translated="true">Alternar entre os modos de permissão</string>
@@ -981,16 +926,13 @@
   <string name="keyboard_edit_shared" tools:machine_translated="true">Editar layout compartilhado</string>
   <string name="keyboard_make_default" tools:machine_translated="true">Usar como predefinição da aplicação</string>
   <string name="keyboard_saving" tools:machine_translated="true">A guardar…</string>
-  <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
   <string name="keyboard_copy_name" tools:machine_translated="true">Personalizado</string>
   <string name="keyboard_reset_inherited" tools:machine_translated="true">Use o teclado padrão.</string>
-  <string name="keyboard_inherit_named" tools:machine_translated="true">%1$s — %2$s</string>
   <string name="keyboard_from_profile" tools:machine_translated="true">Do perfil \"%1$s\"</string>
   <string name="keyboard_advanced" tools:machine_translated="true">Avançado</string>
   <string name="keyboard_usage_layout" tools:machine_translated="true">Teclado: %1$s</string>
   <string name="keyboard_usage_automation" tools:machine_translated="true">Automação após o login: %1$s</string>
   <string name="keyboard_usage_profile" tools:machine_translated="true">Perfil: %1$s</string>
-  <string name="keyboard_usage_host" tools:machine_translated="true">Host: %1$s</string>
   <string name="keyboard_delete_layout_title" tools:machine_translated="true">Eliminar o layout \"%1$s\"?</string>
   <string name="keyboard_delete_macro_title" tools:machine_translated="true">Eliminar a macro “%1$s”?</string>
   <string name="keyboard_delete_layout_message" tools:machine_translated="true">Os hosts e perfis que usam este layout utilizarão o layout de teclado padrão do sistema. Se este for o layout padrão do aplicativo, outro layout será definido como padrão.</string>
@@ -1010,7 +952,6 @@
   <string name="automation_no_forwards_new_host" tools:machine_translated="true">Salve este host e adicione as configurações de encaminhamento de porta antes de usar as ações de encaminhamento.</string>
   <string name="keyboard_action_type" tools:machine_translated="true">Ação</string>
   <string name="keyboard_action_key" tools:machine_translated="true">Tecla</string>
-  <string name="keyboard_action_macro" tools:machine_translated="true">Macro</string>
   <string name="keyboard_action_modifier" tools:machine_translated="true">Modificador</string>
   <string name="keyboard_action_app" tools:machine_translated="true">Ação do aplicativo</string>
   <string name="keyboard_action_layer" tools:machine_translated="true">Alternar camada</string>
@@ -1021,7 +962,6 @@
   <string name="keyboard_background_color" tools:machine_translated="true">Cor de fundo</string>
   <string name="keyboard_text_color" tools:machine_translated="true">Cor do texto</string>
   <string name="keyboard_outline_color" tools:machine_translated="true">Cor do contorno</string>
-  <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="keyboard_theme_color" tools:machine_translated="true">Tema padrão</string>
   <string name="keyboard_background_opacity" tools:machine_translated="true">Opacidade do fundo: %1$d%%</string>
   <string name="keyboard_outlined" tools:machine_translated="true">Com contorno</string>
@@ -1045,7 +985,6 @@
   <string name="keyboard_layout_settings" tools:machine_translated="true">Configurações de layout</string>
   <string name="keyboard_mode_scrollable" tools:machine_translated="true">Deslizável</string>
   <string name="keyboard_mode_fit" tools:machine_translated="true">Ajustar à largura.</string>
-  <string name="keyboard_dimensions_summary" tools:machine_translated="true">%1$s · %2$s × %3$s dp</string>
   <string name="keyboard_canvas_title" tools:machine_translated="true">Teclado</string>
   <string name="keyboard_canvas_hint" tools:machine_translated="true">Toque para editar · Mantenha pressionado e arraste para mover.</string>
   <string name="keyboard_pinned_hint" tools:machine_translated="true">As teclas fixas permanecem na extremidade do teclado (no lado esquerdo em interfaces da direita para a esquerda).</string>
