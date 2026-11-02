@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,41 +18,46 @@
 package org.connectbot.data.migration
 
 import android.content.Context
-import androidx.test.platform.app.InstrumentationRegistry
-import dagger.hilt.android.testing.HiltAndroidRule
-import dagger.hilt.android.testing.HiltAndroidTest
+import androidx.test.core.app.ApplicationProvider
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import org.assertj.core.api.Assertions.assertThat
 import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.di.TestDatabaseModule
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
-import javax.inject.Inject
 
-@HiltAndroidTest
+@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+@RunWith(RobolectricTestRunner::class)
 class LegacyDatabaseMigrationIntegrationTest {
 
-    @get:Rule
-    var hiltRule = HiltAndroidRule(this)
-
-    @Inject
     lateinit var database: ConnectBotDatabase
 
-    @Inject
     lateinit var migrator: DatabaseMigrator
 
-    private val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
+    private val context: Context = ApplicationProvider.getApplicationContext()
     private lateinit var hostsDbFile: File
     private lateinit var pubkeysDbFile: File
 
     @Before
     fun setUp() {
-        hiltRule.inject()
+        database = TestDatabaseModule.provideConnectBotDatabase(context)
+        val dispatcher = UnconfinedTestDispatcher()
+        migrator = DatabaseMigrator(
+            context,
+            database,
+            LegacyHostDatabaseReader(context),
+            LegacyPubkeyDatabaseReader(context),
+            CoroutineDispatchers(dispatcher, dispatcher, dispatcher),
+        )
 
         // Clean up any existing databases
         context.deleteDatabase("hosts")
@@ -66,7 +71,8 @@ class LegacyDatabaseMigrationIntegrationTest {
     @After
     fun tearDown() {
         // Clean up
-        database.clearAllTables()
+        database.close()
+        context.deleteDatabase("connectbot_test.db")
         context.deleteDatabase("hosts")
         context.deleteDatabase("pubkeys")
         context.deleteDatabase("hosts.migrated")

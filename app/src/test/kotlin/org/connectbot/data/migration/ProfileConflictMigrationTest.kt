@@ -19,20 +19,21 @@ package org.connectbot.data.migration
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import androidx.test.platform.app.InstrumentationRegistry
-import dagger.hilt.android.testing.HiltAndroidRule
-import dagger.hilt.android.testing.HiltAndroidTest
+import androidx.test.core.app.ApplicationProvider
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import org.assertj.core.api.Assertions.assertThat
 import org.connectbot.data.ConnectBotDatabase
 import org.connectbot.data.EntityIds
+import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.di.TestDatabaseModule
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 import timber.log.Timber
 import java.io.File
-import javax.inject.Inject
 
 /**
  * Integration test to reproduce issue #1806:
@@ -49,23 +50,27 @@ import javax.inject.Inject
  *
  * @see <a href="https://github.com/connectbot/connectbot/issues/1806">Issue #1806</a>
  */
-@HiltAndroidTest
+@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+@RunWith(RobolectricTestRunner::class)
 class ProfileConflictMigrationTest {
 
-    @get:Rule
-    var hiltRule = HiltAndroidRule(this)
-
-    @Inject
     lateinit var database: ConnectBotDatabase
 
-    @Inject
     lateinit var migrator: DatabaseMigrator
 
-    private val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
+    private val context: Context = ApplicationProvider.getApplicationContext()
 
     @Before
     fun setUp() {
-        hiltRule.inject()
+        database = TestDatabaseModule.provideConnectBotDatabase(context)
+        val dispatcher = UnconfinedTestDispatcher()
+        migrator = DatabaseMigrator(
+            context,
+            database,
+            LegacyHostDatabaseReader(context),
+            LegacyPubkeyDatabaseReader(context),
+            CoroutineDispatchers(dispatcher, dispatcher, dispatcher),
+        )
 
         // Clean up any existing legacy databases
         context.deleteDatabase("hosts")
@@ -81,34 +86,23 @@ class ProfileConflictMigrationTest {
     @After
     fun tearDown() {
         // Clean up
-        database.clearAllTables()
+        database.close()
+        context.deleteDatabase("connectbot_test.db")
         context.deleteDatabase("hosts")
         context.deleteDatabase("pubkeys")
         context.deleteDatabase("hosts.migrated")
         context.deleteDatabase("pubkeys.migrated")
     }
 
-    /**
-     * Verifies fix for issue #1806: UNIQUE constraint failed on profiles.id during migration.
-     *
-     * This test verifies that the fix correctly prevents the migration from running
-     * when Room already has data (including profiles), which avoids the UNIQUE constraint
-     * violation from inserting the same default-profile UUID again.
-     *
-     * The scenario:
-     * - User upgrades from stable (legacy DBs) to beta (Room with profiles)
-     * - Room database is initialized with the stable default-profile UUID
-     * - Migration should be skipped because Room already has data (profiles)
-     * - This prevents the UNIQUE constraint violation
-     */
+    /** Empty legacy databases must not trigger migration or replace the existing default profile. */
     @Test
-    fun migrationSkippedWhenRoomHasProfiles() {
+    fun emptyLegacyDatabasesPreserveExistingDefaultProfile() {
         runBlocking {
             try {
-                Timber.d("Starting test: migrationSkippedWhenRoomHasProfiles")
+                Timber.d("Starting test: emptyLegacyDatabasesPreserveExistingDefaultProfile")
 
                 // Step 1: Ensure Room database has the default profile
-                // The DI-provided database should already have this from onCreate callback
+                // The test database should already have this from onCreate callback
                 val existingProfiles = database.profileDao().getAll()
                 Timber.d("Existing profiles in Room database: ${existingProfiles.size}")
                 assertThat(existingProfiles).isNotEmpty()
@@ -132,15 +126,11 @@ class ProfileConflictMigrationTest {
                 assertThat(hostsDbFile.exists()).isTrue()
                 assertThat(pubkeysDbFile.exists()).isTrue()
 
-                // Step 3: Check if migration thinks it's needed
-                // It should return FALSE because Room already has profiles (the fix for #1806)
-                // Even though legacy DBs exist and hosts/pubkeys are empty, the presence of
-                // profiles indicates Room has already been initialized, so migration should
-                // be skipped to avoid UNIQUE constraint violation on profiles.id
+                // Exercise the real migration decision rather than reproducing its predicate.
                 val migrationNeeded = migrator.isMigrationNeeded()
                 Timber.d("Migration needed: $migrationNeeded")
                 assertThat(migrationNeeded)
-                    .describedAs("Migration should NOT be needed because Room already has profiles (fix for #1806)")
+                    .describedAs("Empty legacy databases should not trigger migration (fix for #1806)")
                     .isFalse()
 
                 // Step 4: Run migrate() anyway - it should return Success with 0 items migrated
@@ -151,7 +141,7 @@ class ProfileConflictMigrationTest {
 
                 // Step 5: Verify migration returned success (no-op) instead of failing
                 assertThat(result)
-                    .describedAs("Migration should succeed as a no-op when Room already has profiles")
+                    .describedAs("Empty legacy databases should migrate as a no-op")
                     .isInstanceOf(MigrationResult.Success::class.java)
 
                 val success = result as MigrationResult.Success

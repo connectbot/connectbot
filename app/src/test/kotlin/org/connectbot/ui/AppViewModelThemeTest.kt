@@ -34,18 +34,16 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.kotlin.any
-import org.mockito.kotlin.argumentCaptor
-import org.mockito.kotlin.eq
-import org.mockito.kotlin.isNull
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
-import org.robolectric.RobolectricTestRunner
+import org.mockito.ArgumentCaptor
+import org.mockito.ArgumentMatchers.anyBoolean
+import org.mockito.ArgumentMatchers.anyString
+import org.mockito.ArgumentMatchers.eq
+import org.mockito.ArgumentMatchers.isNull
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@RunWith(RobolectricTestRunner::class)
 class AppViewModelThemeTest {
 
     private val testDispatcher = StandardTestDispatcher()
@@ -59,23 +57,23 @@ class AppViewModelThemeTest {
     private lateinit var prefsEditor: SharedPreferences.Editor
     private lateinit var notificationPermissionHelper: NotificationPermissionHelper
     private lateinit var viewModel: AppViewModel
-    private val listenerCaptor = argumentCaptor<SharedPreferences.OnSharedPreferenceChangeListener>()
+    private val listenerCaptor = ArgumentCaptor.forClass(SharedPreferences.OnSharedPreferenceChangeListener::class.java)
 
     @Before
     fun setUp() = runTest {
         Dispatchers.setMain(testDispatcher)
-        migrator = mock()
-        prefs = mock()
-        prefsEditor = mock()
-        notificationPermissionHelper = mock()
+        migrator = mock(DatabaseMigrator::class.java)
+        prefs = mock(SharedPreferences::class.java)
+        prefsEditor = mock(SharedPreferences.Editor::class.java)
+        notificationPermissionHelper = mock(NotificationPermissionHelper::class.java)
 
-        whenever(migrator.isMigrationNeeded()).thenReturn(false)
-        whenever(prefs.edit()).thenReturn(prefsEditor)
-        whenever(prefsEditor.putBoolean(any(), any())).thenReturn(prefsEditor)
-        whenever(prefsEditor.putString(any(), any())).thenReturn(prefsEditor)
+        `when`(migrator.isMigrationNeeded()).thenReturn(false)
+        `when`(prefs.edit()).thenReturn(prefsEditor)
+        `when`(prefsEditor.putBoolean(anyString(), anyBoolean())).thenReturn(prefsEditor)
+        `when`(prefsEditor.putString(anyString(), anyString())).thenReturn(prefsEditor)
         // Default: no theme saved → SYSTEM
-        whenever(prefs.getString(eq(PreferenceConstants.THEME_MODE), isNull())).thenReturn("SYSTEM")
-        whenever(notificationPermissionHelper.isGranted()).thenReturn(true)
+        `when`(prefs.getString(eq(PreferenceConstants.THEME_MODE), isNull())).thenReturn("SYSTEM")
+        `when`(notificationPermissionHelper.isGranted()).thenReturn(true)
 
         viewModel = AppViewModel(migrator, prefs, dispatchers, notificationPermissionHelper)
         advanceUntilIdle()
@@ -95,7 +93,7 @@ class AppViewModelThemeTest {
 
     @Test
     fun themeMode_initializesFromPreference_whenDarkSaved() = runTest {
-        whenever(prefs.getString(eq(PreferenceConstants.THEME_MODE), isNull())).thenReturn("DARK")
+        `when`(prefs.getString(eq(PreferenceConstants.THEME_MODE), isNull())).thenReturn("DARK")
         val vm = AppViewModel(migrator, prefs, dispatchers, notificationPermissionHelper)
         advanceUntilIdle()
 
@@ -104,16 +102,16 @@ class AppViewModelThemeTest {
 
     @Test
     fun themeMode_updatesStateFlow_whenPreferenceChanges() = runTest {
-        whenever(prefs.getString(eq(PreferenceConstants.THEME_MODE), isNull())).thenReturn("LIGHT")
+        `when`(prefs.getString(eq(PreferenceConstants.THEME_MODE), isNull())).thenReturn("LIGHT")
 
-        listenerCaptor.firstValue.onSharedPreferenceChanged(prefs, PreferenceConstants.THEME_MODE)
+        listenerCaptor.value.onSharedPreferenceChanged(prefs, PreferenceConstants.THEME_MODE)
 
         assertEquals(ThemeMode.LIGHT, viewModel.themeMode.value)
     }
 
     @Test
     fun themeMode_doesNotUpdate_whenUnrelatedPreferenceChanges() = runTest {
-        listenerCaptor.firstValue.onSharedPreferenceChanged(prefs, "some_other_key")
+        listenerCaptor.value.onSharedPreferenceChanged(prefs, "some_other_key")
 
         assertEquals(ThemeMode.SYSTEM, viewModel.themeMode.value)
     }
