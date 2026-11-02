@@ -753,6 +753,7 @@ fun ConsoleScreen(
 
     val currentBridge = uiState.bridges
         .getOrNull(uiState.currentBridgeIndex)
+    currentBridge?.takeIf { it.transport?.supportsZmodem == true }?.let { key(it) { ZmodemTransferDialog(it) } }
     val currentBridgeId = currentBridge?.host?.id
     var fontSizeNotice by remember(currentBridge) { mutableStateOf<FontSizeNoticeState?>(null) }
     val activeProfile by currentBridge?.activeProfile?.collectAsState() ?: remember { mutableStateOf(null) }

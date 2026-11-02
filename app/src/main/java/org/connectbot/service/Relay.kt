@@ -53,6 +53,8 @@ class Relay private constructor(
     private val streamRead: (suspend (ByteArray, Int, Int) -> Int)?,
     private val manageAutomation: Boolean,
     private val outputLock: Mutex,
+    private val transferStream: Boolean = true,
+    private val transfers: ZmodemController? = bridge.zmodem,
 ) {
 
     private val running = AtomicBoolean()
@@ -98,7 +100,7 @@ class Relay private constructor(
         if (streams != null) {
             try {
                 coroutineScope {
-                    streams.forEach { stream ->
+                    streams.forEachIndexed { streamIndex, stream ->
                         var packet: ByteArray? = null
                         var packetOffset = 0
                         val relay = Relay(
@@ -121,6 +123,7 @@ class Relay private constructor(
                             },
                             manageAutomation = false,
                             outputLock = outputLock,
+                            transferStream = streamIndex == 0,
                         )
                         streamRelays.add(relay)
                         launch { relay.start() }
@@ -148,12 +151,17 @@ class Relay private constructor(
             while (isActive) {
                 val count = streamRead?.invoke(bytes, 0, bytes.size) ?: transport.read(bytes, 0, bytes.size)
                 if (count == -1) {
-                    outputLock.withLock { decoder.finish() }
+                    val trailing = if (transferStream) transfers?.finish(transport) ?: byteArrayOf() else byteArrayOf()
+                    outputLock.withLock {
+                        decoder.accept(trailing)
+                        decoder.finish()
+                    }
                     if (manageAutomation && bridge.transport === transport) transport.onReadEof()
                     return@withContext
                 }
                 if (count < 0 || count > bytes.size) throw IOException("Invalid transport read: $count")
-                outputLock.withLock { decoder.accept(bytes, length = count) }
+                val display = if (transferStream) transfers?.accept(transport, bytes.copyOf(count)) ?: bytes.copyOf(count) else bytes.copyOf(count)
+                outputLock.withLock { decoder.accept(display) }
             }
         } catch (e: IOException) {
             if (!manageAutomation) throw e
@@ -176,12 +184,19 @@ class Relay private constructor(
 
                 is TelnetOutcome.Success -> when (val input = result.value) {
                     null -> {
-                        outputLock.withLock { decoder.finish() }
+                        val trailing = transfers?.finish(transport) ?: byteArrayOf()
+                        outputLock.withLock {
+                            decoder.accept(trailing)
+                            decoder.finish()
+                        }
                         if (bridge.transport === transport) transport.onReadEof()
                         return
                     }
 
-                    is TelnetInput.Data -> outputLock.withLock { decoder.accept(input.bytes) }
+                    is TelnetInput.Data -> {
+                        val display = transfers?.accept(transport, input.bytes) ?: input.bytes
+                        outputLock.withLock { decoder.accept(display) }
+                    }
 
                     is TelnetInput.EchoChanged -> telnet.onEchoChanged(input.localEcho)
 

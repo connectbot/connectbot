@@ -153,4 +153,24 @@ class RelayStreamsTest {
         verify(transport, never()).onOutputComplete()
         verify(bridge).cancelAutomation()
     }
+
+    @Test
+    fun transferFiltersStdoutAndFlushesTailWhileStderrRemainsVisible() = runTest {
+        val transfers = mock(ZmodemController::class.java)
+        `when`(bridge.zmodem).thenReturn(transfers)
+        val packet = "protocol".toByteArray()
+        val diagnostic = "stderr".toByteArray()
+        `when`(transfers.accept(transport, packet)).thenReturn("filtered".toByteArray())
+        `when`(transfers.finish(transport)).thenReturn("tail".toByteArray())
+        stdout.send(packet)
+        stdout.close()
+        stderr.send(diagnostic)
+        stderr.close()
+        relay(StandardTestDispatcher(testScheduler)).start()
+        assertEquals("filteredtailstderr", output.toString("UTF-8"))
+        verify(transfers).accept(transport, packet)
+        verify(transfers).finish(transport)
+        verify(transfers, never()).accept(transport, diagnostic)
+        verify(transport).onOutputComplete()
+    }
 }

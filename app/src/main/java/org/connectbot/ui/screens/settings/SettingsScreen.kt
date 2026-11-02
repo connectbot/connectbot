@@ -204,6 +204,7 @@ fun SettingsScreen(
         onSwipeSessionsChange = viewModel::updateSwipeSessions,
         onVolumeFontChange = viewModel::updateVolumeFont,
         onKeepAliveChange = viewModel::updateKeepAlive,
+        onZmodemChange = viewModel::updateZmodem,
         onAlwaysVisibleChange = viewModel::updateAlwaysVisible,
         onImeToggleKeyChange = viewModel::updateImeToggleKey,
         onImeShortcutInputModeChange = viewModel::updateImeShortcutInputMode,
@@ -269,6 +270,7 @@ fun SettingsScreenContent(
     onNotificationSettingsClick: () -> Unit,
     modifier: Modifier = Modifier,
     highlightItem: String? = null,
+    onZmodemChange: (Boolean) -> Unit = {},
     onNavigateToKeyboard: () -> Unit = {},
 ) {
     Scaffold(
@@ -544,6 +546,15 @@ fun SettingsScreenContent(
 //                    onValueChange = onRotationChange,
 //                )
 //            }
+
+            item {
+                SwitchPreference(
+                    title = stringResource(R.string.pref_zmodem_title),
+                    summary = stringResource(R.string.pref_zmodem_summary),
+                    checked = uiState.zmodem,
+                    onCheckedChange = onZmodemChange,
+                )
+            }
 
             item {
                 SwitchPreference(

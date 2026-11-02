@@ -1236,6 +1236,8 @@ open class SSH : AbsTransport {
         return lastConnectionInfo
     }
 
+    override val supportsZmodem: Boolean get() = this !is Mosh
+
     override fun getOutputStreams(): List<ReceiveChannel<ByteArray>>? {
         val currentSession = session ?: return null
         if (outputDrained == null) outputDrained = CompletableDeferred()

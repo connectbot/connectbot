@@ -76,6 +76,8 @@ object PreferenceConstants {
     const val NOTIFICATION_PERMISSION_REQUESTED: String = "notificationPermissionRequested"
     const val NOTIFICATION_PERMISSION_DENIED: String = "notificationPermissionDenied"
 
+    const val ZMODEM = "zmodem"
+
     const val MOSH_RELEASE_TAG: String = "moshReleaseTag"
 
     const val SHIFT_FKEYS: String = "shiftfkeys"

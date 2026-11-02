@@ -62,6 +62,17 @@ abstract class AbsTransport {
     abstract suspend fun connect(scope: CoroutineScope, dispatchers: CoroutineDispatchers, encoding: String)
 
     /** Separate SSH streams retain independent character decoders in the relay. */
+    open val supportsZmodem: Boolean = false
+
+    open suspend fun writeTransfer(buffer: ByteArray) = write(buffer)
+
+    /** Abort is ASCII control data and remains legal if Telnet BINARY was refused or revoked. */
+    open suspend fun writeTransferAbort(buffer: ByteArray) = writeTransfer(buffer)
+
+    open suspend fun prepareTransfer() = Unit
+
+    open fun verifyTransfer() = Unit
+
     open fun getOutputStreams(): List<ReceiveChannel<ByteArray>>? = null
 
     open suspend fun onOutputComplete() = Unit
