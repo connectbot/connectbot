@@ -19,6 +19,7 @@ package org.connectbot.ui
 
 import android.app.Activity
 import android.content.Intent
+import androidx.core.content.IntentCompat
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import org.connectbot.R
@@ -64,7 +65,12 @@ class MainActivityShortcutTest {
 
     @Test
     fun namedHostKeepsItsShortcutLabel() {
-        createShortcut(Host(id = UUID(0, 1), nickname = "Production", hostname = "example.org"))
+        val host = Host(id = UUID(0, 1), nickname = "Production", hostname = "example.org")
+        createShortcut(host)
+        val destination = IntentCompat.getParcelableExtra(shadowOf(activity).resultIntent, Intent.EXTRA_SHORTCUT_INTENT, Intent::class.java)
+        assertEquals(Intent.ACTION_VIEW, destination?.action)
+        assertEquals(host.getUri(), destination?.data)
+        assertEquals(Intent.FLAG_ACTIVITY_CLEAR_TOP, destination?.flags)
 
         assertEquals("Production", shadowOf(activity).resultIntent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME))
     }

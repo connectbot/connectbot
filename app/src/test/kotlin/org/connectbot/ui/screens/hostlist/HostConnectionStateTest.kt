@@ -38,12 +38,9 @@ import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
 class HostConnectionStateTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test

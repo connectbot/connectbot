@@ -19,9 +19,7 @@ package org.connectbot
 
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ShortcutInfo
 import android.os.Build
-import androidx.core.content.IntentCompat
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -93,30 +91,6 @@ class MainActivityTest {
 
             assertNotNull("Shortcut should create connection", bridge)
             assertTrue("Shortcut host should be temporary", bridge.host.isTemporary)
-        }
-    }
-
-    @Test
-    fun createShortcut_usesModernShortcutInfoCompat() {
-        assumeTrue(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-
-        val createShortcutIntent = Intent(Intent.ACTION_CREATE_SHORTCUT).apply {
-            setClass(context, MainActivity::class.java)
-        }
-
-        ActivityScenario.launch<MainActivity>(createShortcutIntent).use { scenario ->
-            scenario.awaitTerminalManager()
-            var resultIntent: Intent? = null
-            scenario.onActivity { activity ->
-                if (activity.isFinishing) {
-                    resultIntent = activity.intent
-                }
-            }
-
-            if (resultIntent != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val shortcutInfo = resultIntent?.let { IntentCompat.getParcelableExtra(it, Intent.EXTRA_SHORTCUT_INTENT, ShortcutInfo::class.java) }
-                assertNotNull("Result should contain ShortcutInfo for modern Android versions", shortcutInfo)
-            }
         }
     }
 

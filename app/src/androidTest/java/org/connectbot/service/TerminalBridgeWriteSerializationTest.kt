@@ -33,6 +33,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -68,6 +69,7 @@ import java.net.ServerSocket
 import java.util.UUID
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.CountDownLatch
+import java.util.concurrent.Executor
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -417,12 +419,15 @@ class TerminalBridgeWriteSerializationTest {
         override fun isSessionOpen() = false
     }
 
-    private fun withInputBridge(test: (TerminalBridge) -> Unit) {
+    private fun withInputBridge(
+        dispatchers: CoroutineDispatchers = CoroutineDispatchers(Dispatchers.Default, Dispatchers.IO, Dispatchers.Main),
+        test: (TerminalBridge) -> Unit,
+    ) {
         ActivityScenario.launch<MainActivity>(Intent(context, MainActivity::class.java)).use { scenario ->
             var activity: MainActivity? = null
             scenario.onActivity { activity = it }
             val manager = runBlocking { requireNotNull(activity).waitUntilServiceBound() }.terminalManager
-            val bridge = TerminalBridge(manager, Host(nickname = "Configured input test", protocol = "local"), CoroutineDispatchers(Dispatchers.Default, Dispatchers.IO, Dispatchers.Main))
+            val bridge = TerminalBridge(manager, Host(nickname = "Configured input test", protocol = "local"), dispatchers)
             try {
                 test(bridge)
             } finally {
@@ -433,29 +438,40 @@ class TerminalBridgeWriteSerializationTest {
 
     private fun macro(vararg text: String): String = MacroFormat.encode(text.map { MacroAction.Text(it) })
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun configuredKeysAndMacrosCannotMoveToReplacementTransport() = withInputBridge { bridge ->
-        val entered = kotlinx.coroutines.CompletableDeferred<Unit>()
-        val release = kotlinx.coroutines.CompletableDeferred<Unit>()
-        val original = RecordingInputTransport {
-            entered.complete(Unit)
-            release.await()
-        }
-        val replacement = RecordingInputTransport()
-        try {
-            bridge.transport = original
-            bridge.sendKeyboardMacro(macro("started", "old remainder"))
-            runBlocking { withTimeout(5000) { entered.await() } }
-            bridge.sendConfiguredKey("enter")
-            bridge.sendKeyboardMacro(macro("queued"))
-            bridge.transport = replacement
-            bridge.sendKeyboardMacro(macro("new"))
-            release.complete(Unit)
-            runBlocking { withTimeout(5000) { while (replacement.text() != "new") delay(10) } }
-            assertEquals("started", original.text())
-            assertEquals("new", replacement.text())
-        } finally {
-            release.complete(Unit)
+    fun configuredKeysAndMacrosCannotMoveToReplacementTransport() = runTest {
+        val dispatcher = StandardTestDispatcher(testScheduler)
+        // Exercise writes that finish inline as well as the explicitly blocked original write.
+        val ioDispatcher = Executor { it.run() }.asCoroutineDispatcher()
+        withInputBridge(CoroutineDispatchers(default = dispatcher, io = ioDispatcher, main = ioDispatcher)) { bridge ->
+            val entered = kotlinx.coroutines.CompletableDeferred<Unit>()
+            val release = kotlinx.coroutines.CompletableDeferred<Unit>()
+            val original = RecordingInputTransport {
+                entered.complete(Unit)
+                release.await()
+            }
+            val replacement = RecordingInputTransport()
+            try {
+                bridge.transport = original
+                bridge.sendKeyboardMacro(macro("started", "old remainder"))
+                runCurrent()
+                assertTrue(entered.isCompleted)
+                bridge.sendConfiguredKey("enter")
+                bridge.sendKeyboardMacro(macro("queued"))
+                bridge.transport = replacement
+                bridge.sendKeyboardMacro(macro("new"))
+                release.complete(Unit)
+                runCurrent()
+                assertEquals("new", replacement.text())
+                // Also verify a subsequent write completing inline after the queue has drained.
+                bridge.sendKeyboardMacro(macro("!"))
+                runCurrent()
+                assertEquals("started", original.text())
+                assertEquals("new!", replacement.text())
+            } finally {
+                release.complete(Unit)
+            }
         }
     }
 

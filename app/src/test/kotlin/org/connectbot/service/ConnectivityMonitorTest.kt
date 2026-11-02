@@ -155,6 +155,22 @@ class ConnectivityMonitorTest {
         assertEquals(setOf("172.16.1.101"), connectivityMonitor.getCurrentNetworkInfo()!!.ipAddresses)
     }
 
+    @Test
+    @TargetApi(29)
+    fun `validated cellular network is reported as connected`() {
+        val network = mock(Network::class.java)
+        val capabilities = mock(NetworkCapabilities::class.java)
+        `when`(capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)).thenReturn(true)
+        `when`(capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)).thenReturn(true)
+        `when`(connectivityManager.getNetworkCapabilities(network)).thenReturn(capabilities)
+        `when`(connectivityManager.getLinkProperties(network)).thenReturn(LinkProperties())
+
+        defaultCallback().onAvailable(network)
+
+        assertEquals(NetworkCapabilities.TRANSPORT_CELLULAR, connectivityMonitor.getCurrentNetworkInfo()!!.networkType)
+        assertTrue(connectivityMonitor.getCurrentNetworkInfo()!!.isConnected)
+    }
+
     private fun defaultCallback(): ConnectivityManager.NetworkCallback {
         val field = connectivityMonitor.javaClass.getDeclaredField("defaultNetworkCallback")
         field.isAccessible = true
