@@ -815,7 +815,7 @@
   <string name="crypto_mode_exact" tools:machine_translated="true">Χρησιμοποιήστε μόνο αυτά.</string>
   <string name="crypto_apply" tools:machine_translated="true">Εφαρμογή</string>
   <string name="crypto_expression" tools:machine_translated="true">Έκφραση αλγορίθμου</string>
-  <string name="crypto_expression_help" tools:machine_translated="true">Ονόματα που διαχωρίζονται με κόμμα. Στην ενότητα «Τροποποίηση προεπιλογών», προσθέστε στην αρχή κάθε ονόματος το σύμβολο ^ (πρώτο), στο τέλος το σύμβολο + (προσθήκη) ή αφαιρέστε το όνομα χρησιμοποιώντας το σύμβολο - (αποκλεισμός).</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">Ονόματα χωρισμένα με κόμμα. Στην «Τροποποίηση προεπιλογών», βάλτε πριν από κάθε όνομα ένα από τα σύμβολα: ^ (πρώτο στη λίστα), + (προσθήκη στο τέλος της λίστας) ή - (αποκλεισμός).</string>
   <string name="crypto_expression_invalid" tools:machine_translated="true">Χρησιμοποιήστε μοναδικά ονόματα SSH και μία μόνο επιλογή λειτουργίας. Οι ακριβείς λίστες δεν πρέπει να είναι κενές.</string>
   <string name="crypto_effective_order" tools:machine_translated="true">Ισχύουσα σειρά προτεραιότητας.</string>
   <string name="crypto_algorithm_unavailable" tools:machine_translated="true">Δεν είναι διαθέσιμο σε αυτή τη συσκευή· διατηρείται στη διαμόρφωσή σας.</string>
@@ -956,10 +956,10 @@
   <string name="keyboard_key_paste" tools:machine_translated="true">Επικόλληση</string>
   <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
   <string name="keyboard_action_stop_full" tools:machine_translated="true">Διακόπτω</string>
-  <string name="keyboard_action_history_full" tools:machine_translated="true">Ιστορικό αναζητήσεων</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Αναζήτηση στο ιστορικό εντολών</string>
   <string name="keyboard_action_mode_full" tools:machine_translated="true">Εναλλαγή μεταξύ των διαθέσιμων τρόπων ρύθμισης δικαιωμάτων.</string>
   <string name="keyboard_action_newline_full" tools:machine_translated="true">Εισαγωγή νέας γραμμής</string>
-  <string name="keyboard_action_log_full" tools:machine_translated="true">Ενεργοποίηση/απενεργοποίηση υποτίτλων</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">Εμφάνιση/απόκρυψη καταγραφής συνομιλίας</string>
   <string name="keyboard_action_edit_full" tools:machine_translated="true">Άνοιγμα εξωτερικού επεξεργαστή</string>
   <string name="keyboard_action_copy_full" tools:machine_translated="true">Αντιγραφή απάντησης</string>
   <string name="macro_assign" tools:machine_translated="true">Αντιστοιχίστε μακροεντολή.</string>
@@ -1019,7 +1019,7 @@
   <string name="keyboard_outline_color" tools:machine_translated="true">Χρώμα περιγράμματος</string>
   <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="keyboard_theme_color" tools:machine_translated="true">Προεπιλεγμένο θέμα</string>
-  <string name="keyboard_background_opacity" tools:machine_translated="true">Διαφάνεια φόντου: %1$d%%</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Αδιαφάνεια φόντου: %1$d%%</string>
   <string name="keyboard_outlined" tools:machine_translated="true">Με περίγραμμα</string>
   <string name="keyboard_outline_thickness" tools:machine_translated="true">Πάχος περιγράμματος: %1$.1f dp</string>
   <string name="keyboard_reset_appearance" tools:machine_translated="true">Επαναφορά εμφάνισης</string>

@@ -960,7 +960,7 @@
   <string name="keyboard_key_paste" tools:machine_translated="true">Incolla</string>
   <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
   <string name="keyboard_action_stop_full" tools:machine_translated="true">Interrompi</string>
-  <string name="keyboard_action_history_full" tools:machine_translated="true">Cronologia ricerche</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Cerca nella cronologia dei comandi</string>
   <string name="keyboard_action_mode_full" tools:machine_translated="true">Cicla tra le diverse modalità di autorizzazione.</string>
   <string name="keyboard_action_newline_full" tools:machine_translated="true">Inserisci un nuovo rigo</string>
   <string name="keyboard_action_log_full" tools:machine_translated="true">Attiva/disattiva la trascrizione.</string>

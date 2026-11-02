@@ -956,10 +956,10 @@
   <string name="keyboard_key_paste" tools:machine_translated="true">Beillesztés</string>
   <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
   <string name="keyboard_action_stop_full" tools:machine_translated="true">Megszakítás</string>
-  <string name="keyboard_action_history_full" tools:machine_translated="true">Keresési előzmények</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Keresés a parancselőzményekben</string>
   <string name="keyboard_action_mode_full" tools:machine_translated="true">Váltakozzon a jogosultsági módok között.</string>
   <string name="keyboard_action_newline_full" tools:machine_translated="true">Új sor beszúrása</string>
-  <string name="keyboard_action_log_full" tools:machine_translated="true">Felirat be-/ki kapcsolása</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">Beszélgetés átiratának megjelenítése/elrejtése</string>
   <string name="keyboard_action_edit_full" tools:machine_translated="true">Nyissa meg a külső szerkesztőprogramot.</string>
   <string name="keyboard_action_copy_full" tools:machine_translated="true">Másold a választ</string>
   <string name="macro_assign" tools:machine_translated="true">Makró hozzárendelése</string>
@@ -1019,7 +1019,7 @@
   <string name="keyboard_outline_color" tools:machine_translated="true">Szegélyszín</string>
   <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="keyboard_theme_color" tools:machine_translated="true">Alapértelmezett téma</string>
-  <string name="keyboard_background_opacity" tools:machine_translated="true">Háttér átlátszósága: %1$d%%</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Háttér fedettsége: %1$d%%</string>
   <string name="keyboard_outlined" tools:machine_translated="true">Kiemelve</string>
   <string name="keyboard_outline_thickness" tools:machine_translated="true">A körvonal vastagsága: %1$.1f dp</string>
   <string name="keyboard_reset_appearance" tools:machine_translated="true">Állítsa vissza az alapértelmezett megjelenést.</string>
@@ -1063,7 +1063,7 @@
   <string name="keyboard_repeat_off" tools:machine_translated="true">Nyomja meg egyszer.</string>
   <string name="keyboard_repeat_on" tools:machine_translated="true">Amíg lenyomva tartja, addig ismétli.</string>
   <string name="keyboard_advanced_summary" tools:machine_translated="true">Sor, oszlop és billentyű szélessége</string>
-  <string name="keyboard_usage_count" tools:machine_translated="true">%1$d felhasználó használja.</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">Használati helyek száma: %1$d</string>
   <string name="keyboard_remove_key_message" tools:machine_translated="true">Eltávolítsuk ezt a gombot a tervezett elrendezésből?</string>
   <string name="keyboard_key_discard_title" tools:machine_translated="true">Alkalmazzam a billentyűzet-beállítások módosításait?</string>
   <string name="keyboard_key_discard_message" tools:machine_translated="true">Alkalmazza ezeket a módosításokat az elrendezésre, vagy hagyja el őket.</string>

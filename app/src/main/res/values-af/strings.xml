@@ -956,7 +956,7 @@
   <string name="keyboard_key_paste" tools:machine_translated="true">Plak</string>
   <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
   <string name="keyboard_action_stop_full" tools:machine_translated="true">Onderbreek</string>
-  <string name="keyboard_action_history_full" tools:machine_translated="true">Soekgeskiedenis</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Soek in opdraggeskiedenis</string>
   <string name="keyboard_action_mode_full" tools:machine_translated="true">Wissel tussen toestemmingsinstellings.</string>
   <string name="keyboard_action_newline_full" tools:machine_translated="true">Voeg nuwe reël in</string>
   <string name="keyboard_action_log_full" tools:machine_translated="true">Wissel tussen die transkripsie.</string>
@@ -1019,7 +1019,7 @@
   <string name="keyboard_outline_color" tools:machine_translated="true">Omtrekkleur</string>
   <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="keyboard_theme_color" tools:machine_translated="true">Standaardtema</string>
-  <string name="keyboard_background_opacity" tools:machine_translated="true">Agtergronddeursigtigheid: %1$d%%</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Agtergrondondeursigtigheid: %1$d%%</string>
   <string name="keyboard_outlined" tools:machine_translated="true">Met omtrek</string>
   <string name="keyboard_outline_thickness" tools:machine_translated="true">Lynbredte: %1$.1f dp</string>
   <string name="keyboard_reset_appearance" tools:machine_translated="true">Herstel voorkoms.</string>

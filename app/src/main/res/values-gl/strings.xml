@@ -956,7 +956,7 @@
   <string name="keyboard_key_paste" tools:machine_translated="true">Pegar</string>
   <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
   <string name="keyboard_action_stop_full" tools:machine_translated="true">Interromper</string>
-  <string name="keyboard_action_history_full" tools:machine_translated="true">Historial de búsqueda</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Buscar no historial de ordes</string>
   <string name="keyboard_action_mode_full" tools:machine_translated="true">Ciclar os modos de permiso</string>
   <string name="keyboard_action_newline_full" tools:machine_translated="true">Inserir nova liña</string>
   <string name="keyboard_action_log_full" tools:machine_translated="true">Alternar a transcrición</string>

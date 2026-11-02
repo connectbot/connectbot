@@ -943,7 +943,7 @@
   <string name="keyboard_layer_short" tools:machine_translated="true">எண் வரிசை %1$d</string>
   <string name="keyboard_add_layer_switch" tools:machine_translated="true">அடுக்கு மாற்ற பொத்தான்</string>
   <string name="keyboard_layer_destination" tools:machine_translated="true">அடுக்குக்கான இலக்கு</string>
-  <string name="keyboard_layer_next" tools:machine_translated="true">அடுத்த காலியான அடுக்கு</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">அடுத்த காலியாக இல்லாத அடுக்கு</string>
   <string name="keyboard_fn" tools:machine_translated="true">எஃப்.என்.</string>
   <string name="keyboard_layer_empty" tools:machine_translated="true">சேருமிட அடுக்கு காலியாக உள்ளது.</string>
   <string name="keyboard_action_stop" tools:machine_translated="true">நிறுத்து</string>
@@ -956,7 +956,7 @@
   <string name="keyboard_key_paste" tools:machine_translated="true">ஒட்டவும்</string>
   <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
   <string name="keyboard_action_stop_full" tools:machine_translated="true">தடைசெய்</string>
-  <string name="keyboard_action_history_full" tools:machine_translated="true">தேடல் வரலாறு</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">கட்டளை வரலாற்றில் தேடு</string>
   <string name="keyboard_action_mode_full" tools:machine_translated="true">அனுமதி முறைகளை மாற்றவும்</string>
   <string name="keyboard_action_newline_full" tools:machine_translated="true">புதிய வரியைச் செருகு</string>
   <string name="keyboard_action_log_full" tools:machine_translated="true">உரைப்பிரதியை மாற்று</string>
@@ -1019,7 +1019,7 @@
   <string name="keyboard_outline_color" tools:machine_translated="true">வெளிக்கோட்டின் நிறம்</string>
   <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="keyboard_theme_color" tools:machine_translated="true">தீம் இயல்புநிலை</string>
-  <string name="keyboard_background_opacity" tools:machine_translated="true">பின்புலத்தின் ஒளிபுகும் தன்மை: %1$d%%</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">பின்புலத்தின் ஒளிபுகாத்தன்மை: %1$d%%</string>
   <string name="keyboard_outlined" tools:machine_translated="true">வடிவமைக்கப்பட்டது</string>
   <string name="keyboard_outline_thickness" tools:machine_translated="true">வடிவக் கோட்டின் தடிமன்: %1$.1f டிபி</string>
   <string name="keyboard_reset_appearance" tools:machine_translated="true">தோற்றத்தை மீட்டமை.</string>
@@ -1063,7 +1063,7 @@
   <string name="keyboard_repeat_off" tools:machine_translated="true">ஒருமுறை அழுத்தவும்.</string>
   <string name="keyboard_repeat_on" tools:machine_translated="true">வைத்திருக்கும்போது மீண்டும் மீண்டும் நிகழும்.</string>
   <string name="keyboard_advanced_summary" tools:machine_translated="true">வரிசை, நிரல் மற்றும் விசையின் அகலம்.</string>
-  <string name="keyboard_usage_count" tools:machine_translated="true">%1$d நபர்களால் பயன்படுத்தப்பட்டது</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">பயன்படுத்தப்படும் இடங்களின் எண்ணிக்கை: %1$d</string>
   <string name="keyboard_remove_key_message" tools:machine_translated="true">வடிவமைப்பு வரைவில் இருந்து இந்த விசையை நீக்கவா?</string>
   <string name="keyboard_key_discard_title" tools:machine_translated="true">மாற்றியமைக்கப்பட்ட விசைகளைச் சேமிக்கவா?</string>
   <string name="keyboard_key_discard_message" tools:machine_translated="true">இந்த மாற்றங்களை வடிவமைப்பில் பயன்படுத்துங்கள் அல்லது நிராகரிக்கவும்.</string>

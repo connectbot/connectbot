@@ -964,7 +964,7 @@
   <string name="keyboard_key_paste" tools:machine_translated="true">Vložit</string>
   <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
   <string name="keyboard_action_stop_full" tools:machine_translated="true">Přerušit</string>
-  <string name="keyboard_action_history_full" tools:machine_translated="true">Historie vyhledávání</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Hledat v historii příkazů</string>
   <string name="keyboard_action_mode_full" tools:machine_translated="true">Procházet režimy oprávnění</string>
   <string name="keyboard_action_newline_full" tools:machine_translated="true">Vložit nový řádek</string>
   <string name="keyboard_action_log_full" tools:machine_translated="true">Přepnout zobrazení přepisu.</string>
@@ -1027,7 +1027,7 @@
   <string name="keyboard_outline_color" tools:machine_translated="true">Barva obrysu</string>
   <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="keyboard_theme_color" tools:machine_translated="true">Výchozí motiv</string>
-  <string name="keyboard_background_opacity" tools:machine_translated="true">Průhlednost pozadí: %1$d %%</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Neprůhlednost pozadí: %1$d %%</string>
   <string name="keyboard_outlined" tools:machine_translated="true">S obrysem.</string>
   <string name="keyboard_outline_thickness" tools:machine_translated="true">Šířka obrysu: %1$.1f dp</string>
   <string name="keyboard_reset_appearance" tools:machine_translated="true">Obnovit vzhled</string>
@@ -1071,7 +1071,7 @@
   <string name="keyboard_repeat_off" tools:machine_translated="true">Stiskněte jednou.</string>
   <string name="keyboard_repeat_on" tools:machine_translated="true">Opakuje se, dokud je stisknuté.</string>
   <string name="keyboard_advanced_summary" tools:machine_translated="true">Řádek, sloupec a šířka klávesy.</string>
-  <string name="keyboard_usage_count" tools:machine_translated="true">Používá %1$d uživatelů.</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">Počet použití: %1$d</string>
   <string name="keyboard_remove_key_message" tools:machine_translated="true">Odstranit tuto klávesu z návrhu rozložení?</string>
   <string name="keyboard_key_discard_title" tools:machine_translated="true">Použít změny kláves?</string>
   <string name="keyboard_key_discard_message" tools:machine_translated="true">Použijte tyto změny na rozložení, nebo je zrušte.</string>

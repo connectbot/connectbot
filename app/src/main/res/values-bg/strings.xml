@@ -943,7 +943,7 @@
   <string name="keyboard_layer_short" tools:machine_translated="true">Слой %1$d</string>
   <string name="keyboard_add_layer_switch" tools:machine_translated="true">Преминаване към друг слой</string>
   <string name="keyboard_layer_destination" tools:machine_translated="true">Целева дестинация на слоя</string>
-  <string name="keyboard_layer_next" tools:machine_translated="true">Следващият незает слой</string>
+  <string name="keyboard_layer_next" tools:machine_translated="true">Следващият непразен слой</string>
   <string name="keyboard_fn" tools:machine_translated="true">FN</string>
   <string name="keyboard_layer_empty" tools:machine_translated="true">Целевият слой е празен.</string>
   <string name="keyboard_action_stop" tools:machine_translated="true">Спри</string>
@@ -956,7 +956,7 @@
   <string name="keyboard_key_paste" tools:machine_translated="true">Поставяне</string>
   <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
   <string name="keyboard_action_stop_full" tools:machine_translated="true">Прекъсни</string>
-  <string name="keyboard_action_history_full" tools:machine_translated="true">История на търсенията</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Търсене в историята на командите</string>
   <string name="keyboard_action_mode_full" tools:machine_translated="true">Преминете през различните режими на разрешения.</string>
   <string name="keyboard_action_newline_full" tools:machine_translated="true">Вмъкни нов ред</string>
   <string name="keyboard_action_log_full" tools:machine_translated="true">Включване/изключване на транскрипцията</string>
@@ -1019,7 +1019,7 @@
   <string name="keyboard_outline_color" tools:machine_translated="true">Цвят на контура</string>
   <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="keyboard_theme_color" tools:machine_translated="true">Тема по подразбиране</string>
-  <string name="keyboard_background_opacity" tools:machine_translated="true">Прозрачност на фона: %1$d%%</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Непрозрачност на фона: %1$d%%</string>
   <string name="keyboard_outlined" tools:machine_translated="true">Очертано</string>
   <string name="keyboard_outline_thickness" tools:machine_translated="true">Дебелина на контура: %1$.1f dp</string>
   <string name="keyboard_reset_appearance" tools:machine_translated="true">Възстанови външния вид.</string>
