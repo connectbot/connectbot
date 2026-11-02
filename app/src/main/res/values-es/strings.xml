@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_desc">Cliente de SSH sencillo, potente y de código abierto.</string>
-  <string name="service_desc">Mantiene las conexiones SSH y las claves públicas cargadas</string>
+  <string name="service_desc">Mantiene las conexiones SSH y los pares de claves cargados</string>
   <string name="app_copyright">Derechos de autor © Kenny Root</string>
-  <string name="title_pubkey_list">Claves Publicas</string>
+  <string name="title_pubkey_list">Pares de claves</string>
   <string name="title_port_forwards_list">Reenvíos de puertos</string>
   <string name="title_help">Ayuda</string>
   <string name="title_eula">Licencia</string>
@@ -102,7 +102,7 @@
   <string name="dialog_localfont_hint">Nombre de visualización para la fuente</string>
   <string name="button_import">Importar</string>
   <string name="font_importing">Importando fuente…</string>
-  <string name="pref_backupkeys_title">Copia de seguridad de claves públicas</string>
+  <string name="pref_backupkeys_title">Copia de seguridad de pares de claves</string>
   <string name="pref_backupkeys_summary">Mantener copias de seguridad de las claves privadas usando el mecanismo de Android</string>
   <string name="pref_ui_category">Interfaz de usuario</string>
   <string name="pref_language_title">Idioma</string>
@@ -249,7 +249,7 @@
   <string name="format_username">Usuario</string>
   <string name="format_hostname">nombre del host</string>
   <string name="format_port">puerto</string>
-  <string name="list_menu_pubkeys">Administrar clave públicas</string>
+  <string name="list_menu_pubkeys">Administrar pares de claves</string>
   <string name="list_menu_sortcolor">Ordenar por color</string>
   <string name="list_menu_sortname">Ordenar por nombre</string>
   <string name="list_menu_disconnect">Desconectar todo</string>
@@ -424,7 +424,7 @@
   <string name="hostpref_add_host">Añadir host</string>
   <string name="hostpref_save_host">Guardar host</string>
   <string name="hostpref_setting_title">Configuración del host</string>
-  <string name="pubkey_import_existing">Importar clave pública existente</string>
+  <string name="pubkey_import_existing">Importar clave privada existente</string>
   <string name="grant_permission">Permitir</string>
   <string name="connect_anyway">Conectar de todas formas</string>
   <string name="open_settings">Abrir ajustes</string>
@@ -448,7 +448,7 @@
   <string name="disconnect_host_alert">¿Estás seguro de que deseas desconectar de \'%1$s\'?</string>
   <string name="delete_host_confirm">¿Estás seguro de que deseas eliminar el host \'%1$s\'?</string>
   <string name="forget_host_keys_confirm">¿Está seguro de que desea eliminar las claves de host almacenadas para \'%1$s\'? Se le pedirá que verifique la clave de host en la próxima conexión.</string>
-  <string name="list_pubkey_edit">Editar clave pública</string>
+  <string name="list_pubkey_edit">Editar par de claves</string>
   <string name="hostpref_ipversion_title">Versión de IP</string>
   <string name="ipversion_auto">Automático</string>
   <string name="ipversion_ipv4">Solo IPv4</string>

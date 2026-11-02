@@ -67,7 +67,7 @@ class PubkeyEditorScreenTest {
         }
 
         composeTestRule
-            .onNodeWithText("Pubkeys")
+            .onNodeWithText("Key pairs")
             .assertIsDisplayed()
     }
 
