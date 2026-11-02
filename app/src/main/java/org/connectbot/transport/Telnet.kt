@@ -26,9 +26,11 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
 import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.di.CoroutineDispatchers
@@ -38,9 +40,11 @@ import org.connectbot.service.TelnetKeyboardInput
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import org.connectbot.telnetlib.TelnetConfig
+import org.connectbot.telnetlib.TelnetDirection
 import org.connectbot.telnetlib.TelnetFailure
 import org.connectbot.telnetlib.TelnetFailureCode
 import org.connectbot.telnetlib.TelnetInput
+import org.connectbot.telnetlib.TelnetOption
 import org.connectbot.telnetlib.TelnetOutcome
 import org.connectbot.telnetlib.TelnetSession
 import org.connectbot.telnetlib.ktor.connectTelnet
@@ -136,6 +140,33 @@ class Telnet : AbsTransport {
         } else {
             error("Telnet session has not connected")
         }
+
+    override val supportsZmodem = true
+
+    override suspend fun prepareTransfer() {
+        val current = operationSession() ?: throw IOException("Telnet unavailable")
+        current.requestOption(TelnetOption.BINARY, TelnetDirection.LOCAL, true).checked()
+        current.requestOption(TelnetOption.BINARY, TelnetDirection.REMOTE, true).checked()
+        withTimeout(10_000) {
+            current.state.first { it.incomingBinary && it.outgoingBinary }
+        }
+    }
+
+    override fun verifyTransfer() {
+        val current = session?.state?.value
+        if (current?.incomingBinary != true || !current.outgoingBinary) throw IOException("Telnet BINARY required")
+    }
+
+    override suspend fun writeTransfer(buffer: ByteArray) {
+        val current = operationSession() ?: throw IOException("Telnet unavailable")
+        if (!current.state.value.incomingBinary || !current.state.value.outgoingBinary) throw IOException("Telnet BINARY required")
+        current.write(buffer).checked()
+    }
+
+    override suspend fun writeTransferAbort(buffer: ByteArray) {
+        val current = operationSession() ?: throw IOException("Telnet unavailable")
+        current.write(buffer).checked()
+    }
 
     override suspend fun write(buffer: ByteArray) {
         val current = operationSession() ?: return

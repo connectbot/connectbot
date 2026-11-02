@@ -603,6 +603,7 @@ tasks
     }
 
 dependencies {
+    implementation(libs.zmodemlib)
     coreLibraryDesugaring(libs.desugar)
     implementation(libs.json5)
     implementation(libs.sshlib)

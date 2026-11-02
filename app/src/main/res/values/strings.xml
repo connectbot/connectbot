@@ -2469,4 +2469,24 @@
     <string name="console_font_size_save_description">Save font size to profile; affects all hosts using it</string>
     <!-- Console: shown when the font size could not be saved to the profile. -->
     <string name="console_font_size_save_error">Could not save font size to the profile.</string>
+    <!-- Global setting enabling automatic Z-Modem file transfers over SSH and Telnet. -->
+    <string name="pref_zmodem_title">Enable Z-Modem transfers</string>
+    <!-- Explanation below the Z-Modem switch in settings. -->
+    <string name="pref_zmodem_summary">Detect remote file upload and download requests over SSH and Telnet</string>
+    <!-- Title of the console file transfer progress dialog. -->
+    <string name="zmodem_title">Z-Modem file transfer</string>
+    <!-- File transfer progress: filename followed by transferred byte count. -->
+    <string name="zmodem_progress">%1$s: %2$d bytes</string>
+    <!-- Button to cancel the current file transfer while keeping the terminal connected. -->
+    <string name="zmodem_cancel">Cancel transfer</string>
+    <!-- File selection or preparation is in progress. -->
+    <string name="zmodem_select">Select files or a download folder</string>
+    <!-- Error shown when a Z-Modem file transfer fails. -->
+    <string name="zmodem_failed">The file transfer failed.</string>
+    <!-- Dismisses the file transfer error dialog. -->
+    <string name="zmodem_dismiss">Dismiss</string>
+    <!-- Transfer progress when the complete file size is known: filename, transferred bytes, total bytes. -->
+    <string name="zmodem_progress_total">%1$s: %2$d / %3$d bytes</string>
+    <!-- Status displayed while the Z-Modem abort sequence is being sent. -->
+    <string name="zmodem_cancelling">Cancelling transfer…</string>
 </resources>

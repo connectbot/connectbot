@@ -61,6 +61,7 @@ import java.util.UUID
 import javax.inject.Inject
 
 data class SettingsUiState(
+    val zmodem: Boolean = true,
     val authOnLaunch: Boolean = false,
     val canAuthenticate: Boolean = false,
     val memkeys: Boolean = true,
@@ -207,6 +208,7 @@ class SettingsViewModel @Inject constructor(
             BiometricManager.BIOMETRIC_SUCCESS
 
         return SettingsUiState(
+            zmodem = prefs.getBoolean(PreferenceConstants.ZMODEM, true),
             authOnLaunch = prefs.getBoolean(PreferenceConstants.AUTH_ON_LAUNCH, false),
             canAuthenticate = canAuthenticate,
             memkeys = prefs.getBoolean(PreferenceConstants.MEMKEYS, true),
@@ -311,6 +313,10 @@ class SettingsViewModel @Inject constructor(
 
     fun updateFullscreen(value: Boolean) {
         updateBooleanPref(PreferenceConstants.FULLSCREEN, value) { copy(fullscreen = value) }
+    }
+
+    fun updateZmodem(value: Boolean) {
+        updateBooleanPref(PreferenceConstants.ZMODEM, value) { copy(zmodem = value) }
     }
 
     fun updateKeepAlive(value: Boolean) {
