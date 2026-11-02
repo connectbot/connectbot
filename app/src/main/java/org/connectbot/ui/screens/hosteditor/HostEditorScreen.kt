@@ -51,6 +51,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberSliderState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -764,6 +765,9 @@ private fun FontSizeSelector(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
 ) {
+    val sliderState = rememberSliderState(value = fontSize.toFloat(), trackRange = 8f..32f)
+    sliderState.value = fontSize.toFloat()
+
     Column(modifier = modifier) {
         Text(
             text = stringResource(R.string.hostpref_fontsize_title),
@@ -785,9 +789,8 @@ private fun FontSizeSelector(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Slider(
-                value = fontSize.toFloat(),
+                state = sliderState,
                 onValueChange = { onFontSizeChange(it.toInt()) },
-                valueRange = 8f..32f,
                 enabled = enabled,
                 modifier = Modifier.weight(1f),
             )

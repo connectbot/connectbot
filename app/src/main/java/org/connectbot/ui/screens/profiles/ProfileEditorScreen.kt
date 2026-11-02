@@ -48,6 +48,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberSliderState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -426,6 +427,9 @@ private fun FontSizeSelector(
     onFontSizeChange: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val sliderState = rememberSliderState(value = fontSize.toFloat(), trackRange = 6f..30f, steps = 23)
+    sliderState.value = fontSize.toFloat()
+
     Column(modifier = modifier) {
         Text(
             text = stringResource(R.string.profile_editor_font_size_title, fontSize),
@@ -434,10 +438,8 @@ private fun FontSizeSelector(
         )
 
         Slider(
-            value = fontSize.toFloat(),
+            state = sliderState,
             onValueChange = { onFontSizeChange(it.toInt()) },
-            valueRange = 6f..30f,
-            steps = 23,
             modifier = Modifier.fillMaxWidth(),
         )
     }
