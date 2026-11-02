@@ -1087,4 +1087,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">Уграђени шаблони</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Ugrađene unapred podešene postavke ostaju nepromenjene. Izmenom kreirate sopstvenu kopiju.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">Уграђена подразумевана поставка.</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">Омогући пренос података помоћу протокола Z-Modem.</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">Открива захтеве за пренос и преузимање датотека са удаљеног сервера преко SSH и Telnet протокола.</string>
+  <string name="zmodem_title" tools:machine_translated="true">Пренос датотека помоћу протокола Z-Modem</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d bajta</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">Отказати пренос</string>
+  <string name="zmodem_select" tools:machine_translated="true">Изаберите датотеке или директоријум за преузимање.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">Пренос датотеке није успео.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">Откажи</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d bajta</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">Отказивање преноса…</string>
 </resources>

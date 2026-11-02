@@ -1087,4 +1087,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">Ugrađene predloške</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Ugrađene predloške ne mijenjamo. Uređivanjem stvarate vlastitu kopiju.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">Ugrađena unaprijed definirana postavka.</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">Omogućite prijenos datoteka pomoću protokola Z-Modem.</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">Otkrivanje zahtjeva za prijenos i preuzimanje datoteka s udaljenog računala putem SSH-a i Telnet-a.</string>
+  <string name="zmodem_title" tools:machine_translated="true">Prijenos datoteke pomoću protokola Z-Modem.</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d bajta</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">Otkaži prijenos</string>
+  <string name="zmodem_select" tools:machine_translated="true">Odaberite datoteke ili mapu za preuzimanje.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">Prijenos datoteke nije uspio.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">Odbaci</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d bajta</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">Otkažem prijenos…</string>
 </resources>

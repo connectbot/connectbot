@@ -1083,4 +1083,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">內建範本</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">內建的預設設定不會變更。編輯時會建立您自己的副本。</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">內建預設值</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">啟用 Z-Modem 檔案傳輸</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">偵測透過 SSH 和 Telnet 傳輸的遠端檔案上傳和下載請求。</string>
+  <string name="zmodem_title" tools:machine_translated="true">Z-Modem 檔案傳輸</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s：已傳輸 %2$d 位元組</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">取消傳輸</string>
+  <string name="zmodem_select" tools:machine_translated="true">選擇檔案或下載資料夾。</string>
+  <string name="zmodem_failed" tools:machine_translated="true">檔案傳輸失敗。</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">關閉</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s：%2$d / %3$d 位元組</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">正在取消傳輸……</string>
 </resources>

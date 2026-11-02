@@ -1087,4 +1087,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">Plantilles predefinides.</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Els paràmetres predefinits integrats no es modifiquen. Editar-los crea una còpia personal.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">Configuració predeterminada integrada</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">Activa les transferències Z-Modem.</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">Detecta les sol·licituds d’enviament i descàrrega de fitxers remots a través de SSH i Telnet.</string>
+  <string name="zmodem_title" tools:machine_translated="true">Transferència de fitxers Z-Modem</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d bytes</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">Cancel·la la transferència</string>
+  <string name="zmodem_select" tools:machine_translated="true">Seleccioneu fitxers o una carpeta de descàrrega.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">La transferència del fitxer ha fallat.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">Tanca</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d bytes</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">S’està cancel·lant la transferència…</string>
 </resources>

@@ -1083,4 +1083,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">Configuracións predefinidas integradas</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">As configuracións predefinidas integradas permanecen inalteradas. Ao modificalas, crearase unha copia persoal.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">Configuración predefinida integrada</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">Activar as transferencias Z-Modem</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">Detecta as solicitudes de carga e descarga de ficheiros remotas a través de SSH e Telnet.</string>
+  <string name="zmodem_title" tools:machine_translated="true">Transferencia de ficheiros Z-Modem</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d bytes</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">Cancelar a transferencia</string>
+  <string name="zmodem_select" tools:machine_translated="true">Seleccione ficheiros ou unha carpeta de descarga.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">A transferencia do ficheiro fallou.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">Descartar</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d bytes</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">Cancelando a transferencia…</string>
 </resources>

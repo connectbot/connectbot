@@ -1083,4 +1083,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">Előre beállított sablonok</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">A beépített sablonok változatlanok maradnak. A szerkesztés egyéni másolatot hoz létre.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">Előre beállított érték</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">Engedélyezze a Z-Modem fájlátvitelt.</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">Figyeli a távoli fájlfeltöltési és -letöltési kéréseket SSH és Telnet protokollon keresztül.</string>
+  <string name="zmodem_title" tools:machine_translated="true">Z-Modem fájlátvitel</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d bájt</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">Állítsa le a fájlátvitelt.</string>
+  <string name="zmodem_select" tools:machine_translated="true">Válasszon ki fájlokat vagy egy letöltési mappát.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">A fájlátvitel sikertelen volt.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">Elvetés</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d bájt</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">A fájlátvitel megszakítása…</string>
 </resources>

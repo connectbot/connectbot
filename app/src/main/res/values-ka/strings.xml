@@ -1083,4 +1083,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">ჩაშენებული პარამეტრები</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">წინასწარ დაყენებული პარამეტრები უცვლელად რჩება. რედაქტირების შედეგად შეიქმნება თქვენი საკუთარი ასლი.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">წინასწარ დაყენებული პარამეტრი</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">Z-Modem-ით ფაილების გადაცემის ჩართვა</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">ამოიცნობს დისტანციური ფაილების ატვირთვისა და ჩამოტვირთვის მოთხოვნებს SSH და Telnet-ის საშუალებით.</string>
+  <string name="zmodem_title" tools:machine_translated="true">Z-Modem-ის ფაილების გადაცემა</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d ბაიტი</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">გადაცემის გაუქმება</string>
+  <string name="zmodem_select" tools:machine_translated="true">აირჩიეთ ფაილები ან ჩამოსატვირთი საქაღალდე.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">ფაილის გადატანა წარუმატებლად დასრულდა.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">უარყოფა</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d ბაიტი</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">ტრანსფერის გაუქმება…</string>
 </resources>

@@ -1083,4 +1083,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">Templat bawaan</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Pengaturan bawaan tetap tidak berubah. Mengedit akan membuat salinan pribadi Anda.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">Pengaturan bawaan</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">Aktifkan transfer Z-Modem</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">Mendeteksi permintaan unggah dan unduh berkas jarak jauh melalui SSH dan Telnet.</string>
+  <string name="zmodem_title" tools:machine_translated="true">Transfer file Z-Modem</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d byte</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">Batalkan transfer</string>
+  <string name="zmodem_select" tools:machine_translated="true">Pilih berkas atau folder unduhan.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">Transfer file gagal.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">Tutup</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d byte</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">Pembatalan transfer sedang diproses…</string>
 </resources>

@@ -1091,4 +1091,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">Убудаваныя шаблоны.</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Убудаваныя налады застаюцца нязменнымі. Рэдагаванне стварае вашу асабістую копію.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">Убудаваная папярэдне зададзеная налада.</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">Уключыць перадачу файлаў па пратаколе Z-Modem.</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">Выяўляйце запыты на аддаленую загрузку і спампоўку файлаў праз SSH і Telnet.</string>
+  <string name="zmodem_title" tools:machine_translated="true">Перадача файла па пратаколе Z-Modem.</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d байт</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">Адмяніць перадачу файла</string>
+  <string name="zmodem_select" tools:machine_translated="true">Абярыце файлы або тэчку для загрузкі.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">Перадача файла не ўдалася.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">Адхіліць</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d байт</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">Адмена перадачы…</string>
 </resources>

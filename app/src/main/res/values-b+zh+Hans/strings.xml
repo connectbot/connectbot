@@ -1083,4 +1083,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">内置预设。</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">内置预设保持不变。编辑操作会创建您自己的副本。</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">内置预设</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">启用 Z-Modem 传输</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">检测通过 SSH 和 Telnet 发起的远程文件上传和下载请求。</string>
+  <string name="zmodem_title" tools:machine_translated="true">Z-Modem 文件传输</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s：已传输 %2$d 字节</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">取消传输</string>
+  <string name="zmodem_select" tools:machine_translated="true">选择文件或下载文件夹。</string>
+  <string name="zmodem_failed" tools:machine_translated="true">文件传输失败。</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">关闭</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s：已传输 %2$d 字节，总计 %3$d 字节</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">正在取消传输……</string>
 </resources>

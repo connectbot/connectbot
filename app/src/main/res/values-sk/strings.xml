@@ -1091,4 +1091,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">Preddefinované šablóny</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Preddefinované nastavenia zostávajú nezmenené. Úpravou vytvoríte vlastnú kópiu.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">Preddefinované nastavenie.</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">Povoliť prenosy pomocou protokolu Z-Modem.</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">Zistí požiadavky na nahrávanie a sťahovanie súborov z diaľky prostredníctvom protokolov SSH a Telnet.</string>
+  <string name="zmodem_title" tools:machine_translated="true">Prenos súboru pomocou protokolu Z-Modem.</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d bajtov</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">Zrušiť prenos</string>
+  <string name="zmodem_select" tools:machine_translated="true">Vyberte súbory alebo priečinok na uloženie.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">Prenos súboru sa nepodaril.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">Zavrieť</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d bajtov</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">Prenos sa ruší…</string>
 </resources>

@@ -1083,4 +1083,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">Voreingestellte Vorlagen</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Die voreingestellten Standardwerte bleiben unverändert. Durch das Bearbeiten wird eine eigene Kopie erstellt.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">Voreingestellte Standardeinstellung</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">Z-Modem-Übertragungen aktivieren</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">Erkennt Remote-Datei-Upload- und -Download-Anforderungen über SSH und Telnet.</string>
+  <string name="zmodem_title" tools:machine_translated="true">Z-Modem-Dateiübertragung</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d Bytes</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">Übertragung abbrechen</string>
+  <string name="zmodem_select" tools:machine_translated="true">Dateien auswählen oder einen Download-Ordner festlegen.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">Die Dateiübertragung ist fehlgeschlagen.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">Schließen</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d von %3$d Bytes</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">Übertragung wird abgebrochen …</string>
 </resources>

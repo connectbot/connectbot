@@ -1087,4 +1087,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">תבניות מובנות</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">ההגדרות המובנות נשארות ללא שינוי. עריכה יוצרת עותק אישי משלך.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">הגדרת ברירת מחדל מובנית</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">אפשר העברת קבצים באמצעות פרוטוקול Z-Modem.</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">זהה בקשות להעלאה והורדה של קבצים מרחוק באמצעות פרוטוקולי SSH ו-Telnet.</string>
+  <string name="zmodem_title" tools:machine_translated="true">העברת קבצים באמצעות פרוטוקול Z-Modem</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d בתים</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">בטל העברה</string>
+  <string name="zmodem_select" tools:machine_translated="true">בחרו קבצים או תיקיית הורדה.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">העברת הקובץ נכשלה.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">סגור</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d בתים</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">ביטול ההעברה…</string>
 </resources>

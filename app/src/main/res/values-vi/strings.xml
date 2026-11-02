@@ -1083,4 +1083,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">Các mẫu có sẵn.</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Các cài đặt sẵn có mặc định sẽ không thay đổi. Việc chỉnh sửa sẽ tạo ra một bản sao riêng của bạn.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">Cài đặt sẵn.</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">Kích hoạt chức năng truyền tệp bằng giao thức Z-Modem.</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">Phát hiện các yêu cầu tải lên và tải xuống tệp từ xa qua SSH và Telnet.</string>
+  <string name="zmodem_title" tools:machine_translated="true">Truyền tệp bằng giao thức Z-Modem</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d byte</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">Hủy bỏ quá trình truyền tải.</string>
+  <string name="zmodem_select" tools:machine_translated="true">Chọn tệp hoặc thư mục tải xuống.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">Quá trình truyền tệp đã không thành công.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">Đóng.</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d byte</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">Đang hủy quá trình truyền dữ liệu…</string>
 </resources>

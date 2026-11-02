@@ -1083,4 +1083,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">Вградени предлошки</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Вградените претпоставки остануваат непроменети. При уредувањето се креира ваша лична копија.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">Вградена претходно дефинирана поставка.</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">Овозможете пренос на податоци преку Z-Modem.</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">Откривање на барања за пренос и преземање на датотеки од далечински компјутер преку SSH и Telnet.</string>
+  <string name="zmodem_title" tools:machine_translated="true">Пренос на датотека преку Z-Modem.</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d бајти</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">Откажи пренос</string>
+  <string name="zmodem_select" tools:machine_translated="true">Изберете датотеки или папка за преземање.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">Преносот на датотеката не успеа.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">Затвори</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d бајти</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">Прекинување на преносот…</string>
 </resources>

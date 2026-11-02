@@ -1091,4 +1091,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">Prednastavitve, ki so vključene v program.</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Prednastavitve, ki so že vključene, ostanejo nespremenjene. Z urejanjem ustvarite svojo lastno kopijo.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">Prednastavljena možnost</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">Omogoči prenose po protokolu Z-Modem.</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">Zaznavanje zahtev za oddaljeno nalaganje in prenašanje datotek prek protokolov SSH in Telnet.</string>
+  <string name="zmodem_title" tools:machine_translated="true">Prenos datoteke z uporabo protokola Z-Modem.</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d bajtov</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">Prekini prenos.</string>
+  <string name="zmodem_select" tools:machine_translated="true">Izberite datoteke ali mapo za shranjevanje prenesenih datotek.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">Prenos datoteke je bil neuspešen.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">Zapri.</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d bajtov</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">Prekinjanje prenosa …</string>
 </resources>

@@ -1091,4 +1091,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">Вбудовані шаблони</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Вбудовані шаблони залишаються незмінними. Редагування створює вашу власну копію.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">Вбудований попередньо встановлений шаблон.</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">Увімкнути передачу файлів за допомогою протоколу Z-Modem.</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">Виявляйте запити на віддалене завантаження та передавання файлів через SSH і Telnet.</string>
+  <string name="zmodem_title" tools:machine_translated="true">Передача файлів за допомогою Z-Modem.</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d байтів</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">Скасувати передавання</string>
+  <string name="zmodem_select" tools:machine_translated="true">Виберіть файли або папку для завантаження.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">Передавання файлу не вдалося.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">Закрити</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d байтів</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">Скасування передавання…</string>
 </resources>

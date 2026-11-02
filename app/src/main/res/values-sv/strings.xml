@@ -1083,4 +1083,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">Förinställda mallar</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">De förinställda mallarna som ingår i systemet förblir oförändrade. När du redigerar dem skapas en egen kopia.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">Förinställd mall</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">Aktivera Z-Modem-överföringar</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">Identifiera förfrågningar om att ladda upp och ladda ner filer via SSH och Telnet.</string>
+  <string name="zmodem_title" tools:machine_translated="true">Z-Modem-filöverföring</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d byte</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">Avbryt överföringen</string>
+  <string name="zmodem_select" tools:machine_translated="true">Välj filer eller en nedladdningsmapp.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">Filöverföringen misslyckades.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">Avbryt</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d av %3$d byte</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">Avbryter överföringen …</string>
 </resources>

@@ -1083,4 +1083,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">Προεπιλεγμένες ρυθμίσεις</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Οι προεπιλεγμένες ρυθμίσεις που περιλαμβάνονται στο πρόγραμμα παραμένουν αμετάβλητες. Η επεξεργασία δημιουργεί ένα δικό σας αντίγραφο.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">Προεπιλεγμένη ρύθμιση</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">Ενεργοποίηση μεταφορών μέσω Z-Modem.</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">Ανιχνεύει αιτήματα απομακρυσμένης μεταφόρτωσης και λήψης αρχείων μέσω SSH και Telnet.</string>
+  <string name="zmodem_title" tools:machine_translated="true">Μεταφορά αρχείου μέσω Z-Modem.</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d byte (μεταφερθέντα)</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">Ακύρωση μεταφοράς</string>
+  <string name="zmodem_select" tools:machine_translated="true">Επιλέξτε αρχεία ή έναν φάκελο για λήψη.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">Η μεταφορά του αρχείου απέτυχε.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">Απόρριψη</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d byte</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">Ακύρωση μεταφοράς…</string>
 </resources>

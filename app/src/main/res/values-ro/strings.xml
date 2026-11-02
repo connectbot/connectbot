@@ -1087,4 +1087,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">Șabloane predefinite.</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">Șabloanele predefinite rămân neschimbate. Modificarea acestora creează o copie personală.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">Setare prestabilită integrată.</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">Activează transferurile Z-Modem.</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">Detectează cererile de încărcare și descărcare a fișierelor de la distanță prin SSH și Telnet.</string>
+  <string name="zmodem_title" tools:machine_translated="true">Transfer de fișiere prin Z-Modem.</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d octeți</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">Anulează transferul</string>
+  <string name="zmodem_select" tools:machine_translated="true">Selectați fișierele sau un folder pentru descărcare.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">Transferul fișierului a eșuat.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">Închide</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d octeți</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">Anularea transferului…</string>
 </resources>

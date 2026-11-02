@@ -1083,4 +1083,14 @@
   <string name="keyboard_builtin_presets" tools:machine_translated="true">내장된 기본 설정</string>
   <string name="keyboard_builtin_presets_help" tools:machine_translated="true">기본 설정은 변경되지 않습니다. 편집하면 개인용 복사본이 생성됩니다.</string>
   <string name="keyboard_builtin_preset" tools:machine_translated="true">기본 설정</string>
+  <string name="pref_zmodem_title" tools:machine_translated="true">Z-Modem 파일 전송을 활성화합니다.</string>
+  <string name="pref_zmodem_summary" tools:machine_translated="true">SSH 및 Telnet을 통해 원격 파일 업로드 및 다운로드 요청을 감지합니다.</string>
+  <string name="zmodem_title" tools:machine_translated="true">Z-모뎀 파일 전송</string>
+  <string name="zmodem_progress" tools:machine_translated="true">%1$s: %2$d 바이트</string>
+  <string name="zmodem_cancel" tools:machine_translated="true">전송 취소</string>
+  <string name="zmodem_select" tools:machine_translated="true">파일 또는 다운로드한 파일을 저장할 폴더를 선택하세요.</string>
+  <string name="zmodem_failed" tools:machine_translated="true">파일 전송에 실패했습니다.</string>
+  <string name="zmodem_dismiss" tools:machine_translated="true">닫기</string>
+  <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d 바이트 전송 완료 / 총 %3$d 바이트</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">전송 취소 중…</string>
 </resources>
