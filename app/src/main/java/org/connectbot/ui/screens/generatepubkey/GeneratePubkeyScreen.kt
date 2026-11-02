@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,6 +46,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.rememberSliderState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -179,16 +180,20 @@ fun GeneratePubkeyScreenContent(
 
             // Bit Strength
             if (uiState.allowBitStrengthChange) {
+                val sliderState = rememberSliderState(
+                    value = uiState.bits.toFloat(),
+                    trackRange = uiState.minBits.toFloat()..uiState.maxBits.toFloat(),
+                    steps = ((uiState.maxBits - uiState.minBits) / 8) - 1,
+                )
+                sliderState.value = uiState.bits.toFloat()
                 Text(
                     text = "${stringResource(R.string.prompt_bits)} ${uiState.bits}",
                     style = MaterialTheme.typography.titleMedium,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Slider(
-                    value = uiState.bits.toFloat(),
+                    state = sliderState,
                     onValueChange = { onBitsChange(it.toInt()) },
-                    valueRange = uiState.minBits.toFloat()..uiState.maxBits.toFloat(),
-                    steps = ((uiState.maxBits - uiState.minBits) / 8) - 1,
                     modifier = Modifier.fillMaxWidth(),
                 )
                 Spacer(modifier = Modifier.height(16.dp))

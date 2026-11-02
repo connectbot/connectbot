@@ -62,6 +62,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.rememberSliderState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -1198,6 +1199,9 @@ private fun SliderPreference(
     onValueChange: (Float) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val sliderState = rememberSliderState(value = value, trackRange = 0f..1f)
+    sliderState.value = value
+
     Column(modifier = modifier) {
         Column(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
@@ -1207,9 +1211,8 @@ private fun SliderPreference(
                 style = MaterialTheme.typography.bodyLarge,
             )
             Slider(
-                value = value,
+                state = sliderState,
                 onValueChange = onValueChange,
-                valueRange = 0f..1f,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 4.dp),

@@ -33,6 +33,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberSliderState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -81,14 +82,18 @@ internal fun KeyboardButtonAppearance(item: KeyboardItem, onChange: (KeyboardIte
             }
         }
         val opacityLabel = stringResource(R.string.keyboard_background_opacity, ((item.backgroundOpacity ?: 0.85f) * 100).toInt())
+        val opacitySliderState = rememberSliderState(value = item.backgroundOpacity ?: 0.85f)
+        opacitySliderState.value = item.backgroundOpacity ?: 0.85f
         Text(opacityLabel)
-        Slider(modifier = Modifier.semantics { contentDescription = opacityLabel }, value = item.backgroundOpacity ?: 0.85f, onValueChange = { onChange(item.copy(backgroundOpacity = it)) })
+        Slider(modifier = Modifier.semantics { contentDescription = opacityLabel }, state = opacitySliderState, onValueChange = { onChange(item.copy(backgroundOpacity = it)) })
         val outlinedLabel = stringResource(R.string.keyboard_outlined)
         KeyboardSwitchRow(outlinedLabel, (item.outlineWidth ?: 1f) > 0f, { onChange(item.copy(outlineWidth = if (it) 1f else 0f)) })
         if ((item.outlineWidth ?: 1f) > 0f) {
             val thicknessLabel = stringResource(R.string.keyboard_outline_thickness, item.outlineWidth ?: 1f)
+            val thicknessSliderState = rememberSliderState(value = item.outlineWidth ?: 1f, trackRange = 0.5f..10f, steps = 18)
+            thicknessSliderState.value = item.outlineWidth ?: 1f
             Text(thicknessLabel)
-            Slider(modifier = Modifier.semantics { contentDescription = thicknessLabel }, value = item.outlineWidth ?: 1f, onValueChange = { onChange(item.copy(outlineWidth = it)) }, valueRange = 0.5f..10f, steps = 18)
+            Slider(modifier = Modifier.semantics { contentDescription = thicknessLabel }, state = thicknessSliderState, onValueChange = { onChange(item.copy(outlineWidth = it)) })
         }
         Text(stringResource(R.string.keyboard_appearance_state_help), style = MaterialTheme.typography.bodySmall)
         TextButton(onClick = { onChange(item.copy(backgroundColor = null, backgroundOpacity = null, textColor = null, outlineColor = null, outlineWidth = null)) }) {

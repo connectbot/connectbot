@@ -33,6 +33,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberSliderState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -194,6 +195,9 @@ private fun ColorSliderRow(
     color: Color,
     onValueChange: (Float) -> Unit,
 ) {
+    val sliderState = rememberSliderState(value = value, trackRange = 0f..255f)
+    sliderState.value = value
+
     Column(
         modifier = Modifier.fillMaxWidth(),
     ) {
@@ -214,9 +218,8 @@ private fun ColorSliderRow(
         }
 
         Slider(
-            value = value,
+            state = sliderState,
             onValueChange = onValueChange,
-            valueRange = 0f..255f,
             modifier = Modifier.fillMaxWidth(),
         )
     }
