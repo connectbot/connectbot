@@ -956,10 +956,10 @@
   <string name="keyboard_key_paste" tools:machine_translated="true">Liitä</string>
   <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
   <string name="keyboard_action_stop_full" tools:machine_translated="true">Keskeytä</string>
-  <string name="keyboard_action_history_full" tools:machine_translated="true">Selainhistoria</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Hae komentohistoriasta</string>
   <string name="keyboard_action_mode_full" tools:machine_translated="true">Vaihda käyttöoikeustilojen välillä</string>
   <string name="keyboard_action_newline_full" tools:machine_translated="true">Lisää uusi rivi</string>
-  <string name="keyboard_action_log_full" tools:machine_translated="true">Ota tekstitys käyttöön/pois käytöstä</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">Näytä/piilota keskustelun teksti</string>
   <string name="keyboard_action_edit_full" tools:machine_translated="true">Avaa ulkoinen tekstieditori</string>
   <string name="keyboard_action_copy_full" tools:machine_translated="true">Kopioi vastaus</string>
   <string name="macro_assign" tools:machine_translated="true">Määritä makro</string>
@@ -1019,7 +1019,7 @@
   <string name="keyboard_outline_color" tools:machine_translated="true">Reunan väri</string>
   <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="keyboard_theme_color" tools:machine_translated="true">Oletusaihe</string>
-  <string name="keyboard_background_opacity" tools:machine_translated="true">Taustan läpinäkyvyys: %1$d %%</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Taustan peittävyys: %1$d %%</string>
   <string name="keyboard_outlined" tools:machine_translated="true">Reunaviiva on käytössä.</string>
   <string name="keyboard_outline_thickness" tools:machine_translated="true">Reunan paksuus: %1$.1f dp</string>
   <string name="keyboard_reset_appearance" tools:machine_translated="true">Palauta oletusulkoasu.</string>
@@ -1063,7 +1063,7 @@
   <string name="keyboard_repeat_off" tools:machine_translated="true">Paina kerran.</string>
   <string name="keyboard_repeat_on" tools:machine_translated="true">Toistetaan, kun painiketta pidetään pohjassa.</string>
   <string name="keyboard_advanced_summary" tools:machine_translated="true">Rivin, sarakkeen ja näppäimen leveys</string>
-  <string name="keyboard_usage_count" tools:machine_translated="true">Käyttäjiä: %1$d</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">Käyttökohteiden määrä: %1$d</string>
   <string name="keyboard_remove_key_message" tools:machine_translated="true">Poistetaanko tämä näppäin asetteluluonnoksesta?</string>
   <string name="keyboard_key_discard_title" tools:machine_translated="true">Haluatko ottaa käyttöön näppäinmuutokset?</string>
   <string name="keyboard_key_discard_message" tools:machine_translated="true">Ota nämä muutokset käyttöön asettelussa tai peruuta ne.</string>

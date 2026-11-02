@@ -905,7 +905,7 @@
   <string name="keyboard_action_copy" tools:machine_translated="true">Copiar</string>
   <string name="keyboard_key_paste" tools:machine_translated="true">Colar</string>
   <string name="keyboard_action_stop_full" tools:machine_translated="true">Interromper</string>
-  <string name="keyboard_action_history_full" tools:machine_translated="true">Histórico de pesquisa</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Pesquisar no histórico de comandos</string>
   <string name="keyboard_action_mode_full" tools:machine_translated="true">Alternar entre os modos de permissão</string>
   <string name="keyboard_action_newline_full" tools:machine_translated="true">Inserir nova linha</string>
   <string name="keyboard_action_log_full" tools:machine_translated="true">Alternar transcrição</string>

@@ -964,7 +964,7 @@
   <string name="keyboard_key_paste" tools:machine_translated="true">Вставить</string>
   <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
   <string name="keyboard_action_stop_full" tools:machine_translated="true">Прервать</string>
-  <string name="keyboard_action_history_full" tools:machine_translated="true">История поиска</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Поиск в истории команд</string>
   <string name="keyboard_action_mode_full" tools:machine_translated="true">Переключение режимов разрешений</string>
   <string name="keyboard_action_newline_full" tools:machine_translated="true">Вставить символ новой строки</string>
   <string name="keyboard_action_log_full" tools:machine_translated="true">Включить/выключить расшифровку</string>
@@ -1027,7 +1027,7 @@
   <string name="keyboard_outline_color" tools:machine_translated="true">Цвет контура</string>
   <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="keyboard_theme_color" tools:machine_translated="true">Тема по умолчанию.</string>
-  <string name="keyboard_background_opacity" tools:machine_translated="true">Прозрачность фона: %1$d%%</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Непрозрачность фона: %1$d%%</string>
   <string name="keyboard_outlined" tools:machine_translated="true">Обозначено контуром.</string>
   <string name="keyboard_outline_thickness" tools:machine_translated="true">Толщина обводки: %1$.1f условных единиц.</string>
   <string name="keyboard_reset_appearance" tools:machine_translated="true">Сбросить настройки внешнего вида.</string>
@@ -1071,7 +1071,7 @@
   <string name="keyboard_repeat_off" tools:machine_translated="true">Нажмите один раз.</string>
   <string name="keyboard_repeat_on" tools:machine_translated="true">Повторяет нажатие, пока кнопка удерживается.</string>
   <string name="keyboard_advanced_summary" tools:machine_translated="true">Ряд, столбец и ширина клавиши.</string>
-  <string name="keyboard_usage_count" tools:machine_translated="true">Используется %1$d пользователями.</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">Количество использований: %1$d</string>
   <string name="keyboard_remove_key_message" tools:machine_translated="true">Удалить эту клавишу из макета?</string>
   <string name="keyboard_key_discard_title" tools:machine_translated="true">Применить изменения к клавишам?</string>
   <string name="keyboard_key_discard_message" tools:machine_translated="true">Примените эти изменения к макету или отмените их.</string>

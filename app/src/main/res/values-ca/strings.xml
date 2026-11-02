@@ -960,7 +960,7 @@
   <string name="keyboard_key_paste" tools:machine_translated="true">Enganxar</string>
   <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
   <string name="keyboard_action_stop_full" tools:machine_translated="true">Atura</string>
-  <string name="keyboard_action_history_full" tools:machine_translated="true">Historial de cerca</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Cerca a l’historial d’ordres</string>
   <string name="keyboard_action_mode_full" tools:machine_translated="true">Canvia els modes de permís.</string>
   <string name="keyboard_action_newline_full" tools:machine_translated="true">Insereix un salt de línia.</string>
   <string name="keyboard_action_log_full" tools:machine_translated="true">Activa/desactiva la transcripció.</string>

@@ -964,7 +964,7 @@
   <string name="keyboard_key_paste" tools:machine_translated="true">Уставіць</string>
   <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
   <string name="keyboard_action_stop_full" tools:machine_translated="true">Прыпыніць</string>
-  <string name="keyboard_action_history_full" tools:machine_translated="true">Гісторыя пошуку</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Шукаць у гісторыі каманд</string>
   <string name="keyboard_action_mode_full" tools:machine_translated="true">Пераключаць рэжымы доступа.</string>
   <string name="keyboard_action_newline_full" tools:machine_translated="true">Уставіць новы радок</string>
   <string name="keyboard_action_log_full" tools:machine_translated="true">Уключыць/выключыць тэкставую версію</string>
@@ -1027,7 +1027,7 @@
   <string name="keyboard_outline_color" tools:machine_translated="true">Колер контуру</string>
   <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="keyboard_theme_color" tools:machine_translated="true">Стандартная тэма</string>
-  <string name="keyboard_background_opacity" tools:machine_translated="true">Прастора празрыстасці фону: %1$d%%</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Непразрыстасць фону: %1$d%%</string>
   <string name="keyboard_outlined" tools:machine_translated="true">З абводкай.</string>
   <string name="keyboard_outline_thickness" tools:machine_translated="true">Таўшчыня контуру: %1$.1f dp</string>
   <string name="keyboard_reset_appearance" tools:machine_translated="true">Скінуць параметры знешняга выгляду.</string>
@@ -1071,7 +1071,7 @@
   <string name="keyboard_repeat_off" tools:machine_translated="true">Націсніце адзін раз.</string>
   <string name="keyboard_repeat_on" tools:machine_translated="true">Паўтараецца, пакуль націснута.</string>
   <string name="keyboard_advanced_summary" tools:machine_translated="true">Радок, слупок і шырыня клавішы.</string>
-  <string name="keyboard_usage_count" tools:machine_translated="true">Выкарыстоўваецца %1$d карыстальнікамі.</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">Колькасць выкарыстанняў: %1$d</string>
   <string name="keyboard_remove_key_message" tools:machine_translated="true">Выдаліць гэтую клавішу з чарновага варыянта раскладкі?</string>
   <string name="keyboard_key_discard_title" tools:machine_translated="true">Ужыць змены да клавіш?</string>
   <string name="keyboard_key_discard_message" tools:machine_translated="true">Ужывайце гэтыя змены да макета або адмяніце іх.</string>

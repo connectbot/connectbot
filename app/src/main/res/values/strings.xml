@@ -1894,7 +1894,7 @@
     <string name="crypto_apply">Apply</string>
     <!-- Cryptographic policy editor: expression. -->
     <string name="crypto_expression">Algorithm expression</string>
-    <!-- Cryptographic policy editor: expression help. -->
+    <!-- Algorithm syntax help. All operators are prefixes before the algorithm name: ^name prioritizes it, +name appends it to the list, and -name excludes it. Never instruct users to put an operator after the name. -->
     <string name="crypto_expression_help">Comma-separated names. In Modify Default, prefix every name with ^ (first), + (append), or - (exclude).</string>
     <!-- Cryptographic policy editor: expression invalid. -->
     <string name="crypto_expression_invalid">Use unique SSH names and one selection mode. Exact lists must not be empty.</string>
@@ -1942,7 +1942,7 @@
     <string name="crypto_hide_effective_order">Hide effective preference order</string>
     <!-- Accessibility label for the square that expands an algorithm row’s state choices. -->
     <string name="crypto_change_algorithm_state">Change state for %1$s</string>
-    <!-- Legend for the four algorithm override buttons, shown in the custom delta editor. -->
+    <!-- Algorithm operation legend. Preserve the symbols: ^ prioritizes an algorithm, + appends it, the check mark follows defaults, and the minus sign excludes it (does not select it). -->
     <string name="crypto_states_help">^ Prefer first · + Append · ✓ Follow Default · − Exclude</string>
 
 	<!-- Terminal keyboard -->
@@ -1964,7 +1964,7 @@
 	<string name="keyboard_key_delete">Delete</string>
 	<!-- Terminal keyboard configuration: key insert. -->
 	<string name="keyboard_key_insert">Insert</string>
-	<!-- Terminal keyboard configuration: key arrow up. -->
+	<!-- Compact label for the terminal up-arrow key. Preserve the arrow symbol; this is not a menu action. -->
 	<string name="keyboard_key_arrow_up">↑</string>
 	<!-- Terminal keyboard configuration: key arrow down. -->
 	<string name="keyboard_key_arrow_down">↓</string>
@@ -2152,7 +2152,7 @@
 	<string name="keyboard_add_layer_switch">Layer switch</string>
 	<!-- Label above the destination picker of a layer-switch button. -->
 	<string name="keyboard_layer_destination">Layer destination</string>
-	<!-- Destination option that cycles through populated keyboard layers. -->
+	<!-- Destination option that cycles through keyboard layers containing keys, skipping empty layers. Preserve the non-empty meaning. -->
 	<string name="keyboard_layer_next">Next non-empty layer</string>
 	<!-- Compact label on a keyboard button that cycles through non-empty layers. -->
 	<string name="keyboard_fn">FN</string>
@@ -2178,13 +2178,13 @@
 	<string name="keyboard_shortcut_description">%1$s (%2$s)</string>
 	<!-- Full accessible action name for the abbreviated stop keyboard shortcut. -->
 	<string name="keyboard_action_stop_full">Interrupt</string>
-	<!-- Full accessible action name for the abbreviated history keyboard shortcut. -->
+	<!-- Accessible action name for Control+R: search through command history. Search is a verb here, not a list of previous searches or browser history. -->
 	<string name="keyboard_action_history_full">Search history</string>
 	<!-- Full accessible action name for the abbreviated mode keyboard shortcut. -->
 	<string name="keyboard_action_mode_full">Cycle permission modes</string>
 	<!-- Full accessible action name for the abbreviated newline keyboard shortcut. -->
 	<string name="keyboard_action_newline_full">Insert newline</string>
-	<!-- Full accessible action name for the abbreviated log keyboard shortcut. -->
+	<!-- Accessible action name for Control+O: show or hide the conversation transcript. This refers to a text record of the conversation, not subtitles or video captions. -->
 	<string name="keyboard_action_log_full">Toggle transcript</string>
 	<!-- Full accessible action name for the abbreviated edit keyboard shortcut. -->
 	<string name="keyboard_action_edit_full">Open external editor</string>
@@ -2304,7 +2304,7 @@
     <string name="keyboard_color_value">%1$s: %2$s</string>
     <!-- Color follows the current application theme. -->
     <string name="keyboard_theme_color">Theme default</string>
-    <!-- Keyboard key background opacity percentage. -->
+    <!-- Keyboard key background opacity percentage: 0% is fully transparent and 100% is fully opaque. Translate opacity, not transparency; the displayed value is alpha times 100. -->
     <string name="keyboard_background_opacity">Background opacity: %1$d%%</string>
     <!-- Checkbox to enable a keyboard key outline. -->
     <string name="keyboard_outlined">Outlined</string>
@@ -2392,7 +2392,7 @@
     <string name="keyboard_repeat_on">Repeats while held</string>
     <!-- Terminal keyboard redesign: advanced summary. -->
     <string name="keyboard_advanced_summary">Row, column, and key width</string>
-    <!-- Terminal keyboard redesign: used by. -->
+    <!-- Number of places using a layout or macro: hosts, profiles, keyboard keys, or automation actions. This counts references, not people or user accounts. -->
     <string name="keyboard_usage_count">Used by %1$d</string>
     <!-- Terminal keyboard redesign: remove key message. -->
     <string name="keyboard_remove_key_message">Remove this key from the layout draft?</string>

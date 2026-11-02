@@ -956,7 +956,7 @@
   <string name="keyboard_key_paste" tools:machine_translated="true">Göçürmek</string>
   <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
   <string name="keyboard_action_stop_full" tools:machine_translated="true">Kesmek</string>
-  <string name="keyboard_action_history_full" tools:machine_translated="true">Alynyp galnan soraglar</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Buýruklaryň taryhynda gözle</string>
   <string name="keyboard_action_mode_full" tools:machine_translated="true">Özgerişli ygtyýar režimlerini ulanyň.</string>
   <string name="keyboard_action_newline_full" tools:machine_translated="true">täze setiri goşmak</string>
   <string name="keyboard_action_log_full" tools:machine_translated="true">Transkripti açyp-söndürmek</string>
@@ -1019,7 +1019,7 @@
   <string name="keyboard_outline_color" tools:machine_translated="true">Çyzgyň öwüşginiň reňgi</string>
   <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="keyboard_theme_color" tools:machine_translated="true">Temaň görnüşi</string>
-  <string name="keyboard_background_opacity" tools:machine_translated="true">Arka plan tömizligi: %1$d%%</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Arka plan dury dälligi: %1$d%%</string>
   <string name="keyboard_outlined" tools:machine_translated="true">Çyzgyly</string>
   <string name="keyboard_outline_thickness" tools:machine_translated="true">Çyzgyň galynlygy: %1$.1f dp</string>
   <string name="keyboard_reset_appearance" tools:machine_translated="true">Görünüşi dikeldin.</string>
@@ -1063,7 +1063,7 @@
   <string name="keyboard_repeat_off" tools:machine_translated="true">Bir gezek basyň.</string>
   <string name="keyboard_repeat_on" tools:machine_translated="true">Basylanda-da gaýtalanar.</string>
   <string name="keyboard_advanced_summary" tools:machine_translated="true">Setir, sütun we düwme giňligi.</string>
-  <string name="keyboard_usage_count" tools:machine_translated="true">%1$d ulanyjy tarapyndan ulanyldy</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">Ulanylýan ýerleriň sany: %1$d</string>
   <string name="keyboard_remove_key_message" tools:machine_translated="true">Bu düwmeçäni maketden aýyryňmy?</string>
   <string name="keyboard_key_discard_title" tools:machine_translated="true">Täzelikler girizilsinmi?</string>
   <string name="keyboard_key_discard_message" tools:machine_translated="true">Bu üýtgeşmeleri düzüme uýgulanyň ýa-da olardan ýüz döndüriň.</string>

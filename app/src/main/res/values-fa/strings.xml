@@ -956,7 +956,7 @@
   <string name="keyboard_key_paste" tools:machine_translated="true">چسباندن</string>
   <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
   <string name="keyboard_action_stop_full" tools:machine_translated="true">متوقف کردن</string>
-  <string name="keyboard_action_history_full" tools:machine_translated="true">تاریخچه جستجو</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">جستجو در تاریخچه فرمان‌ها</string>
   <string name="keyboard_action_mode_full" tools:machine_translated="true">حالت‌های مختلف مجوز را تغییر دهید</string>
   <string name="keyboard_action_newline_full" tools:machine_translated="true">درج خط جدید</string>
   <string name="keyboard_action_log_full" tools:machine_translated="true">فعال/غیرفعال کردن متن پیاده‌شده</string>
@@ -1019,7 +1019,7 @@
   <string name="keyboard_outline_color" tools:machine_translated="true">رنگ حاشیه</string>
   <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="keyboard_theme_color" tools:machine_translated="true">رنگ پیش‌فرض تم</string>
-  <string name="keyboard_background_opacity" tools:machine_translated="true">میزان شفافیت پس‌زمینه: %1$d%%</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">میزان تیرگی پس‌زمینه: %1$d%%</string>
   <string name="keyboard_outlined" tools:machine_translated="true">با حاشیه</string>
   <string name="keyboard_outline_thickness" tools:machine_translated="true">ضخامت حاشیه: %1$.1f پیکسل (با در نظر گرفتن تراکم نمایشگر)</string>
   <string name="keyboard_reset_appearance" tools:machine_translated="true">بازنشانی ظاهر</string>
@@ -1063,7 +1063,7 @@
   <string name="keyboard_repeat_off" tools:machine_translated="true">یک بار فشار دهید.</string>
   <string name="keyboard_repeat_on" tools:machine_translated="true">هنگامی که دکمه را نگه می‌دارید، تکرار می‌شود.</string>
   <string name="keyboard_advanced_summary" tools:machine_translated="true">تعداد ردیف‌ها، ستون‌ها و عرض کلیدها</string>
-  <string name="keyboard_usage_count" tools:machine_translated="true">توسط %1$d کاربر استفاده می‌شود.</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">تعداد موارد استفاده: %1$d</string>
   <string name="keyboard_remove_key_message" tools:machine_translated="true">آیا می‌خواهید این کلید را از طرح اولیه حذف کنید؟</string>
   <string name="keyboard_key_discard_title" tools:machine_translated="true">آیا می‌خواهید تغییرات اعمال‌شده روی کلیدها را ذخیره کنید؟</string>
   <string name="keyboard_key_discard_message" tools:machine_translated="true">این تغییرات را در طرح‌بندی اعمال کنید یا آن‌ها را لغو کنید.</string>

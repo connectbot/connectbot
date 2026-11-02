@@ -960,7 +960,7 @@
   <string name="keyboard_key_paste" tools:machine_translated="true">Ielīmēt</string>
   <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
   <string name="keyboard_action_stop_full" tools:machine_translated="true">Pārtraukt</string>
-  <string name="keyboard_action_history_full" tools:machine_translated="true">Meklēšanas vēsture</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Meklēt komandu vēsturē</string>
   <string name="keyboard_action_mode_full" tools:machine_translated="true">Pārslēdziet atļauju režīmus.</string>
   <string name="keyboard_action_newline_full" tools:machine_translated="true">Ievietot jaunu rindu</string>
   <string name="keyboard_action_log_full" tools:machine_translated="true">Pārslēgt transkripcijas režīmu</string>
@@ -1023,7 +1023,7 @@
   <string name="keyboard_outline_color" tools:machine_translated="true">Kontūras krāsa</string>
   <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="keyboard_theme_color" tools:machine_translated="true">Pēc noklusējuma lietotā tēma</string>
-  <string name="keyboard_background_opacity" tools:machine_translated="true">Fona caurspīdīguma līmenis: %1$d%%</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Fona necaurspīdīgums: %1$d%%</string>
   <string name="keyboard_outlined" tools:machine_translated="true">Ar apveidu</string>
   <string name="keyboard_outline_thickness" tools:machine_translated="true">Apveida līnijas biezums: %1$.1f dp</string>
   <string name="keyboard_reset_appearance" tools:machine_translated="true">Atjaunot izskatu.</string>
@@ -1067,7 +1067,7 @@
   <string name="keyboard_repeat_off" tools:machine_translated="true">Nospiediet vienreiz.</string>
   <string name="keyboard_repeat_on" tools:machine_translated="true">Atkārto, kamēr poga ir nospiesta.</string>
   <string name="keyboard_advanced_summary" tools:machine_translated="true">Rinda, kolonna un taustiņa platums.</string>
-  <string name="keyboard_usage_count" tools:machine_translated="true">Izmanto %1$d lietotāji.</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">Lietojumu skaits: %1$d</string>
   <string name="keyboard_remove_key_message" tools:machine_translated="true">Vai noņemt šo taustiņu no izkārtojuma rasējuma?</string>
   <string name="keyboard_key_discard_title" tools:machine_translated="true">Piemērot izmaiņas tastatūras taustiņiem?</string>
   <string name="keyboard_key_discard_message" tools:machine_translated="true">Pielietojiet šīs izmaiņas izkārtojumam vai atsakieties no tām.</string>

@@ -956,7 +956,7 @@
   <string name="keyboard_key_paste" tools:machine_translated="true">पेस्ट गर्नुहोस्</string>
   <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
   <string name="keyboard_action_stop_full" tools:machine_translated="true">अवरोध गर्नुहोस्</string>
-  <string name="keyboard_action_history_full" tools:machine_translated="true">खोज इतिहास</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">आदेश इतिहासमा खोज्नुहोस्</string>
   <string name="keyboard_action_mode_full" tools:machine_translated="true">अनुमति मोडहरू बदल्नुहोस्।</string>
   <string name="keyboard_action_newline_full" tools:machine_translated="true">नयाँ अनुच्छेद थप्नुहोस्</string>
   <string name="keyboard_action_log_full" tools:machine_translated="true">प्रतिलिपि खोल्नुहोस्/बन्द गर्नुहोस्</string>
@@ -1019,7 +1019,7 @@
   <string name="keyboard_outline_color" tools:machine_translated="true">बाह्य रेखाको रङ</string>
   <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="keyboard_theme_color" tools:machine_translated="true">थीम पूर्वनिर्धारित</string>
-  <string name="keyboard_background_opacity" tools:machine_translated="true">पृष्ठभूमि पारदर्शीता: %1$d%%</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">पृष्ठभूमिको अपारदर्शिता: %1$d%%</string>
   <string name="keyboard_outlined" tools:machine_translated="true">रेखांकित गरिएको</string>
   <string name="keyboard_outline_thickness" tools:machine_translated="true">आउटलाइनको मोटाई: %1$.1f डीपी</string>
   <string name="keyboard_reset_appearance" tools:machine_translated="true">स्वरूप पुनर्स्थापित गर्नुहोस्।</string>
@@ -1063,7 +1063,7 @@
   <string name="keyboard_repeat_off" tools:machine_translated="true">एक पटक थिच्नुहोस्।</string>
   <string name="keyboard_repeat_on" tools:machine_translated="true">थचाईरहँदा दोहोरिन्छ।</string>
   <string name="keyboard_advanced_summary" tools:machine_translated="true">पंक्ति, स्तम्भ, र कुञ्जीको चौडाइ</string>
-  <string name="keyboard_usage_count" tools:machine_translated="true">%1$d जनाले प्रयोग गरेका छन्।</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">प्रयोग भएका स्थानहरूको संख्या: %1$d</string>
   <string name="keyboard_remove_key_message" tools:machine_translated="true">के यो कुञ्जीलाई लेआउटको मसौदाबाट हटाउने?</string>
   <string name="keyboard_key_discard_title" tools:machine_translated="true">कुञ्जीहरूमा परिवर्तन लागू गर्ने?</string>
   <string name="keyboard_key_discard_message" tools:machine_translated="true">यी परिवर्तनहरू लेआउटमा लागू गर्नुहोस्, वा त्याग्नुहोस्।</string>

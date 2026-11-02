@@ -959,7 +959,7 @@
   <string name="keyboard_action_history_full" tools:machine_translated="true">Søk i historikken</string>
   <string name="keyboard_action_mode_full" tools:machine_translated="true">Bytt mellom tillatelsesmoduser.</string>
   <string name="keyboard_action_newline_full" tools:machine_translated="true">Sett inn linjeskift</string>
-  <string name="keyboard_action_log_full" tools:machine_translated="true">Vis/skjul teksting</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">Vis/skjul samtaleutskrift</string>
   <string name="keyboard_action_edit_full" tools:machine_translated="true">Åpne ekstern redigeringsprogram</string>
   <string name="keyboard_action_copy_full" tools:machine_translated="true">Kopier svar</string>
   <string name="macro_assign" tools:machine_translated="true">Tilordne makro</string>
@@ -1019,7 +1019,7 @@
   <string name="keyboard_outline_color" tools:machine_translated="true">Omrissfarge</string>
   <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="keyboard_theme_color" tools:machine_translated="true">Standardtema</string>
-  <string name="keyboard_background_opacity" tools:machine_translated="true">Bakgrunnens gjennomsiktighet: %1$d%%</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Bakgrunnens ugjennomsiktighet: %1$d%%</string>
   <string name="keyboard_outlined" tools:machine_translated="true">Med omriss</string>
   <string name="keyboard_outline_thickness" tools:machine_translated="true">Kanttykkelse: %1$.1f dp</string>
   <string name="keyboard_reset_appearance" tools:machine_translated="true">Tilbakestill utseende</string>

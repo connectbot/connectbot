@@ -956,7 +956,7 @@
   <string name="keyboard_key_paste" tools:machine_translated="true">Tempel</string>
   <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
   <string name="keyboard_action_stop_full" tools:machine_translated="true">Hentikan</string>
-  <string name="keyboard_action_history_full" tools:machine_translated="true">Riwayat pencarian</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Cari dalam riwayat perintah</string>
   <string name="keyboard_action_mode_full" tools:machine_translated="true">Ganti mode izin</string>
   <string name="keyboard_action_newline_full" tools:machine_translated="true">Sisipkan baris baru</string>
   <string name="keyboard_action_log_full" tools:machine_translated="true">Aktifkan/nonaktifkan transkrip</string>
@@ -1019,7 +1019,7 @@
   <string name="keyboard_outline_color" tools:machine_translated="true">Warna garis luar</string>
   <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="keyboard_theme_color" tools:machine_translated="true">Tema bawaan</string>
-  <string name="keyboard_background_opacity" tools:machine_translated="true">Tingkat transparansi latar belakang: %1$d%%</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Opasitas latar belakang: %1$d%%</string>
   <string name="keyboard_outlined" tools:machine_translated="true">Bergaris tepi</string>
   <string name="keyboard_outline_thickness" tools:machine_translated="true">Ketebalan garis luar: %1$.1f dp</string>
   <string name="keyboard_reset_appearance" tools:machine_translated="true">Atur ulang tampilan.</string>

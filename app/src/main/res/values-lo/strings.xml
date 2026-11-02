@@ -849,7 +849,7 @@
   <string name="keyboard_key_backspace" tools:machine_translated="true">ປຸ່ມລຶບຕົວອັກສອນ</string>
   <string name="keyboard_key_delete" tools:machine_translated="true">ລຶບ</string>
   <string name="keyboard_key_insert" tools:machine_translated="true">ໃສ່</string>
-  <string name="keyboard_key_arrow_up" tools:machine_translated="true">ເປີດເມນູ</string>
+  <string name="keyboard_key_arrow_up" tools:machine_translated="true">↑</string>
   <string name="keyboard_key_arrow_down" tools:machine_translated="true">↓</string>
   <string name="keyboard_key_arrow_left" tools:machine_translated="true">←</string>
   <string name="keyboard_key_arrow_right" tools:machine_translated="true">→</string>
@@ -1019,7 +1019,7 @@
   <string name="keyboard_outline_color" tools:machine_translated="true">ສີຂອງຂອບຮູບ</string>
   <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="keyboard_theme_color" tools:machine_translated="true">ຮູບແບບເລີ່ມຕົ້ນ</string>
-  <string name="keyboard_background_opacity" tools:machine_translated="true">ລະດັບຄວາມໂປ່ງໃສຂອງພື້ນຫຼັງ: %1$d%%</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">ຄວາມທຶບຂອງພື້ນຫຼັງ: %1$d%%</string>
   <string name="keyboard_outlined" tools:machine_translated="true">ມີຂອບແນວ</string>
   <string name="keyboard_outline_thickness" tools:machine_translated="true">ຄວາມໜາຂອງຂອບ: %1$.1f dp</string>
   <string name="keyboard_reset_appearance" tools:machine_translated="true">ຣີເຊັດຮູບແບບ</string>

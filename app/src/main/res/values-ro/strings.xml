@@ -960,7 +960,7 @@
   <string name="keyboard_key_paste" tools:machine_translated="true">Copiere</string>
   <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
   <string name="keyboard_action_stop_full" tools:machine_translated="true">Întrerupe</string>
-  <string name="keyboard_action_history_full" tools:machine_translated="true">Istoric căutări</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Caută în istoricul comenzilor</string>
   <string name="keyboard_action_mode_full" tools:machine_translated="true">Comutați între modurile de permisiune.</string>
   <string name="keyboard_action_newline_full" tools:machine_translated="true">Inserează un rând nou.</string>
   <string name="keyboard_action_log_full" tools:machine_translated="true">Activează/dezactivează transcrierea.</string>

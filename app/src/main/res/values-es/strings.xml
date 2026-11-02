@@ -960,7 +960,7 @@
   <string name="keyboard_key_paste" tools:machine_translated="true">Pegar</string>
   <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
   <string name="keyboard_action_stop_full" tools:machine_translated="true">Detener</string>
-  <string name="keyboard_action_history_full" tools:machine_translated="true">Historial de búsqueda</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Buscar en el historial de comandos</string>
   <string name="keyboard_action_mode_full" tools:machine_translated="true">Alternar entre los modos de permiso.</string>
   <string name="keyboard_action_newline_full" tools:machine_translated="true">Insertar salto de línea</string>
   <string name="keyboard_action_log_full" tools:machine_translated="true">Activar/desactivar la transcripción.</string>

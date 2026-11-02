@@ -815,7 +815,7 @@
   <string name="crypto_mode_exact" tools:machine_translated="true">Verwenden Sie nur diese.</string>
   <string name="crypto_apply" tools:machine_translated="true">Anwenden</string>
   <string name="crypto_expression" tools:machine_translated="true">Algorithmusausdruck</string>
-  <string name="crypto_expression_help" tools:machine_translated="true">Durch Komma getrennte Namen. Im Abschnitt „Standardeinstellungen ändern“ können Sie jedem Namen eines der folgenden Präfixe voranstellen: ^ (ersetzt), + (fügt hinzu) oder - (schließt aus).</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">Durch Kommas getrennte Namen. Stellen Sie unter „Standardeinstellungen ändern“ jedem Namen eines der folgenden Präfixe voran: ^ (an den Anfang stellen), + (am Ende anhängen) oder - (ausschließen).</string>
   <string name="crypto_expression_invalid" tools:machine_translated="true">Verwenden Sie eindeutige SSH-Namen und einen einzigen Auswahlmodus. Exakte Listen dürfen nicht leer sein.</string>
   <string name="crypto_effective_order" tools:machine_translated="true">Wirksame Prioritätenreihenfolge</string>
   <string name="crypto_algorithm_unavailable" tools:machine_translated="true">Auf diesem Gerät nicht verfügbar; in Ihrer Konfiguration beibehalten.</string>
@@ -839,7 +839,7 @@
   <string name="crypto_show_effective_order" tools:machine_translated="true">Zeige die tatsächlich angewendete Prioritätenreihenfolge.</string>
   <string name="crypto_hide_effective_order" tools:machine_translated="true">Effektive Präferenzreihenfolge ausblenden</string>
   <string name="crypto_change_algorithm_state" tools:machine_translated="true">Zustand für %1$s ändern.</string>
-  <string name="crypto_states_help" tools:machine_translated="true">^ Bevorzugt die erste Option · + Hinzufügen · ✓ Standardeinstellung verwenden · − Auswählen</string>
+  <string name="crypto_states_help" tools:machine_translated="true">^ Vorrang geben · + Anhängen · ✓ Standardeinstellung verwenden · − Ausschließen</string>
   <string name="keyboard_key_ctrl" tools:machine_translated="true">Strg</string>
   <string name="keyboard_key_alt" tools:machine_translated="true">Alt-Taste</string>
   <string name="keyboard_key_shift" tools:machine_translated="true">Umschalt</string>
@@ -956,7 +956,7 @@
   <string name="keyboard_key_paste" tools:machine_translated="true">Einfügen</string>
   <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
   <string name="keyboard_action_stop_full" tools:machine_translated="true">Unterbrechen</string>
-  <string name="keyboard_action_history_full" tools:machine_translated="true">Suchverlauf</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Befehlsverlauf durchsuchen</string>
   <string name="keyboard_action_mode_full" tools:machine_translated="true">Berechtigungsmodi durchschalten</string>
   <string name="keyboard_action_newline_full" tools:machine_translated="true">Zeilenumbruch einfügen</string>
   <string name="keyboard_action_log_full" tools:machine_translated="true">Transkript ein- oder ausblenden</string>
@@ -1019,7 +1019,7 @@
   <string name="keyboard_outline_color" tools:machine_translated="true">Umrandungsfarbe</string>
   <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="keyboard_theme_color" tools:machine_translated="true">Standarddesign</string>
-  <string name="keyboard_background_opacity" tools:machine_translated="true">Hintergrundtransparenz: %1$d %%</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Hintergrunddeckkraft: %1$d %%</string>
   <string name="keyboard_outlined" tools:machine_translated="true">Mit Umrandung</string>
   <string name="keyboard_outline_thickness" tools:machine_translated="true">Rahmenlinienstärke: %1$.1f dp</string>
   <string name="keyboard_reset_appearance" tools:machine_translated="true">Aussehen zurücksetzen</string>
@@ -1063,7 +1063,7 @@
   <string name="keyboard_repeat_off" tools:machine_translated="true">Einmal drücken.</string>
   <string name="keyboard_repeat_on" tools:machine_translated="true">Wird wiederholt, solange die Taste gedrückt gehalten wird.</string>
   <string name="keyboard_advanced_summary" tools:machine_translated="true">Reihe, Spalte und Tastengröße</string>
-  <string name="keyboard_usage_count" tools:machine_translated="true">Von %1$d Personen verwendet.</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">Anzahl der Verwendungen: %1$d</string>
   <string name="keyboard_remove_key_message" tools:machine_translated="true">Soll diese Taste aus dem Layoutentwurf entfernt werden?</string>
   <string name="keyboard_key_discard_title" tools:machine_translated="true">Sollen die Änderungen an den Tasten übernommen werden?</string>
   <string name="keyboard_key_discard_message" tools:machine_translated="true">Wenden Sie diese Änderungen auf das Layout an oder verwerfen Sie sie.</string>

@@ -819,7 +819,7 @@
   <string name="crypto_mode_exact" tools:machine_translated="true">השתמשו רק באלה.</string>
   <string name="crypto_apply" tools:machine_translated="true">החל</string>
   <string name="crypto_expression" tools:machine_translated="true">ביטוי אלגוריתמי</string>
-  <string name="crypto_expression_help" tools:machine_translated="true">שמות המופרדים בפסיקים. באפשרות \"שנה הגדרות ברירת מחדל\", הוסף לכל שם קידומת: ^ (הוסף בתחילת השם), + (הוסף בסוף השם) או - (הסר).</string>
+  <string name="crypto_expression_help" tools:machine_translated="true">שמות המופרדים בפסיקים. באפשרות \"שנה הגדרות ברירת מחדל\", הוסף לפני כל שם אחד מהסימנים: ^ (העדף בראש הרשימה), + (הוסף לסוף הרשימה) או - (הסר מהרשימה).</string>
   <string name="crypto_expression_invalid" tools:machine_translated="true">השתמשו בשמות SSH ייחודיים ובאופן בחירה אחד. רשימות מדויקות לא יכולות להיות ריקות.</string>
   <string name="crypto_effective_order" tools:machine_translated="true">סדר העדפות בתוקף</string>
   <string name="crypto_algorithm_unavailable" tools:machine_translated="true">לא זמין במכשיר זה; נשמר בהגדרות שלך.</string>
@@ -960,7 +960,7 @@
   <string name="keyboard_key_paste" tools:machine_translated="true">הדבק</string>
   <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
   <string name="keyboard_action_stop_full" tools:machine_translated="true">להפסיק</string>
-  <string name="keyboard_action_history_full" tools:machine_translated="true">היסטוריית חיפושים</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">חיפוש בהיסטוריית הפקודות</string>
   <string name="keyboard_action_mode_full" tools:machine_translated="true">החלף בין מצבי ההרשאות.</string>
   <string name="keyboard_action_newline_full" tools:machine_translated="true">הוסף שורה חדשה</string>
   <string name="keyboard_action_log_full" tools:machine_translated="true">הצג/הסתר תמלול</string>
@@ -1023,7 +1023,7 @@
   <string name="keyboard_outline_color" tools:machine_translated="true">צבע קו המתאר</string>
   <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="keyboard_theme_color" tools:machine_translated="true">ערך ברירת מחדל לנושא</string>
-  <string name="keyboard_background_opacity" tools:machine_translated="true">שקיפות הרקע: %1$d%%</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">אטימות הרקע: %1$d%%</string>
   <string name="keyboard_outlined" tools:machine_translated="true">מסומן</string>
   <string name="keyboard_outline_thickness" tools:machine_translated="true">עובי המסגרת: %1$.1f יחידות עצמאיות לצפיפות.</string>
   <string name="keyboard_reset_appearance" tools:machine_translated="true">אפס הגדרות מראה</string>

@@ -956,10 +956,10 @@
   <string name="keyboard_key_paste" tools:machine_translated="true">Yapıştır</string>
   <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
   <string name="keyboard_action_stop_full" tools:machine_translated="true">Kesintiye uğrat</string>
-  <string name="keyboard_action_history_full" tools:machine_translated="true">Arama geçmişi</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Komut geçmişinde ara</string>
   <string name="keyboard_action_mode_full" tools:machine_translated="true">İzin modlarını değiştirin.</string>
   <string name="keyboard_action_newline_full" tools:machine_translated="true">Yeni satır ekle</string>
-  <string name="keyboard_action_log_full" tools:machine_translated="true">Altyazıyı aç/kapat</string>
+  <string name="keyboard_action_log_full" tools:machine_translated="true">Konuşma dökümünü göster/gizle</string>
   <string name="keyboard_action_edit_full" tools:machine_translated="true">Harici düzenleyiciyi aç</string>
   <string name="keyboard_action_copy_full" tools:machine_translated="true">Yanıtı kopyala</string>
   <string name="macro_assign" tools:machine_translated="true">Makroyu ata</string>
@@ -1019,7 +1019,7 @@
   <string name="keyboard_outline_color" tools:machine_translated="true">Kenar rengi</string>
   <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="keyboard_theme_color" tools:machine_translated="true">Varsayılan tema</string>
-  <string name="keyboard_background_opacity" tools:machine_translated="true">Arka plan saydamlığı: %1$d%%</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Arka plan opaklığı: %1$d%%</string>
   <string name="keyboard_outlined" tools:machine_translated="true">Kenarlıklı</string>
   <string name="keyboard_outline_thickness" tools:machine_translated="true">Kenarlık kalınlığı: %1$.1f dp</string>
   <string name="keyboard_reset_appearance" tools:machine_translated="true">Görünümü sıfırla</string>
@@ -1063,7 +1063,7 @@
   <string name="keyboard_repeat_off" tools:machine_translated="true">Tek kez basın.</string>
   <string name="keyboard_repeat_on" tools:machine_translated="true">Tuş basılı tutulduğu sürece tekrar eder.</string>
   <string name="keyboard_advanced_summary" tools:machine_translated="true">Satır, sütun ve tuş genişliği</string>
-  <string name="keyboard_usage_count" tools:machine_translated="true">%1$d kullanıcı tarafından kullanılıyor.</string>
+  <string name="keyboard_usage_count" tools:machine_translated="true">Kullanım yeri sayısı: %1$d</string>
   <string name="keyboard_remove_key_message" tools:machine_translated="true">Bu tuşu düzen şemasından kaldıralım mı?</string>
   <string name="keyboard_key_discard_title" tools:machine_translated="true">Tuş değişikliklerini uygula?</string>
   <string name="keyboard_key_discard_message" tools:machine_translated="true">Bu değişiklikleri düzen düzenine uygulayın veya değişiklikleri iptal edin.</string>

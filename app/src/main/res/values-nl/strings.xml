@@ -956,7 +956,7 @@
   <string name="keyboard_key_paste" tools:machine_translated="true">Plakken</string>
   <string name="keyboard_shortcut_description" tools:machine_translated="true">%1$s (%2$s)</string>
   <string name="keyboard_action_stop_full" tools:machine_translated="true">Onderbreken</string>
-  <string name="keyboard_action_history_full" tools:machine_translated="true">Zoekgeschiedenis</string>
+  <string name="keyboard_action_history_full" tools:machine_translated="true">Zoeken in de opdrachtgeschiedenis</string>
   <string name="keyboard_action_mode_full" tools:machine_translated="true">Schakel tussen de verschillende machtigingsmodi.</string>
   <string name="keyboard_action_newline_full" tools:machine_translated="true">Nieuwe regel invoegen</string>
   <string name="keyboard_action_log_full" tools:machine_translated="true">Transcriptie in- of uitschakelen</string>
@@ -1019,7 +1019,7 @@
   <string name="keyboard_outline_color" tools:machine_translated="true">Omtrekkleur</string>
   <string name="keyboard_color_value" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="keyboard_theme_color" tools:machine_translated="true">Standaardthema</string>
-  <string name="keyboard_background_opacity" tools:machine_translated="true">Achtergrondtransparantie: %1$d%%</string>
+  <string name="keyboard_background_opacity" tools:machine_translated="true">Dekking van de achtergrond: %1$d%%</string>
   <string name="keyboard_outlined" tools:machine_translated="true">Omrand</string>
   <string name="keyboard_outline_thickness" tools:machine_translated="true">Lijndikte: %1$.1f dp</string>
   <string name="keyboard_reset_appearance" tools:machine_translated="true">Stel het uiterlijk terug</string>
