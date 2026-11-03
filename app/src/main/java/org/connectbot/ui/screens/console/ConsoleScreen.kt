@@ -623,8 +623,10 @@ private fun ConsoleTerminalPage(
             }
 
             val waitingForNfc by bridge.fido2Manager.waitingForNfcSigning.collectAsState()
+            val nfcTagLost by bridge.fido2Manager.nfcSigningTagLost.collectAsState()
             if (waitingForNfc) {
                 Fido2NfcTapOverlay(
+                    tagLost = nfcTagLost,
                     onCancel = { bridge.fido2Manager.cancelNfcSigning() },
                     modifier = Modifier.align(Alignment.BottomCenter),
                 )

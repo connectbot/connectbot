@@ -135,6 +135,7 @@ class ConsoleScreenTest {
         val bridge = mock(TerminalBridge::class.java)
         val fido2Manager = mock(Fido2Manager::class.java)
         `when`(fido2Manager.waitingForNfcSigning).thenReturn(MutableStateFlow(false))
+        `when`(fido2Manager.nfcSigningTagLost).thenReturn(MutableStateFlow(false))
         `when`(bridge.fido2Manager).thenReturn(fido2Manager)
         return bridge
     }

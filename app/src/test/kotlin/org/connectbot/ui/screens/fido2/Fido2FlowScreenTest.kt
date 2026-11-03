@@ -222,8 +222,11 @@ class Fido2FlowScreenTest {
     @Test
     fun nfcSigningOverlayExplainsTapAndOffersCancellation() {
         var cancelled = false
-        rule.setContent { ConnectBotTheme { Fido2NfcTapOverlay(onCancel = { cancelled = true }) } }
+        val tagLost = mutableStateOf(false)
+        rule.setContent { ConnectBotTheme { Fido2NfcTapOverlay(onCancel = { cancelled = true }, tagLost = tagLost.value) } }
         rule.onNodeWithText(text(R.string.fido2_nfc_tap_title)).assertIsDisplayed()
+        rule.runOnIdle { tagLost.value = true }
+        rule.onNodeWithText(text(R.string.fido2_nfc_tag_lost_retry)).assertIsDisplayed()
         click(R.string.fido2_cancel)
         assertTrue(cancelled)
     }

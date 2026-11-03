@@ -52,8 +52,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.net.toUri
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import androidx.preference.PreferenceManager
@@ -173,6 +175,7 @@ class MainActivity : AppCompatActivity() {
 
         // Set up NFC foreground dispatch for FIDO2 security keys
         setupNfcForegroundDispatch()
+        observeNfcSigning()
         setContent {
             val appUiState by appViewModel.uiState.collectAsState()
             val pendingDisconnectAll by appViewModel.pendingDisconnectAll.collectAsState()
@@ -338,6 +341,29 @@ class MainActivity : AppCompatActivity() {
                 },
                 onNavigateToConsole = onNavigateToConsole,
             )
+        }
+    }
+
+    private fun observeNfcSigning() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                var discoveryStarted = false
+                try {
+                    fido2Manager.waitingForNfcSigning.collect { waiting ->
+                        if (waiting && !discoveryStarted) {
+                            disableNfcForegroundDispatch()
+                            fido2Manager.startNfcDiscovery(this@MainActivity)
+                            discoveryStarted = true
+                        } else if (!waiting && discoveryStarted) {
+                            fido2Manager.stopNfcDiscovery(this@MainActivity)
+                            discoveryStarted = false
+                            enableNfcForegroundDispatch()
+                        }
+                    }
+                } finally {
+                    if (discoveryStarted) fido2Manager.stopNfcDiscovery(this@MainActivity)
+                }
+            }
         }
     }
 

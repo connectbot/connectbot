@@ -116,6 +116,7 @@ internal fun Fido2ConnectPromptContent(
 fun Fido2NfcTapOverlay(
     onCancel: () -> Unit,
     modifier: Modifier = Modifier,
+    tagLost: Boolean = false,
 ) {
     val terminalColors = MaterialTheme.colorScheme.terminal
 
@@ -143,7 +144,9 @@ fun Fido2NfcTapOverlay(
         )
 
         Text(
-            text = stringResource(R.string.fido2_nfc_tap_message),
+            text = stringResource(
+                if (tagLost) R.string.fido2_nfc_tag_lost_retry else R.string.fido2_nfc_tap_message,
+            ),
             style = MaterialTheme.typography.bodyMedium,
             color = terminalColors.overlayTextSecondary,
             modifier = Modifier.padding(bottom = 16.dp),

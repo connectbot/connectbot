@@ -22,6 +22,7 @@ import android.content.Context
 import android.hardware.usb.UsbDevice
 import android.hardware.usb.UsbManager
 import android.nfc.Tag
+import android.nfc.TagLostException
 import android.util.Log
 import com.yubico.yubikit.android.YubiKitManager
 import com.yubico.yubikit.android.transport.nfc.NfcConfiguration
@@ -201,6 +202,7 @@ class Fido2Manager @Inject constructor(
      * Call this in Activity.onResume().
      */
     fun startNfcDiscovery(activity: Activity) {
+        val signingDiscovery = _waitingForNfcSigning.value
         try {
             yubiKitManager.startNfcDiscovery(
                 // FIDO2 uses ISO-DEP; NDEF probing can time out before tag discovery.
@@ -209,7 +211,11 @@ class Fido2Manager @Inject constructor(
             ) { device ->
                 Timber.d("NFC YubiKey detected")
                 scope.launch {
-                    connectToDevice(device, "NFC", "Security Key")
+                    if (signingDiscovery) {
+                        handleNfcTagForSigning(device.tag)
+                    } else {
+                        connectToDevice(device, "NFC", "Security Key")
+                    }
                 }
             }
         } catch (e: NfcNotAvailable) {
@@ -924,6 +930,8 @@ class Fido2Manager @Inject constructor(
     // State flow to signal when waiting for NFC tap for SSH signing
     private val _waitingForNfcSigning = MutableStateFlow(false)
     val waitingForNfcSigning: StateFlow<Boolean> = _waitingForNfcSigning.asStateFlow()
+    private val _nfcSigningTagLost = MutableStateFlow(false)
+    val nfcSigningTagLost: StateFlow<Boolean> = _nfcSigningTagLost.asStateFlow()
 
     /**
      * Set up for SSH signing operation.
@@ -947,6 +955,7 @@ class Fido2Manager @Inject constructor(
      */
     fun requestNfcSigning(pin: String) {
         sshPin = pin
+        _nfcSigningTagLost.value = false
         _waitingForNfcSigning.value = true
     }
 
@@ -954,36 +963,47 @@ class Fido2Manager @Inject constructor(
      * Cancel pending NFC signing request.
      */
     fun cancelNfcSigning() {
-        _waitingForNfcSigning.value = false
-        sshPin = null
         val callback = sshSigningCallback
-        sshSigningCallback = null
+        clearNfcSigningRequest()
         callback?.invoke(Fido2Result.Error("NFC signing cancelled"))
     }
 
-    /**
-     * Handle NFC tag detection for SSH signing.
-     * Call this when an NFC tag is detected while waitingForNfcSigning is true.
-     */
-    suspend fun handleNfcTagForSigning(tag: Tag) {
-        val credId = sshCredentialId ?: return
-        val challenge = sshChallenge ?: return
-        val pin = sshPin ?: return
-        val rpId = sshRpId ?: SSH_RP_ID
-        val callback = sshSigningCallback ?: return
-
-        _waitingForNfcSigning.value = false
-
-        val result = connectAndSignNfc(tag, pin, credId, challenge, rpId)
-
-        // Clear state
+    private fun clearNfcSigningRequest() {
         sshCredentialId = null
         sshChallenge = null
         sshPin = null
         sshRpId = null
         sshSigningCallback = null
+        _nfcSigningTagLost.value = false
+        _waitingForNfcSigning.value = false
+    }
 
-        callback(result)
+    /** Keep the tap prompt and NFC reader active until signing completes or is cancelled. */
+    suspend fun handleNfcTagForSigning(tag: Tag) {
+        if (!nfcConnectionMutex.tryLock()) return
+        try {
+            val credId = sshCredentialId ?: return
+            val challenge = sshChallenge ?: return
+            val pin = sshPin ?: return
+            val rpId = sshRpId ?: SSH_RP_ID
+            val callback = sshSigningCallback ?: return
+            _nfcSigningTagLost.value = false
+
+            val result = connectAndSignNfc(tag, pin, credId, challenge, rpId)
+            // Cancellation or a replacement request must not receive a late signature.
+            if (sshSigningCallback !== callback) return
+            if (result is Fido2Result.Error &&
+                generateSequence(result.cause) { it.cause }.any { it is TagLostException }
+            ) {
+                _nfcSigningTagLost.value = true
+                return
+            }
+
+            clearNfcSigningRequest()
+            callback(result)
+        } finally {
+            nfcConnectionMutex.unlock()
+        }
     }
 
     /**
@@ -1066,7 +1086,7 @@ class Fido2Manager @Inject constructor(
             }
         } catch (e: Exception) {
             Log.e(TAG, "Failed to connect to NFC tag for signing: ${e.message}", e)
-            continuation.resume(Fido2Result.Error(e.message ?: "NFC connection failed"))
+            continuation.resume(Fido2Result.Error(e.message ?: "NFC connection failed", e))
         }
     }
 
@@ -1187,7 +1207,7 @@ class Fido2Manager @Inject constructor(
             message.contains("NO_CREDENTIALS", ignoreCase = true) ->
                 Fido2Result.Error("Credential not found on security key")
 
-            else -> Fido2Result.Error(e.message ?: defaultMessage)
+            else -> Fido2Result.Error(e.message ?: defaultMessage, e)
         }
     }
 

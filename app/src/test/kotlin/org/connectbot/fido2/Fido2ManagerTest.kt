@@ -22,6 +22,7 @@ import android.content.Context
 import android.hardware.usb.UsbDevice
 import android.hardware.usb.UsbManager
 import android.nfc.Tag
+import android.nfc.TagLostException
 import com.yubico.yubikit.android.YubiKitManager
 import com.yubico.yubikit.android.transport.nfc.NfcConfiguration
 import com.yubico.yubikit.android.transport.nfc.NfcYubiKeyDevice
@@ -134,6 +135,8 @@ class Fido2ManagerTest {
             }
 
             "getUsbDevice" -> mock(UsbDevice::class.java)
+
+            "getTag" -> mock(Tag::class.java)
 
             else -> Answers.RETURNS_DEFAULTS.answer(call)
         }
@@ -399,6 +402,81 @@ class Fido2ManagerTest {
         connectionError = IOException("disconnected")
         manager.connectToNfcTag(tag)
         assertTrue(manager.connectionState.value is Fido2ConnectionState.Error)
+    }
+
+    @Test
+    fun nfcSigningKeepsPromptVisibleAndIgnoresOverlappingTaps() = runTest(dispatcher) {
+        delayNfcConnection = true
+        assertions = listOf(assertion())
+        val results = mutableListOf<Fido2Result<Fido2SignatureResult>>()
+        manager.prepareSshSigning(byteArrayOf(1), byteArrayOf(2)) { results.add(it) }
+        manager.requestNfcSigning("1234")
+        val first = async { manager.handleNfcTagForSigning(mock(Tag::class.java)) }
+        runCurrent()
+        assertTrue(manager.waitingForNfcSigning.value)
+        val duplicate = async { manager.handleNfcTagForSigning(mock(Tag::class.java)) }
+        runCurrent()
+        assertTrue(duplicate.isCompleted)
+        assertEquals(1, pendingNfcConnections.size)
+        pendingNfcConnections.single().invoke()
+        advanceUntilIdle()
+        first.await()
+        assertFalse(manager.waitingForNfcSigning.value)
+        assertEquals(1, results.size)
+        assertTrue(results.single() is Fido2Result.Success)
+    }
+
+    @Test
+    fun nfcSigningCanRetryAfterTagLossWithoutFailingSshAuthentication() = runTest(dispatcher) {
+        assertions = listOf(assertion())
+        val results = mutableListOf<Fido2Result<Fido2SignatureResult>>()
+        manager.prepareSshSigning(byteArrayOf(1), byteArrayOf(2)) { results.add(it) }
+        manager.requestNfcSigning("1234")
+        for (failure in listOf(TagLostException("lost"), IOException("wrapped", TagLostException("lost")))) {
+            pinError = failure
+            manager.handleNfcTagForSigning(mock(Tag::class.java))
+            assertTrue(manager.waitingForNfcSigning.value)
+            assertTrue(manager.nfcSigningTagLost.value)
+            assertTrue(results.isEmpty())
+        }
+        pinError = null
+        manager.handleNfcTagForSigning(mock(Tag::class.java))
+        assertFalse(manager.waitingForNfcSigning.value)
+        assertFalse(manager.nfcSigningTagLost.value)
+        assertEquals(1, results.size)
+        assertTrue(results.single() is Fido2Result.Success)
+    }
+
+    @Test
+    fun nfcSigningCancellationDoesNotDeliverALateSignature() = runTest(dispatcher) {
+        delayNfcConnection = true
+        assertions = listOf(assertion())
+        val results = mutableListOf<Fido2Result<Fido2SignatureResult>>()
+        manager.prepareSshSigning(byteArrayOf(1), byteArrayOf(2)) { results.add(it) }
+        manager.requestNfcSigning("1234")
+        val signing = async { manager.handleNfcTagForSigning(mock(Tag::class.java)) }
+        runCurrent()
+        manager.cancelNfcSigning()
+        assertFalse(manager.waitingForNfcSigning.value)
+        pendingNfcConnections.single().invoke()
+        advanceUntilIdle()
+        signing.await()
+        assertEquals(1, results.size)
+        assertTrue(results.single() is Fido2Result.Error)
+    }
+
+    @Test
+    fun nfcReaderDiscoveryRoutesPendingSigningRequestsToSigning() = runTest(dispatcher) {
+        assertions = listOf(assertion())
+        var result: Fido2Result<Fido2SignatureResult>? = null
+        manager.prepareSshSigning(byteArrayOf(1), byteArrayOf(2)) { result = it }
+        manager.requestNfcSigning("1234")
+        manager.startNfcDiscovery(mock(Activity::class.java))
+        assertTrue(requireNotNull(nfcConfiguration).isSkipNdefCheck)
+        nfcCallback!!.invoke(nfcDevice)
+        advanceUntilIdle()
+        assertTrue(result is Fido2Result.Success)
+        assertFalse(manager.waitingForNfcSigning.value)
     }
 
     @Test

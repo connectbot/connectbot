@@ -2553,4 +2553,6 @@
 	<string name="fido2_connect_usb">Connect your USB security key</string>
 	<!-- Continue button -->
 	<string name="fido2_continue">Continue</string>
+    <!-- NFC signing overlay: asks the user to retry after the security key connection drops. -->
+    <string name="fido2_nfc_tag_lost_retry">Connection to the security key was lost. Remove the key, then tap and hold it against the phone again until signing completes.</string>
 </resources>
