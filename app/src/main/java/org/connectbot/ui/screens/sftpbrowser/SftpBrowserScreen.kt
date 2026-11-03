@@ -25,6 +25,7 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.biometric.BiometricPrompt
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -134,7 +135,6 @@ fun SftpBrowserScreen(
     }
 
     // Pending download entry
-    var pendingDownloadEntry by remember { mutableStateOf<SftpEntry?>(null) }
     var pendingDownloadEntries by remember { mutableStateOf<List<SftpEntry>>(emptyList()) }
 
     // File picker for uploading one or more files
@@ -152,17 +152,7 @@ fun SftpBrowserScreen(
         }
     }
 
-    // File saver for downloading
-    val downloadFileSaver = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.CreateDocument("*/*"),
-    ) { uri: Uri? ->
-        if (uri != null && pendingDownloadEntry != null) {
-            viewModel.downloadFile(pendingDownloadEntry!!, uri)
-        }
-        pendingDownloadEntry = null
-    }
-
-    // Directory picker for downloading multiple files
+    // Directory picker for downloading files
     val downloadDirectoryPicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocumentTree(),
     ) { uri: Uri? ->
@@ -190,6 +180,9 @@ fun SftpBrowserScreen(
                             if (uiState.isConnected) {
                                 Text(
                                     text = uiState.currentPath,
+                                    modifier = Modifier.clickable(onClickLabel = stringResource(R.string.sftp_go_to_path)) {
+                                        viewModel.showGoToPathDialog()
+                                    },
                                     style = MaterialTheme.typography.bodySmall,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
@@ -371,13 +364,13 @@ fun SftpBrowserScreen(
                                                 }
                                             } else {
                                                 // Download on click for files
-                                                pendingDownloadEntry = entry
-                                                downloadFileSaver.launch(entry.filename)
+                                                pendingDownloadEntries = listOf(entry)
+                                                downloadDirectoryPicker.launch(null)
                                             }
                                         },
                                         onDownload = {
-                                            pendingDownloadEntry = entry
-                                            downloadFileSaver.launch(entry.filename)
+                                            pendingDownloadEntries = listOf(entry)
+                                            downloadDirectoryPicker.launch(null)
                                         },
                                         onDelete = {
                                             viewModel.showDeleteDialog(entry)
@@ -401,6 +394,15 @@ fun SftpBrowserScreen(
                 }
             }
         }
+    }
+
+    uiState.downloadConflict?.let { conflict ->
+        DownloadConflictDialog(
+            conflict = conflict,
+            onOverwrite = { viewModel.resolveDownloadConflict(conflict.filename) },
+            onRename = { viewModel.resolveDownloadConflict(it) },
+            onCancel = { viewModel.cancelTransfer() },
+        )
     }
 
     // Dialogs

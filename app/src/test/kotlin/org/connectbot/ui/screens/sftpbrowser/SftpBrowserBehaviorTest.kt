@@ -17,9 +17,13 @@
 
 package org.connectbot.ui.screens.sftpbrowser
 
+import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.content.Context
+import android.database.MatrixCursor
 import android.net.Uri
+import android.os.Bundle
+import android.provider.DocumentsContract
 import androidx.lifecycle.SavedStateHandle
 import com.trilead.ssh2.SFTPv3DirectoryEntry
 import com.trilead.ssh2.SFTPv3FileAttributes
@@ -51,6 +55,7 @@ import org.mockito.ArgumentMatchers.anyString
 import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.robolectric.RobolectricTestRunner
@@ -258,7 +263,7 @@ class SftpBrowserBehaviorTest {
         val source = Uri.parse("content://test/source")
         val target = Uri.parse("content://test/target")
         `when`(resolver.openInputStream(source)).thenReturn(ByteArrayInputStream(byteArrayOf(1)))
-        `when`(resolver.openOutputStream(target)).thenReturn(ByteArrayOutputStream())
+        `when`(resolver.openOutputStream(target, "wt")).thenReturn(ByteArrayOutputStream())
         vm.uploadFile(source, "uploaded")
         advanceUntilIdle()
         vm.downloadFile(entry("downloaded"), target)
@@ -271,12 +276,112 @@ class SftpBrowserBehaviorTest {
         vm.uploadFile(source, "missing")
         advanceUntilIdle()
         assertEquals("Upload failed: Cannot open input stream", vm.uiState.value.error)
-        `when`(resolver.openOutputStream(target)).thenReturn(null)
+        `when`(resolver.openOutputStream(target, "wt")).thenReturn(null)
         vm.downloadFile(entry("missing"), target)
         advanceUntilIdle()
         assertEquals("Download failed: Cannot open output stream", vm.uiState.value.error)
         vm.cancelTransfer()
         assertNull(vm.uiState.value.transferProgress)
+    }
+
+    private fun localDownloads(vararg names: Pair<String, Boolean>) {
+        val tree = Uri.parse("content://test/tree/root")
+        val children = DocumentsContract.buildChildDocumentsUriUsingTree(tree, "root")
+        `when`(resolver.query(eq(children), any(Array<String>::class.java), eq(null), eq(null), eq(null))).thenAnswer {
+            MatrixCursor(arrayOf("document_id", "_display_name", "mime_type")).apply {
+                names.forEach { (name, directory) ->
+                    addRow(arrayOf(name, name, if (directory) DocumentsContract.Document.MIME_TYPE_DIR else "application/octet-stream"))
+                }
+            }
+        }
+    }
+
+    @Test
+    fun duplicateDownloadWaitsForOverwriteAndTruncatesExistingFile() = runTest(dispatcher) {
+        val vm = browser()
+        advanceUntilIdle()
+        localDownloads("report.pdf" to false, "report(1).pdf" to false)
+        val tree = Uri.parse("content://test/tree/root")
+        val target = DocumentsContract.buildDocumentUriUsingTree(tree, "report.pdf")
+        `when`(resolver.openOutputStream(target, "wt")).thenReturn(ByteArrayOutputStream())
+        vm.downloadFiles(listOf(entry("report.pdf")), tree)
+        advanceUntilIdle()
+        assertEquals(DownloadConflict("report.pdf", "report(2).pdf", true), vm.uiState.value.downloadConflict)
+        verify(resolver, never()).openOutputStream(target, "wt")
+        vm.resolveDownloadConflict("report.pdf")
+        advanceUntilIdle()
+        verify(resolver).openOutputStream(target, "wt")
+        assertNull(vm.uiState.value.downloadConflict)
+        assertNull(vm.uiState.value.error)
+    }
+
+    @Test
+    fun renameToAnotherExistingNameAsksAgainAndCancelDoesNotWrite() = runTest(dispatcher) {
+        val vm = browser()
+        advanceUntilIdle()
+        localDownloads("report.pdf" to false, "other.pdf" to false)
+        val tree = Uri.parse("content://test/tree/root")
+        vm.downloadFiles(listOf(entry("report.pdf")), tree)
+        advanceUntilIdle()
+        vm.resolveDownloadConflict("other.pdf")
+        advanceUntilIdle()
+        assertEquals(DownloadConflict("other.pdf", "other(1).pdf", true), vm.uiState.value.downloadConflict)
+        vm.cancelTransfer()
+        advanceUntilIdle()
+        assertNull(vm.uiState.value.downloadConflict)
+        assertNull(vm.uiState.value.transferProgress)
+        assertNull(vm.uiState.value.error)
+        verify(resolver, never()).openOutputStream(any(Uri::class.java), anyString())
+    }
+
+    @Test
+    // Only stubs the resolver call used internally by DocumentsContract on the test SDK.
+    @SuppressLint("NewApi")
+    fun renameCreatesNewDocumentAndContinuesBatch() = runTest(dispatcher) {
+        val vm = browser()
+        advanceUntilIdle()
+        localDownloads("report.pdf" to false)
+        val tree = Uri.parse("content://test/tree/root")
+        val createdNames = mutableListOf<String>()
+        `when`(resolver.call(eq("test"), eq("android:createDocument"), eq(null), any(Bundle::class.java))).thenAnswer {
+            val args = it.getArgument<Bundle>(3)
+            val name = args.getString(DocumentsContract.Document.COLUMN_DISPLAY_NAME)!!
+            createdNames += name
+            Bundle().apply { putParcelable("uri", DocumentsContract.buildDocumentUriUsingTree(tree, name)) }
+        }
+        `when`(resolver.openOutputStream(any(Uri::class.java), eq("wt"))).thenAnswer { ByteArrayOutputStream() }
+        vm.downloadFiles(listOf(entry("report.pdf"), entry("next.txt")), tree)
+        advanceUntilIdle()
+        vm.resolveDownloadConflict("report(1).pdf")
+        advanceUntilIdle()
+        assertEquals(listOf("report(1).pdf", "next.txt"), createdNames)
+        assertNull(vm.uiState.value.downloadConflict)
+        assertNull(vm.uiState.value.error)
+        assertNull(vm.uiState.value.transferProgress)
+    }
+
+    @Test
+    fun directoryCollisionCannotBeOverwritten() = runTest(dispatcher) {
+        val vm = browser()
+        advanceUntilIdle()
+        localDownloads("report.pdf" to true)
+        vm.downloadFiles(listOf(entry("report.pdf")), Uri.parse("content://test/tree/root"))
+        advanceUntilIdle()
+        assertFalse(vm.uiState.value.downloadConflict!!.canOverwrite)
+        vm.resolveDownloadConflict("report.pdf")
+        advanceUntilIdle()
+        assertFalse(vm.uiState.value.downloadConflict!!.canOverwrite)
+        vm.cancelTransfer()
+        advanceUntilIdle()
+    }
+
+    @Test
+    fun suggestedNamesPreserveExtensionsAndHandleHiddenAndExtensionlessFiles() {
+        assertEquals("report(2).pdf", suggestedDownloadName("report.pdf", setOf("report.pdf", "report(1).pdf")))
+        assertEquals("archive.tar(1).gz", suggestedDownloadName("archive.tar.gz", emptySet()))
+        assertEquals("README(1)", suggestedDownloadName("README", emptySet()))
+        assertEquals(".bashrc(1)", suggestedDownloadName(".bashrc", emptySet()))
+        assertEquals(".config(1).json", suggestedDownloadName(".config.json", emptySet()))
     }
 
     @Test

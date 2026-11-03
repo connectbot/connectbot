@@ -33,6 +33,7 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performImeAction
 import androidx.compose.ui.test.performTextReplacement
 import androidx.compose.ui.test.performTouchInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -118,6 +119,34 @@ class SftpBrowserScreenTest {
     }
 
     @Test
+    fun tappingCurrentPathOpensKeyboardEditorAndEnterNavigates() {
+        render()
+        rule.onNodeWithText("/home/test").performClick()
+        verify(vm).showGoToPathDialog()
+        update(state.value.copy(showGoToPathDialog = true))
+        rule.onNode(hasSetTextAction()).performTextReplacement("/var/log")
+        rule.onNode(hasSetTextAction()).performImeAction()
+        verify(vm).goToPath("/var/log")
+    }
+
+    @Test
+    fun downloadConflictOffersOverwriteRenameAndCancel() {
+        update(state.value.copy(downloadConflict = DownloadConflict("report.pdf", "report(1).pdf", true)))
+        render()
+        rule.onNode(hasSetTextAction()).assertIsDisplayed()
+        rule.onNode(hasSetTextAction() and hasText("report(1).pdf")).assertIsDisplayed()
+        click(R.string.sftp_download_overwrite)
+        verify(vm).resolveDownloadConflict("report.pdf")
+        rule.onNode(hasSetTextAction()).performTextReplacement("renamed.pdf")
+        click(R.string.sftp_download_rename)
+        verify(vm).resolveDownloadConflict("renamed.pdf")
+        click(R.string.button_cancel)
+        verify(vm).cancelTransfer()
+        update(state.value.copy(downloadConflict = DownloadConflict("folder", "folder(1)", false)))
+        rule.onNodeWithText(text(R.string.sftp_download_overwrite)).assertIsNotEnabled()
+    }
+
+    @Test
     fun navigatesFoldersDownloadsFilesAndDownloadsMultipleSelectedFiles() {
         val first = file("first")
         val second = file("second")
@@ -130,7 +159,7 @@ class SftpBrowserScreenTest {
         rule.onNodeWithText("first").performClick()
         val target = Uri.parse("content://test/target")
         deliver(target)
-        verify(vm).downloadFile(first, target)
+        verify(vm).downloadFiles(listOf(first), target)
         rule.onAllNodes(isToggleable())[0].performClick()
         rule.onNodeWithText("second").performClick()
         rule.onNodeWithText(text(R.string.sftp_selected_count, 2)).assertIsDisplayed()
