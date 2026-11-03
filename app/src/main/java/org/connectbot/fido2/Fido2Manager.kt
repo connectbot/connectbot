@@ -54,6 +54,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
+import org.connectbot.R
 import org.connectbot.di.CoroutineDispatchers
 import timber.log.Timber
 import java.security.MessageDigest
@@ -964,11 +965,11 @@ class Fido2Manager @Inject constructor(
      */
     fun cancelNfcSigning() {
         val callback = sshSigningCallback
-        clearNfcSigningRequest()
+        clearSigningRequest()
         callback?.invoke(Fido2Result.Error("NFC signing cancelled"))
     }
 
-    private fun clearNfcSigningRequest() {
+    private fun clearSigningRequest() {
         sshCredentialId = null
         sshChallenge = null
         sshPin = null
@@ -999,7 +1000,7 @@ class Fido2Manager @Inject constructor(
                 return
             }
 
-            clearNfcSigningRequest()
+            clearSigningRequest()
             callback(result)
         } finally {
             nfcConnectionMutex.unlock()
@@ -1018,45 +1019,52 @@ class Fido2Manager @Inject constructor(
 
         val device = currentDevice
         if (device == null) {
-            callback(Fido2Result.Error(ERR_NO_DEVICE_CONNECTED))
+            clearSigningRequest()
+            callback(Fido2Result.Error(context.getString(R.string.fido2_usb_unavailable)))
             return
         }
 
-        // Close the existing session before opening a new connection for signing.
-        // USB devices only support one active connection at a time; leaving the
-        // discovery session open would cause requestConnection to block forever.
-        try {
-            currentSession?.close()
-        } catch (e: Exception) {
-            Timber.w(e, "Failed to close existing session before signing")
-        }
-        currentSession = null
-        pinUvAuthProtocol = null
+        scope.launch(dispatchers.io) {
+            // USB supports one connection at a time. Close the discovery session
+            // off the main thread before requesting a connection for signing.
+            try {
+                currentSession?.close()
+            } catch (e: Exception) {
+                Timber.w(e, "Failed to close existing session before signing")
+            }
+            currentSession = null
+            pinUvAuthProtocol = null
 
-        scope.launch {
             val result = suspendCancellableCoroutine<Fido2Result<Fido2SignatureResult>> { continuation ->
-                device.requestConnection(FidoConnection::class.java) { connectionResult ->
-                    val threadName = Thread.currentThread().name
-                    Log.d(TAG, "SSH signing USB callback on thread $threadName")
-
-                    val signingResult = try {
-                        val connection = connectionResult.value
-                        Log.d(TAG, "USB FidoConnection established for signing")
-                        val session = Ctap2Session(connection)
-                        signSshChallengeOnSession(session, pin, credId, challenge, rpId, "USB")
-                    } catch (e: Exception) {
-                        Log.e(TAG, "USB SSH signing connection failed: ${e.message}", e)
-                        mapSigningError(e, "USB SSH signing failed")
+                try {
+                    // A detached device or revoked USB permission can throw here,
+                    // before YubiKit invokes the connection callback.
+                    device.requestConnection(FidoConnection::class.java) { connectionResult ->
+                        val signingResult = try {
+                            val connection = connectionResult.value
+                            val session = Ctap2Session(connection)
+                            signSshChallengeOnSession(session, pin, credId, challenge, rpId, "USB")
+                        } catch (e: Exception) {
+                            Log.e(TAG, "USB SSH signing connection failed: ${e.message}", e)
+                            mapSigningError(e, "USB SSH signing failed")
+                        }
+                        continuation.resume(signingResult)
                     }
-                    continuation.resume(signingResult)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Failed to request USB connection for signing", e)
+                    val error = if (e is IllegalStateException || e is SecurityException) {
+                        if (currentDevice === device) disconnect()
+                        Fido2Result.Error(context.getString(R.string.fido2_usb_unavailable), e)
+                    } else {
+                        mapSigningError<Fido2SignatureResult>(e, "USB connection failed")
+                    }
+                    continuation.resume(error)
                 }
             }
 
-            // Clear state and deliver result
-            sshCredentialId = null
-            sshChallenge = null
-            sshRpId = null
-            sshSigningCallback = null
+            // Do not deliver a late result to a replacement signing request.
+            if (sshSigningCallback !== callback) return@launch
+            clearSigningRequest()
             callback(result)
         }
     }

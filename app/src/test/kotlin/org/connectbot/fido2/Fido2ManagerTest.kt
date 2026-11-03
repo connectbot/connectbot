@@ -45,11 +45,13 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.connectbot.R
 import org.connectbot.di.CoroutineDispatchers
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -90,6 +92,7 @@ class Fido2ManagerTest {
     private var infoError: Exception? = null
     private var credentialError: Exception? = null
     private var connectionError: IOException? = null
+    private var connectionRequestError: Exception? = null
     private var closeError = false
     private var versions = listOf(2, 1)
     private var options = mapOf<String, Any>("clientPin" to true, "credMgmt" to true, "rk" to true)
@@ -121,6 +124,7 @@ class Fido2ManagerTest {
     private val deviceAnswer = Answer<Any?> { call ->
         when (call.method.name) {
             "requestConnection" -> {
+                connectionRequestError?.let { throw it }
                 @Suppress("UNCHECKED_CAST")
                 val type = call.getArgument<Class<*>>(0) as Class<YubiKeyConnection>
                 val callback = call.getArgument<Callback<DeviceResult<YubiKeyConnection, IOException>>>(1)
@@ -240,6 +244,9 @@ class Fido2ManagerTest {
         usbManager = mock(UsbManager::class.java)
         `when`(usbManager.deviceList).thenReturn(hashMapOf())
         val context = mock(Context::class.java)
+        `when`(context.getString(R.string.fido2_usb_unavailable)).thenReturn(
+            "USB security key is unavailable. Reconnect it, allow USB access, and try again.",
+        )
         `when`(context.getSystemService(Context.USB_SERVICE)).thenReturn(usbManager)
         manager = Fido2Manager(context, CoroutineDispatchers(dispatcher, dispatcher, dispatcher))
     }
@@ -477,6 +484,55 @@ class Fido2ManagerTest {
         advanceUntilIdle()
         assertTrue(result is Fido2Result.Success)
         assertFalse(manager.waitingForNfcSigning.value)
+    }
+
+    @Test
+    fun usbSigningWithoutDeviceFailsOnceAndCanRetryAfterConnecting() = runTest(dispatcher) {
+        val results = mutableListOf<Fido2Result<Fido2SignatureResult>>()
+        manager.prepareSshSigning(byteArrayOf(1), byteArrayOf(2)) { results.add(it) }
+        manager.connectAndSignUsb("1234")
+        manager.connectAndSignUsb("1234")
+        advanceUntilIdle()
+        assertEquals(1, results.size)
+        assertTrue((results.single() as Fido2Result.Error).message.contains("Reconnect"))
+
+        connected()
+        assertions = listOf(assertion())
+        manager.prepareSshSigning(byteArrayOf(1), byteArrayOf(2)) { results.add(it) }
+        manager.connectAndSignUsb("1234")
+        advanceUntilIdle()
+        assertEquals(2, results.size)
+        assertTrue(results.last() is Fido2Result.Success)
+    }
+
+    @Test
+    fun usbSigningHandlesSynchronousConnectionExceptionsAndAllowsRetry() = runTest(dispatcher) {
+        for (error in listOf(IllegalStateException("Device access not permitted"), SecurityException("USB permission revoked"), IOException("Device detached"))) {
+            connected()
+            connectionRequestError = error
+            val results = mutableListOf<Fido2Result<Fido2SignatureResult>>()
+            manager.prepareSshSigning(byteArrayOf(1), byteArrayOf(2)) { results.add(it) }
+            manager.connectAndSignUsb("1234")
+            advanceUntilIdle()
+            val failure = results.single() as Fido2Result.Error
+            assertSame(error, failure.cause)
+            if (error !is IOException) {
+                assertTrue(failure.message.contains("Reconnect"))
+                assertFalse(manager.isDeviceConnected())
+            }
+            manager.connectAndSignUsb("1234")
+            advanceUntilIdle()
+            assertEquals(1, results.size)
+
+            connectionRequestError = null
+            connected()
+            assertions = listOf(assertion())
+            manager.prepareSshSigning(byteArrayOf(1), byteArrayOf(2)) { results.add(it) }
+            manager.connectAndSignUsb("1234")
+            advanceUntilIdle()
+            assertEquals(2, results.size)
+            assertTrue(results.last() is Fido2Result.Success)
+        }
     }
 
     @Test
