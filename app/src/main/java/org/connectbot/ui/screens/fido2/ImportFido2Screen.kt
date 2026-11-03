@@ -118,13 +118,11 @@ fun ImportFido2Screen(
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
-        // Also start immediately if we're already resumed
-        if (shouldUseNfc) {
-            activity?.let { viewModel.startNfcDiscovery(it) }
-        }
         onDispose {
             lifecycleOwner.lifecycle.removeObserver(observer)
-            activity?.let { viewModel.stopNfcDiscovery(it) }
+            if (shouldUseNfc) {
+                activity?.let { viewModel.stopNfcDiscovery(it) }
+            }
         }
     }
 

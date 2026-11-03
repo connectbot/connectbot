@@ -36,6 +36,7 @@ import com.yubico.yubikit.fido.ctap.PinUvAuthProtocolV1
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -77,6 +78,8 @@ class Fido2ManagerTest {
     private var usbCallback: Callback<UsbYubiKeyDevice>? = null
     private var nfcCallback: Callback<NfcYubiKeyDevice>? = null
     private var nfcConfiguration: NfcConfiguration? = null
+    private var delayNfcConnection = false
+    private val pendingNfcConnections = mutableListOf<() -> Unit>()
     private var pinError: Exception? = null
     private val pinTokenErrors = mutableListOf<Exception?>()
     private var retryCount = 0
@@ -122,7 +125,11 @@ class Fido2ManagerTest {
                 val callback = call.getArgument<Callback<DeviceResult<YubiKeyConnection, IOException>>>(1)
                 val result = connectionError?.let { DeviceResult.failure<YubiKeyConnection, IOException>(it) }
                     ?: DeviceResult.success<YubiKeyConnection, IOException>(mock(type))
-                callback.invoke(result)
+                if (delayNfcConnection) {
+                    pendingNfcConnections.add { callback.invoke(result) }
+                } else {
+                    callback.invoke(result)
+                }
                 null
             }
 
@@ -349,6 +356,25 @@ class Fido2ManagerTest {
     fun nfcDiscoverySkipsNdefProbingBeforeConnectingToSecurityKeys() {
         manager.startNfcDiscovery(mock(Activity::class.java))
         assertTrue(requireNotNull(nfcConfiguration).isSkipNdefCheck)
+    }
+
+    @Test
+    fun duplicateNfcDiscoveryCannotOpenAnOverlappingConnection() = runTest(dispatcher) {
+        delayNfcConnection = true
+        manager.setPendingPin("1234")
+        val results = mutableListOf<Fido2Result<List<Fido2Credential>>>()
+        manager.setNfcCredentialCallback { results.add(it) }
+        val first = async { manager.connectToNfcTag(mock(Tag::class.java)) }
+        runCurrent()
+        val duplicate = async { manager.connectToNfcTag(mock(Tag::class.java)) }
+        runCurrent()
+        assertTrue(duplicate.isCompleted)
+        assertEquals(1, pendingNfcConnections.size)
+        pendingNfcConnections.single().invoke()
+        advanceUntilIdle()
+        first.await()
+        assertEquals(1, results.size)
+        assertTrue(results.single() is Fido2Result.Success)
     }
 
     @Test

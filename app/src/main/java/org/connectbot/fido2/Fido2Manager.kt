@@ -51,6 +51,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
 import org.connectbot.di.CoroutineDispatchers
 import timber.log.Timber
@@ -95,6 +96,7 @@ class Fido2Manager @Inject constructor(
     private var pinUvToken: ByteArray? = null
     private var usbDiscoveryActive = false
     private var usbConnectInProgress = false
+    private val nfcConnectionMutex = Mutex()
 
     /**
      * Start USB device discovery.
@@ -521,6 +523,11 @@ class Fido2Manager @Inject constructor(
      * within the connection callback since NFC connections are transient.
      */
     private suspend fun connectToDevice(device: YubiKeyDevice, transport: String, deviceName: String?) {
+        val isNfc = transport == "NFC"
+        if (isNfc && !nfcConnectionMutex.tryLock()) {
+            Timber.d("NFC connection already in progress, ignoring duplicate discovery")
+            return
+        }
         try {
             // Disconnect any existing session
             disconnect()
@@ -667,6 +674,8 @@ class Fido2Manager @Inject constructor(
         } catch (e: Exception) {
             Timber.e(e, "Failed to connect to FIDO2 device")
             _connectionState.value = Fido2ConnectionState.Error(e.message ?: "Connection failed")
+        } finally {
+            if (isNfc) nfcConnectionMutex.unlock()
         }
     }
 

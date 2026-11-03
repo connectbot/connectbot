@@ -137,6 +137,20 @@ class Fido2FlowScreenTest {
     }
 
     @Test
+    fun nfcDiscoveryStartsOncePerResumeAndStopsOnPauseAndDisposal() {
+        update(state.value.copy(transportSelected = true, selectedTransport = Fido2Transport.NFC))
+        render()
+        verify(vm, times(1)).startNfcDiscovery(rule.activity)
+        rule.runOnUiThread { owner.lifecycle.currentState = Lifecycle.State.CREATED }
+        verify(vm, times(1)).stopNfcDiscovery(rule.activity)
+        rule.runOnUiThread { owner.lifecycle.currentState = Lifecycle.State.RESUMED }
+        verify(vm, times(2)).startNfcDiscovery(rule.activity)
+        rule.runOnIdle { visible.value = false }
+        rule.waitForIdle()
+        verify(vm, times(2)).stopNfcDiscovery(rule.activity)
+    }
+
+    @Test
     fun pinEntryDisplaysErrorsAndSubmitsThroughButtonAndKeyboard() {
         update(state.value.copy(transportSelected = true, needsPin = true))
         render()
