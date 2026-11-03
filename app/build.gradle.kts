@@ -395,6 +395,14 @@ val sonarJavaBinaries = mutableListOf<Provider<String>>()
 val sonarJavaTestBinaries = mutableListOf<Provider<String>>()
 val sonarAndroidLintReportPaths = mutableListOf<Provider<String>>()
 
+// AGP's bundle-to-APK cache does not track the signing keystore contents.
+// Reusing APKs from another CI runner can give the app a different certificate
+// from the freshly signed test APK, making Orchestrator discover zero tests.
+tasks.matching { it.name.startsWith("makeApkFromBundleFor") }.configureEach {
+    outputs.cacheIf("APK signatures must use this build's signing key") { false }
+    outputs.upToDateWhen { false }
+}
+
 androidComponents {
     onVariants(selector().withFlavor("license" to "oss")) { variant ->
         variant.sources.jniLibs?.addGeneratedSourceDirectory(prepareOssMoshArtifacts) { it.jniLibsDirectory }
