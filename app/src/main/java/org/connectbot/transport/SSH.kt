@@ -550,13 +550,19 @@ open class SSH : AbsTransport {
         if (result is AuthResult.Success) {
             bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_success))
         }
-        outputAuthResult(result)
+        reportAuthResult(result)
         return result
     }
 
-    private fun outputAuthResult(result: AuthResult?) {
+    private fun reportAuthResult(result: AuthResult?) {
         when (result) {
-            is AuthResult.Error -> bridge?.outputLine(result.message)
+            is AuthResult.Error -> {
+                // Fatal authentication errors belong in the persistent failure panel.
+                // Keep a specific signing error rather than replacing it with a wrapper.
+                if (bridge?.authenticationFailure == null) {
+                    bridge?.authenticationFailure = result.message
+                }
+            }
 
             is AuthResult.Failure -> {
                 bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_fail))
@@ -1100,7 +1106,7 @@ open class SSH : AbsTransport {
                 currentCoroutineContext().ensureActive()
                 if (loginCancelled) throw LoginCancelled()
                 jumpFailureReason = if (result is AuthResult.Failure) DisconnectReason.AUTH_FAIL else DisconnectReason.IO_ERROR
-                outputAuthResult(result)
+                reportAuthResult(result)
                 when (result) {
                     is AuthResult.Success -> return true
                     is AuthResult.Error -> return false

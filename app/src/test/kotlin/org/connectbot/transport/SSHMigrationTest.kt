@@ -172,6 +172,8 @@ class SSHMigrationTest {
         TestSSH().authenticateConnection()
         verify(client).authenticate(eq("user") ?: "user", matchingHandler())
         verify(bridge).dispatchDisconnect(DisconnectReason.IO_ERROR)
+        verify(bridge).authenticationFailure = "Protocol failure"
+        verify(bridge, never()).outputLine("Protocol failure")
         assertEquals(0, testScheduler.currentTime)
     }
 
