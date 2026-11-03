@@ -28,6 +28,7 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.currentCoroutineContext
@@ -1279,10 +1280,23 @@ open class SSH : AbsTransport {
     }
 
     private suspend fun disconnectAuthentication(reason: DisconnectReason) {
-        // A user-requested disconnect can destroy the bridge immediately.
-        // Release SSH resources before handing that decision to the UI.
-        close()
-        onDisconnect(reason)
+        // Publish the failure before waiting for SSH shutdown, which can stall
+        // after a signing error. Ignore late connection-loss callbacks meanwhile.
+        locallyClosed = true
+        connected = false
+        withContext(NonCancellable) {
+            try {
+                onDisconnect(reason)
+            } finally {
+                // The bridge cancels the connection job when it receives the
+                // failure. Cleanup must still run after that cancellation.
+                try {
+                    close()
+                } catch (e: Exception) {
+                    Timber.w(e, "Failed to close SSH transport after authentication ended")
+                }
+            }
+        }
     }
 
     override suspend fun close() {

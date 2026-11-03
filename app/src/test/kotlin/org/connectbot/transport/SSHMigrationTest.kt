@@ -48,6 +48,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.eq
+import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.never
 import org.mockito.Mockito.times
@@ -424,6 +425,70 @@ class SSHMigrationTest {
         ssh.onOutputComplete()
         observer.join()
         verify(bridge).dispatchDisconnect(DisconnectReason.SESSION_EXIT)
+    }
+
+    @Test
+    fun authenticationFailure_isReportedBeforeStalledCleanupFinishes() = runTest {
+        `when`(client.authenticate(eq("user") ?: "user", matchingHandler()))
+            .thenReturn(AuthResult.Error("USB security key is unavailable"))
+        val releaseCleanup = CompletableDeferred<Unit>()
+        val ssh = object : TestSSH() {
+            override suspend fun close() {
+                releaseCleanup.await()
+                super.close()
+            }
+        }
+        val job = launch { ssh.authenticateConnection() }
+        runCurrent()
+
+        verify(bridge).dispatchDisconnect(DisconnectReason.IO_ERROR)
+        assertFalse(ssh.isConnected())
+        assertFalse(job.isCompleted)
+        ssh.handleConnectionLost(null)
+        verify(bridge, never()).dispatchDisconnect(DisconnectReason.REMOTE_EOF)
+
+        releaseCleanup.complete(Unit)
+        job.join()
+        verify(client).disconnect()
+    }
+
+    @Test
+    fun authenticationFailure_bridgeCancellationDoesNotSkipCleanup() = runTest {
+        `when`(client.authenticate(eq("user") ?: "user", matchingHandler()))
+            .thenReturn(AuthResult.Error("USB security key is unavailable"))
+        val releaseCleanup = CompletableDeferred<Unit>()
+        val ssh = object : TestSSH() {
+            override suspend fun close() {
+                releaseCleanup.await()
+                super.close()
+            }
+        }
+        val job = launch { ssh.authenticateConnection() }
+        doAnswer {
+            job.cancel()
+            null
+        }.`when`(bridge).dispatchDisconnect(DisconnectReason.IO_ERROR)
+        runCurrent()
+
+        verify(bridge).dispatchDisconnect(DisconnectReason.IO_ERROR)
+        assertTrue(job.isCancelled)
+        releaseCleanup.complete(Unit)
+        job.join()
+        verify(client).disconnect()
+    }
+
+    @Test
+    fun authenticationFailure_cleanupExceptionDoesNotHideOrRepeatFailure() = runTest {
+        `when`(client.authenticate(eq("user") ?: "user", matchingHandler()))
+            .thenReturn(AuthResult.Error("USB security key is unavailable"))
+        val ssh = object : TestSSH() {
+            override suspend fun close(): Unit = throw java.io.IOException("SSH shutdown failed")
+        }
+
+        ssh.authenticateConnection()
+
+        verify(bridge, times(1)).dispatchDisconnect(DisconnectReason.IO_ERROR)
+        assertFalse(ssh.isConnected())
     }
 
     @Test
