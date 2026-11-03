@@ -522,6 +522,8 @@ kotlin {
 }
 
 tasks.withType<Test>().configureEach {
+    // Use Maven Central's canonical endpoint for Robolectric runtime downloads.
+    systemProperty("robolectric.dependency.repo.url", "https://repo.maven.apache.org/maven2")
     jvmArgs("--add-opens", "java.base/java.lang=ALL-UNNAMED")
     // Robolectric's cached Android resources use a heap separate from the Gradle daemon.
     maxHeapSize = "2g"
