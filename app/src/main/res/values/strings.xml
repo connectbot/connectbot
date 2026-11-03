@@ -2493,7 +2493,7 @@
     <string name="zmodem_progress_total">%1$s: %2$d / %3$d bytes</string>
     <!-- Status displayed while the Z-Modem abort sequence is being sent. -->
     <string name="zmodem_cancelling">Cancelling transfer…</string>
- 	<!-- FIDO2 Security Key strings -->
+	<!-- FIDO2 Security Key strings -->
 	<!-- FIDO2 Security Key strings -->
 	<!-- Title for FIDO2 connect prompt asking user to connect their security key -->
 	<string name="fido2_connect_title">Connect Security Key</string>
