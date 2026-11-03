@@ -70,6 +70,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -260,37 +261,11 @@ private fun TransportSelectionContent(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            FilterChip(
-                selected = selectedTransport == Fido2Transport.USB,
-                onClick = { onTransportChange(Fido2Transport.USB) },
-                label = { Text(stringResource(R.string.fido2_transport_usb)) },
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Filled.Usb,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                    )
-                },
-                modifier = Modifier.weight(1f),
-            )
-            FilterChip(
-                selected = selectedTransport == Fido2Transport.NFC,
-                onClick = { onTransportChange(Fido2Transport.NFC) },
-                label = { Text(stringResource(R.string.fido2_transport_nfc)) },
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Filled.Nfc,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                    )
-                },
-                modifier = Modifier.weight(1f),
-            )
-        }
+        Fido2TransportSelector(
+            selectedTransport = selectedTransport,
+            onTransportChange = onTransportChange,
+            spacing = 12.dp,
+        )
 
         Spacer(modifier = Modifier.height(32.dp))
 
@@ -607,37 +582,11 @@ private fun ImportConfirmationContent(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            FilterChip(
-                selected = selectedTransport == Fido2Transport.USB,
-                onClick = { onTransportChange(Fido2Transport.USB) },
-                label = { Text(stringResource(R.string.fido2_transport_usb)) },
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Filled.Usb,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                    )
-                },
-                modifier = Modifier.weight(1f),
-            )
-            FilterChip(
-                selected = selectedTransport == Fido2Transport.NFC,
-                onClick = { onTransportChange(Fido2Transport.NFC) },
-                label = { Text(stringResource(R.string.fido2_transport_nfc)) },
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Filled.Nfc,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                    )
-                },
-                modifier = Modifier.weight(1f),
-            )
-        }
+        Fido2TransportSelector(
+            selectedTransport = selectedTransport,
+            onTransportChange = onTransportChange,
+            spacing = 8.dp,
+        )
 
         Spacer(modifier = Modifier.height(32.dp))
 
@@ -655,6 +604,38 @@ private fun ImportConfirmationContent(
             ) {
                 Text(stringResource(R.string.fido2_import_credential))
             }
+        }
+    }
+}
+
+@Composable
+private fun Fido2TransportSelector(
+    selectedTransport: Fido2Transport,
+    onTransportChange: (Fido2Transport) -> Unit,
+    spacing: Dp,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(spacing),
+    ) {
+        Fido2Transport.entries.forEach { transport ->
+            val (label, icon) = when (transport) {
+                Fido2Transport.USB -> R.string.fido2_transport_usb to Icons.Filled.Usb
+                Fido2Transport.NFC -> R.string.fido2_transport_nfc to Icons.Filled.Nfc
+            }
+            FilterChip(
+                selected = selectedTransport == transport,
+                onClick = { onTransportChange(transport) },
+                label = { Text(stringResource(label)) },
+                leadingIcon = {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp),
+                    )
+                },
+                modifier = Modifier.weight(1f),
+            )
         }
     }
 }

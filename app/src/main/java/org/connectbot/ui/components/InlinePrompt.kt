@@ -49,6 +49,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -268,15 +269,7 @@ private fun StringPromptContent(
                 },
             ),
             singleLine = true,
-            colors = TextFieldDefaults.colors(
-                focusedTextColor = terminalColors.overlayText,
-                unfocusedTextColor = terminalColors.overlayText,
-                focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                cursorColor = terminalColors.overlayText,
-                focusedIndicatorColor = terminalColors.overlayTextSecondary,
-                unfocusedIndicatorColor = terminalColors.overlayTextSecondary.copy(alpha = 0.5f),
-            ),
+            colors = terminalPromptTextFieldColors(),
             modifier = Modifier
                 .fillMaxWidth()
                 .focusRequester(focusRequester),
@@ -473,5 +466,19 @@ private fun HostKeyFingerprintPromptPreview() {
         ),
         onAccept = { },
         onReject = { },
+    )
+}
+
+@Composable
+internal fun terminalPromptTextFieldColors(): TextFieldColors {
+    val terminalColors = MaterialTheme.colorScheme.terminal
+    return TextFieldDefaults.colors(
+        focusedTextColor = terminalColors.overlayText,
+        unfocusedTextColor = terminalColors.overlayText,
+        focusedContainerColor = Color.Transparent,
+        unfocusedContainerColor = Color.Transparent,
+        cursorColor = terminalColors.overlayText,
+        focusedIndicatorColor = terminalColors.overlayTextSecondary,
+        unfocusedIndicatorColor = terminalColors.overlayTextSecondary.copy(alpha = 0.5f),
     )
 }
