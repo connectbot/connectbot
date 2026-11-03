@@ -201,7 +201,8 @@ class Fido2Manager @Inject constructor(
     fun startNfcDiscovery(activity: Activity) {
         try {
             yubiKitManager.startNfcDiscovery(
-                NfcConfiguration().timeout(30000), // 30 second timeout
+                // FIDO2 uses ISO-DEP; NDEF probing can time out before tag discovery.
+                NfcConfiguration().skipNdefCheck(true).timeout(30000), // 30 second timeout
                 activity,
             ) { device ->
                 Timber.d("NFC YubiKey detected")

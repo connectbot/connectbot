@@ -23,6 +23,7 @@ import android.hardware.usb.UsbDevice
 import android.hardware.usb.UsbManager
 import android.nfc.Tag
 import com.yubico.yubikit.android.YubiKitManager
+import com.yubico.yubikit.android.transport.nfc.NfcConfiguration
 import com.yubico.yubikit.android.transport.nfc.NfcYubiKeyDevice
 import com.yubico.yubikit.android.transport.usb.UsbYubiKeyDevice
 import com.yubico.yubikit.core.YubiKeyConnection
@@ -75,6 +76,7 @@ class Fido2ManagerTest {
     private lateinit var usbManager: UsbManager
     private var usbCallback: Callback<UsbYubiKeyDevice>? = null
     private var nfcCallback: Callback<NfcYubiKeyDevice>? = null
+    private var nfcConfiguration: NfcConfiguration? = null
     private var pinError: Exception? = null
     private val pinTokenErrors = mutableListOf<Exception?>()
     private var retryCount = 0
@@ -210,6 +212,7 @@ class Fido2ManagerTest {
                             }
 
                             "startNfcDiscovery" -> {
+                                nfcConfiguration = call.getArgument(0)
                                 nfcCallback = call.getArgument(2)
                                 null
                             }
@@ -340,6 +343,12 @@ class Fido2ManagerTest {
         manager.setUsbCredentialCallback { result = it }
         manager.retryUsbWithPin()
         assertTrue(result is Fido2Result.Error)
+    }
+
+    @Test
+    fun nfcDiscoverySkipsNdefProbingBeforeConnectingToSecurityKeys() {
+        manager.startNfcDiscovery(mock(Activity::class.java))
+        assertTrue(requireNotNull(nfcConfiguration).isSkipNdefCheck)
     }
 
     @Test
