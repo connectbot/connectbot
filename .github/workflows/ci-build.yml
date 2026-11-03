@@ -133,7 +133,7 @@ jobs:
       # Cache downloaded files only; never restore compiled code or resolution state.
       # Refresh dependency resolution against repository-published checksums below.
       - name: Cache verified dependency downloads
-        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ~/.gradle/caches/modules-2/files-2.1
           key: gradle-downloads-${{ runner.os }}-${{ hashFiles('**/*.gradle.kts', 'gradle/libs.versions.toml', 'gradle/wrapper/gradle-wrapper.properties') }}
