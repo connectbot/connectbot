@@ -1024,6 +1024,7 @@ class ConsoleScreenTest {
         `when`(bridge.keyboardErrors).thenReturn(MutableSharedFlow())
         `when`(bridge.terminalEmulator).thenReturn(emulator)
         `when`(bridge.fontSizeFlow).thenReturn(MutableStateFlow(14f))
+        `when`(bridge.fontWeightFlow).thenReturn(MutableStateFlow(TerminalFontWeight.NORMAL))
         `when`(bridge.delKeyModeFlow).thenReturn(MutableStateFlow(DelKeyMode.Backspace))
         `when`(bridge.promptManager).thenReturn(PromptManager())
         `when`(bridge.keyHandler).thenReturn(TerminalKeyListener(TerminalEmulatorKeyDispatcher(emulator)))
