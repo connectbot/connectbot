@@ -191,7 +191,7 @@ class TerminalBridgeWriteSerializationTest {
                 io = testDispatcher,
                 main = Dispatchers.Main,
             )
-            val bridge = TerminalBridge(manager, host, dispatchers)
+            val bridge = TerminalBridge(manager, host, 1L, dispatchers)
             try {
                 runCurrent()
                 bridge.terminalEmulator.resize(42, 100)
@@ -255,7 +255,7 @@ class TerminalBridgeWriteSerializationTest {
                 main = Dispatchers.Main,
             )
 
-            val bridge = TerminalBridge(manager, host, dispatchers)
+            val bridge = TerminalBridge(manager, host, sessionId = 1L, dispatchers = dispatchers)
             try {
                 val transport = LossyNonThreadSafeTransport()
                 bridge.transport = transport
@@ -341,7 +341,7 @@ class TerminalBridgeWriteSerializationTest {
                     telnetEchoMode = TelnetEchoMode.ON, telnetNegotiationMode = TelnetNegotiationMode.PASSIVE,
                     quickDisconnect = false, stayConnected = false,
                 )
-                val bridge = TerminalBridge(manager, host, CoroutineDispatchers(Dispatchers.Default, Dispatchers.IO, Dispatchers.Main))
+                val bridge = TerminalBridge(manager, host, 1L, CoroutineDispatchers(Dispatchers.Default, Dispatchers.IO, Dispatchers.Main))
                 try {
                     bridge.startConnection()
                     runBlocking {
@@ -380,6 +380,7 @@ class TerminalBridgeWriteSerializationTest {
             val bridge = TerminalBridge(
                 manager,
                 Host(nickname = "Queue test", protocol = "local"),
+                1L,
                 CoroutineDispatchers(Dispatchers.Default, Dispatchers.IO, Dispatchers.Main),
             )
             val entered = kotlinx.coroutines.CompletableDeferred<Unit>()
@@ -427,7 +428,7 @@ class TerminalBridgeWriteSerializationTest {
             var activity: MainActivity? = null
             scenario.onActivity { activity = it }
             val manager = runBlocking { requireNotNull(activity).waitUntilServiceBound() }.terminalManager
-            val bridge = TerminalBridge(manager, Host(nickname = "Configured input test", protocol = "local"), dispatchers)
+            val bridge = TerminalBridge(manager, Host(nickname = "Configured input test", protocol = "local"), 1L, dispatchers)
             try {
                 test(bridge)
             } finally {

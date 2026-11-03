@@ -20,15 +20,18 @@ package org.connectbot.ui.screens.hostlist
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -48,7 +51,9 @@ import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LinkOff
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.OpenInNew
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Badge
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -274,6 +279,10 @@ fun HostListScreen(
         onExportHosts = viewModel::exportHosts,
         // Some document providers label JSON exports as text/plain or application/octet-stream.
         onImportHosts = { importLauncher.launch(arrayOf("*/*")) },
+        onOpenNewSession = { host ->
+            viewModel.connectToHost(host)
+            onNavigateToConsole(host)
+        },
         modifier = modifier,
     )
 }
@@ -300,6 +309,7 @@ fun HostListScreenContent(
     onSelectShortcut: (Host) -> Unit = {},
     onExportHosts: () -> Unit = {},
     onImportHosts: () -> Unit = {},
+    onOpenNewSession: (Host) -> Unit = {},
 ) {
     var showMenu by remember { mutableStateOf(false) }
     var showDisconnectAllDialog by remember { mutableStateOf(false) }
@@ -461,6 +471,8 @@ fun HostListScreenContent(
                                 host = host,
                                 connectionState = uiState.connectionStates[host.id] ?: ConnectionState.UNKNOWN,
                                 disconnectReason = uiState.disconnectReasons[host.id],
+                                sessionCount = uiState.sessionCounts[host.id] ?: 0,
+                                makingShortcut = makingShortcut,
                                 onClick = {
                                     if (makingShortcut) {
                                         onSelectShortcut(host)
@@ -474,26 +486,27 @@ fun HostListScreenContent(
                                 onForgetHostKeys = { onForgetHostKeys(host) },
                                 onDisconnect = { onDisconnectHost(host) },
                                 onDelete = { onDeleteHost(host) },
-                                makingShortcut = makingShortcut,
+                                onOpenNewSession = { onOpenNewSession(host) },
                             )
                         }
                     }
                 }
             }
-        }
-    }
 
-    if (showDisconnectAllDialog) {
-        DisconnectAllDialog(
-            onDismiss = { showDisconnectAllDialog = false },
-            onConfirm = {
-                showDisconnectAllDialog = false
-                onDisconnectAll()
-            },
-        )
+            if (showDisconnectAllDialog) {
+                DisconnectAllDialog(
+                    onDismiss = { showDisconnectAllDialog = false },
+                    onConfirm = {
+                        showDisconnectAllDialog = false
+                        onDisconnectAll()
+                    },
+                )
+            }
+        }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun HostListItem(
     host: Host,
@@ -506,6 +519,8 @@ private fun HostListItem(
     onDisconnect: () -> Unit,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
+    sessionCount: Int = 0,
+    onOpenNewSession: () -> Unit = {},
     makingShortcut: Boolean = false,
     disconnectReason: DisconnectReason? = null,
 ) {
@@ -513,6 +528,9 @@ private fun HostListItem(
     var showDeleteDialog by remember { mutableStateOf(false) }
     var showDisconnectDialog by remember { mutableStateOf(false) }
     var showForgetHostKeysDialog by remember { mutableStateOf(false) }
+    var showLongPressMenu by remember { mutableStateOf(false) }
+
+    val isConnected = connectionState == ConnectionState.CONNECTED
 
     var showStatusDialog by remember { mutableStateOf(false) }
     val statusColor = when (connectionState) {
@@ -554,7 +572,19 @@ private fun HostListItem(
         )
     }
 
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier
+            .combinedClickable(
+                onClick = onClick,
+                onLongClick = {
+                    // Show context menu on long press for connected hosts (when not making shortcut)
+                    if (isConnected && !makingShortcut) {
+                        showLongPressMenu = true
+                    }
+                },
+            )
+            .testTag(HostListTestTags.itemRow(host.id)),
+    ) {
         ListItem(
             supportingContent = {
                 Text("${host.protocol}://${host.hostname}:${host.port}")
@@ -624,6 +654,17 @@ private fun HostListItem(
                             )
                         }
                     }
+
+                    // Session count badge (top right corner) when multiple sessions
+                    if (sessionCount > 1) {
+                        Badge(
+                            modifier = Modifier
+                                .align(Alignment.TopEnd)
+                                .offset(x = 4.dp, y = (-4).dp),
+                        ) {
+                            Text(sessionCount.toString())
+                        }
+                    }
                 }
             },
             trailingContent = {
@@ -639,6 +680,19 @@ private fun HostListItem(
                             expanded = showMenu,
                             onDismissRequest = { showMenu = false },
                         ) {
+                            // Show "Open new session" option for connected hosts
+                            if (isConnected) {
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(R.string.list_host_new_session)) },
+                                    onClick = {
+                                        showMenu = false
+                                        onOpenNewSession()
+                                    },
+                                    leadingIcon = {
+                                        Icon(Icons.Default.OpenInNew, null)
+                                    },
+                                )
+                            }
                             DropdownMenuItem(
                                 text = { Text(stringResource(R.string.list_host_edit)) },
                                 onClick = {
@@ -708,13 +762,27 @@ private fun HostListItem(
                     }
                 }
             },
-            modifier = Modifier
-                .clickable(onClick = onClick)
-                .testTag(HostListTestTags.itemRow(host.id)),
         ) {
             Text(
                 text = host.nickname,
                 fontWeight = FontWeight.Bold,
+            )
+        }
+
+        // Long-press context menu
+        DropdownMenu(
+            expanded = showLongPressMenu,
+            onDismissRequest = { showLongPressMenu = false },
+        ) {
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.list_host_new_session)) },
+                onClick = {
+                    showLongPressMenu = false
+                    onOpenNewSession()
+                },
+                leadingIcon = {
+                    Icon(Icons.Default.OpenInNew, null)
+                },
             )
         }
         HorizontalDivider()
@@ -791,7 +859,7 @@ private fun HostDisconnectDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.list_host_disconnect)) },
         text = {
-            Text(stringResource(R.string.disconnect_host_alert, host.nickname))
+            Text(stringResource(R.string.disconnect_all_sessions_alert, host.nickname))
         },
         confirmButton = {
             TextButton(
