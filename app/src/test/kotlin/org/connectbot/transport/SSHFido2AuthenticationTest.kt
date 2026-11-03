@@ -42,11 +42,14 @@ import org.connectbot.util.HostConstants
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertThrows
 import org.junit.Test
 import org.mockito.Answers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyString
+import org.mockito.Mockito.atLeastOnce
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.stubbing.Answer
 
@@ -87,6 +90,7 @@ class SSHFido2AuthenticationTest {
         val dispatcher = UnconfinedTestDispatcher(testScheduler)
         val dispatchers = CoroutineDispatchers(dispatcher, dispatcher, dispatcher)
         val repository = mock(PubkeyRepository::class.java)
+        var invalidPin = false
         val hardware = mock(
             Fido2Manager::class.java,
             Answer { call ->
@@ -97,7 +101,9 @@ class SSHFido2AuthenticationTest {
                     }
 
                     "connectAndSignUsb", "requestNfcSigning" -> {
-                        callback!!.invoke(Fido2Result.Success(Fido2SignatureResult(ByteArray(37), signature, true, false, 0)))
+                        callback!!.invoke(
+                            if (invalidPin) Fido2Result.PinInvalid(2) else Fido2Result.Success(Fido2SignatureResult(ByteArray(37), signature, true, false, 0)),
+                        )
                         null
                     }
 
@@ -135,6 +141,16 @@ class SSHFido2AuthenticationTest {
                         val offered = runBlocking { handler.onPublicKeysNeeded() }
                         assertEquals(expected, offered.single().algorithmName)
                         assertNotNull(runBlocking { handler.onSignatureRequest(offered.single(), byteArrayOf(9)) })
+                        invalidPin = true
+                        try {
+                            val error = assertThrows(java.io.IOException::class.java) {
+                                runBlocking { handler.onSignatureRequest(offered.single(), byteArrayOf(9)) }
+                            }
+                            assertEquals("FIDO2 PIN is invalid. 2 attempts remaining.", error.message)
+                            verify(bridge, atLeastOnce()).authenticationFailure = error.message
+                        } finally {
+                            invalidPin = false
+                        }
                         AuthResult.Success
                     }
                     val ssh = SSH(host, bridge, manager)

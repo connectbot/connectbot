@@ -644,7 +644,12 @@ open class SSH : AbsTransport {
             it.isFido2 && it.publicKey.contentEquals(key.publicKeyBlob)
         } ?: return null
         return withContext((manager ?: return null).dispatchers.io) {
-            handleFido2Key(pubkey)?.sign(data, key.algorithmName)
+            try {
+                handleFido2Key(pubkey)?.sign(data, key.algorithmName)
+            } catch (e: IOException) {
+                bridge?.authenticationFailure = e.message
+                throw e
+            }
         }
     }
 

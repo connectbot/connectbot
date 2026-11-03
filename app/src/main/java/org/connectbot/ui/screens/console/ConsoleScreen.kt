@@ -653,16 +653,29 @@ private fun ConsoleTerminalPage(
                 modifier = Modifier.align(Alignment.BottomCenter),
             ) {
                 val terminalColors = MaterialTheme.colorScheme.terminal
+                val authenticationFailure = bridge.authenticationFailure
+                val authenticationFailed = bridge.disconnectReason == DisconnectReason.AUTH_FAIL || authenticationFailure != null
+                val background = if (authenticationFailed) MaterialTheme.colorScheme.errorContainer else terminalColors.overlayBackground
+                val foreground = if (authenticationFailed) MaterialTheme.colorScheme.onErrorContainer else terminalColors.overlayText
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(terminalColors.overlayBackground)
+                        .background(background)
+                        .semantics { liveRegion = LiveRegionMode.Assertive }
                         .padding(16.dp),
                 ) {
+                    if (authenticationFailed) {
+                        Text(
+                            text = stringResource(R.string.console_authentication_failed_title),
+                            style = MaterialTheme.typography.titleLarge,
+                            color = foreground,
+                            modifier = Modifier.padding(bottom = 8.dp),
+                        )
+                    }
                     Text(
-                        text = stringResource(bridge.disconnectReason.descriptionResource()),
+                        text = authenticationFailure ?: stringResource(bridge.disconnectReason.descriptionResource()),
                         style = MaterialTheme.typography.bodyLarge,
-                        color = terminalColors.overlayText,
+                        color = foreground,
                         modifier = Modifier.padding(bottom = 16.dp),
                     )
                     Row(
@@ -672,7 +685,7 @@ private fun ConsoleTerminalPage(
                         TextButton(onClick = onDisconnectRequest) {
                             Text(
                                 stringResource(R.string.console_menu_close),
-                                color = terminalColors.overlayText,
+                                color = foreground,
                             )
                         }
                         Button(

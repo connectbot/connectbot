@@ -433,6 +433,54 @@ class ConsoleScreenTest {
     }
 
     @Test
+    fun consoleScreen_fido2Failure_keepsDetailsVisibleUntilReconnect() {
+        val bridge = mockTerminalBridge()
+        `when`(bridge.transportMessages).thenReturn(MutableSharedFlow())
+        `when`(bridge.keyboardErrors).thenReturn(MutableSharedFlow())
+        val host = Host(id = UUID(0, 1), nickname = "test-host")
+        val emulator = TerminalEmulatorFactory.create()
+        `when`(bridge.host).thenReturn(host)
+        `when`(bridge.terminalEmulator).thenReturn(emulator)
+        `when`(bridge.fontSizeFlow).thenReturn(MutableStateFlow(14f))
+        `when`(bridge.fontWeightFlow).thenReturn(MutableStateFlow(TerminalFontWeight.NORMAL))
+        `when`(bridge.delKeyModeFlow).thenReturn(MutableStateFlow(DelKeyMode.Backspace))
+        `when`(bridge.promptManager).thenReturn(PromptManager())
+        val keyHandler = TerminalKeyListener(TerminalEmulatorKeyDispatcher(emulator))
+        `when`(bridge.keyHandler).thenReturn(keyHandler)
+        `when`(bridge.isDisconnected).thenReturn(false)
+        `when`(bridge.isConnecting).thenReturn(false)
+        val states = MutableStateFlow(ConsoleUiState(bridges = listOf(bridge), isLoading = false))
+        val viewModel = mock(ConsoleViewModel::class.java)
+        `when`(viewModel.uiState).thenReturn(states)
+        `when`(viewModel.networkStatusMessages).thenReturn(MutableSharedFlow())
+        setContent(mockConsoleViewModel = viewModel)
+        navigateToConsoleScreen(UUID(0, 1))
+
+        val reconnect = composeTestRule.activity.getString(R.string.console_menu_reconnect)
+        composeTestRule.onNodeWithText(reconnect).assertDoesNotExist()
+        composeTestRule.runOnUiThread {
+            `when`(bridge.isDisconnected).thenReturn(true)
+            `when`(bridge.disconnectReason).thenReturn(DisconnectReason.IO_ERROR)
+            `when`(bridge.authenticationFailure).thenReturn("FIDO2 PIN is invalid. 2 attempts remaining.")
+            states.value = states.value.copy(revision = states.value.revision + 1)
+        }
+        composeTestRule.onNodeWithText(reconnect).assertIsDisplayed()
+        val title = composeTestRule.activity.getString(R.string.console_authentication_failed_title)
+        composeTestRule.onNodeWithText(title).assertIsDisplayed()
+        val detail = "FIDO2 PIN is invalid. 2 attempts remaining."
+        composeTestRule.onNodeWithText(detail).assertIsDisplayed()
+        composeTestRule.mainClock.advanceTimeBy(10_000)
+        composeTestRule.onNodeWithText(detail).assertIsDisplayed()
+
+        composeTestRule.runOnUiThread {
+            `when`(bridge.isConnecting).thenReturn(true)
+            states.value = states.value.copy(revision = states.value.revision + 1)
+        }
+        composeTestRule.onNodeWithText(reconnect).assertDoesNotExist()
+        composeTestRule.onNodeWithText(detail).assertDoesNotExist()
+    }
+
+    @Test
     fun consoleScreen_emptyOnEntry_returnsToHostList() {
         val viewModel = mock(ConsoleViewModel::class.java)
         `when`(viewModel.uiState).thenReturn(MutableStateFlow(ConsoleUiState(isLoading = false)))
