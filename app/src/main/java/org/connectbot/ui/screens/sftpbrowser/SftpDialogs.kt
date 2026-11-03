@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.LinearProgressIndicator
@@ -30,13 +31,17 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -84,6 +89,7 @@ fun GoToPathDialog(
     onConfirm: (String) -> Unit,
 ) {
     var path by remember { mutableStateOf(currentPath) }
+    val focusRequester = remember { FocusRequester() }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -94,8 +100,11 @@ fun GoToPathDialog(
                 onValueChange = { path = it },
                 label = { Text(stringResource(R.string.sftp_path)) },
                 singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Go),
+                keyboardActions = KeyboardActions(onGo = { if (path.isNotBlank()) onConfirm(path) }),
+                modifier = Modifier.fillMaxWidth().focusRequester(focusRequester),
             )
+            LaunchedEffect(Unit) { focusRequester.requestFocus() }
         },
         confirmButton = {
             TextButton(
@@ -107,6 +116,49 @@ fun GoToPathDialog(
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.button_cancel))
+            }
+        },
+    )
+}
+
+@Composable
+fun DownloadConflictDialog(
+    conflict: DownloadConflict,
+    onOverwrite: () -> Unit,
+    onRename: (String) -> Unit,
+    onCancel: () -> Unit,
+) {
+    var name by remember(conflict) { mutableStateOf(conflict.suggestedName) }
+    val validName = name.isNotBlank() && name != "." && name != ".." &&
+        '/' !in name && '\u0000' !in name && name != conflict.filename
+    AlertDialog(
+        onDismissRequest = onCancel,
+        title = { Text(stringResource(R.string.sftp_download_conflict_title)) },
+        text = {
+            Column {
+                Text(stringResource(R.string.sftp_download_conflict_message, conflict.filename))
+                OutlinedTextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    label = { Text(stringResource(R.string.sftp_download_name)) },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                    keyboardActions = KeyboardActions(onDone = { if (validName) onRename(name) }),
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = { onRename(name) }, enabled = validName) {
+                Text(stringResource(R.string.sftp_download_rename))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onOverwrite, enabled = conflict.canOverwrite) {
+                Text(stringResource(R.string.sftp_download_overwrite))
+            }
+            TextButton(onClick = onCancel) {
                 Text(stringResource(R.string.button_cancel))
             }
         },

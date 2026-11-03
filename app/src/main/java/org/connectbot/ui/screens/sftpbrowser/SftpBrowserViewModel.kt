@@ -27,6 +27,7 @@ import com.trilead.ssh2.SFTPv3DirectoryEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
@@ -92,7 +93,25 @@ data class SftpBrowserUiState(
     val showBiometricDialog: Boolean = false,
     val biometricKeyInfo: BiometricKeyInfo? = null,
     val showGoToPathDialog: Boolean = false,
+    val downloadConflict: DownloadConflict? = null,
 )
+
+data class DownloadConflict(
+    val filename: String,
+    val suggestedName: String,
+    val canOverwrite: Boolean,
+)
+
+private data class LocalDownloadDocument(val uri: Uri, val isDirectory: Boolean)
+
+internal fun suggestedDownloadName(filename: String, existingNames: Set<String>): String {
+    val dot = filename.lastIndexOf('.').takeIf { it > 0 && it < filename.lastIndex } ?: filename.length
+    val stem = filename.substring(0, dot)
+    val extension = filename.substring(dot)
+    return generateSequence(1) { it + 1 }
+        .map { "$stem($it)$extension" }
+        .first { it !in existingNames }
+}
 
 /**
  * Progress information for file transfers.
@@ -150,6 +169,7 @@ class SftpBrowserViewModel @Inject constructor(
     private var pendingKeyPassphraseCallback: ((String?) -> Unit)? = null
     private var pendingBiometricCallback: ((Boolean) -> Unit)? = null
     private var transferJob: Job? = null
+    private var downloadConflictDecision: CompletableDeferred<String?>? = null
 
     init {
         loadHost()
@@ -374,7 +394,8 @@ class SftpBrowserViewModel @Inject constructor(
                 withContext(dispatchers.io) {
                     entries.forEachIndexed { index, entry ->
                         currentCoroutineContext().ensureActive()
-                        val destinationUri = createDocument(destinationDirectoryUri, entry.filename)
+                        val destinationUri = resolveDownloadDestination(destinationDirectoryUri, entry.filename)
+                            ?: throw CancellationException("Download cancelled")
                         downloadFile(operations, entry, destinationUri, index + 1, entries.size)
                     }
                 }
@@ -417,10 +438,16 @@ class SftpBrowserViewModel @Inject constructor(
         }
     }
 
+    fun resolveDownloadConflict(filename: String) {
+        if (filename.isNotBlank() && filename != "." && filename != ".." && '/' !in filename && '\u0000' !in filename) {
+            downloadConflictDecision?.complete(filename)
+        }
+    }
+
     fun cancelTransfer() {
         transferJob?.cancel()
         transferJob = null
-        _uiState.update { it.copy(transferProgress = null) }
+        _uiState.update { it.copy(transferProgress = null, downloadConflict = null) }
     }
 
     private suspend fun downloadFile(
@@ -430,7 +457,7 @@ class SftpBrowserViewModel @Inject constructor(
         fileIndex: Int,
         fileCount: Int,
     ) {
-        val outputStream = context.contentResolver.openOutputStream(destinationUri)
+        val outputStream = context.contentResolver.openOutputStream(destinationUri, "wt")
             ?: throw IOException("Cannot open output stream")
 
         updateTransferProgress(entry.filename, false, 0, entry.size ?: 0, fileIndex, fileCount)
@@ -485,6 +512,57 @@ class SftpBrowserViewModel @Inject constructor(
                     fileCount,
                 )
             }
+        }
+    }
+
+    private fun localDocuments(directoryUri: Uri): Map<String, LocalDownloadDocument> {
+        val childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(
+            directoryUri,
+            DocumentsContract.getTreeDocumentId(directoryUri),
+        )
+        val columns = arrayOf(
+            DocumentsContract.Document.COLUMN_DOCUMENT_ID,
+            DocumentsContract.Document.COLUMN_DISPLAY_NAME,
+            DocumentsContract.Document.COLUMN_MIME_TYPE,
+        )
+        val cursor = context.contentResolver.query(childrenUri, columns, null, null, null)
+            ?: throw IOException("Cannot list download folder")
+        return cursor.use {
+            buildMap {
+                while (it.moveToNext()) {
+                    put(
+                        it.getString(1),
+                        LocalDownloadDocument(
+                            DocumentsContract.buildDocumentUriUsingTree(directoryUri, it.getString(0)),
+                            it.getString(2) == DocumentsContract.Document.MIME_TYPE_DIR,
+                        ),
+                    )
+                }
+            }
+        }
+    }
+
+    private suspend fun resolveDownloadDestination(directoryUri: Uri, filename: String): Uri? {
+        var name = filename
+        while (true) {
+            val documents = localDocuments(directoryUri)
+            val existing = documents[name] ?: return createDocument(directoryUri, name)
+            val decision = CompletableDeferred<String?>()
+            val conflict = DownloadConflict(name, suggestedDownloadName(name, documents.keys), !existing.isDirectory)
+            val selectedName = withContext(dispatchers.main) {
+                downloadConflictDecision = decision
+                _uiState.update { it.copy(transferProgress = null, downloadConflict = conflict) }
+                try {
+                    decision.await()
+                } finally {
+                    if (downloadConflictDecision === decision) {
+                        downloadConflictDecision = null
+                        _uiState.update { it.copy(downloadConflict = null) }
+                    }
+                }
+            } ?: return null
+            if (selectedName == name && !existing.isDirectory) return existing.uri
+            name = selectedName
         }
     }
 

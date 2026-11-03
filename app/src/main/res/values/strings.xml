@@ -2674,4 +2674,14 @@
     <string name="pubkey_piv_wrong_key">This PIV slot does not match the saved SSH key. Connect the registered YubiKey.</string>
     <!-- Error when the reader cannot use the PIV slot or hardware touch is not confirmed. -->
     <string name="pubkey_piv_failed">Could not use the PIV slot. Check that PIV is enabled, the slot contains a key, and any required touch was confirmed.</string>
+    <!-- SFTP download dialog title when the destination folder already contains the file name. -->
+    <string name="sftp_download_conflict_title">File already exists</string>
+    <!-- SFTP download dialog explaining that the user can overwrite or choose another name. -->
+    <string name="sftp_download_conflict_message">“%1$s” already exists. Replace it or download with another name.</string>
+    <!-- SFTP download conflict dialog label for the editable destination filename. -->
+    <string name="sftp_download_name">File name</string>
+    <!-- SFTP download conflict dialog action to save with the edited filename. -->
+    <string name="sftp_download_rename">Save with new name</string>
+    <!-- SFTP download conflict dialog action to replace the existing file contents. -->
+    <string name="sftp_download_overwrite">Overwrite</string>
 </resources>
