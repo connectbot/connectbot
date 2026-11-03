@@ -203,7 +203,7 @@ class ConsoleScreenTest {
         val activeProfile = MutableStateFlow<TerminalBridge.ActiveProfile?>(profile)
         val emulator = TerminalEmulatorFactory.create()
         val dimensions = MutableStateFlow<TerminalDimensions?>(emulator.dimensions)
-        val bridge = mock(TerminalBridge::class.java)
+        val bridge = mockTerminalBridge()
         `when`(bridge.host).thenReturn(Host(id = UUID(0, 1), nickname = "first"))
         `when`(bridge.terminalEmulator).thenReturn(emulator)
         `when`(bridge.fontSizeFlow).thenReturn(size)
@@ -276,7 +276,7 @@ class ConsoleScreenTest {
             }
             composeTestRule.mainClock.advanceTimeBy(100)
             composeTestRule.onNodeWithContentDescription(composeTestRule.activity.getString(R.string.console_font_size_save_description)).assertIsDisplayed()
-            val other = mock(TerminalBridge::class.java)
+            val other = mockTerminalBridge()
             `when`(other.host).thenReturn(Host(id = UUID(0, 2), nickname = "second"))
             `when`(other.terminalEmulator).thenReturn(emulator)
             `when`(other.fontSizeFlow).thenReturn(MutableStateFlow(10f))
