@@ -612,6 +612,17 @@ tasks
         dependsOn(generateExportSchema)
     }
 
+// Keep KSP's generated Hilt test application on javac's source path even when
+// the generated directory does not exist yet in a clean build.
+tasks.withType<JavaCompile>().matching {
+    it.name.startsWith("compile") && it.name.endsWith("UnitTestJavaWithJavac")
+}.configureEach {
+    val componentName = name.removePrefix("compile").removeSuffix("JavaWithJavac")
+    val componentDirectory = componentName.replaceFirstChar { it.lowercaseChar() }
+    val generatedJava = layout.buildDirectory.dir("generated/ksp/$componentDirectory/java")
+    source(files(generatedJava).builtBy("ksp${componentName}Kotlin"))
+}
+
 // Lint analyzes Hilt-generated test sources, but AGP does not automatically make its
 // test-analysis tasks depend on the corresponding KSP tasks.
 tasks
