@@ -19,6 +19,7 @@ package org.connectbot.fido2
 
 import co.nstant.`in`.cbor.CborDecoder
 import co.nstant.`in`.cbor.model.ByteString
+import co.nstant.`in`.cbor.model.DataItem
 import co.nstant.`in`.cbor.model.Map
 import co.nstant.`in`.cbor.model.NegativeInteger
 import co.nstant.`in`.cbor.model.UnsignedInteger
@@ -93,7 +94,7 @@ object CoseKeyDecoder {
 
     private fun decodeCborMap(data: ByteArray): Map {
         val bais = ByteArrayInputStream(data)
-        val decoded = CborDecoder(bais).decode()
+        val decoded: List<DataItem> = CborDecoder(bais).decode()
         require(decoded.isNotEmpty()) { "Empty CBOR data" }
         return decoded[0] as? Map ?: throw IllegalArgumentException("Expected CBOR Map")
     }

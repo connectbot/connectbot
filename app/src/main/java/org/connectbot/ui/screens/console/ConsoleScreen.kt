@@ -34,6 +34,7 @@ import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
@@ -592,99 +593,111 @@ private fun ConsoleTerminalPage(
                 )
             }
 
-            val promptState by bridge.promptManager.promptState.collectAsState()
+            ConsoleAuthenticationOverlay(bridge, disconnected, connecting, termFocusRequester, onDisconnectRequest, onReconnect)
+        }
+    }
+}
 
-            // Handle FIDO2 connect prompt based on transport preference
-            LaunchedEffect(promptState) {
-                val fido2Prompt = promptState as? PromptRequest.Fido2ConnectPrompt
-                if (fido2Prompt != null) {
-                    val fido2Manager = bridge.fido2Manager
+@Composable
+private fun BoxScope.ConsoleAuthenticationOverlay(
+    bridge: TerminalBridge,
+    disconnected: Boolean,
+    connecting: Boolean,
+    termFocusRequester: FocusRequester,
+    onDisconnectRequest: () -> Unit,
+    onReconnect: () -> Unit,
+) {
+    val promptState by bridge.promptManager.promptState.collectAsState()
 
-                    // NFC tap happens during the signing phase, so no USB discovery is needed.
-                    if (fido2Prompt.transport == org.connectbot.data.entity.Fido2Transport.NFC) {
-                        bridge.promptManager.respond(PromptResponse.Fido2Response(true))
-                        return@LaunchedEffect
-                    }
+    // Handle FIDO2 connect prompt based on transport preference
+    LaunchedEffect(promptState) {
+        val fido2Prompt = promptState as? PromptRequest.Fido2ConnectPrompt
+        if (fido2Prompt != null) {
+            val fido2Manager = bridge.fido2Manager
 
-                    val connected = fido2Manager.awaitFreshUsbConnection()
-                    // Keep discovery active because signing still needs the device.
-                    bridge.promptManager.respond(PromptResponse.Fido2Response(connected))
-                }
+            // NFC tap happens during the signing phase, so no USB discovery is needed.
+            if (fido2Prompt.transport == org.connectbot.data.entity.Fido2Transport.NFC) {
+                bridge.promptManager.respond(PromptResponse.Fido2Response(true))
+                return@LaunchedEffect
             }
 
-            val waitingForNfc by bridge.fido2Manager.waitingForNfcSigning.collectAsState()
-            val nfcTagLost by bridge.fido2Manager.nfcSigningTagLost.collectAsState()
-            if (waitingForNfc) {
-                Fido2NfcTapOverlay(
-                    tagLost = nfcTagLost,
-                    onCancel = { bridge.fido2Manager.cancelNfcSigning() },
-                    modifier = Modifier.align(Alignment.BottomCenter),
+            val connected = fido2Manager.awaitFreshUsbConnection()
+            // Keep discovery active because signing still needs the device.
+            bridge.promptManager.respond(PromptResponse.Fido2Response(connected))
+        }
+    }
+
+    val waitingForNfc by bridge.fido2Manager.waitingForNfcSigning.collectAsState()
+    val nfcTagLost by bridge.fido2Manager.nfcSigningTagLost.collectAsState()
+    if (waitingForNfc) {
+        Fido2NfcTapOverlay(
+            tagLost = nfcTagLost,
+            onCancel = { bridge.fido2Manager.cancelNfcSigning() },
+            modifier = Modifier.align(Alignment.BottomCenter),
+        )
+    }
+
+    InlinePrompt(
+        promptRequest = promptState,
+        onResponse = { response ->
+            bridge.promptManager.respond(response)
+        },
+        onCancel = {
+            bridge.promptManager.cancelPrompt()
+        },
+        onDismiss = {
+            termFocusRequester.requestFocus()
+        },
+        modifier = Modifier.align(Alignment.BottomCenter),
+    )
+
+    AnimatedVisibility(
+        visible = disconnected && !connecting && promptState == null,
+        enter = slideInVertically(initialOffsetY = { it }),
+        exit = slideOutVertically(targetOffsetY = { it }),
+        modifier = Modifier.align(Alignment.BottomCenter),
+    ) {
+        val terminalColors = MaterialTheme.colorScheme.terminal
+        val authenticationFailure = bridge.authenticationFailure
+        val authenticationFailed = bridge.disconnectReason == DisconnectReason.AUTH_FAIL || authenticationFailure != null
+        val background = if (authenticationFailed) MaterialTheme.colorScheme.errorContainer else terminalColors.overlayBackground
+        val foreground = if (authenticationFailed) MaterialTheme.colorScheme.onErrorContainer else terminalColors.overlayText
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(background)
+                .semantics { liveRegion = LiveRegionMode.Assertive }
+                .padding(16.dp),
+        ) {
+            if (authenticationFailed) {
+                Text(
+                    text = stringResource(R.string.console_authentication_failed_title),
+                    style = MaterialTheme.typography.titleLarge,
+                    color = foreground,
+                    modifier = Modifier.padding(bottom = 8.dp),
                 )
             }
-
-            InlinePrompt(
-                promptRequest = promptState,
-                onResponse = { response ->
-                    bridge.promptManager.respond(response)
-                },
-                onCancel = {
-                    bridge.promptManager.cancelPrompt()
-                },
-                onDismiss = {
-                    termFocusRequester.requestFocus()
-                },
-                modifier = Modifier.align(Alignment.BottomCenter),
+            Text(
+                text = authenticationFailure ?: stringResource(bridge.disconnectReason.descriptionResource()),
+                style = MaterialTheme.typography.bodyLarge,
+                color = foreground,
+                modifier = Modifier.padding(bottom = 16.dp),
             )
-
-            AnimatedVisibility(
-                visible = disconnected && !connecting && promptState == null,
-                enter = slideInVertically(initialOffsetY = { it }),
-                exit = slideOutVertically(targetOffsetY = { it }),
-                modifier = Modifier.align(Alignment.BottomCenter),
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
             ) {
-                val terminalColors = MaterialTheme.colorScheme.terminal
-                val authenticationFailure = bridge.authenticationFailure
-                val authenticationFailed = bridge.disconnectReason == DisconnectReason.AUTH_FAIL || authenticationFailure != null
-                val background = if (authenticationFailed) MaterialTheme.colorScheme.errorContainer else terminalColors.overlayBackground
-                val foreground = if (authenticationFailed) MaterialTheme.colorScheme.onErrorContainer else terminalColors.overlayText
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(background)
-                        .semantics { liveRegion = LiveRegionMode.Assertive }
-                        .padding(16.dp),
-                ) {
-                    if (authenticationFailed) {
-                        Text(
-                            text = stringResource(R.string.console_authentication_failed_title),
-                            style = MaterialTheme.typography.titleLarge,
-                            color = foreground,
-                            modifier = Modifier.padding(bottom = 8.dp),
-                        )
-                    }
+                TextButton(onClick = onDisconnectRequest) {
                     Text(
-                        text = authenticationFailure ?: stringResource(bridge.disconnectReason.descriptionResource()),
-                        style = MaterialTheme.typography.bodyLarge,
+                        stringResource(R.string.console_menu_close),
                         color = foreground,
-                        modifier = Modifier.padding(bottom = 16.dp),
                     )
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End,
-                    ) {
-                        TextButton(onClick = onDisconnectRequest) {
-                            Text(
-                                stringResource(R.string.console_menu_close),
-                                color = foreground,
-                            )
-                        }
-                        Button(
-                            onClick = onReconnect,
-                            modifier = Modifier.padding(start = 8.dp),
-                        ) {
-                            Text(stringResource(R.string.console_menu_reconnect))
-                        }
-                    }
+                }
+                Button(
+                    onClick = onReconnect,
+                    modifier = Modifier.padding(start = 8.dp),
+                ) {
+                    Text(stringResource(R.string.console_menu_reconnect))
                 }
             }
         }

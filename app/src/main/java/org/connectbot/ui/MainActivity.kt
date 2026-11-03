@@ -394,9 +394,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleNfcIntent(intent: Intent): Boolean {
-        if (intent.action != NfcAdapter.ACTION_TECH_DISCOVERED &&
-            intent.action != NfcAdapter.ACTION_TAG_DISCOVERED
-        ) {
+        // Foreground dispatch registers IsoDep technology discovery for FIDO2.
+        if (intent.action != NfcAdapter.ACTION_TECH_DISCOVERED) {
             return false
         }
 

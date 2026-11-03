@@ -374,52 +374,59 @@ class Fido2Manager @Inject constructor(
                 try {
                     val connection = connectionResult.value
                     val reconnectSession = Ctap2Session(connection)
-                    val reconnectProtocol = selectPinProtocol(reconnectSession)
-                    val result = try {
-                        enumerateCredentialsWithPin(
-                            session = reconnectSession,
-                            protocol = reconnectProtocol,
-                            pin = pin,
-                            closeSessionAfter = false,
-                        )
-                    } catch (e: Exception) {
-                        if (shouldRetryPinBlockedWithV1(e, reconnectProtocol)) {
-                            Timber.w(e, "USB PIN blocked on protocol V2, retrying with PIN protocol V1")
-                            try {
-                                enumerateCredentialsWithPin(
-                                    session = reconnectSession,
-                                    protocol = PinUvAuthProtocolV1(),
-                                    pin = pin,
-                                    closeSessionAfter = false,
-                                )
-                            } catch (fallbackError: Exception) {
-                                mapPinOrCredentialError(
-                                    fallbackError,
-                                    v1FallbackAttempted = true,
-                                    session = reconnectSession,
-                                    protocol = PinUvAuthProtocolV1(),
-                                )
-                            }
-                        } else {
-                            mapPinOrCredentialError(
-                                e,
-                                session = reconnectSession,
-                                protocol = reconnectProtocol,
-                            )
-                        }
-                    } finally {
-                        try {
-                            reconnectSession.close()
-                        } catch (closeError: Exception) {
-                            Timber.w(closeError, "Failed to close reconnect USB session")
-                        }
-                    }
+                    val result = enumerateReconnectedUsbCredentials(reconnectSession, pin)
 
                     continuation.resume(result)
                 } catch (e: Exception) {
                     Log.e(TAG, "USB reconnect operation failed: ${e.message}", e)
                     continuation.resume(mapPinOrCredentialError(e))
                 }
+            }
+        }
+    }
+
+    private fun enumerateReconnectedUsbCredentials(
+        reconnectSession: Ctap2Session,
+        pin: String,
+    ): Fido2Result<List<Fido2Credential>> {
+        val reconnectProtocol = selectPinProtocol(reconnectSession)
+        return try {
+            enumerateCredentialsWithPin(
+                session = reconnectSession,
+                protocol = reconnectProtocol,
+                pin = pin,
+                closeSessionAfter = false,
+            )
+        } catch (e: Exception) {
+            if (shouldRetryPinBlockedWithV1(e, reconnectProtocol)) {
+                Timber.w(e, "USB PIN blocked on protocol V2, retrying with PIN protocol V1")
+                try {
+                    enumerateCredentialsWithPin(
+                        session = reconnectSession,
+                        protocol = PinUvAuthProtocolV1(),
+                        pin = pin,
+                        closeSessionAfter = false,
+                    )
+                } catch (fallbackError: Exception) {
+                    mapPinOrCredentialError(
+                        fallbackError,
+                        v1FallbackAttempted = true,
+                        session = reconnectSession,
+                        protocol = PinUvAuthProtocolV1(),
+                    )
+                }
+            } else {
+                mapPinOrCredentialError(
+                    e,
+                    session = reconnectSession,
+                    protocol = reconnectProtocol,
+                )
+            }
+        } finally {
+            try {
+                reconnectSession.close()
+            } catch (closeError: Exception) {
+                Timber.w(closeError, "Failed to close reconnect USB session")
             }
         }
     }
@@ -462,30 +469,38 @@ class Fido2Manager @Inject constructor(
             }
 
             message.contains("PIN_BLOCKED", ignoreCase = true) -> {
-                val retries = getPinRetriesWithFallback(session, protocol)
-                if (retries != null && retries.count > 0) {
-                    val retryHint = if (v1FallbackAttempted) {
-                        "Retried with PIN protocol V1."
-                    } else {
-                        "Using current PIN protocol."
-                    }
-                    val powerCycleHint = if (retries.powerCycleState == true) {
-                        "Power-cycle or reinsert the key, then retry."
-                    } else {
-                        "Reinsert the key and retry."
-                    }
-                    Fido2Result.PinLocked(
-                        "Authenticator reported PIN_BLOCKED, but $retryHint Remaining retries: ${retries.count}. " +
-                            "This may be a device firmware quirk. $powerCycleHint",
-                    )
-                } else if (v1FallbackAttempted) {
-                    Fido2Result.PinLocked("PIN is locked. Retried with PIN protocol V1. Please reset your security key.")
-                } else {
-                    Fido2Result.PinLocked(ERR_PIN_BLOCKED)
-                }
+                pinBlockedError(session, protocol, v1FallbackAttempted)
             }
 
             else -> Fido2Result.Error(e.message ?: "USB operation failed")
+        }
+    }
+
+    private fun pinBlockedError(
+        session: Ctap2Session?,
+        protocol: PinUvAuthProtocol?,
+        v1FallbackAttempted: Boolean,
+    ): Fido2Result.PinLocked {
+        val retries = getPinRetriesWithFallback(session, protocol)
+        return if (retries != null && retries.count > 0) {
+            val retryHint = if (v1FallbackAttempted) {
+                "Retried with PIN protocol V1."
+            } else {
+                "Using current PIN protocol."
+            }
+            val powerCycleHint = if (retries.powerCycleState == true) {
+                "Power-cycle or reinsert the key, then retry."
+            } else {
+                "Reinsert the key and retry."
+            }
+            Fido2Result.PinLocked(
+                "Authenticator reported PIN_BLOCKED, but $retryHint Remaining retries: ${retries.count}. " +
+                    "This may be a device firmware quirk. $powerCycleHint",
+            )
+        } else if (v1FallbackAttempted) {
+            Fido2Result.PinLocked("PIN is locked. Retried with PIN protocol V1. Please reset your security key.")
+        } else {
+            Fido2Result.PinLocked(ERR_PIN_BLOCKED)
         }
     }
 
@@ -557,141 +572,9 @@ class Fido2Manager @Inject constructor(
             _connectionState.value = Fido2ConnectionState.Connecting
 
             if (transport == "USB") {
-                // USB: Like NFC, do ALL operations in the callback to avoid thread issues
-                val pin = pendingPin
-                val callback = usbCredentialCallback
-
-                Log.d(TAG, "USB: Requesting FidoConnection... pin=${pin != null}, callback=${callback != null}")
-
-                if (pin == null) {
-                    // No PIN yet - just connect and get authenticator info to check if PIN is needed
-                    val needsPin = suspendCancellableCoroutine { continuation ->
-                        device.requestConnection(FidoConnection::class.java) { result ->
-                            try {
-                                val connection = result.value
-                                Log.d(TAG, "USB FidoConnection established on thread ${Thread.currentThread().name}")
-                                val session = Ctap2Session(connection)
-                                Log.d(TAG, "USB Ctap2Session created, checking if PIN required")
-
-                                val info = session.cachedInfo
-                                val pinRequired = info.options["clientPin"] == true
-                                Log.d(TAG, "USB PIN required: $pinRequired")
-
-                                // Always store the device for retry
-                                currentDevice = device
-
-                                // Always store session - we'll reuse it for PIN auth
-                                // Closing the session also closes the USB connection,
-                                // and some devices (like SoloKey) don't handle reconnection well
-                                currentSession = session
-                                pinUvAuthProtocol = selectPinProtocol(session)
-                                continuation.resume(pinRequired)
-                            } catch (e: Exception) {
-                                Log.e(TAG, "USB connection failed: ${e.message}", e)
-                                continuation.resumeWithException(e)
-                            }
-                        }
-                    }
-
-                    _connectionState.value = Fido2ConnectionState.Connected(
-                        transport = "USB",
-                        deviceName = deviceName,
-                    )
-                    // If needsPin, ViewModel will show PIN prompt and call back with PIN
-                    return
-                }
-
-                // USB with PIN is handled by retryUsbWithPin() using the existing session
-                // This branch should not be reached for USB
-                Log.w(TAG, "Unexpected: connectToDevice called for USB with PIN set")
-                return
+                connectUsbDevice(device, deviceName)
             } else {
-                // NFC: Do ALL operations synchronously in the callback
-                // because the NFC connection is transient
-                val pin = pendingPin
-                val callback = nfcCredentialCallback
-
-                if (pin == null) {
-                    _connectionState.value = Fido2ConnectionState.Error("PIN required for NFC")
-                    return
-                }
-
-                val result = suspendCancellableCoroutine<Fido2Result<List<Fido2Credential>>> { continuation ->
-                    device.requestConnection(SmartCardConnection::class.java) { connectionResult ->
-                        val threadName = Thread.currentThread().name
-                        Timber.d("NFC callback running on thread $threadName")
-
-                        try {
-                            val connection = connectionResult.value
-                            Timber.d("NFC SmartCardConnection established")
-
-                            // Create session
-                            val session = Ctap2Session(connection)
-                            Timber.d("NFC Ctap2Session created")
-
-                            // Create PIN protocol based on authenticator support
-                            val protocol = selectPinProtocol(session)
-
-                            // Authenticate with PIN - ALL on the same thread
-                            Timber.d("NFC authenticating with PIN on thread $threadName")
-                            val clientPin = ClientPin(session, protocol)
-                            val token = clientPin.getPinToken(
-                                normalizePin(pin),
-                                ClientPin.PIN_PERMISSION_CM,
-                                null,
-                            )
-                            Timber.d("NFC PIN authentication successful")
-
-                            // Enumerate credentials - ALL on the same thread
-                            Timber.d("NFC enumerating credentials on thread $threadName")
-                            val credMgmt = CredentialManagement(session, protocol, token)
-                            val credentialList = enumerateSshCredentials(credMgmt, "NFC")
-
-                            session.close()
-                            Timber.i("NFC credential enumeration complete: ${credentialList.size} credentials")
-                            continuation.resume(Fido2Result.Success(credentialList))
-                        } catch (e: Exception) {
-                            Timber.e(e, "NFC operation failed")
-                            val message = e.message ?: ""
-
-                            val error = when {
-                                message.contains("PIN_INVALID", ignoreCase = true) ||
-                                    message.contains("CTAP2_ERR_PIN_INVALID", ignoreCase = true) -> {
-                                    Fido2Result.PinInvalid(attemptsRemaining = null)
-                                }
-
-                                message.contains("PIN_AUTH_BLOCKED", ignoreCase = true) -> {
-                                    Fido2Result.PinLocked(ERR_PIN_AUTH_BLOCKED)
-                                }
-
-                                message.contains("PIN_BLOCKED", ignoreCase = true) -> {
-                                    Fido2Result.PinLocked(ERR_PIN_BLOCKED)
-                                }
-
-                                else -> Fido2Result.Error(e.message ?: "NFC operation failed")
-                            }
-                            continuation.resume(error)
-                        }
-                    }
-                }
-
-                // Deliver result via callback and update state
-                pendingPin = null
-                callback?.invoke(result)
-                nfcCredentialCallback = null
-
-                when (result) {
-                    is Fido2Result.Success -> {
-                        _connectionState.value = Fido2ConnectionState.Connected(
-                            transport = "NFC",
-                            deviceName = deviceName,
-                        )
-                    }
-
-                    else -> {
-                        _connectionState.value = Fido2ConnectionState.Disconnected
-                    }
-                }
+                connectNfcDevice(device, deviceName)
             }
         } catch (e: Exception) {
             Timber.e(e, "Failed to connect to FIDO2 device")
@@ -701,11 +584,154 @@ class Fido2Manager @Inject constructor(
         }
     }
 
+    private suspend fun connectUsbDevice(device: YubiKeyDevice, deviceName: String?) {
+        // USB: Like NFC, do ALL operations in the callback to avoid thread issues
+        val pin = pendingPin
+        val callback = usbCredentialCallback
+
+        Log.d(TAG, "USB: Requesting FidoConnection... pin=${pin != null}, callback=${callback != null}")
+
+        if (pin == null) {
+            // No PIN yet - just connect and get authenticator info to check if PIN is needed
+            suspendCancellableCoroutine<Unit> { continuation ->
+                device.requestConnection(FidoConnection::class.java) { result ->
+                    try {
+                        val connection = result.value
+                        Log.d(TAG, "USB FidoConnection established on thread ${Thread.currentThread().name}")
+                        val session = Ctap2Session(connection)
+                        Log.d(TAG, "USB Ctap2Session created, checking if PIN required")
+
+                        val info = session.cachedInfo
+                        val pinRequired = info.options["clientPin"] == true
+                        Log.d(TAG, "USB PIN required: $pinRequired")
+
+                        // Always store the device for retry
+                        currentDevice = device
+
+                        // Always store session - we'll reuse it for PIN auth
+                        // Closing the session also closes the USB connection,
+                        // and some devices (like SoloKey) don't handle reconnection well
+                        currentSession = session
+                        pinUvAuthProtocol = selectPinProtocol(session)
+                        continuation.resume(Unit)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "USB connection failed: ${e.message}", e)
+                        continuation.resumeWithException(e)
+                    }
+                }
+            }
+
+            _connectionState.value = Fido2ConnectionState.Connected(
+                transport = "USB",
+                deviceName = deviceName,
+            )
+            // The ViewModel requests the PIN after discovery.
+            return
+        }
+
+        // USB with PIN is handled by retryUsbWithPin() using the existing session
+        // This branch should not be reached for USB
+        Log.w(TAG, "Unexpected: connectToDevice called for USB with PIN set")
+    }
+
+    private suspend fun connectNfcDevice(device: YubiKeyDevice, deviceName: String?) {
+        // NFC: Do ALL operations synchronously in the callback
+        // because the NFC connection is transient
+        val pin = pendingPin
+        val callback = nfcCredentialCallback
+
+        if (pin == null) {
+            _connectionState.value = Fido2ConnectionState.Error("PIN required for NFC")
+            return
+        }
+
+        val result = suspendCancellableCoroutine<Fido2Result<List<Fido2Credential>>> { continuation ->
+            device.requestConnection(SmartCardConnection::class.java) { connectionResult ->
+                val threadName = Thread.currentThread().name
+                Timber.d("NFC callback running on thread $threadName")
+
+                try {
+                    val connection = connectionResult.value
+                    Timber.d("NFC SmartCardConnection established")
+
+                    // Create session
+                    val session = Ctap2Session(connection)
+                    Timber.d("NFC Ctap2Session created")
+
+                    // Create PIN protocol based on authenticator support
+                    val protocol = selectPinProtocol(session)
+
+                    // Authenticate with PIN - ALL on the same thread
+                    Timber.d("NFC authenticating with PIN on thread $threadName")
+                    val clientPin = ClientPin(session, protocol)
+                    val token = clientPin.getPinToken(
+                        normalizePin(pin),
+                        ClientPin.PIN_PERMISSION_CM,
+                        null,
+                    )
+                    Timber.d("NFC PIN authentication successful")
+
+                    // Enumerate credentials - ALL on the same thread
+                    Timber.d("NFC enumerating credentials on thread $threadName")
+                    val credMgmt = CredentialManagement(session, protocol, token)
+                    val credentialList = enumerateSshCredentials(credMgmt, "NFC")
+
+                    session.close()
+                    Timber.i("NFC credential enumeration complete: ${credentialList.size} credentials")
+                    continuation.resume(Fido2Result.Success(credentialList))
+                } catch (e: Exception) {
+                    Timber.e(e, "NFC operation failed")
+                    val error = mapNfcCredentialError(e)
+                    continuation.resume(error)
+                }
+            }
+        }
+
+        // Deliver result via callback and update state
+        pendingPin = null
+        callback?.invoke(result)
+        nfcCredentialCallback = null
+
+        when (result) {
+            is Fido2Result.Success -> {
+                _connectionState.value = Fido2ConnectionState.Connected(
+                    transport = "NFC",
+                    deviceName = deviceName,
+                )
+            }
+
+            else -> {
+                _connectionState.value = Fido2ConnectionState.Disconnected
+            }
+        }
+    }
+
+    private fun mapNfcCredentialError(e: Exception): Fido2Result<List<Fido2Credential>> {
+        val message = e.message ?: ""
+
+        return when {
+            message.contains("PIN_INVALID", ignoreCase = true) ||
+                message.contains("CTAP2_ERR_PIN_INVALID", ignoreCase = true) -> {
+                Fido2Result.PinInvalid(attemptsRemaining = null)
+            }
+
+            message.contains("PIN_AUTH_BLOCKED", ignoreCase = true) -> {
+                Fido2Result.PinLocked(ERR_PIN_AUTH_BLOCKED)
+            }
+
+            message.contains("PIN_BLOCKED", ignoreCase = true) -> {
+                Fido2Result.PinLocked(ERR_PIN_BLOCKED)
+            }
+
+            else -> Fido2Result.Error(e.message ?: "NFC operation failed")
+        }
+    }
+
     /**
      * Connect to an NFC tag directly.
      * Use this when receiving an NFC intent in the activity.
      */
-    suspend fun connectToNfcTag(tag: Tag) {
+    suspend fun connectToNfcTag(tag: Tag) = withContext(dispatchers.io) {
         // Emit tag detected signal for connect prompt to observe
         _nfcTagDetected.tryEmit(tag)
 
@@ -906,7 +932,7 @@ class Fido2Manager @Inject constructor(
                 )
 
                 // Get assertion
-                val assertions = session.getAssertions(
+                val assertions: List<Ctap2Session.AssertionData> = session.getAssertions(
                     rpId,
                     clientDataHash,
                     allowList,
@@ -1137,7 +1163,7 @@ class Fido2Manager @Inject constructor(
         credMgmt: CredentialManagement,
         logPrefix: String,
     ): List<Fido2Credential> {
-        val rps = credMgmt.enumerateRps()
+        val rps: List<CredentialManagement.RpData> = credMgmt.enumerateRps()
         Timber.d("$logPrefix found ${rps.size} RPs")
 
         val sshRps = rps.filter(Fido2CredentialMapper::isSshRp)
@@ -1147,7 +1173,7 @@ class Fido2Manager @Inject constructor(
         }
 
         return sshRps.flatMap { sshRp ->
-            val credentials = credMgmt.enumerateCredentials(sshRp.rpIdHash)
+            val credentials: List<CredentialManagement.CredentialData> = credMgmt.enumerateCredentials(sshRp.rpIdHash)
             Timber.d("$logPrefix found ${credentials.size} credentials for RP ${sshRp.rp["id"]}")
             credentials.map { Fido2CredentialMapper.fromCredentialData(it, sshRp) }
         }
@@ -1183,7 +1209,7 @@ class Fido2Manager @Inject constructor(
                 "id" to credentialId,
             ),
         )
-        val assertions = session.getAssertions(
+        val assertions: List<Ctap2Session.AssertionData> = session.getAssertions(
             rpId,
             clientDataHash,
             allowList,
@@ -1240,7 +1266,7 @@ class Fido2Manager @Inject constructor(
      * while newer authenticators (YubiKey 5+) support V2.
      */
     private fun selectPinProtocol(session: Ctap2Session): PinUvAuthProtocol {
-        val supportedProtocols = session.cachedInfo.pinUvAuthProtocols
+        val supportedProtocols: List<Int> = session.cachedInfo.pinUvAuthProtocols
         return if (2 in supportedProtocols) {
             PinUvAuthProtocolV2()
         } else {

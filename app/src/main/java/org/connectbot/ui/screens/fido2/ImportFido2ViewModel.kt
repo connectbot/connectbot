@@ -152,7 +152,7 @@ class ImportFido2ViewModel @Inject constructor(
      * Call this when the Activity receives an NFC tag intent.
      */
     fun onNfcTagDiscovered(tag: Tag) {
-        viewModelScope.launch(dispatchers.io) {
+        viewModelScope.launch {
             fido2Manager.connectToNfcTag(tag)
         }
     }
