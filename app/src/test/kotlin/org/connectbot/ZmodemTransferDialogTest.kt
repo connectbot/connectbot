@@ -96,6 +96,16 @@ class ZmodemTransferDialogTest {
     }
 
     @Test
+    fun successfulCompletionDismissesProgressDialog() {
+        setContent(ZmodemController.State(active = true, name = "skullpl.gif", bytes = 100, total = 100))
+        val cancel = composeTestRule.activity.getString(R.string.zmodem_cancel)
+        composeTestRule.onNodeWithText(cancel).assertIsDisplayed()
+        composeTestRule.runOnIdle { state.value = ZmodemController.State() }
+        composeTestRule.onNodeWithText(cancel).assertDoesNotExist()
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.zmodem_title)).assertDoesNotExist()
+    }
+
+    @Test
     fun errorCanBeDismissed() {
         setContent(ZmodemController.State(error = "Transfer timed out"))
         composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.zmodem_failed)).assertIsDisplayed()
