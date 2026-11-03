@@ -151,11 +151,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
-import org.connectbot.fido2.Fido2ConnectionState
 import org.connectbot.service.AuthBanner
 import org.connectbot.service.DisconnectReason
 import org.connectbot.service.PromptRequest
@@ -608,17 +606,9 @@ private fun ConsoleTerminalPage(
                         return@LaunchedEffect
                     }
 
-                    if (fido2Manager.isDeviceConnected()) {
-                        bridge.promptManager.respond(PromptResponse.Fido2Response(true))
-                        return@LaunchedEffect
-                    }
-
-                    fido2Manager.startUsbDiscovery()
-                    fido2Manager.connectionState.first { state ->
-                        state is Fido2ConnectionState.Connected
-                    }
-                    // Keep USB discovery active because signing still needs the device.
-                    bridge.promptManager.respond(PromptResponse.Fido2Response(true))
+                    val connected = fido2Manager.awaitFreshUsbConnection()
+                    // Keep discovery active because signing still needs the device.
+                    bridge.promptManager.respond(PromptResponse.Fido2Response(connected))
                 }
             }
 

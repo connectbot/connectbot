@@ -363,6 +363,37 @@ class Fido2ManagerTest {
     }
 
     @Test
+    fun freshUsbConnectionDoesNotAcceptPreviousDeviceOrConnectedState() = runTest(dispatcher) {
+        manager.startUsbDiscovery()
+        usbCallback!!.invoke(usbDevice)
+        advanceUntilIdle()
+        assertTrue(manager.isDeviceConnected())
+        assertTrue(manager.connectionState.value is Fido2ConnectionState.Connected)
+        manager.setPendingPin("old import PIN")
+
+        val connection = async { manager.awaitFreshUsbConnection() }
+        runCurrent()
+        assertFalse(connection.isCompleted)
+        assertFalse(manager.isDeviceConnected())
+        assertTrue(manager.connectionState.value is Fido2ConnectionState.Disconnected)
+
+        usbCallback!!.invoke(usbDevice)
+        advanceUntilIdle()
+        assertTrue(connection.await())
+        assertTrue(manager.isDeviceConnected())
+    }
+
+    @Test
+    fun freshUsbConnectionReportsDiscoveryFailureInsteadOfWaiting() = runTest(dispatcher) {
+        connected()
+        discoveryError = true
+
+        assertFalse(manager.awaitFreshUsbConnection())
+        assertFalse(manager.isDeviceConnected())
+        assertTrue(manager.connectionState.value is Fido2ConnectionState.Error)
+    }
+
+    @Test
     fun nfcDiscoverySkipsNdefProbingBeforeConnectingToSecurityKeys() {
         manager.startNfcDiscovery(mock(Activity::class.java))
         assertTrue(requireNotNull(nfcConfiguration).isSkipNdefCheck)

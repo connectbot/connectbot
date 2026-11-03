@@ -60,6 +60,7 @@ class SSHFido2AuthenticationTest {
     private var hardwareAvailable = true
     private var callback: ((Fido2Result<Fido2SignatureResult>) -> Unit)? = null
     private var signature = ByteArray(64)
+    private val promptOrder = mutableListOf<String>()
 
     private fun key(type: String = "SK-Ed25519", transport: Fido2Transport = Fido2Transport.USB): Pubkey {
         val wire = if (type == "SK-ECDSA") {
@@ -78,8 +79,16 @@ class SSHFido2AuthenticationTest {
         PromptManager::class.java,
         Answer { call ->
             when (call.method.name) {
-                "requestFido2Connect" -> allowConnection
-                "requestFido2Pin" -> pin
+                "requestFido2Connect" -> {
+                    promptOrder.add("connect")
+                    allowConnection
+                }
+
+                "requestFido2Pin" -> {
+                    promptOrder.add("pin")
+                    pin
+                }
+
                 else -> Answers.RETURNS_DEFAULTS.answer(call)
             }
         },
@@ -140,7 +149,9 @@ class SSHFido2AuthenticationTest {
                         val handler = it.getArgument<AuthHandler>(1)
                         val offered = runBlocking { handler.onPublicKeysNeeded() }
                         assertEquals(expected, offered.single().algorithmName)
+                        promptOrder.clear()
                         assertNotNull(runBlocking { handler.onSignatureRequest(offered.single(), byteArrayOf(9)) })
+                        assertEquals(if (transport == Fido2Transport.USB) listOf("pin", "connect") else listOf("pin"), promptOrder)
                         invalidPin = true
                         try {
                             val error = assertThrows(java.io.IOException::class.java) {

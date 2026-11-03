@@ -50,6 +50,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.sync.Mutex
@@ -123,6 +124,7 @@ class Fido2Manager @Inject constructor(
             checkForConnectedUsbDevices()
         } catch (e: Exception) {
             Timber.e(e, "Failed to start USB discovery")
+            _connectionState.value = Fido2ConnectionState.Error(e.message ?: "USB discovery failed")
         }
     }
 
@@ -168,15 +170,28 @@ class Fido2Manager @Inject constructor(
     fun stopUsbDiscovery() {
         try {
             yubiKitManager.stopUsbDiscovery()
-            usbDiscoveryActive = false
-            // Clear device/session references that are invalidated when YubiKit
-            // tears down its USB transport. Without this, a subsequent signing
-            // attempt would use a stale device object whose requestConnection()
-            // callback never fires, causing the app to hang.
-            disconnect()
         } catch (e: Exception) {
             Timber.e(e, "Failed to stop USB discovery")
+        } finally {
+            usbDiscoveryActive = false
+            // YubiKit invalidates the discovered device when discovery stops.
+            disconnect()
         }
+    }
+
+    /** Verify a fresh USB connection rather than reusing a previous discovery. */
+    suspend fun awaitFreshUsbConnection(): Boolean {
+        withContext(dispatchers.io) {
+            stopUsbDiscovery()
+            // Credential import may have left a pending PIN. SSH signing supplies
+            // its own PIN later and only needs device discovery at this stage.
+            pendingPin = null
+            startUsbDiscovery()
+        }
+        val state = connectionState.first {
+            (it is Fido2ConnectionState.Connected && it.transport == "USB") || it is Fido2ConnectionState.Error
+        }
+        return state is Fido2ConnectionState.Connected
     }
 
     /**

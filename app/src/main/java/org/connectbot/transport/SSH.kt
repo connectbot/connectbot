@@ -690,33 +690,20 @@ open class SSH : AbsTransport {
         // Get the preferred transport (default to USB for legacy keys)
         val transport = pubkey.fido2Transport ?: Fido2Transport.USB
 
-        // For USB: connect device first, then request PIN
-        // For NFC: request PIN first (NFC connection is transient, happens during signing)
-        val pin: String?
+        // Always ask for the PIN first, regardless of transport or previous use.
+        val pin = bridge?.requestFido2Pin(pubkey.nickname)
+        if (pin == null) {
+            bridge?.outputLine("FIDO2 PIN entry cancelled")
+            return null
+        }
         if (transport == Fido2Transport.USB) {
-            // USB: Prompt user to connect their security key first
             val connected = bridge?.requestFido2Connect(pubkey.nickname, credentialId, transport) ?: false
             if (!connected) {
                 bridge?.outputLine("FIDO2 security key connection cancelled or failed")
                 return null
             }
-
-            // Then prompt for PIN
-            pin = bridge?.requestFido2Pin(pubkey.nickname)
-            if (pin == null) {
-                bridge?.outputLine("FIDO2 PIN entry cancelled")
-                return null
-            }
-        } else {
-            // NFC: Prompt for PIN first (connection happens during signing)
-            pin = bridge?.requestFido2Pin(pubkey.nickname)
-            if (pin == null) {
-                bridge?.outputLine("FIDO2 PIN entry cancelled")
-                return null
-            }
-            // NFC connection is transient — it happens during the signing phase
-            // when the user taps their key, so no connect prompt is needed here.
         }
+        // NFC connects transiently during signing, after the tap prompt.
 
         // Create the public key from stored data
         val publicKeyBytes = pubkey.publicKey
