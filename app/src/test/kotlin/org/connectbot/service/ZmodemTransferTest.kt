@@ -33,6 +33,7 @@ import androidx.test.core.app.ApplicationProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.connectbot.di.CoroutineDispatchers
@@ -56,7 +57,9 @@ import org.mockito.Mockito.`when`
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowContentResolver
+import org.robolectric.shadows.ShadowSystemClock
 import java.io.File
+import java.time.Duration
 import java.util.UUID
 
 @RunWith(RobolectricTestRunner::class)
@@ -175,6 +178,46 @@ class ZmodemTransferTest {
         assertTrue(provider.deleted.isEmpty())
         verify(f.bridge).beginTransfer()
         verify(f.transport).prepareTransfer()
+    }
+
+    @Test
+    fun lostFinalConfirmationClosesTransferWithoutRetryingOrDeletingDownload() = runTest {
+        val f = fixture()
+        start(f, false, listOf(tree))
+        val data = "GIF89a completed download".toByteArray()
+        metadata(f, "completed.gif", data.size)
+        f.controller.accept(f.transport, header(Framing.ZDATA) + Framing.packet(data, Framing.ZCRCW))
+        f.controller.accept(f.transport, header(Framing.ZEOF, data.size.toLong()))
+        // EOF completes one file, not the batch: leave selection/progress active until ZFIN.
+        assertTrue(f.controller.active)
+        f.controller.accept(f.transport, header(Framing.ZFIN))
+        val writes = f.writes.size
+        ShadowSystemClock.advanceBy(Duration.ofSeconds(2))
+        advanceTimeBy(2001)
+        runCurrent()
+        assertFalse(f.controller.active)
+        assertNull(f.controller.state.value.error)
+        assertEquals(writes, f.writes.size)
+        assertArrayEquals(data, File(provider.directory, "completed.gif").readBytes())
+        assertTrue(provider.deleted.isEmpty())
+        assertArrayEquals("shell>".toByteArray(), f.controller.accept(f.transport, "shell>".toByteArray()))
+    }
+
+    @Test
+    fun completionInInitialReadClearsTransferState() = runTest {
+        val f = fixture()
+        val prompt = "shell>".toByteArray()
+        var trailing = byteArrayOf()
+        val job = launch {
+            trailing = f.controller.accept(f.transport, header(Framing.ZRQINIT) + header(Framing.ZFIN) + "OO".toByteArray() + prompt)
+        }
+        runCurrent()
+        f.controller.selected(f.controller.state.value.picker!!, listOf(tree))
+        runCurrent()
+        job.join()
+        assertFalse(f.controller.active)
+        assertNull(f.controller.state.value.error)
+        assertArrayEquals(prompt, trailing)
     }
 
     @Test

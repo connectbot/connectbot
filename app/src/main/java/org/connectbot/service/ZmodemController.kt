@@ -127,15 +127,7 @@ class ZmodemController(
 
                 transport.verifyTransfer()
 
-                val trailing = checkNotNull(session).accept(bytes)
-
-                if (session!!.done) {
-                    val error = session!!.failure
-                    if (error != null) suppressDetectionUntil = SystemClock.elapsedRealtime() + 1000
-                    cleanup(if (error == "Remote cancelled") null else error)
-                }
-
-                return@withLock trailing
+                return@withLock acceptTransferBytes(checkNotNull(session), bytes)
             }
 
             val detection = detector.accept(bytes)
@@ -204,8 +196,10 @@ class ZmodemController(
                         break
                     }
 
-                    if (SystemClock.elapsedRealtime() - lastInput >= 10_000) {
+                    if (SystemClock.elapsedRealtime() - lastInput >= FINISH_CONFIRMATION_TIMEOUT_MS) {
                         mutex.withLock {
+                            val responseTimeout = if (session?.awaitingFinishConfirmation == true) FINISH_CONFIRMATION_TIMEOUT_MS else RESPONSE_TIMEOUT_MS
+                            if (SystemClock.elapsedRealtime() - lastInput < responseTimeout) return@withLock
                             try {
                                 session?.timeout()
                                 lastInput = SystemClock.elapsedRealtime()
@@ -224,7 +218,7 @@ class ZmodemController(
                 }
             }
 
-            detection.terminal + engine.accept(detection.remainder)
+            detection.terminal + acceptTransferBytes(engine, detection.remainder)
         } catch (_: TransferCancelled) {
             abortTransfer(null)
             byteArrayOf()
@@ -245,6 +239,16 @@ class ZmodemController(
             abortTransfer(e.message ?: "Transfer failed")
             byteArrayOf()
         }
+    }
+
+    private suspend fun acceptTransferBytes(engine: Session, bytes: ByteArray): ByteArray {
+        val trailing = engine.accept(bytes)
+        if (engine.done) {
+            val error = engine.failure
+            if (error != null) suppressDetectionUntil = SystemClock.elapsedRealtime() + 1000
+            cleanup(if (error == "Remote cancelled") null else error)
+        }
+        return trailing
     }
 
     /** Bounded writes let a cancel request interrupt a large window between transport operations. */
@@ -388,5 +392,10 @@ class ZmodemController(
         session = null
         cancellationRequested = false
         mutableState.value = State(error = error)
+    }
+
+    private companion object {
+        const val FINISH_CONFIRMATION_TIMEOUT_MS = 1000L
+        const val RESPONSE_TIMEOUT_MS = 10_000L
     }
 }
