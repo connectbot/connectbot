@@ -45,6 +45,7 @@ jobs:
     permissions:
       contents: write
       actions: read
+      statuses: read
       id-token: write
       attestations: write
     with:
