@@ -104,12 +104,15 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.R
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.piv.YubiKeyPiv
 import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.components.FocusableAlertDialog
 import org.connectbot.ui.components.TextInputAlertDialog
+import org.connectbot.ui.components.YubiKeyPivDialog
 import org.connectbot.ui.components.rememberBiometricPromptState
 import org.connectbot.ui.theme.ConnectBotTheme
+import org.connectbot.util.PubkeyConstants
 import java.util.UUID
 
 internal object PubkeyListTestTags {
@@ -242,7 +245,19 @@ fun PubkeyListScreen(
         )
     }
 
-    // Nickname confirmation dialog for unencrypted file imports
+    var showYubiKeyImportDialog by remember { mutableStateOf(false) }
+    if (showYubiKeyImportDialog) {
+        YubiKeyPivDialog(
+            onDismiss = { showYubiKeyImportDialog = false },
+            onComplete = { slot, publicKey ->
+                showYubiKeyImportDialog = false
+                viewModel.registerYubiKey(slot, publicKey)
+            },
+            operation = { activity, slot, _ -> YubiKeyPiv.readPublicKey(activity, slot) },
+        )
+    }
+
+    // Nickname confirmation dialog for unencrypted imports
     val pendingNicknameConfirmation = uiState.pendingNicknameConfirmation
     if (pendingNicknameConfirmation != null) {
         NicknameConfirmationDialog(
@@ -299,6 +314,7 @@ fun PubkeyListScreen(
             filePickerLauncher.launch(arrayOf("*/*"))
         },
         onImportKeyFromClipboard = { showClipboardImportDialog = true },
+        onImportYubiKey = { showYubiKeyImportDialog = true },
         modifier = modifier,
     )
 }
@@ -324,6 +340,7 @@ fun PubkeyListScreenContent(
     onImportKey: () -> Unit,
     onImportKeyFromClipboard: () -> Unit,
     modifier: Modifier = Modifier,
+    onImportYubiKey: (() -> Unit)? = null,
 ) {
     var fabMenuExpanded by rememberSaveable { mutableStateOf(false) }
 
@@ -386,6 +403,16 @@ fun PubkeyListScreenContent(
                     icon = { Icon(Icons.Default.ContentPaste, contentDescription = null) },
                     text = { Text(stringResource(R.string.pubkey_import_from_clipboard)) },
                 )
+                if (onImportYubiKey != null) {
+                    FloatingActionButtonMenuItem(
+                        onClick = {
+                            fabMenuExpanded = false
+                            onImportYubiKey()
+                        },
+                        icon = { Icon(Icons.Outlined.Lock, contentDescription = null) },
+                        text = { Text(stringResource(R.string.pubkey_piv_add)) },
+                    )
+                }
             }
         },
         snackbarHost = {
@@ -494,14 +521,19 @@ private fun PubkeyListItem(
         ListItem(
             supportingContent = {
                 Text(
-                    stringResource(
-                        R.string.pubkey_type_label,
-                        pubkey.type,
-                    ),
+                    if (pubkey.isYubiKeyPiv) {
+                        stringResource(
+                            R.string.pubkey_piv_type,
+                            pubkey.type.removePrefix(PubkeyConstants.KEY_TYPE_YUBIKEY_PIV_PREFIX).uppercase(),
+                        )
+                    } else {
+                        stringResource(R.string.pubkey_type_label, pubkey.type)
+                    },
                 )
             },
             leadingContent = {
                 val icon = when {
+                    pubkey.isYubiKeyPiv -> Icons.Outlined.Lock
                     pubkey.isBiometric -> Icons.Outlined.Fingerprint
                     pubkey.encrypted -> Icons.Outlined.Lock
                     else -> Icons.Outlined.LockOpen
@@ -528,6 +560,7 @@ private fun PubkeyListItem(
                     Icon(
                         imageVector = icon,
                         contentDescription = when {
+                            pubkey.isYubiKeyPiv -> stringResource(R.string.pubkey_piv_hardware)
                             pubkey.isBiometric -> stringResource(R.string.pubkey_biometric_description_icon)
                             pubkey.encrypted -> stringResource(R.string.pubkey_encrypted_description)
                             else -> stringResource(R.string.pubkey_not_encrypted_description)
@@ -611,7 +644,7 @@ private fun PubkeyListItem(
                             leadingIcon = {
                                 Icon(Icons.Default.ContentCopy, null)
                             },
-                            enabled = !pubkey.isBiometric,
+                            enabled = !pubkey.isBiometric && !pubkey.isYubiKeyPiv,
                         )
 
                         // Copy private key in PEM format (for non-imported keys)
@@ -628,7 +661,7 @@ private fun PubkeyListItem(
                                 leadingIcon = {
                                     Icon(Icons.Default.ContentCopy, null)
                                 },
-                                enabled = !pubkey.isBiometric,
+                                enabled = !pubkey.isBiometric && !pubkey.isYubiKeyPiv,
                             )
                         }
 
@@ -652,7 +685,7 @@ private fun PubkeyListItem(
                                 leadingIcon = {
                                     Icon(Icons.Default.Lock, null)
                                 },
-                                enabled = !pubkey.isBiometric,
+                                enabled = !pubkey.isBiometric && !pubkey.isYubiKeyPiv,
                             )
                         }
 
@@ -679,7 +712,7 @@ private fun PubkeyListItem(
                             leadingIcon = {
                                 Icon(Icons.Default.FileDownload, null)
                             },
-                            enabled = !pubkey.isBiometric,
+                            enabled = !pubkey.isBiometric && !pubkey.isYubiKeyPiv,
                         )
 
                         // Export private key to file in PEM format (for non-imported keys)
@@ -696,7 +729,7 @@ private fun PubkeyListItem(
                                 leadingIcon = {
                                     Icon(Icons.Default.FileDownload, null)
                                 },
-                                enabled = !pubkey.isBiometric,
+                                enabled = !pubkey.isBiometric && !pubkey.isYubiKeyPiv,
                             )
                         }
 
@@ -720,7 +753,7 @@ private fun PubkeyListItem(
                                 leadingIcon = {
                                     Icon(Icons.Default.Lock, null)
                                 },
-                                enabled = !pubkey.isBiometric,
+                                enabled = !pubkey.isBiometric && !pubkey.isYubiKeyPiv,
                             )
                         }
 
@@ -738,7 +771,7 @@ private fun PubkeyListItem(
                     }
                 }
             },
-            modifier = Modifier.clickable {
+            modifier = Modifier.clickable(enabled = !pubkey.isYubiKeyPiv) {
                 onClick { _, callback ->
                     // Show password dialog if needed
                     passwordCallback = callback

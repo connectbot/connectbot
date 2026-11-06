@@ -792,19 +792,19 @@ fun ConsoleScreen(
         }
     }
 
-    // Get current prompt state to check if biometric prompt is active
+    // Get current prompt state to check if a hardware key dialog is active
     val promptState by currentBridge?.promptManager?.promptState?.collectAsState()
         ?: remember { mutableStateOf(null) }
     val authBanners by currentBridge?.authBanners?.collectAsState()
         ?: remember { mutableStateOf(emptyList()) }
     val currentAuthBanner = authBanners.firstOrNull()
-    var wasBiometricPromptActive by remember { mutableStateOf(false) }
-    val isBiometricPromptActive = promptState is PromptRequest.BiometricPrompt
+    var wasHardwareKeyPromptActive by remember { mutableStateOf(false) }
+    val isHardwareKeyPromptActive = promptState is PromptRequest.BiometricPrompt || promptState is PromptRequest.YubiKeyPivPrompt
 
     // Check if any modal (menu or dialog) is currently active
     val anyModalActive = showKeyboardSettings || showMenu || showUrlScanDialog || showResizeDialog ||
         showDisconnectDialog || showSessionPickerDialog || showTextInputDialog || showConnectionInfoDialog ||
-        isBiometricPromptActive || currentAuthBanner != null
+        isHardwareKeyPromptActive || currentAuthBanner != null
 
     fun restartTitleBarTimer() {
         autoHideJobRef.titleBarJob?.cancel()
@@ -979,12 +979,12 @@ fun ConsoleScreen(
         imeVisible = systemImeVisible
     }
 
-    // Show software keyboard after biometric prompt completes (unless hardware keyboard is connected)
-    LaunchedEffect(isBiometricPromptActive) {
-        if (wasBiometricPromptActive && !isBiometricPromptActive && !hasHardwareKeyboard) {
+    // Show the software keyboard after a hardware key dialog closes, unless a physical keyboard is connected
+    LaunchedEffect(isHardwareKeyPromptActive) {
+        if (wasHardwareKeyPromptActive && !isHardwareKeyPromptActive && !hasHardwareKeyboard) {
             showSoftwareKeyboard = true
         }
-        wasBiometricPromptActive = isBiometricPromptActive
+        wasHardwareKeyPromptActive = isHardwareKeyPromptActive
     }
 
     val hasMultipleSessions = uiState.bridges.size > 1 && !uiState.isLoading

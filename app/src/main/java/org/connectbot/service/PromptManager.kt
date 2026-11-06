@@ -17,11 +17,13 @@
 
 package org.connectbot.service
 
+import com.yubico.yubikit.piv.Slot
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import java.security.PublicKey
 
 /**
  * Modern prompt manager using Kotlin coroutines instead of semaphores and blocking.
@@ -104,6 +106,18 @@ class PromptManager {
         return (response as? PromptResponse.BiometricResponse)?.success ?: false
     }
 
+    suspend fun requestYubiKeyPivSignature(prompt: PromptRequest.YubiKeyPivPrompt): ByteArray? {
+        val deferred = CompletableDeferred<PromptResponse>()
+        currentDeferred = deferred
+        _promptState.value = prompt
+        return try {
+            (deferred.await() as? PromptResponse.YubiKeyPivResponse)?.signature
+        } finally {
+            if (currentDeferred === deferred) currentDeferred = null
+            _promptState.compareAndSet(prompt, null)
+        }
+    }
+
     /**
      * Request host key fingerprint verification prompt
      */
@@ -143,6 +157,7 @@ class PromptManager {
      * Respond to the current prompt
      */
     fun respond(response: PromptResponse) {
+        if (response is PromptResponse.YubiKeyPivResponse && _promptState.value !== response.prompt) return
         currentDeferred?.complete(response)
         currentDeferred = null
     }
@@ -175,6 +190,14 @@ sealed class PromptRequest {
     data class BiometricPrompt(
         val keyNickname: String,
         val keystoreAlias: String,
+    ) : PromptRequest()
+
+    class YubiKeyPivPrompt(
+        val keyNickname: String,
+        val destination: String,
+        val slot: Slot,
+        val publicKey: PublicKey,
+        val dataToSign: ByteArray,
     ) : PromptRequest()
 
     data class HostKeyFingerprintPrompt(
@@ -221,4 +244,8 @@ sealed class PromptResponse {
     data class BooleanResponse(val value: Boolean) : PromptResponse()
     data class StringResponse(val value: String?) : PromptResponse()
     data class BiometricResponse(val success: Boolean) : PromptResponse()
+    class YubiKeyPivResponse(
+        val prompt: PromptRequest.YubiKeyPivPrompt,
+        val signature: ByteArray?,
+    ) : PromptResponse()
 }

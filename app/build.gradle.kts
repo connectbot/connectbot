@@ -615,6 +615,8 @@ dependencies {
     coreLibraryDesugaring(libs.desugar)
     implementation(libs.json5)
     implementation(libs.sshlib)
+    implementation(libs.yubikit.android)
+    implementation(libs.yubikit.piv)
     implementation(libs.termlib)
     implementation(libs.telnetlib)
     implementation(libs.telnetlib.ktor)

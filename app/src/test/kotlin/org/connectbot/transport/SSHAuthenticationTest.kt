@@ -18,6 +18,7 @@
 package org.connectbot.transport
 
 import android.content.res.Resources
+import com.yubico.yubikit.piv.Slot
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runCurrent
@@ -28,7 +29,9 @@ import org.connectbot.data.EntityIds
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.piv.YubiKeyPiv
 import org.connectbot.service.PromptManager
+import org.connectbot.service.PromptRequest
 import org.connectbot.service.PromptResponse
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
@@ -53,6 +56,7 @@ import java.nio.ByteBuffer
 import java.security.KeyPair
 import java.security.KeyPairGenerator
 import java.security.Signature
+import java.security.spec.ECGenParameterSpec
 import java.util.UUID
 
 class SSHAuthenticationTest {
@@ -75,7 +79,7 @@ class SSHAuthenticationTest {
             offered.add(runBlocking { it.getArgument<AuthHandler>(1).onPublicKeysNeeded() })
             AuthResult.Failure(emptySet())
         }
-        return SSH(Host(username = "alice", nickname = "target", pubkeyId = pubkeyId), bridge, manager).apply {
+        return SSH(Host(username = "alice", hostname = "target.example", nickname = "target", pubkeyId = pubkeyId), bridge, manager).apply {
             SSH::class.java.getDeclaredField("client").apply { isAccessible = true }.set(this, this@SSHAuthenticationTest.client)
         }
     }
@@ -103,6 +107,54 @@ class SSHAuthenticationTest {
         `when`(manager.getKey("selected")).thenReturn(firstKey)
         ssh(UUID(0, 42)).authenticate()
         assertOffered(firstKey)
+    }
+
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    @Test
+    fun selectedPivKey_offersPublicKeyAndPromptsOnlyForTheMatchingSignature() = runTest {
+        val pair = KeyPairGenerator.getInstance("EC").apply {
+            initialize(ECGenParameterSpec("secp256r1"))
+        }.generateKeyPair()
+        val pubkey = Pubkey(
+            id = UUID(0, 42),
+            nickname = "YubiKey",
+            type = YubiKeyPiv.storedType(Slot.AUTHENTICATION),
+            publicKey = pair.public.encoded,
+            privateKey = null,
+            encrypted = false,
+            startup = false,
+            confirmation = false,
+            createdDate = 0,
+        )
+        `when`(repository.getByIdBlocking(pubkey.id)).thenReturn(pubkey)
+        val prompts = PromptManager()
+        `when`(bridge.promptManager).thenReturn(prompts)
+        val transport = ssh(pubkey.id)
+        val data = "authentication request".toByteArray()
+        val expectedSignature = SshSigning.signWithKeyPair("ecdsa-sha2-nistp256", pair, data)
+
+        suspend fun checkSignatureRequest(destination: String) {
+            assertOffered(pair)
+            assertThat(prompts.promptState.value).isNull()
+            assertThat(handler.onSignatureRequest(SshSigning.encodePublicKey(firstKey), data)).isNull()
+            assertThat(prompts.promptState.value).isNull()
+            val pending = async { handler.onSignatureRequest(offered.last().single(), data) }
+            runCurrent()
+            val prompt = prompts.promptState.value as PromptRequest.YubiKeyPivPrompt
+            assertThat(prompt.slot).isEqualTo(Slot.AUTHENTICATION)
+            assertThat(prompt.destination).isEqualTo(destination)
+            assertThat(prompt.publicKey).isEqualTo(pair.public)
+            assertThat(prompt.dataToSign).isEqualTo(data)
+            prompts.respond(PromptResponse.YubiKeyPivResponse(prompt, expectedSignature))
+            assertThat(pending.await()).isEqualTo(expectedSignature)
+            assertThat(prompts.promptState.value).isNull()
+            assertThat(loadedKeys).isEmpty()
+        }
+
+        transport.authenticate()
+        checkSignatureRequest("alice@target.example")
+        transport.authenticateJumpHost(client, Host(username = "alice", hostname = "jump.example", pubkeyId = pubkey.id))
+        checkSignatureRequest("alice@jump.example")
     }
 
     @Test

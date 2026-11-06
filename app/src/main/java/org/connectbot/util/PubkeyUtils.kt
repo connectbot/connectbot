@@ -115,10 +115,12 @@ object PubkeyUtils {
     @Throws(NoSuchAlgorithmException::class, InvalidKeySpecException::class)
     fun decodePublic(encoded: ByteArray?, keyType: String?): PublicKey {
         val publicKeyBytes = encoded ?: throw InvalidKeySpecException("Missing public key data")
-        val sshKeyType = SshKeyType.fromStoredType(keyType)
-            ?: throw NoSuchAlgorithmException("Unsupported key type: $keyType")
-        val algorithm = sshKeyType.keyFactoryAlgorithm
-            ?: throw NoSuchAlgorithmException("Unsupported key type: $keyType")
+        val algorithm = if (keyType?.startsWith(PubkeyConstants.KEY_TYPE_YUBIKEY_PIV_PREFIX) == true) {
+            "EC"
+        } else {
+            SshKeyType.fromStoredType(keyType)?.keyFactoryAlgorithm
+                ?: throw NoSuchAlgorithmException("Unsupported key type: $keyType")
+        }
         val pubKeySpec = X509EncodedKeySpec(publicKeyBytes)
         val kf = KeyFactory.getInstance(algorithm)
         return kf.generatePublic(pubKeySpec)

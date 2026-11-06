@@ -55,6 +55,7 @@ import org.connectbot.R
 import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.components.EditorScaffold
 import org.connectbot.ui.theme.ConnectBotTheme
+import org.connectbot.util.PubkeyConstants
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -166,7 +167,14 @@ fun PubkeyEditorScreenContent(
 
                     // Key Type (read-only)
                     OutlinedTextField(
-                        value = uiState.keyType,
+                        value = if (uiState.isYubiKeyPiv) {
+                            stringResource(
+                                R.string.pubkey_piv_type,
+                                uiState.keyType.removePrefix(PubkeyConstants.KEY_TYPE_YUBIKEY_PIV_PREFIX).uppercase(),
+                            )
+                        } else {
+                            uiState.keyType
+                        },
                         onValueChange = {},
                         label = { Text(stringResource(R.string.pubkey_editor_key_type_label)) },
                         modifier = Modifier.fillMaxWidth(),
@@ -175,6 +183,8 @@ fun PubkeyEditorScreenContent(
                     )
 
                     Spacer(modifier = Modifier.height(24.dp))
+
+                    if (uiState.isYubiKeyPiv) return@Column
 
                     // Change Password Section
                     Text(
