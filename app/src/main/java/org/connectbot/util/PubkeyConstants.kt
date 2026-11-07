@@ -36,4 +36,5 @@ object PubkeyConstants {
     const val KEY_TYPE_EC: String = "EC"
     const val KEY_TYPE_ED25519: String = "Ed25519"
     const val KEY_TYPE_IMPORTED: String = "IMPORTED"
+    const val KEY_TYPE_YUBIKEY_PIV_PREFIX: String = "YUBIKEY_PIV_"
 }

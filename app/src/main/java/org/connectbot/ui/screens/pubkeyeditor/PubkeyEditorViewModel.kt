@@ -53,6 +53,7 @@ data class PubkeyEditorUiState(
     val hasUnsavedChanges: Boolean = false,
     val wrongPassword: Boolean = false,
     val nicknameExists: Boolean = false,
+    val isYubiKeyPiv: Boolean = false,
 ) {
     val passwordMismatch: Boolean
         get() = newPassword1 != newPassword2 && newPassword2.isNotEmpty()
@@ -97,6 +98,7 @@ class PubkeyEditorViewModel @Inject constructor(
                             nickname = pubkey.nickname,
                             keyType = pubkey.type,
                             isEncrypted = pubkey.encrypted,
+                            isYubiKeyPiv = pubkey.isYubiKeyPiv,
                             unlockAtStartup = pubkey.startup,
                             confirmUse = pubkey.confirmation,
                             isLoading = false,
@@ -178,6 +180,11 @@ class PubkeyEditorViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val saved = withContext(dispatchers.io) {
+                    if (pubkey.isYubiKeyPiv) {
+                        repository.save(pubkey.copy(nickname = state.nickname))
+                        return@withContext true
+                    }
+
                     // Handle password change if needed
                     // Password needs to be changed if:
                     // 1. Key is encrypted and user provided old password (removing or changing password)

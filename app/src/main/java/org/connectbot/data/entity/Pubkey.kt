@@ -22,6 +22,7 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import org.connectbot.data.EntityIds
+import org.connectbot.util.PubkeyConstants
 import java.util.UUID
 
 /**
@@ -81,6 +82,10 @@ data class Pubkey(
     /** Whether this key is stored in Android Keystore with biometric protection */
     val isBiometric: Boolean
         get() = storageType == KeyStorageType.ANDROID_KEYSTORE
+
+    /** PIV identities hold only a public key and a slot reference. */
+    val isYubiKeyPiv: Boolean
+        get() = type.startsWith(PubkeyConstants.KEY_TYPE_YUBIKEY_PIV_PREFIX)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

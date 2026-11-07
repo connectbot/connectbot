@@ -53,6 +53,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -74,6 +75,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.connectbot.R
+import org.connectbot.piv.YubiKeyPiv
 import org.connectbot.service.PromptRequest
 import org.connectbot.service.PromptResponse
 import org.connectbot.ui.theme.terminal
@@ -133,6 +135,19 @@ fun InlinePrompt(
                 BiometricPromptHandler(
                     prompt = promptRequest,
                     onResponse = onResponse,
+                )
+            }
+
+            is PromptRequest.YubiKeyPivPrompt -> key(promptRequest) {
+                YubiKeyPivDialog(
+                    onDismiss = { onResponse(PromptResponse.YubiKeyPivResponse(promptRequest, null)) },
+                    onComplete = { _, signature ->
+                        onResponse(PromptResponse.YubiKeyPivResponse(promptRequest, signature))
+                    },
+                    operation = { activity, slot, pin ->
+                        YubiKeyPiv.sign(activity, slot, promptRequest.publicKey, pin, promptRequest.dataToSign)
+                    },
+                    signingPrompt = promptRequest,
                 )
             }
 

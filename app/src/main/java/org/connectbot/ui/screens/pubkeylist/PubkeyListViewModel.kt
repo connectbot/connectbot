@@ -24,6 +24,7 @@ import android.net.Uri
 import android.provider.OpenableColumns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yubico.yubikit.piv.Slot
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CancellationException
@@ -37,6 +38,7 @@ import org.connectbot.R
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.piv.YubiKeyPiv
 import org.connectbot.service.TerminalManager
 import org.connectbot.sshlib.SshKeys
 import org.connectbot.sshlib.SshSigning
@@ -45,6 +47,7 @@ import org.connectbot.util.PubkeyUtils
 import org.connectbot.util.SshKeyType
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
+import java.security.PublicKey
 import java.util.UUID
 import javax.inject.Inject
 
@@ -159,6 +162,7 @@ class PubkeyListViewModel @Inject constructor(
     }
 
     fun toggleKeyLoaded(pubkey: Pubkey, onPasswordRequired: (Pubkey, (String) -> Unit) -> Unit) {
+        if (pubkey.isYubiKeyPiv) return
         val isLoaded = terminalManager?.isKeyLoaded(pubkey.nickname) == true
 
         if (isLoaded) {
@@ -710,6 +714,21 @@ class PubkeyListViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun registerYubiKey(slot: Slot, publicKey: PublicKey) {
+        val pubkey = Pubkey(
+            nickname = context.getString(R.string.pubkey_piv_type, slot.stringAlias.uppercase()),
+            type = YubiKeyPiv.storedType(slot),
+            privateKey = null,
+            publicKey = publicKey.encoded,
+            encrypted = false,
+            startup = false,
+            confirmation = false,
+            createdDate = System.currentTimeMillis(),
+            allowBackup = false,
+        )
+        handleImportResult(ImportResult.Success(pubkey), "")
     }
 
     fun importKeyFromUri(uri: Uri) {
