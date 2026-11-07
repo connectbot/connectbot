@@ -67,6 +67,7 @@ import org.connectbot.data.entity.Host
 import org.connectbot.data.keyboard.KeyboardItem
 import org.connectbot.data.keyboard.KeyboardLayout
 import org.connectbot.data.keyboard.KeyboardRepository
+import org.connectbot.fido2.Fido2Manager
 import org.connectbot.service.DisconnectReason
 import org.connectbot.service.ModifierLevel
 import org.connectbot.service.ModifierState
@@ -128,6 +129,15 @@ class ConsoleScreenTest {
     fun tearDown() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         PreferenceManager.getDefaultSharedPreferences(context).edit().clear().commit()
+    }
+
+    private fun mockTerminalBridge(): TerminalBridge {
+        val bridge = mock(TerminalBridge::class.java)
+        val fido2Manager = mock(Fido2Manager::class.java)
+        `when`(fido2Manager.waitingForNfcSigning).thenReturn(MutableStateFlow(false))
+        `when`(fido2Manager.nfcSigningTagLost).thenReturn(MutableStateFlow(false))
+        `when`(bridge.fido2Manager).thenReturn(fido2Manager)
+        return bridge
     }
 
     private fun setContent(
@@ -194,7 +204,7 @@ class ConsoleScreenTest {
         val activeProfile = MutableStateFlow<TerminalBridge.ActiveProfile?>(profile)
         val emulator = TerminalEmulatorFactory.create()
         val dimensions = MutableStateFlow<TerminalDimensions?>(emulator.dimensions)
-        val bridge = mock(TerminalBridge::class.java)
+        val bridge = mockTerminalBridge()
         `when`(bridge.host).thenReturn(Host(id = UUID(0, 1), nickname = "first"))
         `when`(bridge.terminalEmulator).thenReturn(emulator)
         `when`(bridge.fontSizeFlow).thenReturn(size)
@@ -267,7 +277,7 @@ class ConsoleScreenTest {
             }
             composeTestRule.mainClock.advanceTimeBy(100)
             composeTestRule.onNodeWithContentDescription(composeTestRule.activity.getString(R.string.console_font_size_save_description)).assertIsDisplayed()
-            val other = mock(TerminalBridge::class.java)
+            val other = mockTerminalBridge()
             `when`(other.host).thenReturn(Host(id = UUID(0, 2), nickname = "second"))
             `when`(other.terminalEmulator).thenReturn(emulator)
             `when`(other.fontSizeFlow).thenReturn(MutableStateFlow(10f))
@@ -330,8 +340,8 @@ class ConsoleScreenTest {
 
     @Test
     fun sessionPicker_sameHostInTwoSessions_rendersAndSelectsEachSession() {
-        val first = mock(TerminalBridge::class.java)
-        val second = mock(TerminalBridge::class.java)
+        val first = mockTerminalBridge()
+        val second = mockTerminalBridge()
         val host = Host(id = UUID(0, 1), nickname = "Original session")
         `when`(first.host).thenReturn(host)
         `when`(second.host).thenReturn(host.copy(nickname = "Updated session"))
@@ -384,7 +394,7 @@ class ConsoleScreenTest {
 
     @Test
     fun consoleScreen_remoteDisconnect_showsReconnectAfterBridgeStateChanges() {
-        val bridge = mock(TerminalBridge::class.java)
+        val bridge = mockTerminalBridge()
         `when`(bridge.transportMessages).thenReturn(MutableSharedFlow())
         `when`(bridge.keyboardErrors).thenReturn(MutableSharedFlow())
         val host = Host(id = UUID(0, 1), nickname = "test-host")
@@ -420,6 +430,54 @@ class ConsoleScreenTest {
             states.value = states.value.copy(revision = states.value.revision + 1)
         }
         composeTestRule.onNodeWithText(reconnect).assertDoesNotExist()
+    }
+
+    @Test
+    fun consoleScreen_fido2Failure_keepsDetailsVisibleUntilReconnect() {
+        val bridge = mockTerminalBridge()
+        `when`(bridge.transportMessages).thenReturn(MutableSharedFlow())
+        `when`(bridge.keyboardErrors).thenReturn(MutableSharedFlow())
+        val host = Host(id = UUID(0, 1), nickname = "test-host")
+        val emulator = TerminalEmulatorFactory.create()
+        `when`(bridge.host).thenReturn(host)
+        `when`(bridge.terminalEmulator).thenReturn(emulator)
+        `when`(bridge.fontSizeFlow).thenReturn(MutableStateFlow(14f))
+        `when`(bridge.fontWeightFlow).thenReturn(MutableStateFlow(TerminalFontWeight.NORMAL))
+        `when`(bridge.delKeyModeFlow).thenReturn(MutableStateFlow(DelKeyMode.Backspace))
+        `when`(bridge.promptManager).thenReturn(PromptManager())
+        val keyHandler = TerminalKeyListener(TerminalEmulatorKeyDispatcher(emulator))
+        `when`(bridge.keyHandler).thenReturn(keyHandler)
+        `when`(bridge.isDisconnected).thenReturn(false)
+        `when`(bridge.isConnecting).thenReturn(false)
+        val states = MutableStateFlow(ConsoleUiState(bridges = listOf(bridge), isLoading = false))
+        val viewModel = mock(ConsoleViewModel::class.java)
+        `when`(viewModel.uiState).thenReturn(states)
+        `when`(viewModel.networkStatusMessages).thenReturn(MutableSharedFlow())
+        setContent(mockConsoleViewModel = viewModel)
+        navigateToConsoleScreen(UUID(0, 1))
+
+        val reconnect = composeTestRule.activity.getString(R.string.console_menu_reconnect)
+        composeTestRule.onNodeWithText(reconnect).assertDoesNotExist()
+        composeTestRule.runOnUiThread {
+            `when`(bridge.isDisconnected).thenReturn(true)
+            `when`(bridge.disconnectReason).thenReturn(DisconnectReason.IO_ERROR)
+            `when`(bridge.authenticationFailure).thenReturn("FIDO2 PIN is invalid. 2 attempts remaining.")
+            states.value = states.value.copy(revision = states.value.revision + 1)
+        }
+        composeTestRule.onNodeWithText(reconnect).assertIsDisplayed()
+        val title = composeTestRule.activity.getString(R.string.console_authentication_failed_title)
+        composeTestRule.onNodeWithText(title).assertIsDisplayed()
+        val detail = "FIDO2 PIN is invalid. 2 attempts remaining."
+        composeTestRule.onNodeWithText(detail).assertIsDisplayed()
+        composeTestRule.mainClock.advanceTimeBy(10_000)
+        composeTestRule.onNodeWithText(detail).assertIsDisplayed()
+
+        composeTestRule.runOnUiThread {
+            `when`(bridge.isConnecting).thenReturn(true)
+            states.value = states.value.copy(revision = states.value.revision + 1)
+        }
+        composeTestRule.onNodeWithText(reconnect).assertDoesNotExist()
+        composeTestRule.onNodeWithText(detail).assertDoesNotExist()
     }
 
     @Test
@@ -608,7 +666,7 @@ class ConsoleScreenTest {
             keyboardRepository.setDefault(layout.id)
             original
         }
-        val bridge = mock(TerminalBridge::class.java)
+        val bridge = mockTerminalBridge()
         val emulator = TerminalEmulatorFactory.create()
         `when`(bridge.host).thenReturn(Host(isTemporary = true, nickname = "Text input"))
         `when`(bridge.terminalEmulator).thenReturn(emulator)
@@ -657,7 +715,7 @@ class ConsoleScreenTest {
             keyboardRepository.setDefault(layout.id)
             original
         }
-        val bridge = mock(TerminalBridge::class.java)
+        val bridge = mockTerminalBridge()
         val emulator = TerminalEmulatorFactory.create()
         `when`(bridge.host).thenReturn(Host(isTemporary = true, nickname = "Text input"))
         `when`(bridge.terminalEmulator).thenReturn(emulator)
@@ -805,7 +863,7 @@ class ConsoleScreenTest {
             .commit()
 
         val mockViewModel = mock(ConsoleViewModel::class.java)
-        val mockBridge = mock(TerminalBridge::class.java)
+        val mockBridge = mockTerminalBridge()
         `when`(mockBridge.isDisconnected).thenReturn(false)
 
         val uiStateFlow = MutableStateFlow(
@@ -837,7 +895,7 @@ class ConsoleScreenTest {
             .commit()
 
         val mockViewModel = mock(ConsoleViewModel::class.java)
-        val mockBridge = mock(TerminalBridge::class.java)
+        val mockBridge = mockTerminalBridge()
         `when`(mockBridge.isDisconnected).thenReturn(false)
 
         val uiStateFlow = MutableStateFlow(
@@ -869,7 +927,7 @@ class ConsoleScreenTest {
             .commit()
 
         val mockViewModel = mock(ConsoleViewModel::class.java)
-        val mockBridge = mock(TerminalBridge::class.java)
+        val mockBridge = mockTerminalBridge()
         `when`(mockBridge.isDisconnected).thenReturn(true)
 
         val uiStateFlow = MutableStateFlow(
@@ -905,7 +963,7 @@ class ConsoleScreenTest {
 
     @Test
     fun consoleScreen_connectionInfoMenu_opensAndDismissesPanel() {
-        val bridge = mock(TerminalBridge::class.java)
+        val bridge = mockTerminalBridge()
         `when`(bridge.transportMessages).thenReturn(MutableSharedFlow())
         `when`(bridge.keyboardErrors).thenReturn(MutableSharedFlow())
         val host = Host(id = UUID(0, 1), nickname = "test-host", hostname = "server.example")

@@ -354,6 +354,9 @@ class TerminalBridge {
 
     val manager: TerminalManager
 
+    /** FIDO2 manager for security key operations (delegated from TerminalManager) */
+    val fido2Manager get() = manager.fido2Manager
+
     var host: Host
 
     private val dispatchers: CoroutineDispatchers
@@ -423,6 +426,12 @@ class TerminalBridge {
         private set
     var disconnectReason: DisconnectReason = DisconnectReason.UNKNOWN
         private set
+
+    /** Specific authentication failure retained for the disconnected session UI. */
+    @Volatile
+    var authenticationFailure: String? = null
+        internal set
+
     private var awaitingClose = false
 
     private var forcedSize = false
@@ -806,6 +815,7 @@ class TerminalBridge {
             }
         }
         notificationSessionId = java.util.UUID.randomUUID().toString()
+        authenticationFailure = null
         connecting = true
         manager.notifyBridgeStateChanged()
 
@@ -1091,6 +1101,7 @@ class TerminalBridge {
         disconnected = false
         connecting = false
         transportFailure = null
+        authenticationFailure = null
         disconnectReason = DisconnectReason.UNKNOWN
         sessionAttention.onReconnected()
 

@@ -242,6 +242,38 @@ class SSHAuthenticationTest {
     }
 
     @Test
+    fun fatalAuthenticationErrors_areRetainedForPanelWithoutTerminalDuplicate() = runTest {
+        val message = "USB security key is unavailable. Reconnect it, allow USB access, and try again."
+        val transport = ssh()
+        val fallback = mock(AuthHandler::class.java)
+        `when`(client.authenticate(eq("alice") ?: "alice", any(AuthHandler::class.java) ?: fallback))
+            .thenReturn(AuthResult.Error(message))
+
+        transport.authenticate()
+        assertThat(transport.authenticateJumpHost(client, Host(username = "alice"))).isFalse()
+
+        verify(bridge, times(2)).authenticationFailure = message
+        verify(bridge, never()).outputLine(message)
+    }
+
+    @Test
+    fun fatalAuthenticationError_preservesSpecificSigningDetails() = runTest {
+        val detail = "FIDO2 PIN is invalid. 2 attempts remaining."
+        `when`(bridge.authenticationFailure).thenReturn(detail)
+        val transport = ssh()
+        val fallback = mock(AuthHandler::class.java)
+        `when`(client.authenticate(eq("alice") ?: "alice", any(AuthHandler::class.java) ?: fallback))
+            .thenReturn(AuthResult.Error("Authentication handler failed"))
+
+        transport.authenticate()
+        assertThat(transport.authenticateJumpHost(client, Host(username = "alice"))).isFalse()
+
+        verify(bridge, never()).authenticationFailure = "Authentication handler failed"
+        verify(bridge, never()).outputLine("Authentication handler failed")
+        verify(bridge, never()).outputLine(detail)
+    }
+
+    @Test
     fun publicKeyOnlyFailure_displaysAuthenticationFailure() = runTest {
         val resources = mock(Resources::class.java)
         `when`(manager.res).thenReturn(resources)

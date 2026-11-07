@@ -530,6 +530,8 @@ kotlin {
 }
 
 tasks.withType<Test>().configureEach {
+    // Use Maven Central's canonical endpoint for Robolectric runtime downloads.
+    systemProperty("robolectric.dependency.repo.url", "https://repo.maven.apache.org/maven2")
     jvmArgs("--add-opens", "java.base/java.lang=ALL-UNNAMED")
     // Robolectric's cached Android resources use a heap separate from the Gradle daemon.
     maxHeapSize = "2g"
@@ -610,6 +612,28 @@ tasks
         dependsOn(generateExportSchema)
     }
 
+// Keep KSP's generated Hilt test application on javac's source path even when
+// the generated directory does not exist yet in a clean build.
+tasks.withType<JavaCompile>().matching {
+    it.name.startsWith("compile") && it.name.endsWith("UnitTestJavaWithJavac")
+}.configureEach {
+    val componentName = name.removePrefix("compile").removeSuffix("JavaWithJavac")
+    val componentDirectory = componentName.replaceFirstChar { it.lowercaseChar() }
+    val generatedJava = layout.buildDirectory.dir("generated/ksp/$componentDirectory/java")
+    source(files(generatedJava).builtBy("ksp${componentName}Kotlin"))
+}
+
+// Lint analyzes Hilt-generated test sources, but AGP does not automatically make its
+// test-analysis tasks depend on the corresponding KSP tasks.
+tasks
+    .matching {
+        it.name.startsWith("lintAnalyze") &&
+            (it.name.endsWith("UnitTest") || it.name.endsWith("AndroidTest"))
+    }.configureEach {
+        val componentName = name.removePrefix("lintAnalyze")
+        dependsOn("ksp${componentName}Kotlin")
+    }
+
 dependencies {
     implementation(libs.zmodemlib)
     coreLibraryDesugaring(libs.desugar)
@@ -670,6 +694,11 @@ dependencies {
 
     implementation(libs.androidx.biometric)
     implementation(libs.androidx.core)
+
+    // FIDO2/CTAP2 support via YubiKit
+    implementation(libs.yubikit.android)
+    implementation(libs.yubikit.fido)
+    implementation(libs.cbor)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
