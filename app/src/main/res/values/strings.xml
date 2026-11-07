@@ -2512,6 +2512,10 @@
     <string name="pubkey_piv_continue">Continue</string>
     <!-- Instructions while the app waits for a YubiKey to read or sign. -->
     <string name="pubkey_piv_connect">Plug in your YubiKey or hold it against the NFC reader. If it blinks over USB, touch the key.</string>
+    <!-- Hint in the YubiKey dialog when the phone's NFC is switched off. The key is picked up automatically once NFC is on; USB keeps working either way. -->
+    <string name="pubkey_piv_nfc_off">NFC is turned off. Turn it on to use your YubiKey over NFC.</string>
+    <!-- Button in the YubiKey dialog that opens the system NFC settings. -->
+    <string name="pubkey_piv_nfc_settings">NFC settings</string>
     <!-- Error shown when the app cannot open a YubiKey reader. -->
     <string name="pubkey_piv_unavailable">YubiKey access is unavailable here.</string>
     <!-- Error for an invalid PIN length, before any PIN is sent to the key. -->

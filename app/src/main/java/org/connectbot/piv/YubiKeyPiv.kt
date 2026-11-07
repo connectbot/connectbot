@@ -18,7 +18,13 @@
 package org.connectbot.piv
 
 import android.app.Activity
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.nfc.NfcAdapter
 import androidx.annotation.MainThread
+import androidx.core.content.ContextCompat
 import com.yubico.yubikit.android.YubiKitManager
 import com.yubico.yubikit.android.transport.nfc.NfcConfiguration
 import com.yubico.yubikit.android.transport.nfc.NfcNotAvailable
@@ -55,14 +61,12 @@ internal object YubiKeyPiv {
         type.removePrefix(PubkeyConstants.KEY_TYPE_YUBIKEY_PIV_PREFIX),
     ).also { require(it != Slot.ATTESTATION) }
 
-    fun encodePublicKey(publicKey: PublicKey): AuthPublicKey =
-        SshSigning.encodePublicKey(KeyPair(publicKey, null)).also {
-            require(it.algorithmName == PivSshSignature.ALGORITHM)
-        }
+    fun encodePublicKey(publicKey: PublicKey): AuthPublicKey = SshSigning.encodePublicKey(KeyPair(publicKey, null)).also {
+        require(it.algorithmName == PivSshSignature.ALGORITHM)
+    }
 
     @MainThread
-    suspend fun readPublicKey(activity: Activity, slot: Slot): PublicKey =
-        withSession(activity) { session, _ -> readSlotKey(session, slot).publicKey }
+    suspend fun readPublicKey(activity: Activity, slot: Slot): PublicKey = withSession(activity) { session, _ -> readSlotKey(session, slot).publicKey }
 
     @MainThread
     suspend fun sign(
@@ -139,17 +143,45 @@ internal object YubiKeyPiv {
                 }
             }
             var nfcStarted = false
-            try {
+
+            // NFC may be switched on while we wait (quick settings, or back from the settings screen),
+            // so a failed start is retried whenever the adapter state changes.
+            fun startNfc() {
+                if (nfcStarted) return
                 try {
                     manager.startNfcDiscovery(NfcConfiguration().timeout(15_000), activity) { accept(it) }
                     nfcStarted = true
                 } catch (_: NfcNotAvailable) {
                     // USB can be used even when NFC is disabled or unavailable.
                 }
+            }
+            val nfcStateReceiver = object : BroadcastReceiver() {
+                override fun onReceive(context: Context, intent: Intent) {
+                    if (intent.getIntExtra(NfcAdapter.EXTRA_ADAPTER_STATE, NfcAdapter.STATE_OFF) == NfcAdapter.STATE_ON) {
+                        startNfc()
+                    }
+                }
+            }
+            val appContext = activity.applicationContext
+            var receiverRegistered = false
+            try {
+                startNfc()
+                if (!nfcStarted) {
+                    ContextCompat.registerReceiver(
+                        appContext,
+                        nfcStateReceiver,
+                        IntentFilter(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED),
+                        // Sent by the NFC service, not by the system uid, so a not-exported receiver would
+                        // not get it. Only the system can send this protected broadcast.
+                        ContextCompat.RECEIVER_EXPORTED,
+                    )
+                    receiverRegistered = true
+                }
                 manager.startUsbDiscovery(UsbConfiguration().handlePermissions(true)) { accept(it) }
                 result.await()
             } finally {
                 result.cancel()
+                if (receiverRegistered) appContext.unregisterReceiver(nfcStateReceiver)
                 try {
                     manager.stopUsbDiscovery()
                 } finally {

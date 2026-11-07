@@ -18,6 +18,12 @@
 package org.connectbot.ui.components
 
 import android.app.Activity
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.nfc.NfcAdapter
+import android.provider.Settings
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,12 +34,14 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -41,6 +49,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.SecureFlagPolicy
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import com.yubico.yubikit.core.application.InvalidPinException
@@ -61,12 +70,35 @@ internal fun <T> YubiKeyPivDialog(
     signingPrompt: PromptRequest.YubiKeyPivPrompt? = null,
 ) {
     val activity = LocalActivity.current
+    val context = LocalContext.current
     val resources = LocalResources.current
     val scope = rememberCoroutineScope()
     var slotText by remember { mutableStateOf(Slot.AUTHENTICATION.stringAlias.uppercase()) }
     var pin by remember { mutableStateOf("") }
     var job by remember { mutableStateOf<Job?>(null) }
     var error by remember { mutableStateOf<String?>(null) }
+
+    val nfcAdapter = remember { NfcAdapter.getDefaultAdapter(context) }
+    var nfcOff by remember { mutableStateOf(nfcAdapter?.isEnabled == false) }
+    if (nfcAdapter != null) {
+        DisposableEffect(nfcAdapter) {
+            val receiver = object : BroadcastReceiver() {
+                override fun onReceive(context: Context, intent: Intent) {
+                    nfcOff = intent.getIntExtra(NfcAdapter.EXTRA_ADAPTER_STATE, NfcAdapter.STATE_OFF) != NfcAdapter.STATE_ON
+                }
+            }
+            ContextCompat.registerReceiver(
+                context,
+                receiver,
+                IntentFilter(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED),
+                // Sent by the NFC service, not by the system uid, so a not-exported receiver would not get it.
+                ContextCompat.RECEIVER_EXPORTED,
+            )
+            onDispose { context.unregisterReceiver(receiver) }
+        }
+    }
+
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { nfcOff = nfcAdapter?.isEnabled == false }
 
     val slot = signingPrompt?.slot ?: runCatching { Slot.fromStringAlias(slotText) }
         .getOrNull()?.takeUnless { it == Slot.ATTESTATION }
@@ -127,6 +159,12 @@ internal fun <T> YubiKeyPivDialog(
                 }
                 if (activity == null) {
                     Text(stringResource(R.string.pubkey_piv_unavailable))
+                }
+                if (nfcOff) {
+                    Text(stringResource(R.string.pubkey_piv_nfc_off))
+                    TextButton(onClick = { context.startActivity(Intent(Settings.ACTION_NFC_SETTINGS)) }) {
+                        Text(stringResource(R.string.pubkey_piv_nfc_settings))
+                    }
                 }
                 error?.let { Text(it) }
             }
