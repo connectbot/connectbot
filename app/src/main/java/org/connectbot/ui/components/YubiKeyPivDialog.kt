@@ -35,6 +35,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -112,6 +113,48 @@ internal fun <T> YubiKeyPivDialog(
         job?.cancel()
     }
 
+    fun submit(activity: Activity, slot: Slot, input: CharArray, automatic: Boolean = false) {
+        error = null
+        scope.launch(start = CoroutineStart.LAZY) {
+            try {
+                onComplete(slot, operation(activity, slot, input))
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: InvalidPinException) {
+                error = if (e.attemptsRemaining == 0) {
+                    resources.getString(R.string.pubkey_piv_pin_blocked)
+                } else {
+                    resources.getString(R.string.pubkey_piv_pin_wrong, e.attemptsRemaining)
+                }
+            } catch (e: YubiKeyPiv.PinRequired) {
+                // The card forgot the PIN after all: just let the user type it.
+                if (!automatic) error = resources.getString(R.string.pubkey_piv_pin_required)
+            } catch (e: Exception) {
+                error = resources.getString(
+                    when (e) {
+                        is YubiKeyPiv.DeviceTimeout -> R.string.pubkey_piv_timeout
+                        is YubiKeyPiv.UnsupportedKey -> R.string.pubkey_piv_unsupported_key
+                        is YubiKeyPiv.WrongKey -> R.string.pubkey_piv_wrong_key
+                        else -> R.string.pubkey_piv_failed
+                    },
+                )
+            } finally {
+                synchronized(input) { input.fill('\u0000') }
+                job = null
+            }
+        }.also {
+            job = it
+            it.start()
+        }
+    }
+
+    // The card may still remember the PIN from the previous login: sign right away, only touch is left.
+    LaunchedEffect(signingPrompt, activity) {
+        if (signingPrompt != null && activity != null && job == null && YubiKeyPiv.canSignWithoutPin(signingPrompt.slot)) {
+            submit(activity, signingPrompt.slot, CharArray(0), automatic = true)
+        }
+    }
+
     AlertDialog(
         onDismissRequest = dismiss,
         properties = DialogProperties(securePolicy = SecureFlagPolicy.SecureOn),
@@ -183,36 +226,7 @@ internal fun <T> YubiKeyPivDialog(
                     }
                     val input = pin.toCharArray()
                     pin = ""
-                    error = null
-                    scope.launch(start = CoroutineStart.LAZY) {
-                        try {
-                            onComplete(slot, operation(activity, slot, input))
-                        } catch (e: CancellationException) {
-                            throw e
-                        } catch (e: InvalidPinException) {
-                            error = if (e.attemptsRemaining == 0) {
-                                resources.getString(R.string.pubkey_piv_pin_blocked)
-                            } else {
-                                resources.getString(R.string.pubkey_piv_pin_wrong, e.attemptsRemaining)
-                            }
-                        } catch (e: Exception) {
-                            error = resources.getString(
-                                when (e) {
-                                    is YubiKeyPiv.DeviceTimeout -> R.string.pubkey_piv_timeout
-                                    is YubiKeyPiv.PinRequired -> R.string.pubkey_piv_pin_required
-                                    is YubiKeyPiv.UnsupportedKey -> R.string.pubkey_piv_unsupported_key
-                                    is YubiKeyPiv.WrongKey -> R.string.pubkey_piv_wrong_key
-                                    else -> R.string.pubkey_piv_failed
-                                },
-                            )
-                        } finally {
-                            synchronized(input) { input.fill('\u0000') }
-                            job = null
-                        }
-                    }.also {
-                        job = it
-                        it.start()
-                    }
+                    submit(activity, slot, input)
                 },
             ) {
                 Text(stringResource(if (signingPrompt == null) R.string.pubkey_piv_read else R.string.pubkey_piv_continue))
