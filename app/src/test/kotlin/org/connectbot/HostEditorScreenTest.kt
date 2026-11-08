@@ -29,6 +29,7 @@ import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -123,7 +124,12 @@ class HostEditorScreenTest {
         val preceding = composeTestRule.onNodeWithText(precedingTitle, useUnmergedTree = true).getUnclippedBoundsInRoot()
         assertEquals(preceding.left.value, automation.left.value, 0.5f)
         composeTestRule.onNodeWithText(automationTitle).performClick()
-        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.automation_add)).assertIsDisplayed()
+        val addAction = composeTestRule.activity.getString(R.string.automation_add)
+        composeTestRule.waitUntil(timeoutMillis = 5_000) {
+            composeTestRule.onAllNodesWithText(addAction).fetchSemanticsNodes().isNotEmpty() &&
+                composeTestRule.onNodeWithText(addAction).isDisplayed()
+        }
+        composeTestRule.onNodeWithText(addAction).assertIsDisplayed()
         composeTestRule.runOnUiThread { org.robolectric.shadows.ShadowDialog.getLatestDialog().onBackPressed() }
         composeTestRule.onNodeWithText("Nickname").performScrollTo().assertIsDisplayed()
     }
