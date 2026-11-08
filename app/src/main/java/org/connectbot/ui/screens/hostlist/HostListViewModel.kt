@@ -59,6 +59,7 @@ data class HostListUiState(
     val hosts: List<Host> = emptyList(),
     val connectionStates: Map<UUID, ConnectionState> = emptyMap(),
     val disconnectReasons: Map<UUID, DisconnectReason> = emptyMap(),
+    val sessionCounts: Map<UUID, Int> = emptyMap(),
     val isLoading: Boolean = false,
     val error: String? = null,
     val sortedByColor: Boolean = false,
@@ -202,7 +203,10 @@ class HostListViewModel @Inject constructor(
             }
             reason?.let { host.id to it }
         }.toMap()
-        _uiState.update { it.copy(connectionStates = states, disconnectReasons = reasons) }
+        val counts = hosts.associate { host ->
+            host.id to (terminalManager?.getSessionCount(host.id) ?: 0)
+        }
+        _uiState.update { it.copy(connectionStates = states, sessionCounts = counts, disconnectReasons = reasons) }
     }
 
     private fun getConnectionState(host: Host): ConnectionState {
@@ -210,6 +214,7 @@ class HostListViewModel @Inject constructor(
 
         val bridge = manager.bridgesFlow.value.find { it.host.id == host.id }
         val attention = manager.getSessionAttention(host.id)
+        if (manager.isHostConnected(host.id)) return ConnectionState.CONNECTED
         if (bridge != null) {
             if (bridge.isInGracePeriod()) return ConnectionState.DISCONNECTED
             if (!bridge.disconnected) return ConnectionState.CONNECTED
@@ -227,6 +232,40 @@ class HostListViewModel @Inject constructor(
         sharedPreferences.edit { putBoolean(PreferenceConstants.SORT_BY_COLOR, newSortedByColor) }
         _uiState.update { it.copy(sortedByColor = newSortedByColor) }
     }
+
+    /**
+     * Open a new session to a host.
+     * This always creates a new session, even if sessions already exist.
+     */
+    fun connectToHost(host: Host) {
+        viewModelScope.launch {
+            try {
+                withContext(dispatchers.io) {
+                    terminalManager?.openConnectionForHostId(host.id)
+                }
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(error = e.message ?: "Failed to connect")
+                }
+            }
+        }
+    }
+
+    /**
+     * Get the session ID of the last-used session for a host.
+     * Returns null if no sessions exist.
+     */
+    fun getLastUsedSessionId(hostId: UUID): Long? = terminalManager?.getLastUsedBridge(hostId)?.sessionId
+
+    /**
+     * Check if a host has any connected sessions.
+     */
+    fun isHostConnected(hostId: UUID): Boolean = terminalManager?.isHostConnected(hostId) ?: false
+
+    /**
+     * Get the number of sessions for a host.
+     */
+    fun getSessionCount(hostId: UUID): Int = terminalManager?.getSessionCount(hostId) ?: 0
 
     fun deleteHost(host: Host) {
         viewModelScope.launch {

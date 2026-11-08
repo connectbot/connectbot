@@ -187,6 +187,28 @@ class ConsoleScreenTest {
         }
     }
 
+    private fun mockConsoleBridge(
+        id: Long = 1L,
+        sessionId: Long = id,
+        hostname: String = "test-host",
+        isDisconnected: Boolean = false,
+    ): TerminalBridge {
+        val bridge = mock(TerminalBridge::class.java)
+        val host = Host(
+            id = UUID(0, id),
+            hostname = hostname,
+            nickname = hostname,
+            protocol = "ssh",
+            port = 22,
+            username = "test",
+        )
+        `when`(bridge.host).thenReturn(host)
+        `when`(bridge.sessionId).thenReturn(sessionId)
+        `when`(bridge.isDisconnected).thenReturn(isDisconnected)
+        `when`(bridge.isSessionOpen).thenReturn(!isDisconnected)
+        return bridge
+    }
+
     @Test
     fun fontSizeShortcutRefreshesNoticeAndSavesCapturedProfile() {
         val profile = TerminalBridge.ActiveProfile(EntityIds.DEFAULT_PROFILE, EntityIds.DEFAULT_PROFILE)
@@ -333,6 +355,8 @@ class ConsoleScreenTest {
         val first = mock(TerminalBridge::class.java)
         val second = mock(TerminalBridge::class.java)
         val host = Host(id = UUID(0, 1), nickname = "Original session")
+        `when`(first.sessionId).thenReturn(10L)
+        `when`(second.sessionId).thenReturn(20L)
         `when`(first.host).thenReturn(host)
         `when`(second.host).thenReturn(host.copy(nickname = "Updated session"))
         var selectedIndex = -1
@@ -513,6 +537,70 @@ class ConsoleScreenTest {
         composeTestRule
             .onNodeWithTag("top_app_bar")
             .assertIsDisplayed()
+    }
+
+    @Test
+    fun consoleScreen_showsHostnameWithoutSessionNumber_forSingleSession() {
+        val mockViewModel = mock(ConsoleViewModel::class.java)
+        val bridge = mockConsoleBridge(hostname = "a-long-hostname")
+        `when`(mockViewModel.uiState).thenReturn(
+            MutableStateFlow(
+                ConsoleUiState(
+                    bridges = listOf(bridge),
+                    currentBridgeIndex = 0,
+                    isLoading = true,
+                ),
+            ),
+        )
+        `when`(mockViewModel.networkStatusMessages).thenReturn(MutableSharedFlow())
+
+        setContent(mockConsoleViewModel = mockViewModel)
+        navigateToConsoleScreen(hostId = UUID(0, 1))
+
+        composeTestRule.onNodeWithText("a-long-hostname").assertIsDisplayed()
+        composeTestRule.onNodeWithText("#1 a-long-hostname").assertIsNotDisplayed()
+    }
+
+    @Test
+    fun consoleScreen_showsSessionNumberBeforeHostname_forMultipleSessionsOnHost() {
+        val mockViewModel = mock(ConsoleViewModel::class.java)
+        val firstBridge = mockConsoleBridge(sessionId = 10L, hostname = "a-long-hostname")
+        val secondBridge = mockConsoleBridge(sessionId = 20L, hostname = "a-long-hostname")
+        `when`(mockViewModel.uiState).thenReturn(
+            MutableStateFlow(
+                ConsoleUiState(
+                    bridges = listOf(firstBridge, secondBridge),
+                    currentBridgeIndex = 1,
+                    isLoading = true,
+                ),
+            ),
+        )
+        `when`(mockViewModel.networkStatusMessages).thenReturn(MutableSharedFlow())
+
+        setContent(mockConsoleViewModel = mockViewModel)
+        navigateToConsoleScreen(hostId = UUID(0, 1))
+
+        composeTestRule.onNodeWithText("#2 a-long-hostname").assertIsDisplayed()
+        composeTestRule.onNodeWithText("a-long-hostname #2").assertIsNotDisplayed()
+    }
+
+    @Test
+    fun consoleScreen_sessionPickerSupportsMultipleSessionsForSameHost() {
+        val firstBridge = mockConsoleBridge(id = 1L, sessionId = 10L, hostname = "same-host")
+        val secondBridge = mockConsoleBridge(id = 1L, sessionId = 20L, hostname = "same-host")
+        composeTestRule.setContent {
+            ConnectBotTheme {
+                SessionPickerDialog(
+                    bridges = listOf(firstBridge, secondBridge),
+                    currentBridgeIndex = 0,
+                    onDismiss = {},
+                    onSelectBridge = {},
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithText("\u2022 same-host").assertIsDisplayed()
+        composeTestRule.onNodeWithText("same-host").assertIsDisplayed()
     }
 
     @Test
@@ -805,8 +893,7 @@ class ConsoleScreenTest {
             .commit()
 
         val mockViewModel = mock(ConsoleViewModel::class.java)
-        val mockBridge = mock(TerminalBridge::class.java)
-        `when`(mockBridge.isDisconnected).thenReturn(false)
+        val mockBridge = mockConsoleBridge(isDisconnected = false)
 
         val uiStateFlow = MutableStateFlow(
             ConsoleUiState(
@@ -837,8 +924,7 @@ class ConsoleScreenTest {
             .commit()
 
         val mockViewModel = mock(ConsoleViewModel::class.java)
-        val mockBridge = mock(TerminalBridge::class.java)
-        `when`(mockBridge.isDisconnected).thenReturn(false)
+        val mockBridge = mockConsoleBridge(isDisconnected = false)
 
         val uiStateFlow = MutableStateFlow(
             ConsoleUiState(
@@ -869,8 +955,7 @@ class ConsoleScreenTest {
             .commit()
 
         val mockViewModel = mock(ConsoleViewModel::class.java)
-        val mockBridge = mock(TerminalBridge::class.java)
-        `when`(mockBridge.isDisconnected).thenReturn(true)
+        val mockBridge = mockConsoleBridge(isDisconnected = true)
 
         val uiStateFlow = MutableStateFlow(
             ConsoleUiState(
@@ -931,5 +1016,40 @@ class ConsoleScreenTest {
         composeTestRule.onNodeWithText("server.example").assertIsDisplayed()
         composeTestRule.onNodeWithText(context.getString(R.string.button_close)).performClick()
         composeTestRule.onNodeWithText("server.example").assertDoesNotExist()
+    }
+    private fun interactiveSessionBridge(sessionId: Long): TerminalBridge {
+        val bridge = mockConsoleBridge(sessionId = sessionId)
+        val emulator = TerminalEmulatorFactory.create()
+        `when`(bridge.transportMessages).thenReturn(MutableSharedFlow())
+        `when`(bridge.keyboardErrors).thenReturn(MutableSharedFlow())
+        `when`(bridge.terminalEmulator).thenReturn(emulator)
+        `when`(bridge.fontSizeFlow).thenReturn(MutableStateFlow(14f))
+        `when`(bridge.fontWeightFlow).thenReturn(MutableStateFlow(TerminalFontWeight.NORMAL))
+        `when`(bridge.delKeyModeFlow).thenReturn(MutableStateFlow(DelKeyMode.Backspace))
+        `when`(bridge.promptManager).thenReturn(PromptManager())
+        `when`(bridge.keyHandler).thenReturn(TerminalKeyListener(TerminalEmulatorKeyDispatcher(emulator)))
+        return bridge
+    }
+
+    @Test
+    fun consoleMenuOpensNewSessionAndSwitchesBetweenSessionsForSameHost() {
+        val first = interactiveSessionBridge(10L)
+        val second = interactiveSessionBridge(20L)
+        val viewModel = mock(ConsoleViewModel::class.java)
+        `when`(viewModel.uiState).thenReturn(
+            MutableStateFlow(ConsoleUiState(bridges = listOf(first, second), isLoading = false)),
+        )
+        `when`(viewModel.networkStatusMessages).thenReturn(MutableSharedFlow())
+        setContent(mockConsoleViewModel = viewModel)
+        navigateToConsoleScreen(UUID(0, 1))
+        val context = composeTestRule.activity
+        composeTestRule.onNodeWithContentDescription(context.getString(R.string.button_more_options)).performClick()
+        composeTestRule.onNodeWithText(context.getString(R.string.list_host_new_session)).performClick()
+        org.mockito.Mockito.verify(viewModel).openNewSession()
+        composeTestRule.onNodeWithContentDescription(context.getString(R.string.button_more_options)).performClick()
+        composeTestRule.onNodeWithText(context.getString(R.string.console_menu_switch_session)).performClick()
+        composeTestRule.onNodeWithText(context.getString(R.string.console_menu_session_number, 1)).assertIsNotEnabled()
+        composeTestRule.onNodeWithText(context.getString(R.string.console_menu_session_number, 2)).performClick()
+        org.mockito.Mockito.verify(viewModel).selectBridge(1)
     }
 }
