@@ -58,6 +58,7 @@
 		android:roundIcon="@mipmap/icon_round"
 		android:supportsRtl="true"
 		android:theme="@style/AppTheme">
+        <meta-data android:name="asset_statements" android:resource="@string/asset_statements" />
 
 		<activity
 			android:name=".ui.MainActivity"

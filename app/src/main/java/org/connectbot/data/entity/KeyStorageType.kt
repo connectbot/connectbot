@@ -28,6 +28,9 @@ enum class KeyStorageType {
      */
     EXPORTABLE,
 
+    /** Public metadata for a credential managed by an Android passkey provider. */
+    PASSKEY,
+
     /**
      * Key stored in Android Keystore (future Phase 2).
      * Only the key alias is stored in the database.

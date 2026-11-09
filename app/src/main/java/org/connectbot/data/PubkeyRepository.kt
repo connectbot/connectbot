@@ -146,6 +146,8 @@ class PubkeyRepository @Inject constructor(
         pubkey
     }
 
+    suspend fun importPasskey(candidate: Pubkey, targetId: UUID?, nickname: String): Pubkey = pubkeyDao.importPasskey(candidate, targetId, nickname)
+
     /**
      * Delete a pubkey.
      *

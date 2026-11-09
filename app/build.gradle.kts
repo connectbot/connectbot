@@ -145,6 +145,7 @@ android {
 
     buildTypes {
         release {
+            buildConfigField("String", "PASSKEY_RP_ID", "\"webauthn.connectbot.org\"")
             manifestPlaceholders["memtagMode"] = "async"
             isShrinkResources = true
             isMinifyEnabled = true
@@ -158,6 +159,7 @@ android {
         }
 
         debug {
+            buildConfigField("String", "PASSKEY_RP_ID", "\"webauthn-debug.connectbot.org\"")
             manifestPlaceholders["memtagMode"] = "sync"
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard.cfg", "proguard-debug.cfg")
             testProguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard.cfg", "proguard-tests.cfg")
@@ -534,6 +536,9 @@ dependencies {
     coreLibraryDesugaring(libs.desugar)
     implementation(libs.json5)
     implementation(libs.sshlib)
+    implementation(libs.sshlib.webauthn)
+    implementation(libs.credentials)
+    "googleImplementation"(libs.credentials.play.services)
     implementation(libs.termlib)
     implementation(libs.telnetlib)
     implementation(libs.telnetlib.ktor)

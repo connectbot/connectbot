@@ -22,6 +22,9 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
+import androidx.credentials.exceptions.CreateCredentialCancellationException
+import androidx.credentials.exceptions.GetCredentialCancellationException
+import androidx.credentials.exceptions.NoCredentialException
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,9 +37,15 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.connectbot.R
+import org.connectbot.data.PasskeyEntriesChanged
+import org.connectbot.data.PasskeyIdentityConflict
+import org.connectbot.data.PasskeyNicknameExists
+import org.connectbot.data.PasskeyReconciliation
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.passkey.PasskeyImportSource
+import org.connectbot.passkey.PasskeySupport
 import org.connectbot.service.TerminalManager
 import org.connectbot.sshlib.SshKeys
 import org.connectbot.sshlib.SshSigning
@@ -79,9 +88,15 @@ sealed class ImportResult {
     object Failed : ImportResult()
 }
 
+data class PendingPasskeyImport(val candidate: Pubkey, val matches: List<Pubkey>)
+
 data class PubkeyListUiState(
     val pubkeys: List<Pubkey> = emptyList(),
     val isLoading: Boolean = false,
+    val isImportingPasskey: Boolean = false,
+    val isSavingPasskeyImport: Boolean = false,
+    val pendingPasskeyImport: PendingPasskeyImport? = null,
+    val passkeyImportMessage: String? = null,
     val error: String? = null,
     val loadedKeyNicknames: Set<String> = emptySet(),
     // Biometric key that needs to be unlocked (triggers BiometricPrompt in UI)
@@ -104,6 +119,7 @@ class PubkeyListViewModel @Inject constructor(
     private val repository: PubkeyRepository,
     private val dispatchers: CoroutineDispatchers,
     private val biometricKeyManager: BiometricKeyManager,
+    private val passkeyImportSource: PasskeyImportSource = PasskeyImportSource(dispatchers),
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PubkeyListUiState(isLoading = true))
@@ -284,7 +300,7 @@ class PubkeyListViewModel @Inject constructor(
         }
 
         // For FIDO2 keys, the public key is already in SSH wire format
-        return if (pubkey.isFido2) {
+        return if (pubkey.isSecurityKey) {
             val base64Key = android.util.Base64.encodeToString(
                 pubkey.publicKey,
                 android.util.Base64.NO_WRAP,
@@ -299,6 +315,139 @@ class PubkeyListViewModel @Inject constructor(
         } else {
             val pk = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
             toAuthorizedKeysFormat(pk, pubkey.nickname)
+        }
+    }
+
+    fun importPasskey(activityContext: Context) {
+        if (_uiState.value.isImportingPasskey || _uiState.value.pendingPasskeyImport != null) return
+        if (!PasskeySupport.isSupported) {
+            _uiState.update { it.copy(error = context.getString(R.string.passkey_unsupported)) }
+            return
+        }
+        _uiState.update { it.copy(isImportingPasskey = true, error = null, passkeyImportMessage = null) }
+        viewModelScope.launch {
+            try {
+                PasskeySupport.requireSupported(context.resources)
+                val candidate = passkeyImportSource.discover(activityContext)
+                val matches = withContext(dispatchers.io) {
+                    PasskeyReconciliation.matches(candidate, repository.getAll())
+                }
+                if (matches.size == 1) {
+                    try {
+                        val saved = withContext(dispatchers.io) {
+                            repository.importPasskey(candidate, matches.single().id, "")
+                        }
+                        _uiState.update { it.copy(passkeyImportMessage = context.getString(R.string.passkey_reconnected, saved.nickname)) }
+                    } catch (_: PasskeyEntriesChanged) {
+                        val current = withContext(dispatchers.io) {
+                            PasskeyReconciliation.matches(candidate, repository.getAll())
+                        }
+                        _uiState.update { it.copy(pendingPasskeyImport = PendingPasskeyImport(candidate, current)) }
+                    }
+                } else {
+                    _uiState.update { it.copy(pendingPasskeyImport = PendingPasskeyImport(candidate, matches)) }
+                }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (_: GetCredentialCancellationException) {
+                // Cancelling either verification leaves the database unchanged.
+            } catch (e: Exception) {
+                _uiState.update { it.copy(error = passkeyImportError(e)) }
+            } finally {
+                _uiState.update { it.copy(isImportingPasskey = false) }
+            }
+        }
+    }
+
+    fun savePasskeyImport(targetId: UUID? = null, nickname: String = "") {
+        val pending = _uiState.value.pendingPasskeyImport ?: return
+        if (_uiState.value.isSavingPasskeyImport) return
+        _uiState.update { it.copy(isSavingPasskeyImport = true, error = null) }
+        viewModelScope.launch {
+            try {
+                val saved = withContext(dispatchers.io) {
+                    repository.importPasskey(pending.candidate, targetId, nickname.trim())
+                }
+                val message = if (targetId == null) R.string.message_import_success else R.string.passkey_reconnected
+                _uiState.update {
+                    it.copy(pendingPasskeyImport = null, passkeyImportMessage = context.getString(message, saved.nickname))
+                }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: PasskeyEntriesChanged) {
+                try {
+                    val current = withContext(dispatchers.io) {
+                        PasskeyReconciliation.matches(pending.candidate, repository.getAll())
+                    }
+                    _uiState.update {
+                        it.copy(pendingPasskeyImport = PendingPasskeyImport(pending.candidate, current), error = passkeyImportError(e))
+                    }
+                } catch (error: CancellationException) {
+                    throw error
+                } catch (error: Exception) {
+                    _uiState.update {
+                        it.copy(
+                            pendingPasskeyImport = if (error is PasskeyIdentityConflict) null else it.pendingPasskeyImport,
+                            error = passkeyImportError(error),
+                        )
+                    }
+                }
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(
+                        pendingPasskeyImport = if (e is PasskeyIdentityConflict) null else it.pendingPasskeyImport,
+                        error = passkeyImportError(e),
+                    )
+                }
+            } finally {
+                _uiState.update { it.copy(isSavingPasskeyImport = false) }
+            }
+        }
+    }
+
+    fun cancelPasskeyImport() {
+        if (!_uiState.value.isSavingPasskeyImport) _uiState.update { it.copy(pendingPasskeyImport = null) }
+    }
+
+    fun clearPasskeyImportMessage() {
+        _uiState.update { it.copy(passkeyImportMessage = null) }
+    }
+
+    private fun passkeyImportError(error: Exception): String = when (error) {
+        is NoCredentialException -> context.getString(R.string.passkey_import_none)
+
+        is PasskeyIdentityConflict -> context.getString(R.string.passkey_import_conflict, error.nickname)
+
+        is PasskeyNicknameExists -> context.getString(R.string.pubkey_nickname_exists)
+
+        is PasskeyEntriesChanged -> context.getString(R.string.passkey_import_entries_changed)
+
+        else -> {
+            Timber.w(error, "Passkey import failed")
+            context.getString(R.string.passkey_import_failed)
+        }
+    }
+
+    fun createPasskey(context: Context, nickname: String) {
+        viewModelScope.launch {
+            try {
+                PasskeySupport.requireSupported(context.resources)
+                require(nickname.isNotBlank())
+                withContext(dispatchers.io) {
+                    require(repository.getByNickname(nickname) == null) { "Nickname already exists" }
+                }
+                val (json, challenge) = PasskeySupport.create(context, nickname)
+                val origin = withContext(dispatchers.io) { PasskeySupport.origin(context) }
+                withContext(dispatchers.io) {
+                    repository.save(PasskeySupport.registration(json, challenge, origin, nickname))
+                }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (_: CreateCredentialCancellationException) {
+                // Closing the system sheet leaves the public-key list unchanged.
+            } catch (e: Exception) {
+                _uiState.update { it.copy(error = e.message ?: context.getString(R.string.passkey_create_failed)) }
+            }
         }
     }
 

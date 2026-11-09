@@ -17,11 +17,13 @@
 
 package org.connectbot.ui.screens.pubkeylist
 
+import android.content.ClipboardManager
 import android.content.Context
 import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -36,9 +38,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
@@ -105,6 +109,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.R
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.passkey.PasskeySupport
 import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.components.FocusableAlertDialog
@@ -131,10 +136,97 @@ fun PubkeyListScreen(
     modifier: Modifier = Modifier,
     viewModel: PubkeyListViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
+    var passkeyNickname by remember { mutableStateOf("") }
+    var createPasskey by remember { mutableStateOf(false) }
+    var importPasskey by remember { mutableStateOf(false) }
+    if (createPasskey && PasskeySupport.isSupported) {
+        TextInputAlertDialog(
+            title = { Text(stringResource(R.string.passkey_create)) },
+            value = passkeyNickname,
+            label = { Text(stringResource(R.string.prompt_nickname)) },
+            onValueChange = { passkeyNickname = it },
+            confirmEnabled = passkeyNickname.isNotBlank(),
+            message = { Text(stringResource(R.string.passkey_setup_help)) },
+            onDismissRequest = { createPasskey = false },
+            onConfirm = {
+                createPasskey = false
+                viewModel.createPasskey(context, passkeyNickname)
+            },
+        )
+    }
     val resources = LocalResources.current
     val terminalManager = LocalTerminalManager.current
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
+
+    if (importPasskey && PasskeySupport.isSupported) {
+        AlertDialog(
+            onDismissRequest = { importPasskey = false },
+            title = { Text(stringResource(R.string.passkey_import)) },
+            text = { Text(stringResource(R.string.passkey_import_help)) },
+            confirmButton = {
+                TextButton(onClick = {
+                    importPasskey = false
+                    viewModel.importPasskey(context)
+                }) { Text(stringResource(R.string.passkey_import)) }
+            },
+            dismissButton = {
+                TextButton(onClick = { importPasskey = false }) { Text(stringResource(android.R.string.cancel)) }
+            },
+        )
+    }
+
+    val pendingPasskeyImport = uiState.pendingPasskeyImport
+    if (pendingPasskeyImport != null) {
+        if (pendingPasskeyImport.matches.isEmpty()) {
+            var nickname by remember(pendingPasskeyImport.candidate.id) { mutableStateOf("") }
+            TextInputAlertDialog(
+                onDismissRequest = viewModel::cancelPasskeyImport,
+                onConfirm = { viewModel.savePasskeyImport(nickname = nickname) },
+                value = nickname,
+                onValueChange = { nickname = it },
+                title = { Text(stringResource(R.string.passkey_import)) },
+                label = { Text(stringResource(R.string.prompt_nickname)) },
+                confirmEnabled = nickname.isNotBlank() && !uiState.isSavingPasskeyImport,
+                dismissEnabled = !uiState.isSavingPasskeyImport,
+                enabled = !uiState.isSavingPasskeyImport,
+                isError = uiState.error != null,
+                supportingText = uiState.error?.let { message -> { Text(message) } },
+            )
+        } else {
+            AlertDialog(
+                onDismissRequest = viewModel::cancelPasskeyImport,
+                title = { Text(stringResource(R.string.passkey_import_choose_entry)) },
+                text = {
+                    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                        Text(stringResource(R.string.passkey_import_multiple))
+                        uiState.error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
+                        pendingPasskeyImport.matches.forEach { match ->
+                            TextButton(
+                                onClick = { viewModel.savePasskeyImport(targetId = match.id) },
+                                enabled = !uiState.isSavingPasskeyImport,
+                            ) { Text(match.nickname) }
+                        }
+                    }
+                },
+                confirmButton = {},
+                dismissButton = {
+                    TextButton(
+                        onClick = viewModel::cancelPasskeyImport,
+                        enabled = !uiState.isSavingPasskeyImport,
+                    ) { Text(stringResource(android.R.string.cancel)) }
+                },
+            )
+        }
+    }
+
+    LaunchedEffect(uiState.passkeyImportMessage) {
+        uiState.passkeyImportMessage?.let {
+            snackbarHostState.showSnackbar(it)
+            viewModel.clearPasskeyImportMessage()
+        }
+    }
 
     // Set TerminalManager in ViewModel
     LaunchedEffect(terminalManager) {
@@ -203,8 +295,8 @@ fun PubkeyListScreen(
         },
         onError = { errorCode, errString ->
             // Show error in snackbar (unless user cancelled)
-            if (errorCode != androidx.biometric.BiometricPrompt.ERROR_USER_CANCELED &&
-                errorCode != androidx.biometric.BiometricPrompt.ERROR_NEGATIVE_BUTTON
+            if (errorCode != BiometricPrompt.ERROR_USER_CANCELED &&
+                errorCode != BiometricPrompt.ERROR_NEGATIVE_BUTTON
             ) {
                 viewModel.onBiometricError(errString.toString())
             } else {
@@ -275,6 +367,9 @@ fun PubkeyListScreen(
         onNavigateBack = onNavigateBack,
         onNavigateToGenerate = onNavigateToGenerate,
         onNavigateToImportFido2 = onNavigateToImportFido2,
+        onCreatePasskey = { createPasskey = true },
+        canCreatePasskey = PasskeySupport.isSupported && !uiState.isImportingPasskey && uiState.pendingPasskeyImport == null,
+        onImportPasskey = { importPasskey = true },
         onNavigateToEdit = onNavigateToEdit,
         onDeletePubkey = viewModel::deletePubkey,
         onToggleKeyLoad = viewModel::toggleKeyLoaded,
@@ -328,6 +423,9 @@ fun PubkeyListScreenContent(
     onImportKey: () -> Unit,
     onImportKeyFromClipboard: () -> Unit,
     modifier: Modifier = Modifier,
+    onCreatePasskey: () -> Unit = {},
+    canCreatePasskey: Boolean = false,
+    onImportPasskey: () -> Unit = {},
 ) {
     var fabMenuExpanded by rememberSaveable { mutableStateOf(false) }
 
@@ -366,6 +464,24 @@ fun PubkeyListScreenContent(
                     }
                 },
             ) {
+                if (canCreatePasskey) {
+                    FloatingActionButtonMenuItem(
+                        onClick = {
+                            fabMenuExpanded = false
+                            onImportPasskey()
+                        },
+                        icon = { Icon(Icons.Default.Key, contentDescription = null) },
+                        text = { Text(stringResource(R.string.passkey_import)) },
+                    )
+                    FloatingActionButtonMenuItem(
+                        onClick = {
+                            fabMenuExpanded = false
+                            onCreatePasskey()
+                        },
+                        icon = { Icon(Icons.Default.Key, contentDescription = null) },
+                        text = { Text(stringResource(R.string.passkey_create)) },
+                    )
+                }
                 FloatingActionButtonMenuItem(
                     onClick = {
                         fabMenuExpanded = false
@@ -514,13 +630,13 @@ private fun PubkeyListItem(
             },
             leadingContent = {
                 val icon = when {
-                    pubkey.isFido2 -> Icons.Outlined.Lock
+                    pubkey.isSecurityKey -> Icons.Outlined.Lock
                     pubkey.isBiometric -> Icons.Outlined.Fingerprint
                     pubkey.encrypted -> Icons.Outlined.Lock
                     else -> Icons.Outlined.LockOpen
                 }
 
-                val showLoaded = isLoaded && !pubkey.isFido2
+                val showLoaded = isLoaded && !pubkey.isSecurityKey
                 val iconModifier = when {
                     showLoaded ->
                         Modifier
@@ -542,6 +658,7 @@ private fun PubkeyListItem(
                     Icon(
                         imageVector = icon,
                         contentDescription = when {
+                            pubkey.isPasskey -> stringResource(R.string.passkey_description)
                             pubkey.isFido2 -> stringResource(R.string.pubkey_fido2_description)
                             pubkey.isBiometric -> stringResource(R.string.pubkey_biometric_description_icon)
                             pubkey.encrypted -> stringResource(R.string.pubkey_encrypted_description)
@@ -626,7 +743,7 @@ private fun PubkeyListItem(
                             leadingIcon = {
                                 Icon(Icons.Default.ContentCopy, null)
                             },
-                            enabled = !pubkey.isBiometric && !pubkey.isFido2,
+                            enabled = !pubkey.isBiometric && !pubkey.isSecurityKey,
                         )
 
                         // Copy private key in PEM format (for non-imported keys)
@@ -643,7 +760,7 @@ private fun PubkeyListItem(
                                 leadingIcon = {
                                     Icon(Icons.Default.ContentCopy, null)
                                 },
-                                enabled = !pubkey.isBiometric && !pubkey.isFido2,
+                                enabled = !pubkey.isBiometric && !pubkey.isSecurityKey,
                             )
                         }
 
@@ -667,7 +784,7 @@ private fun PubkeyListItem(
                                 leadingIcon = {
                                     Icon(Icons.Default.Lock, null)
                                 },
-                                enabled = !pubkey.isBiometric && !pubkey.isFido2,
+                                enabled = !pubkey.isBiometric && !pubkey.isSecurityKey,
                             )
                         }
 
@@ -694,7 +811,7 @@ private fun PubkeyListItem(
                             leadingIcon = {
                                 Icon(Icons.Default.FileDownload, null)
                             },
-                            enabled = !pubkey.isBiometric && !pubkey.isFido2,
+                            enabled = !pubkey.isBiometric && !pubkey.isSecurityKey,
                         )
 
                         // Export private key to file in PEM format (for non-imported keys)
@@ -711,7 +828,7 @@ private fun PubkeyListItem(
                                 leadingIcon = {
                                     Icon(Icons.Default.FileDownload, null)
                                 },
-                                enabled = !pubkey.isBiometric && !pubkey.isFido2,
+                                enabled = !pubkey.isBiometric && !pubkey.isSecurityKey,
                             )
                         }
 
@@ -735,7 +852,7 @@ private fun PubkeyListItem(
                                 leadingIcon = {
                                     Icon(Icons.Default.Lock, null)
                                 },
-                                enabled = !pubkey.isBiometric && !pubkey.isFido2,
+                                enabled = !pubkey.isBiometric && !pubkey.isSecurityKey,
                             )
                         }
 
@@ -753,7 +870,7 @@ private fun PubkeyListItem(
                     }
                 }
             },
-            modifier = if (pubkey.isFido2) {
+            modifier = if (pubkey.isSecurityKey) {
                 Modifier
             } else {
                 Modifier.clickable {
@@ -859,7 +976,12 @@ private fun PubkeyDeleteDialog(
         icon = { Icon(Icons.Default.Delete, contentDescription = null) },
         title = { Text(stringResource(R.string.pubkey_delete)) },
         text = {
-            Text(stringResource(R.string.delete_message, pubkey.nickname))
+            Column {
+                Text(stringResource(R.string.delete_message, pubkey.nickname))
+                if (pubkey.isPasskey) {
+                    Text(stringResource(R.string.passkey_delete_help))
+                }
+            }
         },
         confirmButton = {
             TextButton(
@@ -1053,7 +1175,7 @@ private fun ImportFromClipboardDialog(
             IconButton(
                 onClick = {
                     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE)
-                        as android.content.ClipboardManager
+                        as ClipboardManager
                     keyText = clipboard.primaryClip?.getItemAt(0)?.text?.toString() ?: keyText
                 },
             ) {

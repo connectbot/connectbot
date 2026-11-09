@@ -21,8 +21,12 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
+import org.connectbot.data.PasskeyEntriesChanged
+import org.connectbot.data.PasskeyNicknameExists
+import org.connectbot.data.PasskeyReconciliation
 import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.Pubkey
 import java.util.UUID
@@ -109,6 +113,27 @@ interface PubkeyDao {
      */
     @Update
     suspend fun update(pubkey: Pubkey)
+
+    /** Recheck identities and update in one transaction, preserving existing host references. */
+    @Transaction
+    suspend fun importPasskey(candidate: Pubkey, targetId: UUID?, nickname: String): Pubkey {
+        val entries = getAll()
+        val matches = PasskeyReconciliation.matches(candidate, entries)
+        if (targetId != null) {
+            val existing = matches.firstOrNull { it.id == targetId } ?: throw PasskeyEntriesChanged()
+            val updated = PasskeyReconciliation.reconnect(candidate, existing)
+            update(updated)
+            return updated
+        }
+        if (matches.isNotEmpty()) throw PasskeyEntriesChanged()
+        require(nickname.isNotBlank())
+        if (entries.any { it.repositoryId == candidate.repositoryId && it.nickname == nickname }) {
+            throw PasskeyNicknameExists()
+        }
+        val created = candidate.copy(nickname = nickname)
+        insert(created)
+        return created
+    }
 
     /**
      * Delete a pubkey.

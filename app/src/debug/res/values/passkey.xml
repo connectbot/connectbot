@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Digital Asset Links association for the passkey relying-party domain. -->
+    <string name="asset_statements" translatable="false">[{\"include\": \"https://webauthn-debug.connectbot.org/.well-known/assetlinks.json\"}]</string>
+</resources>

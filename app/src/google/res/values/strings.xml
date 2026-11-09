@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Error when passkeys cannot be used on this Android version in the Google flavor. -->
+    <string name="passkey_unsupported">Passkeys require Android 9 or later.</string>
     <!-- Progress text while extracting Mosh terminfo. -->
     <string name="pref_mosh_installing">"Preparing Mosh support…"</string>
 </resources>
