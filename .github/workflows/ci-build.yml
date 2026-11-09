@@ -130,7 +130,18 @@ jobs:
         with:
           cache-disabled: true
 
-      # Cache downloaded files only; never restore compiled code or resolution state.
+      # Keep the wrapper distribution available when services.gradle.org is down.
+      # An exact key ties the installed Gradle binaries to the pinned URL and checksum.
+      - name: Cache Gradle distribution
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.gradle/wrapper/dists
+            !~/.gradle/wrapper/dists/**/*.lck
+            !~/.gradle/wrapper/dists/**/*.part
+          key: gradle-wrapper-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+
+      # Cache downloaded dependencies only; never restore compiled project code or resolution state.
       # Refresh dependency resolution against repository-published checksums below.
       - name: Cache verified dependency downloads
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
