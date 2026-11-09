@@ -1,4 +1,5 @@
 [versions]
+gradleDownload = "5.7.0"
 json5 = "3.0.0"
 desugar = "2.1.5"
 androidGradlePlugin = "9.4.1"
@@ -66,6 +67,7 @@ biometric = "1.4.0-alpha02"
 core = "1.19.1"
 
 [libraries]
+gradle-download = { module = "de.undercouch:gradle-download-task", version.ref = "gradleDownload" }
 zmodemlib = { module = "org.connectbot.zmodemlib:zmodemlib", version.ref = "zmodemlib" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 desugar = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar" }
