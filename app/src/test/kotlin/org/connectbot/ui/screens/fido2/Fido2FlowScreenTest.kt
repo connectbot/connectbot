@@ -40,10 +40,10 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.connectbot.HiltComponentActivity
 import org.connectbot.R
+import org.connectbot.ctap2.Fido2Algorithm
+import org.connectbot.ctap2.Fido2Credential
+import org.connectbot.ctap2.android.Fido2ConnectionState
 import org.connectbot.data.entity.Fido2Transport
-import org.connectbot.fido2.Fido2Algorithm
-import org.connectbot.fido2.Fido2ConnectionState
-import org.connectbot.fido2.Fido2Credential
 import org.connectbot.service.PromptRequest
 import org.connectbot.service.PromptResponse
 import org.connectbot.ui.components.Fido2NfcTapOverlay

@@ -19,11 +19,11 @@ package org.connectbot.fido2.ssh
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.connectbot.ctap2.Fido2Algorithm
+import org.connectbot.ctap2.Fido2Result
+import org.connectbot.ctap2.Fido2SignatureResult
 import org.connectbot.data.entity.Fido2Transport
-import org.connectbot.fido2.Fido2Algorithm
 import org.connectbot.fido2.Fido2Manager
-import org.connectbot.fido2.Fido2Result
-import org.connectbot.fido2.Fido2SignatureResult
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail

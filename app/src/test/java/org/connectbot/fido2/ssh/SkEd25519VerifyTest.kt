@@ -19,7 +19,7 @@ package org.connectbot.fido2.ssh
 
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
-import org.connectbot.fido2.Fido2SignatureResult
+import org.connectbot.ctap2.Fido2SignatureResult
 import org.connectbot.sshlib.sk.SkAlgorithm
 import org.connectbot.sshlib.sk.SkPublicKey
 import org.connectbot.sshlib.sk.SkPublicKeyEncoder

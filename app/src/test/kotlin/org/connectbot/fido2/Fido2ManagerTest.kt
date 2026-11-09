@@ -29,6 +29,7 @@ import com.yubico.yubikit.android.transport.nfc.NfcYubiKeyDevice
 import com.yubico.yubikit.android.transport.usb.UsbYubiKeyDevice
 import com.yubico.yubikit.core.YubiKeyConnection
 import com.yubico.yubikit.core.YubiKeyDevice
+import com.yubico.yubikit.core.fido.FidoConnection
 import com.yubico.yubikit.core.util.Callback
 import com.yubico.yubikit.fido.ctap.ClientPin
 import com.yubico.yubikit.fido.ctap.CredentialManagement
@@ -47,9 +48,16 @@ import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.connectbot.R
+import org.connectbot.ctap2.Fido2Credential
+import org.connectbot.ctap2.Fido2Result
+import org.connectbot.ctap2.Fido2SignatureResult
+import org.connectbot.ctap2.YubiKitCtap2Client
+import org.connectbot.ctap2.android.Ctap2Device
+import org.connectbot.ctap2.android.Fido2ConnectionState
 import org.connectbot.data.entity.Fido2Transport
 import org.connectbot.di.CoroutineDispatchers
 import org.junit.After
+import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -65,7 +73,9 @@ import org.mockito.Mockito.`when`
 import org.mockito.Mockito.withSettings
 import org.mockito.stubbing.Answer
 import org.robolectric.RobolectricTestRunner
+import java.io.Closeable
 import java.io.IOException
+import java.security.MessageDigest
 import java.util.concurrent.ExecutorService
 import kotlin.coroutines.CoroutineContext
 import com.yubico.yubikit.core.util.Result as DeviceResult
@@ -122,6 +132,8 @@ class Fido2ManagerTest {
         Fido2Manager::class.java.getDeclaredField(name).apply { isAccessible = true }.set(manager, value)
     }
 
+    private val signedClientDataHashes = mutableListOf<ByteArray>()
+
     private val sessionAnswer = Answer<Any?> { call ->
         when (call.method.name) {
             "getCachedInfo" -> {
@@ -131,6 +143,7 @@ class Fido2ManagerTest {
 
             "getAssertions" -> {
                 signedRpIds.add(call.getArgument(0))
+                signedClientDataHashes.add(call.getArgument(1))
                 assertions
             }
 
@@ -278,16 +291,15 @@ class Fido2ManagerTest {
         manager.disconnect()
         val scope = Fido2Manager::class.java.getDeclaredField("scope").apply { isAccessible = true }.get(manager) as CoroutineScope
         scope.cancel()
-        val executor = Fido2Manager::class.java.getDeclaredField("sessionExecutor").apply { isAccessible = true }.get(manager) as ExecutorService
-        executor.shutdownNow()
+        val nfcSessions = Fido2Manager::class.java.getDeclaredField("nfcSessions").apply { isAccessible = true }.get(manager) as Closeable
+        nfcSessions.close()
         resources.asReversed().forEach { it.close() }
         Dispatchers.resetMain()
     }
 
     private fun connected() {
-        attach("currentSession", session)
-        attach("currentDevice", usbDevice)
-        attach("pinUvAuthProtocol", PinUvAuthProtocolV1())
+        attach("currentSession", YubiKitCtap2Client.open(mock(FidoConnection::class.java)))
+        attach("currentDevice", Ctap2Device::class.java.getDeclaredConstructor(YubiKeyDevice::class.java).apply { isAccessible = true }.newInstance(usbDevice))
     }
 
     private fun deviceConnected(): Boolean = Fido2Manager::class.java.getDeclaredField("currentDevice").run {
@@ -657,7 +669,7 @@ class Fido2ManagerTest {
             manager.connectAndSignUsb("1234")
             advanceUntilIdle()
             val failure = results.single() as Fido2Result.Error
-            assertSame(error, failure.cause)
+            assertTrue(generateSequence(failure.cause) { it.cause }.any { it === error })
             if (error !is IOException) {
                 assertTrue(failure.message.contains("Reconnect"))
                 assertFalse(deviceConnected())
@@ -751,7 +763,7 @@ class Fido2ManagerTest {
             advanceUntilIdle()
             assertTrue((result as Fido2Result.PinLocked).message.contains("Remaining retries: 3"))
         }
-        attach("pinUvAuthProtocol", com.yubico.yubikit.fido.ctap.PinUvAuthProtocolV2())
+        versions = listOf(2)
         probeFailures = 1
         retry()
         advanceUntilIdle()
@@ -779,7 +791,6 @@ class Fido2ManagerTest {
         manager.startUsbDiscovery()
         manager.stopUsbDiscovery()
         `when`(usbManager.hasPermission(supported)).thenReturn(true)
-        versions = listOf(1)
         manager.startUsbDiscovery()
         advanceUntilIdle()
         assertTrue(deviceConnected())
@@ -800,5 +811,21 @@ class Fido2ManagerTest {
         manager.startUsbDiscovery()
         advanceUntilIdle()
         manager.stopUsbDiscovery()
+    }
+
+    @Test
+    fun sshChallengeIsHashedExactlyOnceBeforeAssertion() = runTest(dispatcher) {
+        connected()
+        assertions = listOf(assertion())
+        val challenge = byteArrayOf(1, 2, 3, 4)
+        var result: Fido2Result<Fido2SignatureResult>? = null
+        manager.prepareSshSigning(byteArrayOf(1), challenge) { result = it }
+        manager.connectAndSignUsb("1234")
+        advanceUntilIdle()
+        assertTrue(result is Fido2Result.Success)
+        assertArrayEquals(
+            MessageDigest.getInstance("SHA-256").digest(challenge),
+            signedClientDataHashes.single(),
+        )
     }
 }
