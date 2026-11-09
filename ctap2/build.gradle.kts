@@ -8,7 +8,10 @@ plugins {
 kotlin { jvmToolchain(17) }
 dependencies {
     api(libs.yubikit.core)
-    implementation(libs.yubikit.fido)
+    implementation(libs.yubikit.fido) {
+        // YubiKit 3.0.0 declares Moshi but does not reference it; Okio is transitive.
+        exclude(group = "com.squareup.moshi", module = "moshi")
+    }
     testImplementation(libs.junit)
     testImplementation(libs.assertj.core)
     testImplementation(libs.mockito.core)
