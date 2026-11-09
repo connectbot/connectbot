@@ -77,10 +77,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import org.connectbot.R
+import org.connectbot.ctap2.Fido2Algorithm
+import org.connectbot.ctap2.Fido2Credential
+import org.connectbot.ctap2.android.Fido2ConnectionState
 import org.connectbot.data.entity.Fido2Transport
-import org.connectbot.fido2.Fido2Algorithm
-import org.connectbot.fido2.Fido2ConnectionState
-import org.connectbot.fido2.Fido2Credential
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

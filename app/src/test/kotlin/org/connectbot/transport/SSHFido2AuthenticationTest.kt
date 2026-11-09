@@ -21,6 +21,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import org.connectbot.ctap2.Fido2Result
+import org.connectbot.ctap2.Fido2SignatureResult
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Fido2Transport
 import org.connectbot.data.entity.Host
@@ -28,8 +30,6 @@ import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.fido2.Fido2Manager
-import org.connectbot.fido2.Fido2Result
-import org.connectbot.fido2.Fido2SignatureResult
 import org.connectbot.service.PromptManager
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager

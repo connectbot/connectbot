@@ -17,6 +17,10 @@
 
 package org.connectbot.fido2
 
+import org.connectbot.ctap2.Fido2Algorithm
+import org.connectbot.ctap2.Fido2Credential
+import org.connectbot.ctap2.Fido2SignatureResult
+
 /**
  * Test data constants for FIDO2 unit tests.
  * Inspired by YubiKit's TestData pattern for consistent test values.

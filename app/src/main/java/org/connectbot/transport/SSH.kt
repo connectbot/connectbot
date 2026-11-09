@@ -38,13 +38,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import org.connectbot.R
+import org.connectbot.ctap2.Fido2Algorithm
 import org.connectbot.data.entity.Fido2Transport
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
-import org.connectbot.fido2.Fido2Algorithm
 import org.connectbot.fido2.ssh.Fido2SignatureProxy
 import org.connectbot.fido2.ssh.SkEcdsaVerify
 import org.connectbot.fido2.ssh.SkEd25519Verify

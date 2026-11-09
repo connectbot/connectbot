@@ -17,7 +17,7 @@
 
 package org.connectbot.fido2.ssh
 
-import org.connectbot.fido2.Fido2SignatureResult
+import org.connectbot.ctap2.Fido2SignatureResult
 import org.connectbot.sshlib.sk.SkAlgorithm
 import org.connectbot.sshlib.sk.SkPublicKey
 import org.connectbot.sshlib.sk.SkPublicKeyDecoder
