@@ -65,7 +65,7 @@ navigationTesting = "2.10.2"
 ui = "1.11.4"
 biometric = "1.4.0-alpha02"
 core = "1.19.1"
-yubikit = "3.0.0"
+yubikit = "3.3.0"
 
 [libraries]
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
