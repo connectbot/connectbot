@@ -15,7 +15,7 @@ from verify_uuid_migration_results import EXPECTED, TEST_CLASS
 
 
 class InstrumentationRunnerTest(unittest.TestCase):
-    def run_script(self, flavor="Oss", *, tests_exit=0, cases=None, adb_exit=0):
+    def run_script(self, flavor="Oss", *, tests_exit=0, cases=None, adb_exit=0, adb_hangs=False):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             scripts = root / ".github/scripts"
@@ -23,8 +23,15 @@ class InstrumentationRunnerTest(unittest.TestCase):
             for name in ("run_instrumentation_tests.sh", "verify_uuid_migration_results.py"):
                 shutil.copy(Path(__file__).parent / name, scripts)
             adb = root / "adb"
-            adb.write_text('#!/bin/bash\necho "adb $*" >> calls\necho "device diagnostic"\nexit "$ADB_EXIT"\n')
+            adb.write_text('#!/bin/bash\necho "adb $*" >> calls\necho "device diagnostic"\nif [[ "$ADB_HANGS" == 1 ]]; then exec sleep 60; fi\nexit "$ADB_EXIT"\n')
             adb.chmod(0o755)
+            # Exercise real timeout handling with a short deadline in the harness.
+            timeout = root / "timeout"
+            timeout.write_text(
+                '#!/bin/bash\necho "timeout $*" >> calls\n'
+                'shift 2\nexec /usr/bin/timeout --kill-after=0.1s 0.1s "$@"\n'
+            )
+            timeout.chmod(0o755)
             gradle = root / "gradlew"
             gradle.write_text(
                 '#!/bin/bash\necho "gradle $*" >> calls\necho "gradle output"\n'
@@ -48,6 +55,7 @@ class InstrumentationRunnerTest(unittest.TestCase):
                     "PATH": f"{root}:{os.environ['PATH']}",
                     "TESTS_EXIT": str(tests_exit),
                     "ADB_EXIT": str(adb_exit),
+                    "ADB_HANGS": "1" if adb_hangs else "0",
                 },
                 text=True,
                 stdout=subprocess.PIPE,
@@ -72,6 +80,18 @@ class InstrumentationRunnerTest(unittest.TestCase):
 
     def test_failed_diagnostic_capture_preserves_success(self):
         result, _, _ = self.run_script(cases=[(name, None) for name in EXPECTED], adb_exit=143)
+        self.assertEqual(0, result.returncode, result.stdout)
+
+    def test_unresponsive_device_preserves_gradle_failure(self):
+        result, calls, logs = self.run_script(tests_exit=23, adb_hangs=True)
+        self.assertEqual(23, result.returncode, result.stdout)
+        self.assertEqual(3, calls.count("timeout --kill-after=5s 30s adb"))
+        self.assertIn("device diagnostic", logs["logcat.txt"])
+
+    def test_unresponsive_device_preserves_success(self):
+        result, _, _ = self.run_script(
+            cases=[(name, None) for name in EXPECTED], adb_hangs=True
+        )
         self.assertEqual(0, result.returncode, result.stdout)
 
     def test_empty_suite_fails_before_coverage(self):

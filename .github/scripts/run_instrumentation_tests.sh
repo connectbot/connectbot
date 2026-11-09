@@ -19,10 +19,12 @@ mkdir -p "$diagnostics"
 finish() {
   local result=$?
   trap - EXIT
-  adb logcat -d -v threadtime -b all > "$diagnostics/logcat.txt" 2>&1 || true
+  # adb can wait indefinitely after the emulator disappears. Diagnostics must
+  # not turn a completed test failure into a hung job, even if adb ignores TERM.
+  timeout --kill-after=5s 30s adb logcat -d -v threadtime -b all > "$diagnostics/logcat.txt" 2>&1 || true
   if (( result != 0 )); then
-    adb shell dumpsys activity instrumentation > "$diagnostics/instrumentation.txt" 2>&1 || true
-    adb shell df -h /data > "$diagnostics/device-storage.txt" 2>&1 || true
+    timeout --kill-after=5s 30s adb shell dumpsys activity instrumentation > "$diagnostics/instrumentation.txt" 2>&1 || true
+    timeout --kill-after=5s 30s adb shell df -h /data > "$diagnostics/device-storage.txt" 2>&1 || true
   fi
   exit "$result"
 }
