@@ -15,7 +15,7 @@ from verify_uuid_migration_results import EXPECTED, TEST_CLASS
 
 
 class InstrumentationRunnerTest(unittest.TestCase):
-    def run_script(self, flavor="Oss", *, tests_exit=0, cases=None, adb_exit=0, adb_hangs=False):
+    def run_script(self, flavor="Oss", *, tests_exit=0, cases=None, adb_exit=0, adb_hangs=False, device_state="device", device_exit=0):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             scripts = root / ".github/scripts"
@@ -23,7 +23,12 @@ class InstrumentationRunnerTest(unittest.TestCase):
             for name in ("run_instrumentation_tests.sh", "verify_uuid_migration_results.py"):
                 shutil.copy(Path(__file__).parent / name, scripts)
             adb = root / "adb"
-            adb.write_text('#!/bin/bash\necho "adb $*" >> calls\necho "device diagnostic"\nif [[ "$ADB_HANGS" == 1 ]]; then exec sleep 60; fi\nexit "$ADB_EXIT"\n')
+            adb.write_text(
+                '#!/bin/bash\necho "adb $*" >> calls\n'
+                'if [[ "$1" == get-state ]]; then echo "$DEVICE_STATE"; exit "$DEVICE_EXIT"; fi\n'
+                'echo "device diagnostic"\n'
+                'if [[ "$ADB_HANGS" == 1 ]]; then exec sleep 60; fi\nexit "$ADB_EXIT"\n'
+            )
             adb.chmod(0o755)
             # Exercise real timeout handling with a short deadline in the harness.
             timeout = root / "timeout"
@@ -35,6 +40,8 @@ class InstrumentationRunnerTest(unittest.TestCase):
             gradle = root / "gradlew"
             gradle.write_text(
                 '#!/bin/bash\necho "gradle $*" >> calls\necho "gradle output"\n'
+                # Let the background logcat process write its first output.
+                'sleep 0.05\n'
                 'if [[ "$*" != *CoverageReport* ]]; then exit "${TESTS_EXIT}"; fi\n'
             )
             gradle.chmod(0o755)
@@ -56,6 +63,8 @@ class InstrumentationRunnerTest(unittest.TestCase):
                     "TESTS_EXIT": str(tests_exit),
                     "ADB_EXIT": str(adb_exit),
                     "ADB_HANGS": "1" if adb_hangs else "0",
+                    "DEVICE_STATE": device_state,
+                    "DEVICE_EXIT": str(device_exit),
                 },
                 text=True,
                 stdout=subprocess.PIPE,
@@ -87,12 +96,32 @@ class InstrumentationRunnerTest(unittest.TestCase):
         self.assertEqual(23, result.returncode, result.stdout)
         self.assertEqual(3, calls.count("timeout --kill-after=5s 30s adb"))
         self.assertIn("device diagnostic", logs["logcat.txt"])
+        self.assertIn("device diagnostic", logs["live-logcat.txt"])
 
     def test_unresponsive_device_preserves_success(self):
         result, _, _ = self.run_script(
             cases=[(name, None) for name in EXPECTED], adb_hangs=True
         )
         self.assertEqual(0, result.returncode, result.stdout)
+
+    def test_device_loss_rejects_partial_success_before_coverage(self):
+        # The real job returned success with all migration checks passing,
+        # despite losing the emulator before coverage collection.
+        result, calls, logs = self.run_script(
+            cases=[(name, None) for name in EXPECTED], device_state="offline"
+        )
+        self.assertNotEqual(0, result.returncode, result.stdout)
+        self.assertIn("Emulator disconnected during instrumentation", result.stdout)
+        self.assertNotIn("CoverageReport", calls)
+        self.assertIn("device diagnostic", logs["live-logcat.txt"])
+
+    def test_missing_device_rejects_gradle_success(self):
+        result, calls, _ = self.run_script(
+            cases=[(name, None) for name in EXPECTED], device_exit=1
+        )
+        self.assertNotEqual(0, result.returncode, result.stdout)
+        self.assertIn("Emulator disconnected during instrumentation", result.stdout)
+        self.assertNotIn("CoverageReport", calls)
 
     def test_empty_suite_fails_before_coverage(self):
         result, calls, _ = self.run_script(cases=[])

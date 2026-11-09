@@ -291,6 +291,17 @@ jobs:
           disk-size: 2G
           script: bash .github/scripts/run_instrumentation_tests.sh "$FLAVOR_TASK"
 
+      - name: Capture host diagnostics after instrumentation failure
+        if: failure()
+        env:
+          FLAVOR: ${{ matrix.flavor }}
+        run: |
+          diagnostics="build/instrumentation-diagnostics/$FLAVOR"
+          mkdir -p "$diagnostics"
+          free -h > "$diagnostics/host-memory.txt" 2>&1 || true
+          ps -eo pid,ppid,rss,comm --sort=-rss > "$diagnostics/host-processes.txt" 2>&1 || true
+          timeout --kill-after=5s 10s sudo -n dmesg --ctime > "$diagnostics/host-kernel.txt" 2>&1 || true
+
       - name: Store instrumentation test results
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
