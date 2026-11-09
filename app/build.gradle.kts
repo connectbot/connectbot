@@ -618,7 +618,10 @@ dependencies {
     testImplementation(libs.androidx.test.core)
     testImplementation(libs.androidx.test.ext.junit)
     testImplementation(libs.yubikit.android)
-    testImplementation(libs.yubikit.fido)
+    testImplementation(libs.yubikit.fido) {
+        // YubiKit 3.0.0 declares Moshi but does not reference it; Okio is transitive.
+        exclude(group = "com.squareup.moshi", module = "moshi")
+    }
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.assertj.core)
