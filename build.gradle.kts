@@ -17,6 +17,7 @@ buildscript {
 
 plugins {
     alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
     alias(libs.plugins.android.dynamic.feature) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.hilt.android) apply false
@@ -52,7 +53,7 @@ spotless {
     }
 
     kotlin {
-        target("app/src/**/*.kt", "build-logic/src/**/*.kt")
+        target("app/src/**/*.kt", "build-logic/src/**/*.kt", "ctap2/src/**/*.kt", "ctap2-android/src/**/*.kt")
         ktlint("1.8.0")
             .customRuleSets(listOf("io.nlopez.compose.rules:ktlint:0.6.8"))
         licenseHeaderFile("spotless/license-header.txt")

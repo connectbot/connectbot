@@ -68,6 +68,7 @@ core = "1.19.1"
 yubikit = "3.0.0"
 
 [libraries]
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 gradle-download = { module = "de.undercouch:gradle-download-task", version.ref = "gradleDownload" }
 zmodemlib = { module = "org.connectbot.zmodemlib:zmodemlib", version.ref = "zmodemlib" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
@@ -135,6 +136,7 @@ androidx-biometric = { module = "androidx.biometric:biometric-ktx", version.ref 
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "core" }
 
 yubikit-android = { module = "com.yubico.yubikit:android", version.ref = "yubikit" }
+yubikit-core = { module = "com.yubico.yubikit:core", version.ref = "yubikit" }
 yubikit-fido = { module = "com.yubico.yubikit:fido", version.ref = "yubikit" }
 
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
@@ -147,6 +149,8 @@ kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", v
 ksp-gradle-plugin = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp" }
 
 [plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-dynamic-feature = { id = "com.android.dynamic-feature", version.ref = "androidGradlePlugin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
