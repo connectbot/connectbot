@@ -52,7 +52,7 @@ spotless {
     }
 
     kotlin {
-        target("app/src/**/*.kt")
+        target("app/src/**/*.kt", "build-logic/src/**/*.kt")
         ktlint("1.8.0")
             .customRuleSets(listOf("io.nlopez.compose.rules:ktlint:0.6.8"))
         licenseHeaderFile("spotless/license-header.txt")
@@ -87,4 +87,8 @@ spotless {
         trimTrailingWhitespace()
         endWithNewline()
     }
+}
+
+tasks.named("check") {
+    dependsOn(gradle.includedBuild("build-logic").task(":check"))
 }
