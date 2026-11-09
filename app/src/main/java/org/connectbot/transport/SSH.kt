@@ -730,6 +730,7 @@ open class SSH : AbsTransport {
             pin = pin,
             transport = transport,
             fido2Manager = fido2Manager,
+            owner = bridge,
         )
 
         Timber.d("Created FIDO2 SignatureProxy for '${pubkey.nickname}'")

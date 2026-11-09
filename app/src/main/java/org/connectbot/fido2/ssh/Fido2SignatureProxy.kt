@@ -46,6 +46,7 @@ class Fido2SignatureProxy(
     private val pin: String,
     private val transport: Fido2Transport,
     private val fido2Manager: Fido2Manager,
+    private val owner: Any? = null,
 ) {
 
     /**
@@ -97,43 +98,7 @@ class Fido2SignatureProxy(
      *
      * Uses the configured transport preference (USB or NFC).
      */
-    private suspend fun performFido2Signing(challenge: ByteArray): Fido2Result<Fido2SignatureResult> = when (transport) {
-        Fido2Transport.USB -> {
-            Timber.d("Using USB signing (preferred transport)")
-            performUsbSigning(challenge)
-        }
-
-        Fido2Transport.NFC -> {
-            Timber.d("Using NFC signing (preferred transport)")
-            performNfcSigning(challenge)
-        }
-    }
-
-    /**
-     * Perform signing via USB-connected device.
-     */
-    private suspend fun performUsbSigning(challenge: ByteArray): Fido2Result<Fido2SignatureResult> = kotlinx.coroutines.suspendCancellableCoroutine { continuation ->
-        fido2Manager.prepareSshSigning(credentialId, challenge, rpId) { result ->
-            continuation.resumeWith(Result.success(result))
-        }
-        fido2Manager.connectAndSignUsb(pin)
-    }
-
-    /**
-     * Perform signing via NFC tap.
-     * This sets up the signing request and waits for the user to tap their NFC key.
-     */
-    private suspend fun performNfcSigning(challenge: ByteArray): Fido2Result<Fido2SignatureResult> = kotlinx.coroutines.suspendCancellableCoroutine { continuation ->
-        fido2Manager.prepareSshSigning(credentialId, challenge, rpId) { result ->
-            continuation.resumeWith(Result.success(result))
-        }
-        // Request NFC tap - UI will observe waitingForNfcSigning and start NFC discovery
-        fido2Manager.requestNfcSigning(pin)
-
-        continuation.invokeOnCancellation {
-            fido2Manager.cancelNfcSigning()
-        }
-    }
+    private suspend fun performFido2Signing(challenge: ByteArray): Fido2Result<Fido2SignatureResult> = fido2Manager.signSshChallenge(credentialId, challenge, rpId, pin, transport, owner)
 
     /**
      * Encode the FIDO2 signature result to SSH SK signature format.

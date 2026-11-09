@@ -18,8 +18,6 @@
 package org.connectbot.fido2.ssh
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.async
-import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.connectbot.data.entity.Fido2Transport
 import org.connectbot.fido2.Fido2Algorithm
@@ -32,7 +30,6 @@ import org.junit.Assert.fail
 import org.junit.Test
 import org.mockito.Answers
 import org.mockito.Mockito.mock
-import org.mockito.Mockito.verify
 import org.mockito.stubbing.Answer
 import java.io.IOException
 
@@ -40,22 +37,12 @@ import java.io.IOException
 class Fido2SignatureProxyTest {
     @Test
     fun signsUsingConfiguredTransportAndEncodesAlgorithmSpecificSignatures() = runTest {
-        var callback: ((Fido2Result<Fido2SignatureResult>) -> Unit)? = null
         var response: Fido2Result<Fido2SignatureResult> = Fido2Result.Error("not set")
         val manager = mock(
             Fido2Manager::class.java,
             Answer { call ->
                 when (call.method.name) {
-                    "prepareSshSigning" -> {
-                        callback = call.getArgument(3)
-                        null
-                    }
-
-                    "connectAndSignUsb", "requestNfcSigning" -> {
-                        callback!!.invoke(response)
-                        null
-                    }
-
+                    "signSshChallenge" -> response
                     else -> Answers.RETURNS_DEFAULTS.answer(call)
                 }
             },
@@ -78,16 +65,5 @@ class Fido2SignatureProxyTest {
                 }
             }
         }
-    }
-
-    @Test
-    fun cancellingNfcWaitCancelsHardwareSigningRequest() = runTest {
-        val manager = mock(Fido2Manager::class.java)
-        val proxy = Fido2SignatureProxy(byteArrayOf(1), "ssh:", Fido2Algorithm.EDDSA, "1234", Fido2Transport.NFC, manager)
-        val signing = async { proxy.sign(byteArrayOf(2), "SHA-256") }
-        runCurrent()
-        signing.cancel()
-        runCurrent()
-        verify(manager).cancelNfcSigning()
     }
 }

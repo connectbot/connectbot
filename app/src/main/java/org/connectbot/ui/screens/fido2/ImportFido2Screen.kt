@@ -96,6 +96,10 @@ fun ImportFido2Screen(
     val lifecycleOwner = LocalLifecycleOwner.current
     val activity = context as? android.app.Activity
 
+    DisposableEffect(viewModel) {
+        onDispose { viewModel.cancelImport() }
+    }
+
     // Handle USB discovery lifecycle only when USB transport is selected
     DisposableEffect(uiState.transportSelected, uiState.selectedTransport) {
         if (uiState.transportSelected && uiState.selectedTransport == Fido2Transport.USB) {
