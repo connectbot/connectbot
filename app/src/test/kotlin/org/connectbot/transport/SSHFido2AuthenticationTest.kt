@@ -56,7 +56,6 @@ class SSHFido2AuthenticationTest {
     private var allowConnection = true
     private var pin: String? = "1234"
     private var hardwareAvailable = true
-    private var callback: ((Fido2Result<Fido2SignatureResult>) -> Unit)? = null
     private var signature = ByteArray(64)
     private val promptOrder = mutableListOf<String>()
 
@@ -98,20 +97,14 @@ class SSHFido2AuthenticationTest {
         val dispatchers = CoroutineDispatchers(dispatcher, dispatcher, dispatcher)
         val repository = mock(PubkeyRepository::class.java)
         var invalidPin = false
+        var signingOwner: Any? = null
         val hardware = mock(
             Fido2Manager::class.java,
             Answer { call ->
                 when (call.method.name) {
-                    "prepareSshSigning" -> {
-                        callback = call.getArgument(3)
-                        null
-                    }
-
-                    "connectAndSignUsb", "requestNfcSigning" -> {
-                        callback!!.invoke(
-                            if (invalidPin) Fido2Result.PinInvalid(2) else Fido2Result.Success(Fido2SignatureResult(ByteArray(37), signature, 0)),
-                        )
-                        null
+                    "signSshChallenge" -> {
+                        signingOwner = call.getArgument(5)
+                        if (invalidPin) Fido2Result.PinInvalid(2) else Fido2Result.Success(Fido2SignatureResult(ByteArray(37), signature, 0))
                     }
 
                     else -> Answers.RETURNS_DEFAULTS.answer(call)
@@ -149,6 +142,7 @@ class SSHFido2AuthenticationTest {
                         assertEquals(expected, offered.single().algorithmName)
                         promptOrder.clear()
                         assertNotNull(runBlocking { handler.onSignatureRequest(offered.single(), byteArrayOf(9)) })
+                        org.junit.Assert.assertSame(bridge, signingOwner)
                         assertEquals(if (transport == Fido2Transport.USB) listOf("pin", "connect") else listOf("pin"), promptOrder)
                         invalidPin = true
                         try {

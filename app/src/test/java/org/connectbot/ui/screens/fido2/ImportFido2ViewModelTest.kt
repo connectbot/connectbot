@@ -486,4 +486,18 @@ class ImportFido2ViewModelTest {
 
         assertThat(viewModel.uiState.value.error).isNull()
     }
+
+    @Test
+    fun clearingViewModelCancelsPendingImport() {
+        val store = androidx.lifecycle.ViewModelStore()
+        androidx.lifecycle.ViewModelProvider(
+            store,
+            object : androidx.lifecycle.ViewModelProvider.Factory {
+                @Suppress("UNCHECKED_CAST")
+                override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T = viewModel as T
+            },
+        )[ImportFido2ViewModel::class.java]
+        store.clear()
+        org.mockito.Mockito.verify(fido2Manager).cancelImport()
+    }
 }

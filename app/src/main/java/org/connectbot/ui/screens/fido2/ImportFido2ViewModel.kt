@@ -71,8 +71,6 @@ class ImportFido2ViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(ImportFido2UiState())
     val uiState: StateFlow<ImportFido2UiState> = _uiState.asStateFlow()
 
-    private var currentPin: String? = null
-
     init {
         observeConnectionState()
         // Start with transport selection - user picks USB or NFC first
@@ -155,7 +153,7 @@ class ImportFido2ViewModel @Inject constructor(
     }
 
     fun submitPin(pin: String) {
-        currentPin = pin
+        importCancelled = false
 
         // Check if we're already connected via USB
         val currentState = _uiState.value.connectionState
@@ -229,7 +227,6 @@ class ImportFido2ViewModel @Inject constructor(
             }
 
             is Fido2Result.PinInvalid -> {
-                currentPin = null
                 _uiState.update {
                     it.copy(
                         isScanning = false,
@@ -241,7 +238,6 @@ class ImportFido2ViewModel @Inject constructor(
             }
 
             is Fido2Result.PinLocked -> {
-                currentPin = null
                 _uiState.update {
                     it.copy(
                         isScanning = false,
@@ -290,6 +286,7 @@ class ImportFido2ViewModel @Inject constructor(
      * For NFC: Show PIN prompt first (connection is transient)
      */
     fun confirmTransportSelection() {
+        importCancelled = false
         val transport = _uiState.value.selectedTransport
         _uiState.update { it.copy(transportSelected = true) }
 
@@ -362,6 +359,19 @@ class ImportFido2ViewModel @Inject constructor(
             fido2RpId = credential.rpId,
             fido2Transport = transport,
         )
+    }
+
+    private var importCancelled = false
+
+    fun cancelImport() {
+        if (importCancelled) return
+        importCancelled = true
+        fido2Manager.cancelImport()
+    }
+
+    override fun onCleared() {
+        cancelImport()
+        super.onCleared()
     }
 
     fun clearError() {

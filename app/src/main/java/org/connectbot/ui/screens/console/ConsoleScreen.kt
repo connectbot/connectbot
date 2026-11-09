@@ -629,10 +629,12 @@ private fun BoxScope.ConsoleAuthenticationOverlay(
 
     val waitingForNfc by bridge.fido2Manager.waitingForNfcSigning.collectAsState()
     val nfcTagLost by bridge.fido2Manager.nfcSigningTagLost.collectAsState()
-    if (waitingForNfc) {
+    val signingRequest by bridge.fido2Manager.signingRequest.collectAsState()
+    val request = signingRequest
+    if (waitingForNfc && request?.owner === bridge) {
         Fido2NfcTapOverlay(
             tagLost = nfcTagLost,
-            onCancel = { bridge.fido2Manager.cancelNfcSigning() },
+            onCancel = { bridge.fido2Manager.cancelNfcSigning(request) },
             modifier = Modifier.align(Alignment.BottomCenter),
         )
     }

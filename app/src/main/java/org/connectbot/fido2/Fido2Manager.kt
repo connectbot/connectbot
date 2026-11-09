@@ -41,7 +41,9 @@ import com.yubico.yubikit.fido.ctap.PinUvAuthProtocol
 import com.yubico.yubikit.fido.ctap.PinUvAuthProtocolV1
 import com.yubico.yubikit.fido.ctap.PinUvAuthProtocolV2
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -50,12 +52,15 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import org.connectbot.R
+import org.connectbot.data.entity.Fido2Transport
 import org.connectbot.di.CoroutineDispatchers
 import timber.log.Timber
 import java.security.MessageDigest
 import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.coroutines.resume
@@ -90,6 +95,24 @@ class Fido2Manager @Inject constructor(
     private var usbDiscoveryActive = false
     private var usbConnectInProgress = false
     private val nfcConnectionMutex = Mutex()
+    private val deviceMutex = Mutex()
+    private val signingMutex = Mutex()
+    private val importGeneration = AtomicLong()
+
+    /** Keep a device operation serialized until its SDK callback has finished, even on cancellation. */
+    private suspend fun <T> withDevice(operation: suspend () -> T): T = withContext(dispatchers.io) {
+        deviceMutex.withLock {
+            withContext(NonCancellable) { operation() }
+        }
+    }
+
+    /** Invalidates pending import callbacks, including operations already on the device. */
+    fun cancelImport() {
+        importGeneration.incrementAndGet()
+        pendingPin = null
+        nfcCredentialCallback = null
+        usbCredentialCallback = null
+    }
 
     /**
      * Start USB device discovery.
@@ -170,7 +193,7 @@ class Fido2Manager @Inject constructor(
     }
 
     /** Verify a fresh USB connection rather than reusing a previous discovery. */
-    suspend fun awaitFreshUsbConnection(): Boolean {
+    suspend fun awaitFreshUsbConnection(): Boolean = signingMutex.withLock {
         withContext(dispatchers.io) {
             stopUsbDiscovery()
             // Credential import may have left a pending PIN. SSH signing supplies
@@ -181,7 +204,7 @@ class Fido2Manager @Inject constructor(
         val state = connectionState.first {
             (it is Fido2ConnectionState.Connected && it.transport == "USB") || it is Fido2ConnectionState.Error
         }
-        return state is Fido2ConnectionState.Connected
+        state is Fido2ConnectionState.Connected
     }
 
     /**
@@ -281,6 +304,7 @@ class Fido2Manager @Inject constructor(
         val protocol = pinUvAuthProtocol
         val pin = pendingPin
         val callback = usbCredentialCallback
+        val generation = importGeneration.get()
 
         if (session == null || protocol == null) {
             Log.e(TAG, "retryUsbWithPin: No session or protocol available")
@@ -298,21 +322,27 @@ class Fido2Manager @Inject constructor(
         }
 
         scope.launch {
-            val result = try {
-                Log.d(TAG, "USB authenticating with PIN using existing session")
-                enumerateCredentialsWithPin(session, protocol, pin)
-            } catch (e: Exception) {
-                if (shouldRetryUsbWithFreshConnection(e)) {
-                    Log.w(TAG, "USB session appears stale, retrying with fresh connection")
-                    reconnectAndEnumerateUsbCredentials(pin)
-                } else {
-                    mapPinOrCredentialError(e, session = session, protocol = protocol)
+            val result = withDevice {
+                if (generation != importGeneration.get()) return@withDevice null
+                try {
+                    Log.d(TAG, "USB authenticating with PIN using existing session")
+                    enumerateCredentialsWithPin(session, protocol, pin)
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    if (shouldRetryUsbWithFreshConnection(e)) {
+                        Log.w(TAG, "USB session appears stale, retrying with fresh connection")
+                        reconnectAndEnumerateUsbCredentials(pin)
+                    } else {
+                        mapPinOrCredentialError(e, session = session, protocol = protocol)
+                    }
                 }
             }
+            if (generation != importGeneration.get()) return@launch
 
             // Deliver result via callback
             pendingPin = null
-            callback?.invoke(result)
+            if (result != null) callback?.invoke(result)
             usbCredentialCallback = null
         }
     }
@@ -535,6 +565,12 @@ class Fido2Manager @Inject constructor(
         null
     }
 
+    private data class NfcImportRequest(
+        val generation: Long,
+        val pin: String?,
+        val callback: ((Fido2Result<List<Fido2Credential>>) -> Unit)?,
+    )
+
     /**
      * Connect to a YubiKey device and establish a CTAP2 session.
      * Uses FidoConnection for USB (CTAPHID protocol) and SmartCardConnection for NFC (APDU).
@@ -549,16 +585,25 @@ class Fido2Manager @Inject constructor(
             return
         }
         try {
-            // Disconnect any existing session
-            disconnect()
-
-            _connectionState.value = Fido2ConnectionState.Connecting
-
-            if (transport == "USB") {
-                connectUsbDevice(device, deviceName)
-            } else {
-                connectNfcDevice(device, deviceName)
+            val request = withContext(dispatchers.main) {
+                NfcImportRequest(importGeneration.get(), pendingPin, nfcCredentialCallback)
             }
+            withDevice {
+                if (isNfc && request.generation != importGeneration.get()) return@withDevice
+                // Disconnect any existing session before opening another.
+                closeCurrentSession()
+                currentDevice = null
+
+                _connectionState.value = Fido2ConnectionState.Connecting
+
+                if (transport == "USB") {
+                    connectUsbDevice(device, deviceName)
+                } else {
+                    connectNfcDevice(device, deviceName, request)
+                }
+            }
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
             Timber.e(e, "Failed to connect to FIDO2 device")
             _connectionState.value = Fido2ConnectionState.Error(e.message ?: "Connection failed")
@@ -568,60 +613,48 @@ class Fido2Manager @Inject constructor(
     }
 
     private suspend fun connectUsbDevice(device: YubiKeyDevice, deviceName: String?) {
-        // USB: Like NFC, do ALL operations in the callback to avoid thread issues
-        val pin = pendingPin
-        val callback = usbCredentialCallback
+        // Discovery only establishes a session; PIN authentication is a separate operation.
+        suspendCancellableCoroutine<Unit> { continuation ->
+            device.requestConnection(FidoConnection::class.java) { result ->
+                try {
+                    val connection = result.value
+                    Log.d(TAG, "USB FidoConnection established on thread ${Thread.currentThread().name}")
+                    val session = Ctap2Session(connection)
+                    Log.d(TAG, "USB Ctap2Session created, checking if PIN required")
 
-        Log.d(TAG, "USB: Requesting FidoConnection... pin=${pin != null}, callback=${callback != null}")
+                    val info = session.cachedInfo
+                    val pinRequired = info.options["clientPin"] == true
+                    Log.d(TAG, "USB PIN required: $pinRequired")
 
-        if (pin == null) {
-            // No PIN yet - just connect and get authenticator info to check if PIN is needed
-            suspendCancellableCoroutine<Unit> { continuation ->
-                device.requestConnection(FidoConnection::class.java) { result ->
-                    try {
-                        val connection = result.value
-                        Log.d(TAG, "USB FidoConnection established on thread ${Thread.currentThread().name}")
-                        val session = Ctap2Session(connection)
-                        Log.d(TAG, "USB Ctap2Session created, checking if PIN required")
+                    // Always store the device for retry
+                    currentDevice = device
 
-                        val info = session.cachedInfo
-                        val pinRequired = info.options["clientPin"] == true
-                        Log.d(TAG, "USB PIN required: $pinRequired")
-
-                        // Always store the device for retry
-                        currentDevice = device
-
-                        // Always store session - we'll reuse it for PIN auth
-                        // Closing the session also closes the USB connection,
-                        // and some devices (like SoloKey) don't handle reconnection well
-                        currentSession = session
-                        pinUvAuthProtocol = selectPinProtocol(session)
-                        continuation.resume(Unit)
-                    } catch (e: Exception) {
-                        Log.e(TAG, "USB connection failed: ${e.message}", e)
-                        continuation.resumeWithException(e)
-                    }
+                    // Always store session - we'll reuse it for PIN auth
+                    // Closing the session also closes the USB connection,
+                    // and some devices (like SoloKey) don't handle reconnection well
+                    currentSession = session
+                    pinUvAuthProtocol = selectPinProtocol(session)
+                    continuation.resume(Unit)
+                } catch (e: Exception) {
+                    Log.e(TAG, "USB connection failed: ${e.message}", e)
+                    continuation.resumeWithException(e)
                 }
             }
-
-            _connectionState.value = Fido2ConnectionState.Connected(
-                transport = "USB",
-                deviceName = deviceName,
-            )
-            // The ViewModel requests the PIN after discovery.
-            return
         }
 
-        // USB with PIN is handled by retryUsbWithPin() using the existing session
-        // This branch should not be reached for USB
-        Log.w(TAG, "Unexpected: connectToDevice called for USB with PIN set")
+        _connectionState.value = Fido2ConnectionState.Connected(
+            transport = "USB",
+            deviceName = deviceName,
+        )
+        // The ViewModel requests the PIN after discovery.
     }
 
-    private suspend fun connectNfcDevice(device: YubiKeyDevice, deviceName: String?) {
+    private suspend fun connectNfcDevice(device: YubiKeyDevice, deviceName: String?, request: NfcImportRequest) {
         // NFC: Do ALL operations synchronously in the callback
         // because the NFC connection is transient
-        val pin = pendingPin
-        val callback = nfcCredentialCallback
+        val pin = request.pin
+        val callback = request.callback
+        val generation = request.generation
 
         if (pin == null) {
             _connectionState.value = Fido2ConnectionState.Error("PIN required for NFC")
@@ -670,21 +703,25 @@ class Fido2Manager @Inject constructor(
             }
         }
 
-        // Deliver result via callback and update state
-        pendingPin = null
-        callback?.invoke(result)
-        nfcCredentialCallback = null
+        withContext(dispatchers.main) {
+            if (generation != importGeneration.get()) return@withContext
 
-        when (result) {
-            is Fido2Result.Success -> {
-                _connectionState.value = Fido2ConnectionState.Connected(
-                    transport = "NFC",
-                    deviceName = deviceName,
-                )
-            }
+            // Deliver result via callback and update state
+            pendingPin = null
+            callback?.invoke(result)
+            nfcCredentialCallback = null
 
-            else -> {
-                _connectionState.value = Fido2ConnectionState.Disconnected
+            when (result) {
+                is Fido2Result.Success -> {
+                    _connectionState.value = Fido2ConnectionState.Connected(
+                        transport = "NFC",
+                        deviceName = deviceName,
+                    )
+                }
+
+                else -> {
+                    _connectionState.value = Fido2ConnectionState.Disconnected
+                }
             }
         }
     }
@@ -726,18 +763,64 @@ class Fido2Manager @Inject constructor(
      * Disconnect from the current device.
      */
     fun disconnect() {
+        val session = currentSession
+        currentDevice = null
+        currentSession = null
+        pinUvAuthProtocol = null
+        _connectionState.value = Fido2ConnectionState.Disconnected
+        scope.launch(dispatchers.io) {
+            deviceMutex.withLock { closeSession(session) }
+        }
+    }
+
+    private fun closeCurrentSession() {
+        val session = currentSession
+        currentSession = null
+        pinUvAuthProtocol = null
+        closeSession(session)
+    }
+
+    private fun closeSession(session: Ctap2Session?) {
         try {
-            // Ctap2Session.close() also closes the underlying connection
-            currentSession?.close()
+            session?.close()
         } catch (e: Exception) {
             Timber.e(e, "Error closing session")
         }
-        currentDevice = null
-        currentSession = null
-        _connectionState.value = Fido2ConnectionState.Disconnected
     }
 
     // ==================== SSH Authentication Support ====================
+
+    class SigningRequest internal constructor(val owner: Any?)
+
+    private val _signingRequest = MutableStateFlow<SigningRequest?>(null)
+    val signingRequest: StateFlow<SigningRequest?> = _signingRequest.asStateFlow()
+
+    /** Own the request until completion; cancellation while queued cannot affect its predecessor. */
+    suspend fun signSshChallenge(
+        credentialId: ByteArray,
+        challenge: ByteArray,
+        rpId: String,
+        pin: String,
+        transport: Fido2Transport,
+        owner: Any? = null,
+    ): Fido2Result<Fido2SignatureResult> = signingMutex.withLock {
+        withContext(dispatchers.main) {
+            var request: SigningRequest? = null
+            try {
+                suspendCancellableCoroutine { continuation ->
+                    request = prepareSshSigning(credentialId, challenge, rpId, owner) { result ->
+                        continuation.resume(result)
+                    }
+                    when (transport) {
+                        Fido2Transport.USB -> connectAndSignUsb(pin)
+                        Fido2Transport.NFC -> requestNfcSigning(pin)
+                    }
+                }
+            } finally {
+                if (_signingRequest.value === request) clearSigningRequest()
+            }
+        }
+    }
 
     // Callback for SSH signing operations
     private var sshSigningCallback: ((Fido2Result<Fido2SignatureResult>) -> Unit)? = null
@@ -756,23 +839,28 @@ class Fido2Manager @Inject constructor(
      * Set up for SSH signing operation.
      * Call this before connecting to prepare for signing.
      */
-    fun prepareSshSigning(
+    internal fun prepareSshSigning(
         credentialId: ByteArray,
         challenge: ByteArray,
         rpId: String = SSH_RP_ID,
+        owner: Any? = null,
         callback: (Fido2Result<Fido2SignatureResult>) -> Unit,
-    ) {
+    ): SigningRequest {
+        check(_signingRequest.value == null) { "Signing request already active" }
+        val request = SigningRequest(owner)
+        _signingRequest.value = request
         sshCredentialId = credentialId
         sshChallenge = challenge
         sshRpId = rpId
         sshSigningCallback = callback
+        return request
     }
 
     /**
      * Request NFC tap for SSH signing.
      * UI should observe waitingForNfcSigning and start NFC discovery when true.
      */
-    fun requestNfcSigning(pin: String) {
+    internal fun requestNfcSigning(pin: String) {
         sshPin = pin
         _nfcSigningTagLost.value = false
         _waitingForNfcSigning.value = true
@@ -781,13 +869,15 @@ class Fido2Manager @Inject constructor(
     /**
      * Cancel pending NFC signing request.
      */
-    fun cancelNfcSigning() {
+    fun cancelNfcSigning(request: SigningRequest? = _signingRequest.value) {
+        if (request == null || _signingRequest.value !== request) return
         val callback = sshSigningCallback
         clearSigningRequest()
         callback?.invoke(Fido2Result.Error("NFC signing cancelled"))
     }
 
     private fun clearSigningRequest() {
+        _signingRequest.value = null
         sshCredentialId = null
         sshChallenge = null
         sshPin = null
@@ -829,7 +919,8 @@ class Fido2Manager @Inject constructor(
      * Connect to USB device and perform SSH signing.
      * This handles the full flow: connect -> PIN auth -> sign -> return result via callback.
      */
-    fun connectAndSignUsb(pin: String) {
+    internal fun connectAndSignUsb(pin: String) {
+        val request = _signingRequest.value ?: return
         val credId = sshCredentialId ?: return
         val challenge = sshChallenge ?: return
         val rpId = sshRpId ?: SSH_RP_ID
@@ -842,48 +933,43 @@ class Fido2Manager @Inject constructor(
             return
         }
 
-        scope.launch(dispatchers.io) {
-            // USB supports one connection at a time. Close the discovery session
-            // off the main thread before requesting a connection for signing.
-            try {
-                currentSession?.close()
-            } catch (e: Exception) {
-                Timber.w(e, "Failed to close existing session before signing")
-            }
-            currentSession = null
-            pinUvAuthProtocol = null
+        scope.launch {
+            val result = withDevice {
+                if (_signingRequest.value !== request) return@withDevice null
+                closeCurrentSession()
 
-            val result = suspendCancellableCoroutine<Fido2Result<Fido2SignatureResult>> { continuation ->
-                try {
-                    // A detached device or revoked USB permission can throw here,
-                    // before YubiKit invokes the connection callback.
-                    device.requestConnection(FidoConnection::class.java) { connectionResult ->
-                        val signingResult = try {
-                            val connection = connectionResult.value
-                            val session = Ctap2Session(connection)
-                            signSshChallengeOnSession(session, pin, credId, challenge, rpId, "USB")
-                        } catch (e: Exception) {
-                            Log.e(TAG, "USB SSH signing connection failed: ${e.message}", e)
-                            mapSigningError(e, "USB SSH signing failed")
+                suspendCancellableCoroutine<Fido2Result<Fido2SignatureResult>> { continuation ->
+                    try {
+                        // A detached device or revoked USB permission can throw here,
+                        // before YubiKit invokes the connection callback.
+                        device.requestConnection(FidoConnection::class.java) { connectionResult ->
+                            val signingResult = try {
+                                val connection = connectionResult.value
+                                val session = Ctap2Session(connection)
+                                signSshChallengeOnSession(session, pin, credId, challenge, rpId, "USB")
+                            } catch (e: Exception) {
+                                Log.e(TAG, "USB SSH signing connection failed: ${e.message}", e)
+                                mapSigningError(e, "USB SSH signing failed")
+                            }
+                            continuation.resume(signingResult)
                         }
-                        continuation.resume(signingResult)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Failed to request USB connection for signing", e)
+                        val error = if (e is IllegalStateException || e is SecurityException) {
+                            if (currentDevice === device) disconnect()
+                            Fido2Result.Error(context.getString(R.string.fido2_usb_unavailable), e)
+                        } else {
+                            mapSigningError<Fido2SignatureResult>(e, "USB connection failed")
+                        }
+                        continuation.resume(error)
                     }
-                } catch (e: Exception) {
-                    Log.e(TAG, "Failed to request USB connection for signing", e)
-                    val error = if (e is IllegalStateException || e is SecurityException) {
-                        if (currentDevice === device) disconnect()
-                        Fido2Result.Error(context.getString(R.string.fido2_usb_unavailable), e)
-                    } else {
-                        mapSigningError<Fido2SignatureResult>(e, "USB connection failed")
-                    }
-                    continuation.resume(error)
                 }
             }
 
             // Do not deliver a late result to a replacement signing request.
             if (sshSigningCallback !== callback) return@launch
             clearSigningRequest()
-            callback(result)
+            if (result != null) callback(result)
         }
     }
 
@@ -891,28 +977,30 @@ class Fido2Manager @Inject constructor(
      * Connect to NFC device and perform SSH signing.
      * This handles the full flow: connect -> PIN auth -> sign in a single NFC tap.
      */
-    suspend fun connectAndSignNfc(tag: Tag, pin: String, credentialId: ByteArray, challenge: ByteArray, rpId: String = SSH_RP_ID): Fido2Result<Fido2SignatureResult> = suspendCancellableCoroutine { continuation ->
-        try {
-            val device = NfcYubiKeyDevice(tag, 30000, sessionExecutor)
+    suspend fun connectAndSignNfc(tag: Tag, pin: String, credentialId: ByteArray, challenge: ByteArray, rpId: String = SSH_RP_ID): Fido2Result<Fido2SignatureResult> = withDevice {
+        suspendCancellableCoroutine { continuation ->
+            try {
+                val device = NfcYubiKeyDevice(tag, 30000, sessionExecutor)
 
-            device.requestConnection(SmartCardConnection::class.java) { connectionResult ->
-                val threadName = Thread.currentThread().name
-                Log.d(TAG, "SSH signing NFC callback on thread $threadName")
+                device.requestConnection(SmartCardConnection::class.java) { connectionResult ->
+                    val threadName = Thread.currentThread().name
+                    Log.d(TAG, "SSH signing NFC callback on thread $threadName")
 
-                val signingResult = try {
-                    val connection = connectionResult.value
-                    Log.d(TAG, "NFC SmartCardConnection established for signing")
-                    val session = Ctap2Session(connection)
-                    signSshChallengeOnSession(session, pin, credentialId, challenge, rpId, "NFC")
-                } catch (e: Exception) {
-                    Log.e(TAG, "NFC SSH signing connection failed: ${e.message}", e)
-                    mapSigningError(e, "NFC SSH signing failed")
+                    val signingResult = try {
+                        val connection = connectionResult.value
+                        Log.d(TAG, "NFC SmartCardConnection established for signing")
+                        val session = Ctap2Session(connection)
+                        signSshChallengeOnSession(session, pin, credentialId, challenge, rpId, "NFC")
+                    } catch (e: Exception) {
+                        Log.e(TAG, "NFC SSH signing connection failed: ${e.message}", e)
+                        mapSigningError(e, "NFC SSH signing failed")
+                    }
+                    continuation.resume(signingResult)
                 }
-                continuation.resume(signingResult)
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to connect to NFC tag for signing: ${e.message}", e)
+                continuation.resume(Fido2Result.Error(e.message ?: "NFC connection failed", e))
             }
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to connect to NFC tag for signing: ${e.message}", e)
-            continuation.resume(Fido2Result.Error(e.message ?: "NFC connection failed", e))
         }
     }
 

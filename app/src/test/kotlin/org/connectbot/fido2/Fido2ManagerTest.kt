@@ -34,6 +34,7 @@ import com.yubico.yubikit.fido.ctap.ClientPin
 import com.yubico.yubikit.fido.ctap.CredentialManagement
 import com.yubico.yubikit.fido.ctap.Ctap2Session
 import com.yubico.yubikit.fido.ctap.PinUvAuthProtocolV1
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -46,6 +47,7 @@ import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.connectbot.R
+import org.connectbot.data.entity.Fido2Transport
 import org.connectbot.di.CoroutineDispatchers
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -65,12 +67,28 @@ import org.mockito.stubbing.Answer
 import org.robolectric.RobolectricTestRunner
 import java.io.IOException
 import java.util.concurrent.ExecutorService
+import kotlin.coroutines.CoroutineContext
 import com.yubico.yubikit.core.util.Result as DeviceResult
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(RobolectricTestRunner::class)
 class Fido2ManagerTest {
     private val dispatcher = StandardTestDispatcher()
+    private val onIo = ThreadLocal<Boolean>()
+    private val ioDispatcher = object : CoroutineDispatcher() {
+        override fun dispatch(context: CoroutineContext, block: Runnable) {
+            dispatcher.dispatch(context) {
+                onIo.set(true)
+                try {
+                    block.run()
+                } finally {
+                    onIo.remove()
+                }
+            }
+        }
+    }
+    private var pinTokenObserver: (() -> Unit)? = null
+    private val signedRpIds = mutableListOf<String>()
     private val resources = mutableListOf<AutoCloseable>()
     private lateinit var manager: Fido2Manager
     private lateinit var usbDevice: UsbYubiKeyDevice
@@ -111,7 +129,10 @@ class Fido2ManagerTest {
                 info
             }
 
-            "getAssertions" -> assertions
+            "getAssertions" -> {
+                signedRpIds.add(call.getArgument(0))
+                assertions
+            }
 
             "close" -> {
                 if (closeError) throw IOException("close failed")
@@ -170,6 +191,7 @@ class Fido2ManagerTest {
                     Answer { call ->
                         when (call.method.name) {
                             "getPinToken" -> {
+                                pinTokenObserver?.invoke()
                                 val failure = if (pinTokenErrors.isNotEmpty()) pinTokenErrors.removeAt(0) else pinError
                                 failure?.let { throw it }
                                 ByteArray(32) { 1 }
@@ -248,7 +270,7 @@ class Fido2ManagerTest {
             "USB security key is unavailable. Reconnect it, allow USB access, and try again.",
         )
         `when`(context.getSystemService(Context.USB_SERVICE)).thenReturn(usbManager)
-        manager = Fido2Manager(context, CoroutineDispatchers(dispatcher, dispatcher, dispatcher))
+        manager = Fido2Manager(context, CoroutineDispatchers(dispatcher, ioDispatcher, dispatcher))
     }
 
     @After
@@ -283,6 +305,128 @@ class Fido2ManagerTest {
         )
         `when`(result.signature).thenReturn(ByteArray(64))
         return result
+    }
+
+    @Test
+    fun usbImportRunsOnIoAndSerializesRetries() = runTest(dispatcher) {
+        connected()
+        var calls = 0
+        pinTokenObserver = {
+            assertEquals("PIN authentication must use the injected IO dispatcher", true, onIo.get())
+            calls++
+        }
+        // Suspend a stale-session reconnect while another enumeration is submitted.
+        pinError = IOException("broken pipe")
+        delayNfcConnection = true
+        manager.setPendingPin("1234")
+        manager.setUsbCredentialCallback {}
+        manager.retryUsbWithPin()
+        runCurrent()
+        assertEquals(1, calls)
+        manager.retryUsbWithPin()
+        runCurrent()
+        assertEquals("Second operation must wait for the reconnect", 1, calls)
+        pinError = null
+        // YubiKit invokes callbacks on its own worker; model that on injected IO.
+        val completion = async(ioDispatcher) { pendingNfcConnections.removeAt(0).invoke() }
+        completion.await()
+        advanceUntilIdle()
+        assertEquals(3, calls)
+    }
+
+    @Test
+    fun concurrentNfcSignersCompleteInOrderWithoutOverwritingRequests() = runTest(dispatcher) {
+        assertions = listOf(assertion())
+        val ownerA = Any()
+        val ownerB = Any()
+        val first = async { manager.signSshChallenge(byteArrayOf(1), byteArrayOf(2), "ssh:a", "1234", Fido2Transport.NFC, ownerA) }
+        runCurrent()
+        val requestA = manager.signingRequest.value
+        val second = async { manager.signSshChallenge(byteArrayOf(3), byteArrayOf(4), "ssh:b", "5678", Fido2Transport.NFC, ownerB) }
+        runCurrent()
+        assertSame(ownerA, manager.signingRequest.value?.owner)
+        assertSame(requestA, manager.signingRequest.value)
+        manager.handleNfcTagForSigning(mock(Tag::class.java))
+        assertTrue(first.await() is Fido2Result.Success)
+        runCurrent()
+        assertSame(ownerB, manager.signingRequest.value?.owner)
+        manager.handleNfcTagForSigning(mock(Tag::class.java))
+        assertTrue(second.await() is Fido2Result.Success)
+        assertEquals(listOf("ssh:a", "ssh:b"), signedRpIds)
+        assertFalse(manager.waitingForNfcSigning.value)
+    }
+
+    @Test
+    fun cancellingQueuedSigningDoesNotCancelActiveRequest() = runTest(dispatcher) {
+        assertions = listOf(assertion())
+        val first = async { manager.signSshChallenge(byteArrayOf(1), byteArrayOf(2), "ssh:a", "1234", Fido2Transport.NFC) }
+        runCurrent()
+        val request = manager.signingRequest.value
+        val queued = async { manager.signSshChallenge(byteArrayOf(3), byteArrayOf(4), "ssh:b", "1234", Fido2Transport.USB) }
+        runCurrent()
+        queued.cancel()
+        runCurrent()
+        assertSame(request, manager.signingRequest.value)
+        assertTrue(manager.waitingForNfcSigning.value)
+        manager.handleNfcTagForSigning(mock(Tag::class.java))
+        assertTrue(first.await() is Fido2Result.Success)
+        assertEquals(listOf("ssh:a"), signedRpIds)
+    }
+
+    @Test
+    fun cancelledUsbSignerCannotClearOrCompleteItsNfcSuccessor() = runTest(dispatcher) {
+        connected()
+        assertions = listOf(assertion())
+        delayNfcConnection = true
+        val first = async { manager.signSshChallenge(byteArrayOf(1), byteArrayOf(2), "ssh:a", "1234", Fido2Transport.USB) }
+        runCurrent()
+        val requestA = manager.signingRequest.value
+        val second = async { manager.signSshChallenge(byteArrayOf(3), byteArrayOf(4), "ssh:b", "1234", Fido2Transport.NFC) }
+        runCurrent()
+        first.cancel()
+        runCurrent()
+        val requestB = manager.signingRequest.value
+        assertTrue(requestB != null && requestB !== requestA)
+        manager.cancelNfcSigning(requestA)
+        assertSame(requestB, manager.signingRequest.value)
+        pendingNfcConnections.removeAt(0).invoke()
+        delayNfcConnection = false
+        runCurrent()
+        assertSame(requestB, manager.signingRequest.value)
+        assertFalse(second.isCompleted)
+        manager.handleNfcTagForSigning(mock(Tag::class.java))
+        assertTrue(second.await() is Fido2Result.Success)
+    }
+
+    @Test
+    fun abandoningNfcImportClearsPinAndCallbacksBeforeUsbDiscovery() = runTest(dispatcher) {
+        manager.setPendingPin("1234")
+        manager.setNfcCredentialCallback { error("Abandoned callback invoked") }
+        manager.setUsbCredentialCallback { error("Abandoned callback invoked") }
+        manager.cancelImport()
+        for (field in listOf("pendingPin", "nfcCredentialCallback", "usbCredentialCallback")) {
+            assertEquals(null, Fido2Manager::class.java.getDeclaredField(field).apply { isAccessible = true }.get(manager))
+        }
+        manager.startUsbDiscovery()
+        usbCallback!!.invoke(usbDevice)
+        advanceUntilIdle()
+        assertTrue(manager.connectionState.value is Fido2ConnectionState.Connected)
+        assertTrue(deviceConnected())
+    }
+
+    @Test
+    fun cancelledNfcImportCannotDeliverLateResultOrEraseNewPin() = runTest(dispatcher) {
+        delayNfcConnection = true
+        manager.setPendingPin("1234")
+        manager.setNfcCredentialCallback { error("Cancelled import delivered a result") }
+        val oldImport = async { manager.connectToNfcTag(mock(Tag::class.java)) }
+        runCurrent()
+        manager.cancelImport()
+        manager.setPendingPin("5678")
+        manager.setNfcCredentialCallback { error("Old import delivered to a new callback") }
+        pendingNfcConnections.removeAt(0).invoke()
+        oldImport.await()
+        assertEquals("5678", Fido2Manager::class.java.getDeclaredField("pendingPin").apply { isAccessible = true }.get(manager))
     }
 
     @Test
@@ -643,7 +787,7 @@ class Fido2ManagerTest {
         manager.setPendingPin("1234")
         manager.startUsbDiscovery()
         advanceUntilIdle()
-        assertTrue(manager.connectionState.value is Fido2ConnectionState.Connecting)
+        assertTrue(manager.connectionState.value is Fido2ConnectionState.Connected)
         manager.stopUsbDiscovery()
         discoveryError = true
         manager.startUsbDiscovery()
