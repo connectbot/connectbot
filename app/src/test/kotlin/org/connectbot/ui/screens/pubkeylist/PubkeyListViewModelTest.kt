@@ -540,4 +540,39 @@ class PubkeyListViewModelTest {
             assertEquals("$algorithm AQID hardware", clipboard.primaryClip!!.getItemAt(0).text.toString())
         }
     }
+
+    @Test
+    fun exportsBothHardwareKeyAlgorithmsWithTheSameTextAsClipboard() = runTest {
+        val application = org.robolectric.RuntimeEnvironment.getApplication()
+        val clipboard = application.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+        org.mockito.Mockito.`when`(context.getSystemService(Context.CLIPBOARD_SERVICE)).thenReturn(clipboard)
+        org.mockito.Mockito.`when`(context.contentResolver).thenReturn(application.contentResolver)
+        val vm = createViewModel()
+        for ((type, algorithm, raw) in listOf(
+            Triple("SK-Ed25519", org.connectbot.sshlib.sk.SkAlgorithm.ED25519, org.connectbot.fido2.Fido2TestData.ED25519_PUBLIC_KEY),
+            Triple("SK-ECDSA", org.connectbot.sshlib.sk.SkAlgorithm.ECDSA_P256, org.connectbot.fido2.Fido2TestData.ECDSA_P256_PUBLIC_KEY),
+        )) {
+            val wire = org.connectbot.sshlib.sk.SkPublicKeyEncoder.encode(algorithm, raw, "ssh:export")
+            val key = Pubkey(
+                nickname = "hardware", type = type, privateKey = null, publicKey = wire,
+                encrypted = false, startup = false, confirmation = false, createdDate = 0,
+                storageType = org.connectbot.data.entity.KeyStorageType.FIDO2_RESIDENT_KEY,
+                credentialId = byteArrayOf(1), fido2RpId = "ssh:export",
+            )
+            val uri = android.net.Uri.parse("content://test/$type.pub")
+            val output = java.io.ByteArrayOutputStream()
+            org.robolectric.Shadows.shadowOf(application.contentResolver).registerOutputStream(uri, output)
+            vm.requestExportPublicKey(key)
+            vm.exportPublicKeyToUri(uri)
+            vm.copyPublicKey(key)
+            advanceUntilIdle()
+            val exported = output.toString(Charsets.UTF_8.name())
+            assertEquals(null, vm.uiState.value.error)
+            assertEquals(null, vm.uiState.value.pendingPublicKeyExport)
+            assertEquals(clipboard.primaryClip!!.getItemAt(0).text.toString(), exported)
+            assertEquals("${algorithm.sshName} ${java.util.Base64.getEncoder().encodeToString(wire)} hardware", exported)
+            val decoded = java.util.Base64.getDecoder().decode(exported.split(" ")[1])
+            assertEquals(algorithm, org.connectbot.sshlib.sk.SkPublicKeyDecoder.decode(decoded).algorithm)
+        }
+    }
 }

@@ -276,33 +276,37 @@ class PubkeyListViewModel @Inject constructor(
         }
     }
 
+    private fun publicKeyForExport(pubkey: Pubkey): String {
+        // Check if this is an imported key
+        val isImported = pubkey.type == "IMPORTED"
+        if (isImported) {
+            throw IllegalArgumentException("Cannot export public key from imported key")
+        }
+
+        // For FIDO2 keys, the public key is already in SSH wire format
+        return if (pubkey.isFido2) {
+            val base64Key = android.util.Base64.encodeToString(
+                pubkey.publicKey,
+                android.util.Base64.NO_WRAP,
+            )
+            // Use the correct SSH key type string for authorized_keys format
+            val sshKeyType = when (pubkey.type) {
+                "SK-Ed25519" -> "sk-ssh-ed25519@openssh.com"
+                "SK-ECDSA" -> "sk-ecdsa-sha2-nistp256@openssh.com"
+                else -> pubkey.type
+            }
+            "$sshKeyType $base64Key ${pubkey.nickname}"
+        } else {
+            val pk = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
+            toAuthorizedKeysFormat(pk, pubkey.nickname)
+        }
+    }
+
     fun copyPublicKey(pubkey: Pubkey) {
         viewModelScope.launch {
             try {
                 val publicKeyString = withContext(dispatchers.default) {
-                    // Check if this is an imported key
-                    val isImported = pubkey.type == "IMPORTED"
-                    if (isImported) {
-                        throw IllegalArgumentException("Cannot export public key from imported key")
-                    }
-
-                    // For FIDO2 keys, the public key is already in SSH wire format
-                    if (pubkey.isFido2) {
-                        val base64Key = android.util.Base64.encodeToString(
-                            pubkey.publicKey,
-                            android.util.Base64.NO_WRAP,
-                        )
-                        // Use the correct SSH key type string for authorized_keys format
-                        val sshKeyType = when (pubkey.type) {
-                            "SK-Ed25519" -> "sk-ssh-ed25519@openssh.com"
-                            "SK-ECDSA" -> "sk-ecdsa-sha2-nistp256@openssh.com"
-                            else -> pubkey.type
-                        }
-                        "$sshKeyType $base64Key ${pubkey.nickname}"
-                    } else {
-                        val pk = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
-                        toAuthorizedKeysFormat(pk, pubkey.nickname)
-                    }
+                    publicKeyForExport(pubkey)
                 }
 
                 val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -621,8 +625,7 @@ class PubkeyListViewModel @Inject constructor(
                 }
 
                 val publicKeyString = withContext(dispatchers.default) {
-                    val pk = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
-                    toAuthorizedKeysFormat(pk, pubkey.nickname)
+                    publicKeyForExport(pubkey)
                 }
 
                 withContext(dispatchers.io) {
