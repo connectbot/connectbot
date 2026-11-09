@@ -49,7 +49,7 @@ jobs:
 
       - name: Run checks and unit coverage
         # Aggregate Kover verification has no rules but compiles both release variants.
-        run: ./gradlew --profile check koverXmlReportOssDebug koverXmlReportGoogleDebug :app:stageSonarClasses :app:stageSonarLibraries -x :app:koverVerify
+        run: ./gradlew --profile :ctap2:build :ctap2:koverXmlReport :ctap2-android:assembleRelease :ctap2-android:testDebugUnitTest :ctap2-android:lint check koverXmlReportOssDebug koverXmlReportGoogleDebug :app:stageSonarClasses :ctap2:stageSonarClasses :ctap2-android:stageSonarClasses :app:stageSonarLibraries -x :app:koverVerify
 
       - name: Check CI helper scripts
         run: python3 -m unittest discover -s .github/scripts -p 'test_*.py' -v
@@ -78,9 +78,13 @@ jobs:
         run: |
           mkdir -p sonar-inputs/classes
           cp -R app/build/sonar-classes/. sonar-inputs/classes/
+          for module in ctap2 ctap2-android; do
+            cp -R "$module/build/sonar-classes/." sonar-inputs/classes/
+          done
           mkdir -p sonar-inputs/libraries
           cp -R app/build/sonar-libraries/. sonar-inputs/libraries/
           mkdir -p sonar-inputs/reports/kover
+          cp ctap2/build/reports/kover/report.xml sonar-inputs/reports/kover/ctap2.xml
           for variant in OssDebug GoogleDebug; do
             report="app/build/reports/kover/report${variant}.xml"
             test -s "$report"
