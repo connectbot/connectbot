@@ -1214,6 +1214,10 @@
 	<!-- Public key list labels -->
 	<!-- Label prefix for displaying key type in list -->
 	<string name="pubkey_type_label">Type: %s</string>
+	<!-- Key type shown for a passkey in the public key list; %1$s is the algorithm, such as SK-ECDSA. -->
+	<string name="pubkey_passkey_type_label">Type: %1$s (Passkey)</string>
+	<!-- Key type shown for a hardware FIDO2 security key in the public key list; %1$s is the algorithm. -->
+	<string name="pubkey_fido2_type_label">Type: %1$s (FIDO2 security key)</string>
 	<!-- Accessibility description for encrypted key icon -->
 	<string name="pubkey_encrypted_description">Encrypted</string>
 	<!-- Accessibility description for unencrypted key icon -->
@@ -2555,4 +2559,32 @@
     <string name="console_authentication_failed_title">Authentication failed</string>
     <!-- Authentication error when a USB security key is missing or USB access was revoked. -->
     <string name="fido2_usb_unavailable">USB security key is unavailable. Reconnect it, allow USB access, and try again.</string>
+    <!-- Action to create an SSH passkey in an Android credential provider. -->
+    <string name="passkey_create">Create passkey</string>
+    <!-- Description of a key held by an Android passkey provider. -->
+    <string name="passkey_description">Passkey</string>
+    <!-- Instructions shown when creating a passkey for SSH authentication. -->
+    <string name="passkey_setup_help">Choose a credential provider to save your passkey.</string>
+    <!-- Explains that deleting a local key entry does not delete the credential in Bitwarden or another provider. -->
+    <string name="passkey_delete_help">The passkey will remain in your credential provider. Delete it there separately if you no longer need it.</string>
+    <!-- Fallback error after a credential provider fails to create an SSH passkey. -->
+    <string name="passkey_create_failed">Passkey creation failed</string>
+    <!-- Key manager action to discover and import an existing passkey from a credential provider. -->
+    <string name="passkey_import">Import passkey</string>
+    <!-- Explanation shown before the user explicitly starts passkey discovery and two verifications. -->
+    <string name="passkey_import_help">Choose a passkey previously created for ConnectBot. Your provider may ask you to verify twice to restore its SSH public key. Matching saved entries will be reconnected.</string>
+    <!-- Title for choosing which duplicate saved key entry to reconnect. -->
+    <string name="passkey_import_choose_entry">Reconnect saved key</string>
+    <!-- Explanation when multiple database entries have the same recovered SSH public key. -->
+    <string name="passkey_import_multiple">More than one saved entry matches this passkey. Choose the entry to reconnect. Its name, settings, and host connections will be preserved.</string>
+    <!-- Snackbar after reconnecting an existing key entry; parameter is its nickname. -->
+    <string name="passkey_reconnected">Reconnected %1$s</string>
+    <!-- Import error when a credential ID matches a saved entry but its public key differs; parameter is the existing nickname. -->
+    <string name="passkey_import_conflict">The selected passkey has the same credential ID as %1$s but a different public key. Existing keys were not changed. Try selecting another passkey.</string>
+    <!-- Import error if database entries change while an import is awaiting a user decision. -->
+    <string name="passkey_import_entries_changed">Saved keys changed during import. Review the matching entries again.</string>
+    <!-- Import error if discovery, verification, or public-key recovery fails. -->
+    <string name="passkey_import_failed">Could not import this passkey. Choose an ES256 passkey created for ConnectBot and complete both verifications.</string>
+    <!-- Import error when enabled credential providers have no passkeys for the ConnectBot relying party. -->
+    <string name="passkey_import_none">No passkeys for ConnectBot were found. Sync your vault and enable your credential provider in Android settings.</string>
 </resources>

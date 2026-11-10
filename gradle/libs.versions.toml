@@ -29,6 +29,7 @@ activityCompose = "1.13.0"
 
 zmodemlib = "0.1.1"
 telnetlib = "0.1.1"
+credentials = "1.6.0"
 sshlib = "0.6.7"
 termlib = "0.3.14"
 playServicesBasement = "18.12.0"
@@ -69,6 +70,9 @@ yubikit = "3.3.0"
 
 [libraries]
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
+credentials-play-services = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
+sshlib-webauthn = { module = "org.connectbot.sshlib:sshlib-webauthn", version.ref = "sshlib" }
 gradle-download = { module = "de.undercouch:gradle-download-task", version.ref = "gradleDownload" }
 zmodemlib = { module = "org.connectbot.zmodemlib:zmodemlib", version.ref = "zmodemlib" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }

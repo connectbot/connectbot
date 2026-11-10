@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Error when passkeys cannot be used on this Android version in the OSS flavor. -->
+    <string name="passkey_unsupported">Passkeys require Android 14 or later.</string>
+</resources>

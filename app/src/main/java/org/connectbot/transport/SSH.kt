@@ -48,6 +48,7 @@ import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.fido2.ssh.Fido2SignatureProxy
 import org.connectbot.fido2.ssh.SkEcdsaVerify
 import org.connectbot.fido2.ssh.SkEd25519Verify
+import org.connectbot.passkey.PasskeySupport
 import org.connectbot.service.DisconnectReason
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
@@ -82,6 +83,7 @@ import org.connectbot.sshlib.SshSigning
 import org.connectbot.sshlib.sk.SkAlgorithm
 import org.connectbot.sshlib.transport.IpVersion
 import org.connectbot.sshlib.transport.TransportFactory
+import org.connectbot.sshlib.webauthn.WebAuthnAuth
 import org.connectbot.util.CryptoProviderState
 import org.connectbot.util.HostConstants
 import org.connectbot.util.PubkeyConstants
@@ -429,11 +431,11 @@ open class SSH : AbsTransport {
 
                         val keys = mutableListOf<AuthPublicKey>()
                         val fido2Keys = if (pubkeyId == HostConstants.PUBKEYID_ANY) {
-                            manager?.pubkeyRepository?.getAll()?.filter { it.isFido2 }.orEmpty()
+                            manager?.pubkeyRepository?.getAll()?.filter { it.isSecurityKey }.orEmpty()
                         } else {
-                            listOfNotNull(manager?.pubkeyRepository?.getByIdBlocking(pubkeyId)?.takeIf { it.isFido2 })
+                            listOfNotNull(manager?.pubkeyRepository?.getByIdBlocking(pubkeyId)?.takeIf { it.isSecurityKey })
                         }
-                        keys.addAll(fido2Keys.map(::fido2AuthenticationKey))
+                        keys.addAll(fido2Keys.map(::securityKeyAuthenticationKey))
 
                         if (pubkeyId == HostConstants.PUBKEYID_ANY) {
                             bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_any))
@@ -471,7 +473,7 @@ open class SSH : AbsTransport {
                     }
 
                     override suspend fun onSignatureRequest(key: AuthPublicKey, dataToSign: ByteArray): ByteArray? {
-                        if (key.algorithmName.startsWith("sk-")) return signFido2Key(key, dataToSign)
+                        if (key.algorithmName.startsWith("sk-")) return signSecurityKey(key, dataToSign)
                         val keyPair = confirmedAuthenticationKey(client, key, uncachedKey) ?: return null
                         return try {
                             SshSigning.signWithKeyPair(key.algorithmName, keyPair, dataToSign)
@@ -637,7 +639,7 @@ open class SSH : AbsTransport {
         return null
     }
 
-    private fun fido2AuthenticationKey(pubkey: Pubkey): AuthPublicKey {
+    private fun securityKeyAuthenticationKey(pubkey: Pubkey): AuthPublicKey {
         val algorithm = when (pubkey.type) {
             PubkeyConstants.KEY_TYPE_SK_ED25519 -> SkAlgorithm.ED25519.sshName
             PubkeyConstants.KEY_TYPE_SK_ECDSA -> SkAlgorithm.ECDSA_P256.sshName
@@ -646,16 +648,37 @@ open class SSH : AbsTransport {
         return AuthPublicKey(algorithm, pubkey.publicKey)
     }
 
-    private suspend fun signFido2Key(key: AuthPublicKey, data: ByteArray): ByteArray? {
-        val pubkey = manager?.pubkeyRepository?.getAll()?.firstOrNull {
-            it.isFido2 && it.publicKey.contentEquals(key.publicKeyBlob)
+    private suspend fun signSecurityKey(key: AuthPublicKey, data: ByteArray): ByteArray? {
+        val terminalManager = manager ?: return null
+        val pubkey = terminalManager.pubkeyRepository.getAll().firstOrNull {
+            it.isSecurityKey && it.publicKey.contentEquals(key.publicKeyBlob)
         } ?: return null
-        return withContext((manager ?: return null).dispatchers.io) {
+        return withContext(terminalManager.dispatchers.io) {
             try {
-                handleFido2Key(pubkey)?.sign(data, key.algorithmName)
-            } catch (e: IOException) {
-                bridge?.authenticationFailure = e.message
+                if (pubkey.isPasskey) {
+                    PasskeySupport.requireSupported(terminalManager.res)
+                    if (pubkey.confirmation && bridge?.promptManager?.requestBooleanPrompt(
+                            null,
+                            manager?.res?.getString(R.string.prompt_allow_agent_to_use_key, pubkey.nickname).orEmpty(),
+                        ) != true
+                    ) {
+                        return@withContext null
+                    }
+                    val request = WebAuthnAuth.createRequestJson(
+                        requireNotNull(pubkey.fido2RpId),
+                        requireNotNull(pubkey.credentialId),
+                        data,
+                    )
+                    val response = bridge?.promptManager?.requestPasskey(request) ?: return@withContext null
+                    PasskeySupport.signature(response, pubkey, data)
+                } else {
+                    handleFido2Key(pubkey)?.sign(data, key.algorithmName)
+                }
+            } catch (e: CancellationException) {
                 throw e
+            } catch (e: Exception) {
+                bridge?.authenticationFailure = e.message
+                throw if (e is IOException) e else IOException(e.message, e)
             }
         }
     }
@@ -738,7 +761,7 @@ open class SSH : AbsTransport {
     }
 
     private fun getAuthenticationKey(pubkey: Pubkey): KeyPair? = try {
-        if (pubkey.isFido2) return null
+        if (pubkey.isSecurityKey) return null
         getOrUnlockKey(pubkey)
     } catch (e: LoginCancelled) {
         throw e
@@ -1003,11 +1026,11 @@ open class SSH : AbsTransport {
 
                             val keys = mutableListOf<AuthPublicKey>()
                             val fido2Keys = if (pubkeyId == HostConstants.PUBKEYID_ANY) {
-                                manager?.pubkeyRepository?.getAll()?.filter { it.isFido2 }.orEmpty()
+                                manager?.pubkeyRepository?.getAll()?.filter { it.isSecurityKey }.orEmpty()
                             } else {
-                                listOfNotNull(manager?.pubkeyRepository?.getByIdBlocking(pubkeyId)?.takeIf { it.isFido2 })
+                                listOfNotNull(manager?.pubkeyRepository?.getByIdBlocking(pubkeyId)?.takeIf { it.isSecurityKey })
                             }
-                            keys.addAll(fido2Keys.map(::fido2AuthenticationKey))
+                            keys.addAll(fido2Keys.map(::securityKeyAuthenticationKey))
                             if (pubkeyId == HostConstants.PUBKEYID_ANY) {
                                 manager?.loadedKeypairs?.entries?.forEach { entry ->
                                     val keyPair = entry.value.pair ?: return@forEach
@@ -1039,7 +1062,7 @@ open class SSH : AbsTransport {
                         }
 
                         override suspend fun onSignatureRequest(key: AuthPublicKey, dataToSign: ByteArray): ByteArray? {
-                            if (key.algorithmName.startsWith("sk-")) return signFido2Key(key, dataToSign)
+                            if (key.algorithmName.startsWith("sk-")) return signSecurityKey(key, dataToSign)
                             val keyPair = confirmedAuthenticationKey(jumpClient, key, uncachedKey) ?: return null
                             return try {
                                 SshSigning.signWithKeyPair(key.algorithmName, keyPair, dataToSign)

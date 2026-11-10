@@ -75,6 +75,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.connectbot.R
+import org.connectbot.passkey.PasskeyPromptHandler
 import org.connectbot.service.PromptRequest
 import org.connectbot.service.PromptResponse
 import org.connectbot.ui.theme.terminal
@@ -109,6 +110,12 @@ fun InlinePrompt(
         modifier = modifier,
     ) {
         when (promptRequest) {
+            is PromptRequest.PasskeyPrompt -> {
+                PasskeyPromptHandler(promptRequest) {
+                    onResponse(it)
+                }
+            }
+
             is PromptRequest.BooleanPrompt -> {
                 BooleanPromptContent(
                     instructions = promptRequest.instructions,

@@ -37,6 +37,7 @@ import org.connectbot.ui.screens.pubkeylist.PubkeyListScreenContent
 import org.connectbot.ui.screens.pubkeylist.PubkeyListTestTags
 import org.connectbot.ui.screens.pubkeylist.PubkeyListUiState
 import org.connectbot.ui.theme.ConnectBotTheme
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -56,6 +57,44 @@ class PubkeyListScreenTest {
     @Before
     fun setUp() {
         hiltRule.inject()
+    }
+
+    @Test
+    fun pubkeyListScreenContent_importsPasskeyOnlyOnExplicitClick() {
+        var calls = 0
+        setPubkeyListContent(
+            canCreatePasskey = true,
+            onImportPasskey = { calls++ },
+        )
+        composeTestRule.waitForIdle()
+        assertEquals(0, calls)
+        composeTestRule.onNodeWithContentDescription("Generate").performClick()
+        composeTestRule.waitForIdle()
+        assertEquals(0, calls)
+        composeTestRule.onNodeWithText("Import passkey", useUnmergedTree = true).performClick()
+        assertEquals(1, calls)
+    }
+
+    @Test
+    fun pubkeyListScreenContent_hidesUnsupportedPasskeyCreation() {
+        setPubkeyListContent(canCreatePasskey = false)
+        composeTestRule.onNodeWithContentDescription("Generate").performClick()
+        composeTestRule.waitForIdle()
+        composeTestRule.onNodeWithText("Create passkey", useUnmergedTree = true).assertDoesNotExist()
+        composeTestRule.onNodeWithText("Import passkey", useUnmergedTree = true).assertDoesNotExist()
+    }
+
+    @Test
+    fun pubkeyListScreenContent_allowsSupportedPasskeyCreation() {
+        var createCalled = false
+        setPubkeyListContent(
+            canCreatePasskey = true,
+            onCreatePasskey = { createCalled = true },
+        )
+        composeTestRule.onNodeWithContentDescription("Generate").performClick()
+        composeTestRule.waitForIdle()
+        composeTestRule.onNodeWithText("Create passkey", useUnmergedTree = true).performClick()
+        assertTrue(createCalled)
     }
 
     @Test
@@ -327,6 +366,9 @@ class PubkeyListScreenTest {
         onExportPublicKey: (Pubkey) -> Unit = {},
         onImportKey: () -> Unit = {},
         onImportKeyFromClipboard: () -> Unit = {},
+        canCreatePasskey: Boolean = false,
+        onCreatePasskey: () -> Unit = {},
+        onImportPasskey: () -> Unit = {},
     ) {
         composeTestRule.setContent {
             ConnectBotTheme {
@@ -349,6 +391,9 @@ class PubkeyListScreenTest {
                     onExportEncryptedPrivateKey = { _, _, _ -> },
                     onImportKey = onImportKey,
                     onImportKeyFromClipboard = onImportKeyFromClipboard,
+                    canCreatePasskey = canCreatePasskey,
+                    onCreatePasskey = onCreatePasskey,
+                    onImportPasskey = onImportPasskey,
                 )
             }
         }

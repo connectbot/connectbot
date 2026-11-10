@@ -27,7 +27,8 @@ import java.util.UUID
 /**
  * SSH public/private key pair entity with security-conscious backup controls.
  *
- * This entity supports three storage types:
+ * This entity supports four storage types:
+ * - PASSKEY: Public metadata for keys managed by an Android credential provider
  * - EXPORTABLE: Traditional encrypted keys stored in database (current implementation)
  * - ANDROID_KEYSTORE: Keys stored in Android Keystore (future Phase 2)
  * - FIDO2_RESIDENT_KEY: Keys stored on external FIDO2 security keys (YubiKey, SoloKey, etc.)
@@ -94,6 +95,12 @@ data class Pubkey(
     /** Whether this key is stored in Android Keystore with biometric protection */
     val isBiometric: Boolean
         get() = storageType == KeyStorageType.ANDROID_KEYSTORE
+
+    val isPasskey: Boolean
+        get() = storageType == KeyStorageType.PASSKEY
+
+    val isSecurityKey: Boolean
+        get() = isFido2 || isPasskey
 
     /** Whether this key is stored on an external FIDO2 security key */
     val isFido2: Boolean

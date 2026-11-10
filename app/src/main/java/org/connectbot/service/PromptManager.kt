@@ -23,6 +23,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import org.connectbot.data.entity.Fido2Transport
+import java.io.IOException
+import java.util.UUID
 
 /**
  * Modern prompt manager using Kotlin coroutines instead of semaphores and blocking.
@@ -33,6 +35,29 @@ class PromptManager {
     val promptState: StateFlow<PromptRequest?> = _promptState.asStateFlow()
 
     private var currentDeferred: CompletableDeferred<PromptResponse>? = null
+
+    suspend fun requestPasskey(requestJson: String): String? {
+        val request = PromptRequest.PasskeyPrompt(UUID.randomUUID(), requestJson)
+        val deferred = CompletableDeferred<PromptResponse>()
+        currentDeferred = deferred
+        _promptState.value = request
+        return try {
+            val response = deferred.await() as? PromptResponse.PasskeyResponse
+            if (response?.error != null) throw IOException(response.error)
+            response?.json
+        } finally {
+            if (_promptState.value == request) {
+                _promptState.value = null
+                currentDeferred = null
+            }
+        }
+    }
+
+    fun respondPasskey(id: UUID, json: String?) {
+        if ((_promptState.value as? PromptRequest.PasskeyPrompt)?.id == id) {
+            respond(PromptResponse.PasskeyResponse(id, json))
+        }
+    }
 
     /**
      * Request a boolean prompt (yes/no dialog)
@@ -192,6 +217,11 @@ class PromptManager {
      * Respond to the current prompt
      */
     fun respond(response: PromptResponse) {
+        if (response is PromptResponse.PasskeyResponse &&
+            (_promptState.value as? PromptRequest.PasskeyPrompt)?.id != response.id
+        ) {
+            return
+        }
         currentDeferred?.complete(response)
         currentDeferred = null
     }
@@ -210,6 +240,7 @@ class PromptManager {
  * Represents a prompt request
  */
 sealed class PromptRequest {
+    data class PasskeyPrompt(val id: UUID, val requestJson: String) : PromptRequest()
     data class BooleanPrompt(
         val instructions: String?,
         val message: String,
@@ -295,6 +326,7 @@ sealed class PromptRequest {
  * Represents a prompt response
  */
 sealed class PromptResponse {
+    data class PasskeyResponse(val id: UUID, val json: String?, val error: String? = null) : PromptResponse()
     data class BooleanResponse(val value: Boolean) : PromptResponse()
     data class StringResponse(val value: String?) : PromptResponse()
     data class BiometricResponse(val success: Boolean) : PromptResponse()
