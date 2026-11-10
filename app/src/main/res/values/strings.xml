@@ -1214,6 +1214,10 @@
 	<!-- Public key list labels -->
 	<!-- Label prefix for displaying key type in list -->
 	<string name="pubkey_type_label">Type: %s</string>
+	<!-- Key type shown for a passkey in the public key list; %1$s is the algorithm, such as SK-ECDSA. -->
+	<string name="pubkey_passkey_type_label">Type: %1$s (Passkey)</string>
+	<!-- Key type shown for a hardware FIDO2 security key in the public key list; %1$s is the algorithm. -->
+	<string name="pubkey_fido2_type_label">Type: %1$s (FIDO2 security key)</string>
 	<!-- Accessibility description for encrypted key icon -->
 	<string name="pubkey_encrypted_description">Encrypted</string>
 	<!-- Accessibility description for unencrypted key icon -->

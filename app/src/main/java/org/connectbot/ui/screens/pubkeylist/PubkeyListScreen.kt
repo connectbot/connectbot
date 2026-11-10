@@ -623,7 +623,11 @@ private fun PubkeyListItem(
             supportingContent = {
                 Text(
                     stringResource(
-                        R.string.pubkey_type_label,
+                        when {
+                            pubkey.isPasskey -> R.string.pubkey_passkey_type_label
+                            pubkey.isFido2 -> R.string.pubkey_fido2_type_label
+                            else -> R.string.pubkey_type_label
+                        },
                         pubkey.type,
                     ),
                 )
