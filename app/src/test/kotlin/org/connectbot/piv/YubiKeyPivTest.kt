@@ -97,6 +97,8 @@ class YubiKeyPivTest {
     private val discoveryStarted = CompletableDeferred<Unit>()
     private var factoryFailure: Exception? = null
     private val verifiedPins = mutableSetOf<SmartCardConnection>()
+    private var keyStaysOnReader = false
+    private val removalCallbacks = mutableListOf<Runnable>()
     private lateinit var client: YubiKeyPiv.Client
     private val key = newKey()
     private val data = "SSH authentication payload".toByteArray()
@@ -195,6 +197,12 @@ class YubiKeyPivTest {
             it.getArgument<Callback<Result<SmartCardConnection, IOException>>>(1).invoke(Result.success(connection))
             null
         }.`when`(device).requestConnection(eq(SmartCardConnection::class.java), any())
+        // By default the key is lifted from the phone as soon as it was used.
+        doAnswer {
+            val callback = it.getArgument<Runnable>(0)
+            if (keyStaysOnReader) removalCallbacks.add(callback) else callback.run()
+            null
+        }.`when`(device).remove(any(Runnable::class.java))
         nfcDevices = listOf(device)
         return connection
     }
@@ -378,6 +386,48 @@ class YubiKeyPivTest {
         doThrow(ApduException(byteArrayOf(), SW.SECURITY_CONDITION_NOT_SATISFIED)).`when`(card.session)
             .rawSignOrDecrypt(any(Slot::class.java), any(KeyType::class.java), any(ByteArray::class.java))
         failure<YubiKeyPiv.PinRequired> { sign("") }
+    }
+
+    @Test
+    fun nfcReaderModeStaysOnUntilTheKeyIsLifted() = runBlocking<Unit> {
+        keyStaysOnReader = true
+        nfc()
+        sign()
+        // The key is still on the phone: turning reader mode off now would hand the tag to Android.
+        verify(manager, never()).stopNfcDiscovery(activity)
+        assertEquals(1, removalCallbacks.size)
+        removalCallbacks.single().run()
+        verify(manager, times(1)).stopNfcDiscovery(activity)
+        // Later triggers, such as the timeout, must not stop it a second time.
+        executor.submit { timers.toList().forEach(Runnable::run) }.get(5, TimeUnit.SECONDS)
+        verify(manager, times(1)).stopNfcDiscovery(activity)
+    }
+
+    @Test
+    fun nfcReaderModeIsStoppedAfterATimeoutIfTheKeyIsNeverLifted() = runBlocking<Unit> {
+        keyStaysOnReader = true
+        nfc()
+        sign()
+        verify(manager, never()).stopNfcDiscovery(activity)
+        verify(scheduler).schedule(any(Runnable::class.java), eq(10_000L), eq(TimeUnit.MILLISECONDS))
+        executor.submit { timers.toList().forEach(Runnable::run) }.get(5, TimeUnit.SECONDS)
+        verify(manager, times(1)).stopNfcDiscovery(activity)
+    }
+
+    @Test
+    fun nfcReaderModeIsStoppedAtOnceIfRemovalCannotBeWatched() = runBlocking<Unit> {
+        val connection = nfc()
+        doThrow(IllegalStateException("executor shut down")).`when`(nfcDevices.single()).remove(any(Runnable::class.java))
+        sign()
+        verify(manager, times(1)).stopNfcDiscovery(activity)
+        assertTrue(connections.containsKey(connection))
+    }
+
+    @Test
+    fun usbOnlySessionsStopNfcReaderModeImmediately() = runBlocking<Unit> {
+        usb()
+        sign()
+        verify(manager, times(1)).stopNfcDiscovery(activity)
     }
 
     @Test

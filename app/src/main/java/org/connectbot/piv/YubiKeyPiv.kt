@@ -31,6 +31,7 @@ import androidx.core.content.IntentCompat
 import com.yubico.yubikit.android.YubiKitManager
 import com.yubico.yubikit.android.transport.nfc.NfcConfiguration
 import com.yubico.yubikit.android.transport.nfc.NfcNotAvailable
+import com.yubico.yubikit.android.transport.nfc.NfcYubiKeyDevice
 import com.yubico.yubikit.android.transport.usb.UsbConfiguration
 import com.yubico.yubikit.android.transport.usb.UsbYubiKeyDevice
 import com.yubico.yubikit.core.YubiKeyDevice
@@ -63,11 +64,15 @@ import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicReference
 import kotlin.coroutines.CoroutineContext
 
 internal object YubiKeyPiv {
     private const val SIGNATURE_ALGORITHM = "ecdsa-sha2-nistp256"
     private const val DEVICE_TIMEOUT_MS = 60_000L
+
+    // How long to keep NFC reader mode on for the key to be lifted from the phone after it was used.
+    private const val NFC_REMOVAL_TIMEOUT_MS = 10_000L
 
     // A key with PIN policy ONCE only remembers the PIN until the card is powered down, and every new
     // USB connection powers it on again. So the connection is kept open after a signature, until the key
@@ -340,6 +345,7 @@ internal object YubiKeyPiv {
             val manager = createManager(activity)
             val result = CompletableDeferred<T>()
             val claimed = AtomicBoolean()
+            val nfcDevice = AtomicReference<NfcYubiKeyDevice?>()
             val connectionType = SmartCardConnection::class.java
             val accept: (YubiKeyDevice) -> Unit = accept@{ device ->
                 // A different identity may be on NFC or another USB key. Do not immediately reclaim
@@ -348,6 +354,7 @@ internal object YubiKeyPiv {
                 if (!result.isActive || !device.supportsConnection(connectionType) || !claimed.compareAndSet(false, true)) {
                     return@accept
                 }
+                if (device is NfcYubiKeyDevice) nfcDevice.set(device)
                 try {
                     requestDeviceOperation(device, activity.applicationContext, result, context, operation)
                 } catch (e: Exception) {
@@ -365,7 +372,7 @@ internal object YubiKeyPiv {
                 try {
                     manager.stopUsbDiscovery()
                 } finally {
-                    nfc.stop()
+                    nfcDevice.get()?.let { nfc.stopWhenRemoved(it, idleExecutor) } ?: nfc.stop()
                 }
             }
         }
@@ -420,6 +427,21 @@ internal object YubiKeyPiv {
 
             fun stop() {
                 if (nfcStarted) manager.stopNfcDiscovery(activity)
+            }
+
+            /**
+             * Turning reader mode off while the key is still on the phone hands the tag back to Android, which
+             * announces it again and offers it to other apps. So wait for the key to be lifted, but not forever.
+             */
+            fun stopWhenRemoved(device: NfcYubiKeyDevice, scheduler: ScheduledExecutorService) {
+                val stopped = AtomicBoolean()
+                val stopOnce = Runnable { if (stopped.compareAndSet(false, true)) stop() }
+                try {
+                    device.remove(stopOnce)
+                    scheduler.schedule(stopOnce, NFC_REMOVAL_TIMEOUT_MS, TimeUnit.MILLISECONDS)
+                } catch (_: Exception) {
+                    stopOnce.run()
+                }
             }
         }
 
