@@ -97,7 +97,7 @@ class UuidMigrationTest {
             old.execSQL("INSERT INTO automation_actions(id,host_id,position,type,text,regex,duration_ms,`key`,modifiers,forward_id,failure_policy) VALUES('00000000-0000-0000-0000-000000000007',9,0,'ENABLE_FORWARD','',0,30000,1,0,2,'STOP')")
         }
         helper.close()
-        val room = Room.databaseBuilder(context, ConnectBotDatabase::class.java, name).addMigrations(ConnectBotDatabase.MIGRATION_10_11, ConnectBotDatabase.MIGRATION_14_15).allowMainThreadQueries().build()
+        val room = Room.databaseBuilder(context, ConnectBotDatabase::class.java, name).addMigrations(ConnectBotDatabase.MIGRATION_10_11, ConnectBotDatabase.MIGRATION_14_15, ConnectBotDatabase.MIGRATION_19_20).allowMainThreadQueries().build()
         try {
             val hosts = room.hostDao().getAll()
             val target = hosts.first { it.nickname == "target" }

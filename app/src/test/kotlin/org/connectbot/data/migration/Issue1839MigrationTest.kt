@@ -125,7 +125,7 @@ class Issue1839MigrationTest {
             ConnectBotDatabase::class.java,
             roomDbName,
         )
-            .addMigrations(ConnectBotDatabase.MIGRATION_4_5)
+            .addMigrations(ConnectBotDatabase.MIGRATION_4_5, ConnectBotDatabase.MIGRATION_19_20)
             .addCallback(object : RoomDatabase.Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
@@ -207,7 +207,7 @@ class Issue1839MigrationTest {
             ConnectBotDatabase::class.java,
             roomDbName,
         )
-            .addMigrations(ConnectBotDatabase.MIGRATION_4_5)
+            .addMigrations(ConnectBotDatabase.MIGRATION_4_5, ConnectBotDatabase.MIGRATION_19_20)
             .addCallback(object : RoomDatabase.Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)

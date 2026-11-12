@@ -63,7 +63,7 @@ class AutomationMigrationTest {
             db.version = 10
         }
         val database = Room.databaseBuilder(context, ConnectBotDatabase::class.java, name)
-            .addMigrations(ConnectBotDatabase.MIGRATION_10_11, ConnectBotDatabase.MIGRATION_14_15).build()
+            .addMigrations(ConnectBotDatabase.MIGRATION_10_11, ConnectBotDatabase.MIGRATION_14_15, ConnectBotDatabase.MIGRATION_19_20).build()
         try {
             val ids = mutableSetOf<UUID>()
             texts.forEachIndexed { i, text ->

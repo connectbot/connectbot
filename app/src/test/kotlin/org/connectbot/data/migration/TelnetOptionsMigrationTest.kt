@@ -76,7 +76,7 @@ class TelnetOptionsMigrationTest {
             db.version = startVersion
         }
         val database = Room.databaseBuilder(context, ConnectBotDatabase::class.java, name)
-            .addMigrations(ConnectBotDatabase.MIGRATION_10_11, ConnectBotDatabase.MIGRATION_14_15).build()
+            .addMigrations(ConnectBotDatabase.MIGRATION_10_11, ConnectBotDatabase.MIGRATION_14_15, ConnectBotDatabase.MIGRATION_19_20).build()
         try {
             val host = database.hostDao().getAll().first { it.protocol == "telnet" }
             assertEquals("Existing", host.nickname)

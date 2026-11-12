@@ -190,7 +190,7 @@ class UuidMigrationFixture(base: Context, private val readSchema: (Int) -> Strin
             DatabaseModule.provideConnectBotDatabase(context)
         } else {
             Room.databaseBuilder(context, ConnectBotDatabase::class.java, DATABASE_NAME)
-                .addMigrations(ConnectBotDatabase.MIGRATION_4_5, ConnectBotDatabase.MIGRATION_10_11, migration).build()
+                .addMigrations(ConnectBotDatabase.MIGRATION_4_5, ConnectBotDatabase.MIGRATION_10_11, migration, ConnectBotDatabase.MIGRATION_19_20).build()
         }
         databases.add(database)
         return database

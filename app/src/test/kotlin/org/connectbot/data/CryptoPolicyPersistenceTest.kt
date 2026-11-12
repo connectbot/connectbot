@@ -81,7 +81,7 @@ class CryptoPolicyPersistenceTest {
             db.execSQL("CREATE TRIGGER sync_hosts_update AFTER UPDATE ON hosts BEGIN SELECT 1; END")
             db.version = 15
         }
-        val database = Room.databaseBuilder(context, ConnectBotDatabase::class.java, name).addCallback(object : RoomDatabaseCallback() {}).build()
+        val database = Room.databaseBuilder(context, ConnectBotDatabase::class.java, name).addMigrations(ConnectBotDatabase.MIGRATION_19_20).addCallback(object : RoomDatabaseCallback() {}).build()
         try {
             val host = database.hostDao().getById(id)!!
             assertEquals(HostCryptoConfig(), host.crypto)

@@ -47,7 +47,7 @@ object TestDatabaseModule {
         ConnectBotDatabase::class.java,
         TEST_DATABASE_NAME,
     )
-        .addMigrations(ConnectBotDatabase.MIGRATION_4_5, ConnectBotDatabase.MIGRATION_10_11, ConnectBotDatabase.MIGRATION_14_15)
+        .addMigrations(ConnectBotDatabase.MIGRATION_4_5, ConnectBotDatabase.MIGRATION_10_11, ConnectBotDatabase.MIGRATION_14_15, ConnectBotDatabase.MIGRATION_19_20)
         .addCallback(object : RoomDatabase.Callback() {
             override fun onOpen(db: SupportSQLiteDatabase) {
                 SyncDatabase.install(db)
