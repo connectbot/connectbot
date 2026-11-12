@@ -149,4 +149,31 @@ class PubkeyEditorScreenTest {
 
         composeTestRule.onNodeWithContentDescription("Save").assertIsDisplayed()
     }
+
+    @Test
+    fun pubkeyEditorScreen_hidesPasswordControlsForHardwareKeys() {
+        composeTestRule.setContent {
+            ConnectBotTheme {
+                PubkeyEditorScreenContent(
+                    uiState = PubkeyEditorUiState(
+                        isLoading = false,
+                        nickname = "hardware",
+                        canChangePassword = false,
+                    ),
+                    onNavigateBack = {},
+                    onNicknameChange = {},
+                    onOldPasswordChange = {},
+                    onNewPassword1Change = {},
+                    onNewPassword2Change = {},
+                    onUnlockAtStartupChange = {},
+                    onConfirmUseChange = {},
+                    onFido2TransportChange = {},
+                    onSave = {},
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithText("Nickname:", useUnmergedTree = true).assertExists()
+        composeTestRule.onNodeWithText("Change password").assertDoesNotExist()
+    }
 }

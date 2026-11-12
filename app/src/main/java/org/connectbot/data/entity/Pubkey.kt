@@ -27,10 +27,11 @@ import java.util.UUID
 /**
  * SSH public/private key pair entity with security-conscious backup controls.
  *
- * This entity supports three storage types:
+ * This entity supports four storage types:
  * - EXPORTABLE: Traditional encrypted keys stored in database (current implementation)
  * - ANDROID_KEYSTORE: Keys stored in Android Keystore (future Phase 2)
  * - FIDO2_RESIDENT_KEY: Keys stored on external FIDO2 security keys (YubiKey, SoloKey, etc.)
+ * - PIV: Keys held in PIV token slots
  *
  * The allowBackup field gives users granular control over which keys are included
  * in Android backups. Keys marked with allowBackup=false will be excluded from
@@ -90,6 +91,10 @@ data class Pubkey(
     /** Preferred transport for FIDO2 security key (USB or NFC) */
     @ColumnInfo(name = "fido2_transport")
     val fido2Transport: Fido2Transport? = null,
+
+    /** Numeric PIV slot identifier, such as 0x9A; null for other storage types. */
+    @ColumnInfo(name = "piv_slot")
+    val pivSlot: Int? = null,
 ) {
     /** Whether this key is stored in Android Keystore with biometric protection */
     val isBiometric: Boolean
@@ -98,6 +103,18 @@ data class Pubkey(
     /** Whether this key is stored on an external FIDO2 security key */
     val isFido2: Boolean
         get() = storageType == KeyStorageType.FIDO2_RESIDENT_KEY
+
+    /** PIV identities hold only a public key and a slot reference. */
+    val isPiv: Boolean
+        get() = storageType == KeyStorageType.PIV
+
+    /** Whether private key material can be copied or exported from the database. */
+    val canExportPrivateKey: Boolean
+        get() = storageType == KeyStorageType.EXPORTABLE
+
+    /** Biometric keys can be unlocked locally; external tokens sign only when requested. */
+    val canLoadIntoMemory: Boolean
+        get() = !isFido2 && !isPiv
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -130,6 +147,7 @@ data class Pubkey(
         }
         if (fido2RpId != other.fido2RpId) return false
         if (fido2Transport != other.fido2Transport) return false
+        if (pivSlot != other.pivSlot) return false
 
         return true
     }
@@ -150,6 +168,7 @@ data class Pubkey(
         result = 31 * result + (credentialId?.contentHashCode() ?: 0)
         result = 31 * result + (fido2RpId?.hashCode() ?: 0)
         result = 31 * result + (fido2Transport?.hashCode() ?: 0)
+        result = 31 * result + (pivSlot?.hashCode() ?: 0)
         return result
     }
 }

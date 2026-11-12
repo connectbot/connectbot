@@ -81,7 +81,7 @@ import java.util.UUID
  *   Includes fit-to-width sizing, preset template keys, five keyboard layers, shared automation macros,
  *   and per-button colors, background opacity, outlines, hold repeat, haptic feedback, and a fixed trailing-edge pinned region.
  * - Version 18: Added base font weight to profiles, defaulting to normal (AutoMigration)
- * - Version 19: Added FIDO2 credential fields to pubkeys (AutoMigration)
+ * - Version 19: Added FIDO2 credential fields and PIV slot references to pubkeys (AutoMigration)
  * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:

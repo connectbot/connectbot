@@ -56,6 +56,9 @@ data class PubkeyEditorUiState(
     val hasUnsavedChanges: Boolean = false,
     val wrongPassword: Boolean = false,
     val nicknameExists: Boolean = false,
+    val isPiv: Boolean = false,
+    val pivSlot: Int? = null,
+    val canChangePassword: Boolean = true,
 ) {
     val passwordMismatch: Boolean
         get() = newPassword1 != newPassword2 && newPassword2.isNotEmpty()
@@ -100,6 +103,9 @@ class PubkeyEditorViewModel @Inject constructor(
                             nickname = pubkey.nickname,
                             keyType = pubkey.type,
                             isEncrypted = pubkey.encrypted,
+                            isPiv = pubkey.isPiv,
+                            pivSlot = pubkey.pivSlot,
+                            canChangePassword = pubkey.canExportPrivateKey,
                             unlockAtStartup = pubkey.startup,
                             confirmUse = pubkey.confirmation,
                             isFido2 = pubkey.isFido2,
@@ -155,14 +161,17 @@ class PubkeyEditorViewModel @Inject constructor(
     }
 
     fun updateOldPassword(password: String) {
+        if (!_uiState.value.canChangePassword) return
         _uiState.update { it.copy(oldPassword = password, wrongPassword = false, hasUnsavedChanges = true) }
     }
 
     fun updateNewPassword1(password: String) {
+        if (!_uiState.value.canChangePassword) return
         _uiState.update { it.copy(newPassword1 = password, hasUnsavedChanges = true) }
     }
 
     fun updateNewPassword2(password: String) {
+        if (!_uiState.value.canChangePassword) return
         _uiState.update { it.copy(newPassword2 = password, hasUnsavedChanges = true) }
     }
 
@@ -187,12 +196,20 @@ class PubkeyEditorViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val saved = withContext(dispatchers.io) {
+                    if (pubkey.isPiv) {
+                        repository.save(pubkey.copy(nickname = state.nickname))
+                        return@withContext true
+                    }
+
                     // Handle password change if needed
                     // Password needs to be changed if:
                     // 1. Key is encrypted and user provided old password (removing or changing password)
                     // 2. Key is not encrypted but user provided new password (adding password)
-                    val needsPasswordChange = (state.isEncrypted && state.oldPassword.isNotEmpty()) ||
-                        (!state.isEncrypted && state.newPassword1.isNotEmpty())
+                    val needsPasswordChange = pubkey.canExportPrivateKey &&
+                        (
+                            (state.isEncrypted && state.oldPassword.isNotEmpty()) ||
+                                (!state.isEncrypted && state.newPassword1.isNotEmpty())
+                            )
 
                     var newPrivateKey = pubkey.privateKey
                     var newEncrypted = pubkey.encrypted

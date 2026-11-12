@@ -2555,4 +2555,49 @@
     <string name="console_authentication_failed_title">Authentication failed</string>
     <!-- Authentication error when a USB security key is missing or USB access was revoked. -->
     <string name="fido2_usb_unavailable">USB security key is unavailable. Reconnect it, allow USB access, and try again.</string>
+
+    <!-- Action and title for registering a public SSH identity from a YubiKey. -->
+    <string name="pubkey_piv_add">Add YubiKey PIV</string>
+    <!-- Key algorithm and hardware storage label. %1$s is the two-digit hexadecimal PIV slot. -->
+    <string name="pubkey_piv_type">EC P-256 · YubiKey PIV (slot %1$s)</string>
+    <!-- Accessibility label for a PIV key whose private key is on a YubiKey. -->
+    <string name="pubkey_piv_hardware">YubiKey PIV hardware key</string>
+    <!-- Input label for a hexadecimal slot identifier. -->
+    <string name="pubkey_piv_slot">PIV slot</string>
+    <!-- Supported PIV slot identifiers, shown below the slot field. -->
+    <string name="pubkey_piv_slot_help">9A is Authentication. Other slots are 9C, 9D, 9E, and 82–95 (hex).</string>
+    <!-- Button that starts waiting for a key and reads its public key. -->
+    <string name="pubkey_piv_read">Read public key</string>
+    <!-- Title of the SSH authentication prompt. %1$s is the key nickname. -->
+    <string name="pubkey_piv_sign">Sign with %1$s</string>
+    <!-- SSH authentication destination. %1$s is the account and host. -->
+    <string name="pubkey_piv_destination">SSH login to %1$s</string>
+    <!-- Label for the PIN input in the YubiKey signing dialog. -->
+    <string name="pubkey_piv_pin">YubiKey PIV PIN</string>
+    <!-- Button that starts waiting for a YubiKey to sign. -->
+    <string name="pubkey_piv_continue">Continue</string>
+    <!-- Instructions while the app waits for a YubiKey to read or sign. -->
+    <string name="pubkey_piv_connect">Plug in your YubiKey or hold it against the NFC reader. If it blinks over USB, touch the key.</string>
+    <!-- Hint in the YubiKey dialog when the phone's NFC is switched off. The key is picked up automatically once NFC is on; USB keeps working either way. -->
+    <string name="pubkey_piv_nfc_off">NFC is turned off. Turn it on to use your YubiKey over NFC.</string>
+    <!-- Button in the YubiKey dialog that opens the system NFC settings. -->
+    <string name="pubkey_piv_nfc_settings">NFC settings</string>
+    <!-- Error shown when the app cannot open a YubiKey reader. -->
+    <string name="pubkey_piv_unavailable">YubiKey access is unavailable here.</string>
+    <!-- Error for an invalid PIN length, before any PIN is sent to the key. -->
+    <string name="pubkey_piv_pin_length">Enter a PIV PIN of 6 to 8 bytes.</string>
+    <!-- Error for incorrect PIV PIN. %1$d is the number of attempts remaining. -->
+    <string name="pubkey_piv_pin_wrong">Incorrect PIV PIN. Attempts remaining: %1$d.</string>
+    <!-- Error shown after the YubiKey has blocked PIN verification. -->
+    <string name="pubkey_piv_pin_blocked">The YubiKey PIV PIN is blocked.</string>
+    <!-- Error when using a key requires verification of the PIV application PIN and no PIN was entered. -->
+    <string name="pubkey_piv_pin_required">Enter the PIV PIN to use this key.</string>
+    <!-- Error when discovery or touch confirmation times out. -->
+    <string name="pubkey_piv_timeout">The YubiKey did not respond in time.</string>
+    <!-- Error when the device or slot has an unsupported key type or firmware. -->
+    <string name="pubkey_piv_unsupported_key">Use a YubiKey with firmware 5.3 or later and an ECC P-256 key in this slot.</string>
+    <!-- Error when the connected token does not match the saved SSH public key. -->
+    <string name="pubkey_piv_wrong_key">This PIV slot does not match the saved SSH key. Connect the registered YubiKey.</string>
+    <!-- Error when the reader cannot use the PIV slot or hardware touch is not confirmed. -->
+    <string name="pubkey_piv_failed">Could not use the PIV slot. Check that PIV is enabled, the slot contains a key, and any required touch was confirmed.</string>
 </resources>
