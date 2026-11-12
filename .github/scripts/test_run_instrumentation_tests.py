@@ -20,7 +20,7 @@ class InstrumentationRunnerTest(unittest.TestCase):
             root = Path(temporary)
             scripts = root / ".github/scripts"
             scripts.mkdir(parents=True)
-            for name in ("run_instrumentation_tests.sh", "verify_uuid_migration_results.py"):
+            for name in ("run_instrumentation_tests.sh", "verify_uuid_migration_results.py", "collect_instrumentation_memory.py"):
                 shutil.copy(Path(__file__).parent / name, scripts)
             adb = root / "adb"
             adb.write_text(

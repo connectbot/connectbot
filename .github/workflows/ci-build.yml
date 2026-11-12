@@ -316,6 +316,11 @@ jobs:
           free -h > "$diagnostics/host-memory.txt" 2>&1 || true
           ps -eo pid,ppid,rss,comm --sort=-rss > "$diagnostics/host-processes.txt" 2>&1 || true
           timeout --kill-after=5s 10s sudo -n dmesg --ctime > "$diagnostics/host-kernel.txt" 2>&1 || true
+          # Native emulator crash reports remain available after adb disappears.
+          shopt -s nullglob
+          for crash in /tmp/android-*/emu-crash-*; do
+            cp -a "$crash" "$diagnostics/" || true
+          done
 
       - name: Store instrumentation test results
         if: always()
