@@ -146,11 +146,11 @@ internal object YubiKeyPiv {
             expectedKey: PublicKey,
             pin: CharArray,
             data: ByteArray,
-        ): ByteArray = withSession(activity, retryRejectedHeldKey = true) { session, _, checkActive ->
+        ): ByteArray = withSession(activity, retryRejectedHeldKey = true) { session, connection, checkActive ->
             val slotKey = readSlotKey(session, slot)
             if (encodePublicKey(expectedKey) != encodePublicKey(slotKey.publicKey)) throw WrongKey()
 
-            verifyPin(session, slotKey.pinPolicy, pin, checkActive)
+            verifyPin(session, connection, slotKey.pinPolicy, pin, checkActive)
             val pinUnverified = slotKey.pinPolicy != PinPolicy.NEVER && pin.isEmpty()
 
             checkActive()
@@ -169,7 +169,7 @@ internal object YubiKeyPiv {
             SshSigning.encodeEcdsaSignature(SIGNATURE_ALGORITHM, der)
         }
 
-        private fun verifyPin(session: PivSession, policy: PinPolicy, pin: CharArray, checkActive: () -> Unit) {
+        private fun verifyPin(session: PivSession, connection: SmartCardConnection, policy: PinPolicy, pin: CharArray, checkActive: () -> Unit) {
             if (policy != PinPolicy.NEVER) {
                 // The UI can clear its buffer on cancellation while a card operation is in flight.
                 val cardPin = synchronized(pin) {
@@ -179,10 +179,10 @@ internal object YubiKeyPiv {
                 try {
                     if (cardPin.isNotEmpty()) {
                         session.verifyPin(cardPin)
-                    } else if (policy != PinPolicy.ONCE) {
+                    } else if (!pinRemembered(connection, policy)) {
+                        // Do not let the card ask for a touch first just to then find out that the PIN is missing.
                         throw PinRequired()
                     }
-                    // Otherwise the card may still remember the PIN from an earlier signature on this connection.
                 } finally {
                     cardPin.fill('\u0000')
                 }
@@ -190,19 +190,28 @@ internal object YubiKeyPiv {
         }
 
         /**
-         * Whether it is worth trying to sign with [slot] without asking for the PIN: a USB connection is held,
-         * and the slot needs no PIN or has the ONCE policy, so the card may remember the PIN from the last
-         * signature. [sign] throws [PinRequired] if it does not.
+         * Whether [slot] can sign right now without asking for the PIN: a USB connection is held, and the slot
+         * needs no PIN or the card still remembers it from the last signature (PIN policy ONCE).
          */
         suspend fun canSignWithoutPin(slot: Slot): Boolean = try {
-            useHeld { session, _, _ ->
+            useHeld { session, connection, _ ->
                 val policy = readSlotKey(session, slot).pinPolicy
-                policy == PinPolicy.NEVER || policy == PinPolicy.ONCE
+                policy == PinPolicy.NEVER || pinRemembered(connection, policy)
             } ?: false
         } catch (e: CancellationException) {
             throw e
         } catch (_: Exception) {
             false
+        }
+
+        // Only the ONCE policy survives between signatures; ALWAYS has to be verified again for every one.
+        private fun pinRemembered(connection: SmartCardConnection, policy: PinPolicy): Boolean = policy == PinPolicy.ONCE && isPinVerified(connection)
+
+        // A VERIFY without data does not try a PIN: the card answers 9000 if the PIN is currently verified and
+        // 63Cx, with the attempts left, if it is not (yubikit relies on the same behavior).
+        private fun isPinVerified(connection: SmartCardConnection): Boolean {
+            val response = connection.sendAndReceive(byteArrayOf(0x00, 0x20, 0x00, 0x80.toByte()))
+            return response.size >= 2 && response[response.size - 2] == 0x90.toByte() && response[response.size - 1] == 0.toByte()
         }
 
         private suspend fun <T : Any> useHeld(

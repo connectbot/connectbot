@@ -96,6 +96,7 @@ class YubiKeyPivTest {
     private var nfcStarts = 0
     private val discoveryStarted = CompletableDeferred<Unit>()
     private var factoryFailure: Exception? = null
+    private val verifiedPins = mutableSetOf<SmartCardConnection>()
     private lateinit var client: YubiKeyPiv.Client
     private val key = newKey()
     private val data = "SSH authentication payload".toByteArray()
@@ -158,6 +159,17 @@ class YubiKeyPivTest {
         return session
     }
 
+    // An empty VERIFY is answered with 9000 while the PIN is verified, otherwise with 63Cx and the attempts left.
+    private fun answerPinProbe(connection: SmartCardConnection, session: PivSession) {
+        doAnswer {
+            if (connection in verifiedPins) byteArrayOf(0x90.toByte(), 0x00) else byteArrayOf(0x63, 0xC3.toByte())
+        }.`when`(connection).sendAndReceive(any(ByteArray::class.java))
+        doAnswer {
+            verifiedPins.add(connection)
+            null
+        }.`when`(session).verifyPin(any(CharArray::class.java))
+    }
+
     private fun usb(name: String = "usb-A", policy: PinPolicy = PinPolicy.ONCE, pair: KeyPair = key): Card {
         val device = mock(UsbYubiKeyDevice::class.java)
         val usb = mock(UsbDevice::class.java)
@@ -168,6 +180,7 @@ class YubiKeyPivTest {
         doReturn(true).`when`(device).supportsConnection(SmartCardConnection::class.java)
         doReturn(connection).`when`(device).openConnection(SmartCardConnection::class.java)
         connections[connection] = session
+        answerPinProbe(connection, session)
         usbDevices = listOf(device)
         return Card(device, connection, session)
     }
@@ -176,6 +189,7 @@ class YubiKeyPivTest {
         val device = mock(NfcYubiKeyDevice::class.java)
         val connection = mock(SmartCardConnection::class.java)
         connections[connection] = session
+        answerPinProbe(connection, session)
         doReturn(true).`when`(device).supportsConnection(SmartCardConnection::class.java)
         doAnswer {
             it.getArgument<Callback<Result<SmartCardConnection, IOException>>>(1).invoke(Result.success(connection))
@@ -219,6 +233,7 @@ class YubiKeyPivTest {
         doAnswer {
             cardPin = it.getArgument(0)
             assertEquals("123456", String(cardPin!!))
+            verifiedPins.add(card.connection)
             null
         }
             .`when`(card.session).verifyPin(any(CharArray::class.java))
@@ -335,6 +350,37 @@ class YubiKeyPivTest {
     }
 
     @Test
+    fun pinIsAskedForBeforeAnyTouchWhenTheCardDoesNotRememberIt() = runBlocking<Unit> {
+        // A connection is held, for instance from reading the public key, but no PIN was verified on it.
+        val card = usb()
+        client.readPublicKey(activity, Slot.AUTHENTICATION)
+        assertFalse(client.canSignWithoutPin(Slot.AUTHENTICATION))
+        failure<YubiKeyPiv.PinRequired> { sign("") }
+        // The card was never asked to sign, so it never waited for a touch only to then refuse for the PIN.
+        verify(card.session, never()).rawSignOrDecrypt(any(Slot::class.java), any(KeyType::class.java), any(ByteArray::class.java))
+    }
+
+    @Test
+    fun cardForgettingThePinOnAHeldConnectionAsksForItAgain() = runBlocking<Unit> {
+        val card = usb()
+        sign()
+        assertTrue(client.canSignWithoutPin(Slot.AUTHENTICATION))
+        verifiedPins.remove(card.connection)
+        assertFalse(client.canSignWithoutPin(Slot.AUTHENTICATION))
+        failure<YubiKeyPiv.PinRequired> { sign("") }
+        verify(card.session, times(1)).rawSignOrDecrypt(any(Slot::class.java), any(KeyType::class.java), any(ByteArray::class.java))
+    }
+
+    @Test
+    fun cardRefusingAfterTheProbeAnsweredVerifiedStillAsksForThePin() = runBlocking<Unit> {
+        val card = usb()
+        verifiedPins.add(card.connection)
+        doThrow(ApduException(byteArrayOf(), SW.SECURITY_CONDITION_NOT_SATISFIED)).`when`(card.session)
+            .rawSignOrDecrypt(any(Slot::class.java), any(KeyType::class.java), any(ByteArray::class.java))
+        failure<YubiKeyPiv.PinRequired> { sign("") }
+    }
+
+    @Test
     fun metadataErrorsOtherThanMissingSlotPropagate() = runBlocking<Unit> {
         val card = usb()
         val error = ApduException(byteArrayOf(), SW.COMMAND_ABORTED)
@@ -391,8 +437,8 @@ class YubiKeyPivTest {
     @Test
     fun nfcFailureIsDeliveredAndDiscoveryStops() = runBlocking<Unit> {
         val session = session()
-        doThrow(InvalidPinException(1)).`when`(session).verifyPin(any(CharArray::class.java))
         nfc(session)
+        doThrow(InvalidPinException(1)).`when`(session).verifyPin(any(CharArray::class.java))
         failure<InvalidPinException> { sign() }
         verify(manager).stopNfcDiscovery(activity)
     }
