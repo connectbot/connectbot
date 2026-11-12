@@ -303,6 +303,7 @@ jobs:
           api-level: 29
           target: default
           arch: x86_64
+          profile: Nexus 6
           disk-size: 2G
           script: bash .github/scripts/run_instrumentation_tests.sh "$FLAVOR_TASK"
 
