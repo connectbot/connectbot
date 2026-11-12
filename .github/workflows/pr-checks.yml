@@ -11,6 +11,23 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  renovate:
+    name: Validate Renovate config
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/renovatebot/renovate:44.235.1
+      options: --user root
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Validate Renovate config
+        run: renovate-config-validator --strict --no-global renovate.json5
+
   lockfile:
     name: Verify Actions lockfile
     uses: ./.github/workflows/verify-lockfile.yml
@@ -89,7 +106,7 @@ jobs:
   required:
     name: Required
     runs-on: ubuntu-latest
-    needs: [changes, docs, ci, lockfile]
+    needs: [changes, docs, ci, lockfile, renovate]
     if: always()
 
     steps:
@@ -101,8 +118,14 @@ jobs:
           CI_RESULT: ${{ needs.ci.result }}
           DOCS_RESULT: ${{ needs.docs.result }}
           LOCKFILE_RESULT: ${{ needs.lockfile.result }}
+          RENOVATE_RESULT: ${{ needs.renovate.result }}
         run: |
           failed=false
+
+          if [[ "${RENOVATE_RESULT}" != "success" ]]; then
+            echo "Renovate config validation result was ${RENOVATE_RESULT}"
+            failed=true
+          fi
 
           if [[ "${LOCKFILE_RESULT}" != "success" ]]; then
             echo "Actions lockfile verification result was ${LOCKFILE_RESULT}"

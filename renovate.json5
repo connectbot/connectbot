@@ -2,11 +2,13 @@
   "extends": [
     "config:best-practices",
   ],
-  "customManagers": [
+  "packageRules": [
     {
       "matchPackageNames": ["connectbot/*", "kruton/*"],
       "minimumReleaseAge": null
     },
+  ],
+  "customManagers": [
     {
       "customType": "regex",
       "managerFilePatterns": ["/^gradle\\/mosh4android\\.version$/"],
