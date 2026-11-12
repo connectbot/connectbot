@@ -27,6 +27,8 @@ workflows:
     '.github/workflows/stale-issues.yml': []
     '.github/workflows/translations-check.yaml':
         - 'actions/checkout@v7.0.1'
+    '.github/workflows/verify-lockfile.yml':
+        - 'actions/checkout@v7.0.1'
 dependencies:
     'actions/cache@v6.1.0':
         ref: 'v6.1.0'
