@@ -14,12 +14,17 @@ diagnostics="build/instrumentation-diagnostics/$flavor"
 reports="app/build/outputs/androidTest-results/connected/debug/flavors/$flavor"
 mkdir -p "$diagnostics"
 logcat_pid=
+memory_pid=
 
 # Per-test logs only exist after discovery succeeds. Dump the device buffers
 # before the emulator stops, including when Gradle reports an empty suite.
 finish() {
   local result=$?
   trap - EXIT
+  if [[ -n "$memory_pid" ]]; then
+    kill "$memory_pid" 2>/dev/null || true
+    wait "$memory_pid" 2>/dev/null || true
+  fi
   if [[ -n "$logcat_pid" ]]; then
     # Reap the streaming reader even if the device vanished or adb hung.
     kill -KILL "$logcat_pid" 2>/dev/null || true
@@ -38,6 +43,9 @@ trap finish EXIT
 
 # Capture while the device is alive; an exit-time dump cannot recover logs
 # after the emulator process has crashed or been killed by the host.
+python3 .github/scripts/collect_instrumentation_memory.py \
+  > "$diagnostics/host-memory-timeline.jsonl" 2> "$diagnostics/host-memory-monitor.txt" &
+memory_pid=$!
 adb logcat -v threadtime -b all > "$diagnostics/live-logcat.txt" 2>&1 &
 logcat_pid=$!
 
