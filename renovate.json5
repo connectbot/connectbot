@@ -1,11 +1,17 @@
 {
-  "extends": ["config:recommended"],
+  "extends": [
+    "config:best-practices",
+  ],
   "customManagers": [
+    {
+      "matchPackageNames": ["connectbot/*", "kruton/*"],
+      "minimumReleaseAge": null
+    },
     {
       "customType": "regex",
       "managerFilePatterns": ["/^gradle\\/mosh4android\\.version$/"],
       "matchStrings": ["# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+) versioning=(?<versioning>\\S+)\\s+(?<currentValue>android-[^\\s]+)"],
       "versioningTemplate": "{{{versioning}}}"
-    }
-  ]
+    },
+  ],
 }
