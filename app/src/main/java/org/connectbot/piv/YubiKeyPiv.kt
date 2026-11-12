@@ -56,6 +56,7 @@ import org.connectbot.sshlib.AuthPublicKey
 import org.connectbot.sshlib.SshSigning
 import org.connectbot.util.PreferenceConstants
 import java.io.IOException
+import java.security.GeneralSecurityException
 import java.security.KeyPair
 import java.security.MessageDigest
 import java.security.PublicKey
@@ -165,8 +166,7 @@ internal object YubiKeyPiv {
             pin: CharArray,
             data: ByteArray,
         ): ByteArray = withSession(activity, retryRejectedHeldKey = true) { session, connection, checkActive ->
-            val slotKey = readSlotKey(session, slot)
-            if (encodePublicKey(expectedKey) != encodePublicKey(slotKey.publicKey)) throw WrongKey()
+            val slotKey = locateKey(session, slot, expectedKey)
 
             verifyPin(session, connection, slotKey.pinPolicy, pin, checkActive)
             val pinUnverified = slotKey.pinPolicy != PinPolicy.NEVER && pin.isEmpty()
@@ -174,7 +174,7 @@ internal object YubiKeyPiv {
             checkActive()
             val digest = MessageDigest.getInstance("SHA-256").digest(data)
             val der = try {
-                session.rawSignOrDecrypt(slot, KeyType.ECCP256, digest)
+                session.rawSignOrDecrypt(slotKey.slot, KeyType.ECCP256, digest)
             } catch (e: ApduException) {
                 // We relied on the card remembering the PIN, and it does not (anymore).
                 if (pinUnverified && e.sw == SW.SECURITY_CONDITION_NOT_SATISFIED) throw PinRequired()
@@ -185,6 +185,45 @@ internal object YubiKeyPiv {
             verifier.update(data)
             if (!verifier.verify(der)) throw WrongKey()
             SshSigning.encodeEcdsaSignature(SIGNATURE_ALGORITHM, der)
+        }
+
+        /**
+         * Finds [expected] on the card. The saved slot is only a hint: a key can end up in another slot, for
+         * instance when it was imported into a second YubiKey or moved on newer firmware. The key is matched by
+         * its public key, so searching the other slots can never select a different key.
+         */
+        private fun locateKey(session: PivSession, hint: Slot, expected: PublicKey): SlotKey {
+            var failureAtHint: PivFailure? = null
+            try {
+                val atHint = readSlotKey(session, hint)
+                if (sameKey(atHint.publicKey, expected)) return atHint
+            } catch (e: PivFailure) {
+                failureAtHint = e
+            }
+
+            for (candidate in Slot.values()) {
+                if (candidate == hint || candidate == Slot.ATTESTATION) continue
+                val found = try {
+                    readSlotKey(session, candidate).takeIf { sameKey(it.publicKey, expected) }
+                } catch (_: PivFailure) {
+                    null // Empty, or a key type we cannot use.
+                } catch (_: ApduException) {
+                    null
+                } catch (_: GeneralSecurityException) {
+                    null
+                } catch (_: IllegalArgumentException) {
+                    null
+                }
+                if (found != null) return found
+            }
+            // With nothing else matching, report why the saved slot could not be used.
+            throw failureAtHint ?: WrongKey()
+        }
+
+        private fun sameKey(a: PublicKey, b: PublicKey): Boolean = try {
+            encodePublicKey(a) == encodePublicKey(b)
+        } catch (_: Exception) {
+            false
         }
 
         private fun verifyPin(session: PivSession, connection: SmartCardConnection, policy: PinPolicy, pin: CharArray, checkActive: () -> Unit) {
@@ -319,7 +358,7 @@ internal object YubiKeyPiv {
             session.close()
         }
 
-        private data class SlotKey(val publicKey: PublicKey, val pinPolicy: PinPolicy)
+        private data class SlotKey(val slot: Slot, val publicKey: PublicKey, val pinPolicy: PinPolicy)
 
         private fun readSlotKey(session: PivSession, slot: Slot): SlotKey {
             if (!session.supports(PivSession.FEATURE_METADATA)) throw UnsupportedKey()
@@ -332,7 +371,7 @@ internal object YubiKeyPiv {
                 throw e
             }
             if (metadata.keyType != KeyType.ECCP256) throw UnsupportedKey()
-            return SlotKey(metadata.publicKeyValues.toPublicKey(), metadata.pinPolicy)
+            return SlotKey(slot, metadata.publicKeyValues.toPublicKey(), metadata.pinPolicy)
         }
 
         // The SDK handles Android USB permission. Keep reader mode and USB discovery scoped to one visible

@@ -145,18 +145,39 @@ class YubiKeyPivTest {
         initialize(ECGenParameterSpec("secp256r1"))
     }.generateKeyPair()
 
-    private fun session(policy: PinPolicy = PinPolicy.ONCE, pair: KeyPair = key, type: KeyType = KeyType.ECCP256): PivSession {
-        val session = mock(PivSession::class.java)
+    private fun metadata(pair: KeyPair, type: KeyType, policy: PinPolicy): SlotMetadata {
         val metadata = mock(SlotMetadata::class.java)
-        doReturn(true).`when`(session).supports(PivSession.FEATURE_METADATA)
-        doReturn(metadata).`when`(session).getSlotMetadata(any(Slot::class.java))
         doReturn(type).`when`(metadata).keyType
         doReturn(policy).`when`(metadata).pinPolicy
         doReturn(PublicKeyValues.fromPublicKey(pair.public)).`when`(metadata).publicKeyValues
+        return metadata
+    }
+
+    /**
+     * [layout] maps slots to the key they hold, and slots missing from it are empty. Without a layout every
+     * slot holds [pair].
+     */
+    private fun session(
+        policy: PinPolicy = PinPolicy.ONCE,
+        pair: KeyPair = key,
+        type: KeyType = KeyType.ECCP256,
+        layout: Map<Slot, KeyPair>? = null,
+    ): PivSession {
+        val session = mock(PivSession::class.java)
+        doReturn(true).`when`(session).supports(PivSession.FEATURE_METADATA)
+        if (layout == null) {
+            doReturn(metadata(pair, type, policy)).`when`(session).getSlotMetadata(any(Slot::class.java))
+        } else {
+            doAnswer {
+                val held = layout[it.getArgument<Slot>(0)] ?: throw ApduException(byteArrayOf(), SW.REFERENCED_DATA_NOT_FOUND)
+                metadata(held, type, policy)
+            }.`when`(session).getSlotMetadata(any(Slot::class.java))
+        }
         doAnswer {
+            val signer = layout?.get(it.getArgument<Slot>(0)) ?: pair
             assertArrayEquals(MessageDigest.getInstance("SHA-256").digest(data), it.getArgument<ByteArray>(2))
             Signature.getInstance("SHA256withECDSA").run {
-                initSign(pair.private)
+                initSign(signer.private)
                 update(data)
                 sign()
             }
@@ -175,11 +196,16 @@ class YubiKeyPivTest {
         }.`when`(session).verifyPin(any(CharArray::class.java))
     }
 
-    private fun usb(name: String = "usb-A", policy: PinPolicy = PinPolicy.ONCE, pair: KeyPair = key): Card {
+    private fun usb(
+        name: String = "usb-A",
+        policy: PinPolicy = PinPolicy.ONCE,
+        pair: KeyPair = key,
+        layout: Map<Slot, KeyPair>? = null,
+    ): Card {
         val device = mock(UsbYubiKeyDevice::class.java)
         val usb = mock(UsbDevice::class.java)
         val connection = mock(SmartCardConnection::class.java)
-        val session = session(policy, pair)
+        val session = session(policy, pair, layout = layout)
         doReturn(name).`when`(usb).deviceName
         doReturn(usb).`when`(device).usbDevice
         doReturn(true).`when`(device).supportsConnection(SmartCardConnection::class.java)
@@ -463,6 +489,55 @@ class YubiKeyPivTest {
             prefs.edit().putString(PreferenceConstants.PIV_SESSION_IDLE_SECONDS, value).commit()
             assertEquals(value, expected, YubiKeyPiv.preferredHoldIdleMs(activity))
         }
+    }
+
+    @Test
+    fun keyMovedToAnotherSlotIsFoundAndSignedThere() = runBlocking<Unit> {
+        val card = usb(layout = mapOf(Slot.RETIRED5 to key, Slot.SIGNATURE to newKey()))
+        assertTrue(sign().isNotEmpty())
+        verify(card.session).rawSignOrDecrypt(eq(Slot.RETIRED5), eq(KeyType.ECCP256), any(ByteArray::class.java))
+        verify(card.session, never()).rawSignOrDecrypt(eq(Slot.AUTHENTICATION), any(KeyType::class.java), any(ByteArray::class.java))
+    }
+
+    @Test
+    fun searchUsesThePinPolicyOfTheSlotItFound() = runBlocking<Unit> {
+        val card = usb(policy = PinPolicy.ALWAYS, layout = mapOf(Slot.CARD_AUTH to key))
+        failure<YubiKeyPiv.PinRequired> { sign("") }
+        sign()
+        verify(card.session).verifyPin(any(CharArray::class.java))
+    }
+
+    @Test
+    fun theSavedSlotIsTriedBeforeSearching() = runBlocking<Unit> {
+        val card = usb(layout = mapOf(Slot.AUTHENTICATION to key, Slot.SIGNATURE to key))
+        sign()
+        verify(card.session, times(1)).getSlotMetadata(any(Slot::class.java))
+        verify(card.session).rawSignOrDecrypt(eq(Slot.AUTHENTICATION), any(KeyType::class.java), any(ByteArray::class.java))
+    }
+
+    @Test
+    fun searchMatchesPublicKeysSoOtherKeysAreNeverUsed() = runBlocking<Unit> {
+        val card = usb(layout = mapOf(Slot.SIGNATURE to newKey(), Slot.RETIRED1 to newKey(), Slot.RETIRED2 to newKey()))
+        failure<YubiKeyPiv.WrongKey> { sign() }
+        verify(card.session, never()).verifyPin(any(CharArray::class.java))
+        verify(card.session, never()).rawSignOrDecrypt(any(Slot::class.java), any(KeyType::class.java), any(ByteArray::class.java))
+    }
+
+    @Test
+    fun searchSkipsSlotsWithUnusableKeysAndMetadataErrors() = runBlocking<Unit> {
+        val card = usb(layout = mapOf(Slot.RETIRED20 to key))
+        val unusable = mock(SlotMetadata::class.java)
+        doReturn(KeyType.X25519).`when`(unusable).keyType
+        doReturn(unusable).`when`(card.session).getSlotMetadata(Slot.SIGNATURE)
+        doThrow(ApduException(byteArrayOf(), SW.COMMAND_ABORTED)).`when`(card.session).getSlotMetadata(Slot.KEY_MANAGEMENT)
+        assertTrue(sign().isNotEmpty())
+        verify(card.session).rawSignOrDecrypt(eq(Slot.RETIRED20), any(KeyType::class.java), any(ByteArray::class.java))
+    }
+
+    @Test
+    fun emptySavedSlotWithTheKeyNowhereReportsWrongKey() = runBlocking<Unit> {
+        usb(layout = emptyMap())
+        failure<YubiKeyPiv.WrongKey> { sign() }
     }
 
     @Test
