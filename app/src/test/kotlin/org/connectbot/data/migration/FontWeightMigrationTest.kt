@@ -57,7 +57,7 @@ class FontWeightMigrationTest {
             db.execSQL("CREATE TRIGGER sync_profiles_update BEFORE UPDATE ON profiles BEGIN SELECT 1; END")
             db.version = 17
         }
-        val database = Room.databaseBuilder(context, ConnectBotDatabase::class.java, name).build()
+        val database = Room.databaseBuilder(context, ConnectBotDatabase::class.java, name).addMigrations(ConnectBotDatabase.MIGRATION_19_20).build()
         try {
             val profile = database.profileDao().getAll().single()
             assertEquals(TerminalFontWeight.NORMAL, profile.fontWeight)

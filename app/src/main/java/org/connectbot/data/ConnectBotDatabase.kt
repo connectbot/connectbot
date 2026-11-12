@@ -81,7 +81,8 @@ import java.util.UUID
  *   Includes fit-to-width sizing, preset template keys, five keyboard layers, shared automation macros,
  *   and per-button colors, background opacity, outlines, hold repeat, haptic feedback, and a fixed trailing-edge pinned region.
  * - Version 18: Added base font weight to profiles, defaulting to normal (AutoMigration)
- * - Version 19: Added FIDO2 credential fields and PIV slot references to pubkeys (AutoMigration)
+ * - Version 19: Added FIDO2 credential fields to pubkeys (AutoMigration)
+ * - Version 20: Added PIV slot to pubkeys, accepting both shipped version-19 layouts (manual migration)
  * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:
@@ -103,7 +104,7 @@ import java.util.UUID
         KeyboardMacro::class,
         KeyboardSettings::class,
     ],
-    version = 19,
+    version = 20,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -147,6 +148,26 @@ abstract class ConnectBotDatabase : RoomDatabase() {
     abstract fun profileDao(): ProfileDao
 
     companion object {
+        // Version 19 shipped both with and without piv_slot. Inspect the table rather than
+        // trusting its version or identity hash so either layout upgrades without losing keys.
+        val MIGRATION_19_20 = object : Migration(19, 20) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                val hasPivSlot = db.query("PRAGMA table_info(`pubkeys`)").use { cursor ->
+                    val nameIndex = cursor.getColumnIndexOrThrow("name")
+                    var found = false
+                    while (cursor.moveToNext()) {
+                        if (cursor.getString(nameIndex) == "piv_slot") found = true
+                    }
+                    found
+                }
+                if (!hasPivSlot) {
+                    db.execSQL("ALTER TABLE pubkeys ADD COLUMN piv_slot INTEGER")
+                }
+                // Recreated on open so changes to the slot participate in key sync.
+                db.execSQL("DROP TRIGGER IF EXISTS sync_pubkeys_update")
+            }
+        }
+
         val MIGRATION_10_11 = object : Migration(10, 11) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL("ALTER TABLE port_forwards ADD COLUMN start_enabled INTEGER NOT NULL DEFAULT 1")

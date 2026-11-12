@@ -37,7 +37,7 @@ import java.util.UUID
 @RunWith(RobolectricTestRunner::class)
 class PivSlotMigrationTest {
     @Test
-    fun version18KeysSurviveAndPivMetadataRoundTripsInVersion19() = runTest {
+    fun version18KeysSurviveAndPivMetadataRoundTripsInVersion20() = runTest {
         val context = ApplicationProvider.getApplicationContext<Context>()
         val name = "piv-slot-migration"
         context.deleteDatabase(name)
@@ -63,11 +63,11 @@ class PivSlotMigrationTest {
             db.version = 18
         }
 
-        val database = Room.databaseBuilder(context, ConnectBotDatabase::class.java, name).build()
+        val database = Room.databaseBuilder(context, ConnectBotDatabase::class.java, name).addMigrations(ConnectBotDatabase.MIGRATION_19_20).build()
         try {
             val dao = database.pubkeyDao()
             val existing = requireNotNull(dao.getById(existingId))
-            assertEquals(19, database.openHelper.writableDatabase.version)
+            assertEquals(20, database.openHelper.writableDatabase.version)
             assertEquals("EC", existing.type)
             assertEquals(KeyStorageType.EXPORTABLE, existing.storageType)
             assertTrue(existing.privateKey!!.contentEquals(byteArrayOf(1)))

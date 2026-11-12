@@ -54,7 +54,7 @@ class KeyboardMigrationTest {
             db.execSQL("INSERT INTO hosts (id, nickname, protocol, username, hostname, port, last_connect, use_keys, pubkey_id, want_session, compression, stay_connected, quick_disconnect, scrollback_lines, use_ctrl_alt_as_meta_key) VALUES ('22222222-2222-4222-8222-222222222222', 'Existing host', 'ssh', 'user', 'host', 22, 0, 1, '${org.connectbot.util.HostConstants.PUBKEYID_ANY}', 1, 0, 0, 0, 140, 0)")
             db.version = 16
         }
-        val database = Room.databaseBuilder(context, ConnectBotDatabase::class.java, name).build()
+        val database = Room.databaseBuilder(context, ConnectBotDatabase::class.java, name).addMigrations(ConnectBotDatabase.MIGRATION_19_20).build()
         try {
             val profile = database.profileDao().getAll().single()
             assertEquals(null, profile.keyboardLayoutId)
