@@ -193,12 +193,15 @@ internal object YubiKeyPiv {
          * its public key, so searching the other slots can never select a different key.
          */
         private fun locateKey(session: PivSession, hint: Slot, expected: PublicKey): SlotKey {
-            var failureAtHint: PivFailure? = null
+            var unsupportedAtHint: UnsupportedKey? = null
             try {
                 val atHint = readSlotKey(session, hint)
                 if (sameKey(atHint.publicKey, expected)) return atHint
-            } catch (e: PivFailure) {
-                failureAtHint = e
+            } catch (_: EmptySlot) {
+                // Look elsewhere.
+            } catch (e: UnsupportedKey) {
+                if (e.reason == UnsupportedKey.Reason.FIRMWARE) throw e
+                unsupportedAtHint = e
             }
 
             for (candidate in Slot.values()) {
@@ -216,8 +219,8 @@ internal object YubiKeyPiv {
                 }
                 if (found != null) return found
             }
-            // With nothing else matching, report why the saved slot could not be used.
-            throw failureAtHint ?: WrongKey()
+            // With nothing else matching, the unusable key in the saved slot is the more helpful thing to report.
+            throw unsupportedAtHint ?: WrongKey()
         }
 
         private fun sameKey(a: PublicKey, b: PublicKey): Boolean = try {
@@ -286,7 +289,7 @@ internal object YubiKeyPiv {
                 try {
                     operation(session.session, session.connection) { context.ensureActive() }
                 } catch (e: PivFailure) {
-                    if (onRejectedKey == null || (e !is WrongKey && e !is UnsupportedKey)) throw e
+                    if (onRejectedKey == null || (e !is WrongKey && e !is UnsupportedKey && e !is EmptySlot)) throw e
                     onRejectedKey(session.usbDeviceName)
                     release(session)
                     null
@@ -361,16 +364,16 @@ internal object YubiKeyPiv {
         private data class SlotKey(val slot: Slot, val publicKey: PublicKey, val pinPolicy: PinPolicy)
 
         private fun readSlotKey(session: PivSession, slot: Slot): SlotKey {
-            if (!session.supports(PivSession.FEATURE_METADATA)) throw UnsupportedKey()
+            if (!session.supports(PivSession.FEATURE_METADATA)) throw UnsupportedKey(UnsupportedKey.Reason.FIRMWARE)
             val metadata = try {
                 session.getSlotMetadata(slot)
             } catch (e: ApduException) {
                 // An empty slot cannot match the requested identity. Let held-session recovery
                 // release this device and discover another key, without retrying PIN or touch failures.
-                if (e.sw == SW.REFERENCED_DATA_NOT_FOUND) throw WrongKey()
+                if (e.sw == SW.REFERENCED_DATA_NOT_FOUND) throw EmptySlot()
                 throw e
             }
-            if (metadata.keyType != KeyType.ECCP256) throw UnsupportedKey()
+            if (metadata.keyType != KeyType.ECCP256) throw UnsupportedKey(UnsupportedKey.Reason.ALGORITHM, describeKeyType(metadata.keyType))
             return SlotKey(slot, metadata.publicKeyValues.toPublicKey(), metadata.pinPolicy)
         }
 
@@ -555,9 +558,26 @@ internal object YubiKeyPiv {
         }
     }
 
+    // Names a key type in the error shown for a slot holding one that is not supported.
+    private fun describeKeyType(keyType: KeyType): String = when (keyType) {
+        KeyType.RSA1024 -> "RSA 1024"
+        KeyType.RSA2048 -> "RSA 2048"
+        KeyType.RSA3072 -> "RSA 3072"
+        KeyType.RSA4096 -> "RSA 4096"
+        KeyType.ECCP384 -> "EC P-384"
+        KeyType.ED25519 -> "Ed25519"
+        else -> keyType.name
+    }
+
     open class PivFailure : IOException()
     class DeviceTimeout : IOException()
     class PinRequired : PivFailure()
-    class UnsupportedKey : PivFailure()
+
+    /** The slot's key cannot be used: [algorithm] names the unsupported key type, if that is the reason. */
+    class UnsupportedKey(val reason: Reason, val algorithm: String? = null) : PivFailure() {
+        enum class Reason { FIRMWARE, ALGORITHM }
+    }
+
+    class EmptySlot : PivFailure()
     class WrongKey : PivFailure()
 }

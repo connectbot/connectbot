@@ -383,7 +383,23 @@ class YubiKeyPivTest {
         val metadata = mock(SlotMetadata::class.java)
         doReturn(KeyType.RSA2048).`when`(metadata).keyType
         doReturn(metadata).`when`(card.session).getSlotMetadata(any(Slot::class.java))
-        failure<YubiKeyPiv.UnsupportedKey> { sign() }
+        val failure = failure<YubiKeyPiv.UnsupportedKey> { sign() }
+        assertEquals(YubiKeyPiv.UnsupportedKey.Reason.ALGORITHM, failure.reason)
+        assertEquals("RSA 2048", failure.algorithm)
+        verify(card.session, never()).verifyPin(any(CharArray::class.java))
+    }
+
+    @Test
+    fun missingMetadataSupportIsReportedAsFirmware() = runBlocking<Unit> {
+        val card = usb()
+        doReturn(false).`when`(card.session).supports(PivSession.FEATURE_METADATA)
+        assertEquals(YubiKeyPiv.UnsupportedKey.Reason.FIRMWARE, failure<YubiKeyPiv.UnsupportedKey> { sign() }.reason)
+    }
+
+    @Test
+    fun readingAnEmptySlotIsReportedAsEmpty() = runBlocking<Unit> {
+        usb(layout = emptyMap())
+        failure<YubiKeyPiv.EmptySlot> { client.readPublicKey(activity, Slot.AUTHENTICATION) }
     }
 
     @Test

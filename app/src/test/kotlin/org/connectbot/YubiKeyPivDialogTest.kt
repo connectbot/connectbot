@@ -259,9 +259,21 @@ class YubiKeyPivDialogTest {
     )
 
     @Test
-    fun unsupportedKeyShowsError() = assertSigningError(
-        YubiKeyPiv.UnsupportedKey(),
-        context.getString(R.string.pubkey_piv_unsupported_key),
+    fun unsupportedFirmwareShowsError() = assertSigningError(
+        YubiKeyPiv.UnsupportedKey(YubiKeyPiv.UnsupportedKey.Reason.FIRMWARE),
+        context.getString(R.string.pubkey_piv_unsupported_firmware),
+    )
+
+    @Test
+    fun unsupportedAlgorithmNamesTheAlgorithm() = assertSigningError(
+        YubiKeyPiv.UnsupportedKey(YubiKeyPiv.UnsupportedKey.Reason.ALGORITHM, "RSA 1024"),
+        context.getString(R.string.pubkey_piv_unsupported_algorithm, "RSA 1024"),
+    )
+
+    @Test
+    fun emptySlotShowsError() = assertSigningError(
+        YubiKeyPiv.EmptySlot(),
+        context.getString(R.string.pubkey_piv_empty_slot),
     )
 
     @Test

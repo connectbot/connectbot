@@ -2607,8 +2607,12 @@
     <string name="pubkey_piv_pin_required">Enter the PIV PIN to use this key.</string>
     <!-- Error when discovery or touch confirmation times out. -->
     <string name="pubkey_piv_timeout">The YubiKey did not respond in time.</string>
-    <!-- Error when the device or slot has an unsupported key type or firmware. -->
-    <string name="pubkey_piv_unsupported_key">Use a YubiKey with firmware 5.3 or later and an ECC P-256 key in this slot.</string>
+    <!-- Error when the YubiKey is too old to describe the key in a PIV slot. -->
+    <string name="pubkey_piv_unsupported_firmware">This YubiKey cannot report details about its PIV keys. ConnectBot needs firmware 5.3 or later.</string>
+    <!-- Error when the key in a PIV slot is of a type that cannot be used for SSH here. %1$s is the key type, such as "RSA 2048". -->
+    <string name="pubkey_piv_unsupported_algorithm">The key in this slot is %1$s, which ConnectBot cannot use for SSH. Only EC P-256 keys are supported.</string>
+    <!-- Error when the chosen PIV slot does not contain a key. -->
+    <string name="pubkey_piv_empty_slot">This PIV slot is empty.</string>
     <!-- Error when the connected token does not match the saved SSH public key. -->
     <string name="pubkey_piv_wrong_key">This PIV slot does not match the saved SSH key. Connect the registered YubiKey.</string>
     <!-- Error when the reader cannot use the PIV slot or hardware touch is not confirmed. -->
