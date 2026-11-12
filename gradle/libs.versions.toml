@@ -62,7 +62,7 @@ jacoco = "0.8.14"
 
 media3CommonKtx = "1.11.1"
 navigationTesting = "2.10.2"
-ui = "1.11.4"
+ui = "1.12.1"
 biometric = "1.4.0-alpha02"
 core = "1.19.1"
 yubikit = "3.3.0"
