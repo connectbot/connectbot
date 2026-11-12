@@ -17,12 +17,14 @@
 
 package org.connectbot.service
 
+import com.yubico.yubikit.piv.Slot
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import org.connectbot.data.entity.Fido2Transport
+import java.security.PublicKey
 
 /**
  * Modern prompt manager using Kotlin coroutines instead of semaphores and blocking.
@@ -103,6 +105,18 @@ class PromptManager {
         _promptState.update { null }
 
         return (response as? PromptResponse.BiometricResponse)?.success ?: false
+    }
+
+    suspend fun requestYubiKeyPivSignature(prompt: PromptRequest.YubiKeyPivPrompt): ByteArray? {
+        val deferred = CompletableDeferred<PromptResponse>()
+        currentDeferred = deferred
+        _promptState.value = prompt
+        return try {
+            (deferred.await() as? PromptResponse.YubiKeyPivResponse)?.signature
+        } finally {
+            if (currentDeferred === deferred) currentDeferred = null
+            _promptState.compareAndSet(prompt, null)
+        }
     }
 
     /**
@@ -192,6 +206,7 @@ class PromptManager {
      * Respond to the current prompt
      */
     fun respond(response: PromptResponse) {
+        if (response is PromptResponse.YubiKeyPivResponse && _promptState.value !== response.prompt) return
         currentDeferred?.complete(response)
         currentDeferred = null
     }
@@ -254,6 +269,14 @@ sealed class PromptRequest {
         val attemptsRemaining: Int?,
     ) : PromptRequest()
 
+    class YubiKeyPivPrompt(
+        val keyNickname: String,
+        val destination: String,
+        val slot: Slot,
+        val publicKey: PublicKey,
+        val dataToSign: ByteArray,
+    ) : PromptRequest()
+
     data class HostKeyFingerprintPrompt(
         val hostname: String,
         val keyType: String,
@@ -304,4 +327,8 @@ sealed class PromptResponse {
 
     /** Response for FIDO2 PIN prompt */
     data class Fido2PinResponse(val pin: String?) : PromptResponse()
+    class YubiKeyPivResponse(
+        val prompt: PromptRequest.YubiKeyPivPrompt,
+        val signature: ByteArray?,
+    ) : PromptResponse()
 }

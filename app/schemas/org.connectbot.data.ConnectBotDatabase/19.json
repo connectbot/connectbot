@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 19,
-    "identityHash": "c4c3049d41c3d15d5cfacfee549ebe5d",
+    "identityHash": "45757c3c5f344ecec97598a680e1489c",
     "entities": [
       {
         "tableName": "hosts",
@@ -304,7 +304,7 @@
       },
       {
         "tableName": "pubkeys",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `repository_id` TEXT NOT NULL DEFAULT 'b6ba8cb6-02d4-492d-8de9-5747abbf3b21', `nickname` TEXT NOT NULL, `type` TEXT NOT NULL, `private_key` BLOB, `public_key` BLOB NOT NULL, `encrypted` INTEGER NOT NULL, `startup` INTEGER NOT NULL, `confirmation` INTEGER NOT NULL, `created_date` INTEGER NOT NULL, `storage_type` TEXT NOT NULL, `allow_backup` INTEGER NOT NULL, `keystore_alias` TEXT, `credential_id` BLOB, `fido2_rp_id` TEXT, `fido2_transport` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `repository_id` TEXT NOT NULL DEFAULT 'b6ba8cb6-02d4-492d-8de9-5747abbf3b21', `nickname` TEXT NOT NULL, `type` TEXT NOT NULL, `private_key` BLOB, `public_key` BLOB NOT NULL, `encrypted` INTEGER NOT NULL, `startup` INTEGER NOT NULL, `confirmation` INTEGER NOT NULL, `created_date` INTEGER NOT NULL, `storage_type` TEXT NOT NULL, `allow_backup` INTEGER NOT NULL, `keystore_alias` TEXT, `credential_id` BLOB, `fido2_rp_id` TEXT, `fido2_transport` TEXT, `piv_slot` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -397,6 +397,11 @@
             "fieldPath": "fido2Transport",
             "columnName": "fido2_transport",
             "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "pivSlot",
+            "columnName": "piv_slot",
+            "affinity": "INTEGER"
           }
         ],
         "primaryKey": {
@@ -1311,7 +1316,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c4c3049d41c3d15d5cfacfee549ebe5d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '45757c3c5f344ecec97598a680e1489c')"
     ]
   }
 }

@@ -174,7 +174,14 @@ fun PubkeyEditorScreenContent(
 
                     // Key Type (read-only)
                     OutlinedTextField(
-                        value = uiState.keyType,
+                        value = if (uiState.isPiv) {
+                            stringResource(
+                                R.string.pubkey_piv_type,
+                                uiState.pivSlot?.toString(16)?.uppercase().orEmpty(),
+                            )
+                        } else {
+                            uiState.keyType
+                        },
                         onValueChange = {},
                         label = { Text(stringResource(R.string.pubkey_editor_key_type_label)) },
                         modifier = Modifier.fillMaxWidth(),
@@ -184,78 +191,82 @@ fun PubkeyEditorScreenContent(
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    // Change Password Section
-                    Text(
-                        text = stringResource(R.string.pubkey_change_password),
-                        style = MaterialTheme.typography.titleMedium,
-                    )
+                    if (uiState.isPiv) return@Column
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    if (uiState.canChangePassword) {
+                        // Change Password Section
+                        Text(
+                            text = stringResource(R.string.pubkey_change_password),
+                            style = MaterialTheme.typography.titleMedium,
+                        )
 
-                    if (uiState.isEncrypted) {
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        if (uiState.isEncrypted) {
+                            OutlinedTextField(
+                                value = uiState.oldPassword,
+                                onValueChange = onOldPasswordChange,
+                                label = { Text(stringResource(R.string.prompt_old_password)) },
+                                visualTransformation = PasswordVisualTransformation(),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                                modifier = Modifier.fillMaxWidth(),
+                                singleLine = true,
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
+
                         OutlinedTextField(
-                            value = uiState.oldPassword,
-                            onValueChange = onOldPasswordChange,
-                            label = { Text(stringResource(R.string.prompt_old_password)) },
+                            value = uiState.newPassword1,
+                            onValueChange = onNewPassword1Change,
+                            label = { Text(stringResource(R.string.prompt_password)) },
+                            supportingText = { Text(stringResource(R.string.prompt_password_can_be_blank)) },
                             visualTransformation = PasswordVisualTransformation(),
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
                         )
+
                         Spacer(modifier = Modifier.height(8.dp))
-                    }
 
-                    OutlinedTextField(
-                        value = uiState.newPassword1,
-                        onValueChange = onNewPassword1Change,
-                        label = { Text(stringResource(R.string.prompt_password)) },
-                        supportingText = { Text(stringResource(R.string.prompt_password_can_be_blank)) },
-                        visualTransformation = PasswordVisualTransformation(),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true,
-                    )
+                        OutlinedTextField(
+                            value = uiState.newPassword2,
+                            onValueChange = onNewPassword2Change,
+                            label = {
+                                Text(
+                                    "${stringResource(R.string.prompt_password)} ${
+                                        stringResource(
+                                            R.string.prompt_again,
+                                        )
+                                    }",
+                                )
+                            },
+                            visualTransformation = PasswordVisualTransformation(),
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                            modifier = Modifier.fillMaxWidth(),
+                            singleLine = true,
+                            isError = uiState.passwordMismatch,
+                        )
 
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    OutlinedTextField(
-                        value = uiState.newPassword2,
-                        onValueChange = onNewPassword2Change,
-                        label = {
+                        if (uiState.passwordMismatch) {
                             Text(
-                                "${stringResource(R.string.prompt_password)} ${
-                                    stringResource(
-                                        R.string.prompt_again,
-                                    )
-                                }",
+                                text = stringResource(R.string.alert_passwords_do_not_match_msg),
+                                color = MaterialTheme.colorScheme.error,
+                                style = MaterialTheme.typography.bodySmall,
+                                modifier = Modifier.padding(start = 16.dp, top = 4.dp),
                             )
-                        },
-                        visualTransformation = PasswordVisualTransformation(),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true,
-                        isError = uiState.passwordMismatch,
-                    )
+                        }
 
-                    if (uiState.passwordMismatch) {
-                        Text(
-                            text = stringResource(R.string.alert_passwords_do_not_match_msg),
-                            color = MaterialTheme.colorScheme.error,
-                            style = MaterialTheme.typography.bodySmall,
-                            modifier = Modifier.padding(start = 16.dp, top = 4.dp),
-                        )
+                        if (uiState.wrongPassword) {
+                            Text(
+                                text = stringResource(R.string.alert_wrong_password_msg),
+                                color = MaterialTheme.colorScheme.error,
+                                style = MaterialTheme.typography.bodySmall,
+                                modifier = Modifier.padding(start = 16.dp, top = 4.dp),
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(24.dp))
                     }
-
-                    if (uiState.wrongPassword) {
-                        Text(
-                            text = stringResource(R.string.alert_wrong_password_msg),
-                            color = MaterialTheme.colorScheme.error,
-                            style = MaterialTheme.typography.bodySmall,
-                            modifier = Modifier.padding(start = 16.dp, top = 4.dp),
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(24.dp))
 
                     // Options
                     Text(

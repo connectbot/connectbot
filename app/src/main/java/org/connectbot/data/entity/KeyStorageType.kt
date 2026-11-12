@@ -44,4 +44,7 @@ enum class KeyStorageType {
      * Cannot be backed up or exported.
      */
     FIDO2_RESIDENT_KEY,
+
+    /** Private key held in a PIV token, identified by its public key and slot. */
+    PIV,
 }

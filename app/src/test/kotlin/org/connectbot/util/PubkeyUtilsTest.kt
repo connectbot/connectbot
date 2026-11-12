@@ -22,8 +22,17 @@ import org.connectbot.sshlib.SshSigning
 import org.junit.Test
 import java.security.KeyPair
 import java.security.KeyPairGenerator
+import java.security.spec.ECGenParameterSpec
 
 class PubkeyUtilsTest {
+    @Test
+    fun decodePublic_ecStoredType_returnsEcKey() {
+        val keyPair = KeyPairGenerator.getInstance("EC").apply {
+            initialize(ECGenParameterSpec("secp256r1"))
+        }.generateKeyPair()
+        val decoded = PubkeyUtils.decodePublic(keyPair.public.encoded, "EC")
+        assertThat(decoded).isEqualTo(keyPair.public)
+    }
 
     private val ed25519KeyPair = KeyPairGenerator.getInstance("Ed25519").generateKeyPair()
 

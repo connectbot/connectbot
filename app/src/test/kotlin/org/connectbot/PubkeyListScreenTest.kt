@@ -100,21 +100,7 @@ class PubkeyListScreenTest {
 
     @Test
     fun pubkeyListScreen_emptyState_displaysMessage() {
-        composeTestRule.setContent {
-            ConnectBotTheme {
-                PubkeyListScreen(
-                    onNavigateBack = {},
-                    onNavigateToGenerate = {},
-                    onNavigateToImportFido2 = {},
-                    onNavigateToEdit = {},
-                )
-            }
-        }
-
-        composeTestRule.waitUntil(timeoutMillis = 3000) {
-            composeTestRule.onAllNodesWithText("No keys found.", useUnmergedTree = true)
-                .fetchSemanticsNodes().isNotEmpty()
-        }
+        setPubkeyListContent(PubkeyListUiState(pubkeys = emptyList(), isLoading = false))
 
         composeTestRule
             .onNodeWithText("No keys found.", useUnmergedTree = true)
@@ -313,6 +299,19 @@ class PubkeyListScreenTest {
         composeTestRule
             .onNodeWithTag(PubkeyListTestTags.itemMenuButton(pubkey.id))
             .performClick()
+    }
+
+    @Test
+    fun pubkeyListScreenContent_displaysNumericPivSlot() {
+        val key = testPubkey(nickname = "PIV key", type = "EC", encrypted = false).copy(
+            privateKey = null,
+            storageType = KeyStorageType.PIV,
+            pivSlot = 0x9C,
+        )
+        setPubkeyListContent(PubkeyListUiState(pubkeys = listOf(key)))
+        composeTestRule.onNodeWithText(
+            composeTestRule.activity.getString(R.string.pubkey_piv_type, "9C"),
+        ).assertExists()
     }
 
     private fun setPubkeyListContent(

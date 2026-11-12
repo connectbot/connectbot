@@ -24,6 +24,7 @@ import android.net.Uri
 import android.provider.OpenableColumns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yubico.yubikit.piv.Slot
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CancellationException
@@ -35,8 +36,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.connectbot.R
 import org.connectbot.data.PubkeyRepository
+import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.piv.YubiKeyPiv
 import org.connectbot.service.TerminalManager
 import org.connectbot.sshlib.SshKeys
 import org.connectbot.sshlib.SshSigning
@@ -45,6 +48,7 @@ import org.connectbot.util.PubkeyUtils
 import org.connectbot.util.SshKeyType
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
+import java.security.PublicKey
 import java.util.UUID
 import javax.inject.Inject
 
@@ -79,6 +83,15 @@ sealed class ImportResult {
     object Failed : ImportResult()
 }
 
+data class PubkeyListItemUiState(
+    val pubkey: Pubkey,
+    private val loaded: Boolean,
+) {
+    val canToggleLoaded: Boolean get() = pubkey.canLoadIntoMemory
+    val canExportPrivateKey: Boolean get() = pubkey.canExportPrivateKey
+    val isLoaded: Boolean get() = canToggleLoaded && loaded
+}
+
 data class PubkeyListUiState(
     val pubkeys: List<Pubkey> = emptyList(),
     val isLoading: Boolean = false,
@@ -96,7 +109,10 @@ data class PubkeyListUiState(
     val pendingNicknameConfirmation: Pubkey? = null,
     val isSavingImportNickname: Boolean = false,
     val importNicknameError: String? = null,
-)
+) {
+    val items: List<PubkeyListItemUiState>
+        get() = pubkeys.map { PubkeyListItemUiState(it, it.nickname in loadedKeyNicknames) }
+}
 
 @HiltViewModel
 class PubkeyListViewModel @Inject constructor(
@@ -159,6 +175,7 @@ class PubkeyListViewModel @Inject constructor(
     }
 
     fun toggleKeyLoaded(pubkey: Pubkey, onPasswordRequired: (Pubkey, (String) -> Unit) -> Unit) {
+        if (!pubkey.canLoadIntoMemory) return
         val isLoaded = terminalManager?.isKeyLoaded(pubkey.nickname) == true
 
         if (isLoaded) {
@@ -322,6 +339,7 @@ class PubkeyListViewModel @Inject constructor(
     }
 
     fun copyPrivateKeyOpenSSH(pubkey: Pubkey, onPasswordRequired: (Pubkey, (String) -> Unit) -> Unit) {
+        if (!pubkey.canExportPrivateKey) return
         val isImported = pubkey.type == "IMPORTED"
 
         if (pubkey.encrypted && !isImported) {
@@ -373,6 +391,7 @@ class PubkeyListViewModel @Inject constructor(
      * Copy private key in PKCS#8 PEM format.
      */
     fun copyPrivateKeyPem(pubkey: Pubkey, onPasswordRequired: (Pubkey, (String) -> Unit) -> Unit) {
+        if (!pubkey.canExportPrivateKey) return
         val isImported = pubkey.type == "IMPORTED"
 
         if (pubkey.encrypted && !isImported) {
@@ -429,6 +448,7 @@ class PubkeyListViewModel @Inject constructor(
         onPasswordRequired: (Pubkey, (String) -> Unit) -> Unit,
         onExportPassphraseRequired: (Pubkey, (String) -> Unit) -> Unit,
     ) {
+        if (!pubkey.canExportPrivateKey) return
         val isImported = pubkey.type == "IMPORTED"
 
         if (pubkey.encrypted && !isImported) {
@@ -478,6 +498,7 @@ class PubkeyListViewModel @Inject constructor(
      * This sets the pending export state, which triggers the file picker in the UI.
      */
     fun requestExportPrivateKeyOpenSSH(pubkey: Pubkey, onPasswordRequired: (Pubkey, (String) -> Unit) -> Unit) {
+        if (!pubkey.canExportPrivateKey) return
         val isImported = pubkey.type == "IMPORTED"
 
         if (pubkey.encrypted && !isImported) {
@@ -500,6 +521,7 @@ class PubkeyListViewModel @Inject constructor(
      * This sets the pending export state, which triggers the file picker in the UI.
      */
     fun requestExportPrivateKeyPem(pubkey: Pubkey, onPasswordRequired: (Pubkey, (String) -> Unit) -> Unit) {
+        if (!pubkey.canExportPrivateKey) return
         val isImported = pubkey.type == "IMPORTED"
 
         if (pubkey.encrypted && !isImported) {
@@ -530,6 +552,7 @@ class PubkeyListViewModel @Inject constructor(
         onPasswordRequired: (Pubkey, (String) -> Unit) -> Unit,
         onExportPassphraseRequired: (Pubkey, (String) -> Unit) -> Unit,
     ) {
+        if (!pubkey.canExportPrivateKey) return
         val isImported = pubkey.type == "IMPORTED"
 
         if (pubkey.encrypted && !isImported) {
@@ -728,6 +751,23 @@ class PubkeyListViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun registerYubiKey(slot: Slot, publicKey: PublicKey) {
+        val pubkey = Pubkey(
+            nickname = context.getString(R.string.pubkey_piv_type, slot.stringAlias.uppercase()),
+            type = "EC",
+            storageType = KeyStorageType.PIV,
+            pivSlot = YubiKeyPiv.slotId(slot),
+            privateKey = null,
+            publicKey = publicKey.encoded,
+            encrypted = false,
+            startup = false,
+            confirmation = false,
+            createdDate = System.currentTimeMillis(),
+            allowBackup = false,
+        )
+        handleImportResult(ImportResult.Success(pubkey), "")
     }
 
     fun importKeyFromUri(uri: Uri) {
