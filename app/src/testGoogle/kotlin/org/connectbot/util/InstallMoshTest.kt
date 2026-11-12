@@ -22,7 +22,6 @@ import androidx.preference.PreferenceManager
 import androidx.test.core.app.ApplicationProvider
 import com.google.android.gms.tasks.Tasks
 import com.google.android.play.core.splitinstall.SplitInstallManager
-import org.connectbot.BuildConfig
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -40,6 +39,9 @@ import java.io.File
 
 @RunWith(RobolectricTestRunner::class)
 class InstallMoshTest {
+    // Matches src/testGoogle/assets/mosh-release.txt, independently of the production release pin.
+    private val fixtureReleaseTag = "android-2026.09.22"
+
     @get:Rule
     val temporaryFolder = TemporaryFolder()
 
@@ -84,9 +86,9 @@ class InstallMoshTest {
         val result = InstallMosh.installClient(context)
 
         assertTrue(result.errorMessage.orEmpty(), result.success)
-        assertEquals(BuildConfig.MOSH_RELEASE_TAG, result.releaseTag)
+        assertEquals(fixtureReleaseTag, result.releaseTag)
         assertEquals(
-            BuildConfig.MOSH_RELEASE_TAG,
+            fixtureReleaseTag,
             PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(PreferenceConstants.MOSH_RELEASE_TAG, null),
         )
@@ -104,7 +106,7 @@ class InstallMoshTest {
         val result = InstallMosh.installClient(context)
 
         assertTrue(result.errorMessage.orEmpty(), result.success)
-        assertEquals(BuildConfig.MOSH_RELEASE_TAG, result.releaseTag)
+        assertEquals(fixtureReleaseTag, result.releaseTag)
         assertTrue(InstallMosh.isInstallDone())
     }
 
