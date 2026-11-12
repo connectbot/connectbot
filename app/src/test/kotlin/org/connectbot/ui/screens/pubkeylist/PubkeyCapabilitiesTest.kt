@@ -172,6 +172,30 @@ class PubkeyCapabilitiesTest {
     }
 
     @Test
+    fun registeringPivStoresTheKeyTypeAndAFingerprintInTheDefaultNickname() = runTest {
+        val repository = mock(PubkeyRepository::class.java)
+        `when`(repository.observeAll()).thenReturn(MutableStateFlow(emptyList()))
+        val model = PubkeyListViewModel(
+            ApplicationProvider.getApplicationContext(),
+            repository,
+            dispatchers,
+            mock(BiometricKeyManager::class.java),
+        )
+        val keys = List(2) {
+            KeyPairGenerator.getInstance("EC").apply { initialize(ECGenParameterSpec("secp256r1")) }.generateKeyPair()
+        }
+        val nicknames = mutableSetOf<String>()
+        for (pair in keys) {
+            model.registerYubiKey(Slot.AUTHENTICATION, pair.public)
+            val key = requireNotNull(model.uiState.value.pendingNicknameConfirmation)
+            assertTrue(key.nickname.contains("SHA256:"))
+            nicknames.add(key.nickname)
+        }
+        // The same slot on different YubiKeys must not end up with the same default name.
+        assertEquals(keys.size, nicknames.size)
+    }
+
+    @Test
     fun pivSlotParticipatesInIdentityEquality() {
         assertEquals(piv, piv.copy())
         assertEquals(piv.hashCode(), piv.copy().hashCode())

@@ -25,6 +25,7 @@ import android.content.IntentFilter
 import android.hardware.usb.UsbDevice
 import android.hardware.usb.UsbManager
 import android.nfc.NfcAdapter
+import android.util.Base64
 import androidx.annotation.MainThread
 import androidx.core.content.ContextCompat
 import androidx.core.content.IntentCompat
@@ -99,6 +100,12 @@ internal object YubiKeyPiv {
 
     fun encodePublicKey(publicKey: PublicKey): AuthPublicKey = SshSigning.encodePublicKey(KeyPair(publicKey, null)).also {
         require(it.algorithmName == SIGNATURE_ALGORITHM)
+    }
+
+    /** Short SHA-256 fingerprint in the form ssh-keygen prints, for telling keys in the same slot apart. */
+    fun shortFingerprint(publicKey: PublicKey): String {
+        val digest = MessageDigest.getInstance("SHA-256").digest(SshSigning.encodePublicKeyBlob(publicKey))
+        return "SHA256:" + Base64.encodeToString(digest, Base64.NO_PADDING or Base64.NO_WRAP).take(8)
     }
 
     private val client by lazy { Client() }

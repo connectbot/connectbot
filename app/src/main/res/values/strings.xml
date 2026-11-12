@@ -2573,6 +2573,8 @@
     <string name="pubkey_piv_add">Add YubiKey PIV</string>
     <!-- Key algorithm and hardware storage label. %1$s is the two-digit hexadecimal PIV slot. -->
     <string name="pubkey_piv_type">EC P-256 · YubiKey PIV (slot %1$s)</string>
+    <!-- Default nickname for a newly registered YubiKey key. %1$s is the two-digit hexadecimal PIV slot. %2$s is a short fingerprint that tells apart keys in the same slot of different YubiKeys. -->
+    <string name="pubkey_piv_nickname">YubiKey PIV slot %1$s (%2$s)</string>
     <!-- Accessibility label for a PIV key whose private key is on a YubiKey. -->
     <string name="pubkey_piv_hardware">YubiKey PIV hardware key</string>
     <!-- Input label for a hexadecimal slot identifier. -->
