@@ -3,12 +3,6 @@
   "customManagers": [
     {
       "customType": "regex",
-      "managerFilePatterns": ["/^\\.github\\/workflows\\/.*\\.ya?ml$/"],
-      "matchStrings": ["gh extension install (?<depName>[\\w.-]+/[\\w.-]+) --pin (?<currentValue>[^\\s\"']+)"],
-      "datasourceTemplate": "github-releases"
-    },
-    {
-      "customType": "regex",
       "managerFilePatterns": ["/^gradle\\/mosh4android\\.version$/"],
       "matchStrings": ["# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+) versioning=(?<versioning>\\S+)\\s+(?<currentValue>android-[^\\s]+)"],
       "versioningTemplate": "{{{versioning}}}"
