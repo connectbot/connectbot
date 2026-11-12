@@ -30,7 +30,7 @@ activityCompose = "1.13.0"
 zmodemlib = "0.1.1"
 telnetlib = "0.1.1"
 sshlib = "0.6.8"
-termlib = "0.3.14"
+termlib = "0.3.15"
 
 yubikit = "3.3.0"
 
