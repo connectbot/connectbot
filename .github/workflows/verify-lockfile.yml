@@ -14,19 +14,4 @@ permissions:
 jobs:
   verify:
     name: Verify Actions lockfile
-    runs-on: ubuntu-slim
-    env:
-      GH_TOKEN: ${{ github.token }}
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7.0.1
-        with:
-          persist-credentials: false
-
-      - name: Install Actions lockfile verifier
-        run: gh extension install github/gh-actions-lock --pin v0.4.1
-
-      # Fail if workflow coverage is incomplete or a locked pin no longer verifies upstream.
-      - name: Verify Actions lockfile
-        run: gh actions-lock --verify
+    uses: connectbot/actions/.github/workflows/verify-lockfile.yml@v0.2.2
