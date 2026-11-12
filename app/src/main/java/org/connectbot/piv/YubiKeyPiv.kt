@@ -28,6 +28,7 @@ import android.nfc.NfcAdapter
 import androidx.annotation.MainThread
 import androidx.core.content.ContextCompat
 import androidx.core.content.IntentCompat
+import androidx.preference.PreferenceManager
 import com.yubico.yubikit.android.YubiKitManager
 import com.yubico.yubikit.android.transport.nfc.NfcConfiguration
 import com.yubico.yubikit.android.transport.nfc.NfcNotAvailable
@@ -53,6 +54,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import org.connectbot.sshlib.AuthPublicKey
 import org.connectbot.sshlib.SshSigning
+import org.connectbot.util.PreferenceConstants
 import java.io.IOException
 import java.security.KeyPair
 import java.security.MessageDigest
@@ -75,9 +77,18 @@ internal object YubiKeyPiv {
     private const val NFC_REMOVAL_TIMEOUT_MS = 10_000L
 
     // A key with PIN policy ONCE only remembers the PIN until the card is powered down, and every new
-    // USB connection powers it on again. So the connection is kept open after a signature, until the key
-    // is unplugged or has not been used for this long, to let the card enforce its own policy.
-    private const val HOLD_IDLE_MS = 5 * 60_000L
+    // USB connection powers it on again. So a USB connection is kept open after a signature, until the key
+    // is unplugged or has not been used for the time set in the preferences (see PreferenceConstants.
+    // PIV_SESSION_IDLE_SECONDS), to let the card enforce its own policy. This cannot work over NFC: that
+    // connection ends when the key leaves the reader's field, so the PIN is asked for every time.
+    private val DEFAULT_HOLD_IDLE_MS = PreferenceConstants.PIV_SESSION_IDLE_SECONDS_DEFAULT.toLong() * 1000
+
+    /** How long to keep a USB connection open after use; zero or less means not at all. */
+    fun preferredHoldIdleMs(context: Context): Long = PreferenceManager.getDefaultSharedPreferences(context)
+        .getString(PreferenceConstants.PIV_SESSION_IDLE_SECONDS, null)
+        ?.toLongOrNull()
+        ?.let { it.coerceIn(0, 24 * 3600) * 1000 }
+        ?: DEFAULT_HOLD_IDLE_MS
 
     fun slotId(slot: Slot): Int = slot.value.also { require(slot != Slot.ATTESTATION) }
 
@@ -114,6 +125,7 @@ internal object YubiKeyPiv {
         private val createManager: (Activity) -> YubiKitManager = ::YubiKitManager,
         private val createSession: (SmartCardConnection) -> PivSession = ::PivSession,
         private val deviceTimeoutMs: Long = DEVICE_TIMEOUT_MS,
+        private val holdIdleMs: (Context) -> Long = ::preferredHoldIdleMs,
     ) {
         private val discoveryMutex = Mutex()
 
@@ -124,6 +136,7 @@ internal object YubiKeyPiv {
 
         private inner class HeldSession(val connection: SmartCardConnection, val session: PivSession, val usbDeviceName: String) {
             var busy = false // guarded by heldLock
+            var idleMs = 0L // guarded by heldLock
             var idleTask: ScheduledFuture<*>? = null // guarded by heldLock
             var onClose: (() -> Unit)? = null // guarded by heldLock
 
@@ -260,17 +273,24 @@ internal object YubiKeyPiv {
                     (held === session && !session.busy).also { if (it) held = null }
                 }
                 if (expired) session.close()
-            }, HOLD_IDLE_MS, TimeUnit.MILLISECONDS)
+            }, session.idleMs, TimeUnit.MILLISECONDS)
         }
 
         private fun hold(session: HeldSession, device: UsbYubiKeyDevice, context: Context) {
+            val idleMs = holdIdleMs(context)
             val previous = synchronized(heldLock) {
                 held.also {
-                    held = session
-                    scheduleIdleClose(session)
+                    held = session.takeIf { idleMs > 0 }
+                    session.idleMs = idleMs
+                    if (idleMs > 0) scheduleIdleClose(session)
                 }
             }
             if (previous !== session) previous?.close()
+            if (idleMs <= 0) {
+                // The user does not want the key kept busy between logins.
+                session.close()
+                return
+            }
 
             // UsbYubiKeyDevice.setOnClosed is no use for noticing an unplugged key: stopping USB discovery
             // closes the device object as well, while the connection is meant to outlive that.
@@ -316,7 +336,7 @@ internal object YubiKeyPiv {
         }
 
         // The SDK handles Android USB permission. Keep reader mode and USB discovery scoped to one visible
-        // prompt and one card operation; USB connections stay open afterwards, see HOLD_IDLE_MS.
+        // prompt and one card operation; USB connections stay open afterwards, see preferredHoldIdleMs.
         @MainThread
         private suspend fun <T : Any> withSession(
             activity: Activity,

@@ -23,6 +23,7 @@ import android.hardware.usb.UsbDevice
 import android.hardware.usb.UsbManager
 import android.nfc.NfcAdapter
 import android.os.Looper
+import androidx.preference.PreferenceManager
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.yubico.yubikit.android.YubiKitManager
 import com.yubico.yubikit.android.transport.nfc.NfcNotAvailable
@@ -48,6 +49,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.connectbot.sshlib.SshSigning
+import org.connectbot.util.PreferenceConstants
 import org.junit.After
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
@@ -96,6 +98,7 @@ class YubiKeyPivTest {
     private var nfcStarts = 0
     private val discoveryStarted = CompletableDeferred<Unit>()
     private var factoryFailure: Exception? = null
+    private var holdIdleMs = 5 * 60_000L
     private val verifiedPins = mutableSetOf<SmartCardConnection>()
     private var keyStaysOnReader = false
     private val removalCallbacks = mutableListOf<Runnable>()
@@ -127,7 +130,7 @@ class YubiKeyPivTest {
         client = YubiKeyPiv.Client(executor, scheduler, { manager }, {
             factoryFailure?.let { failure -> throw failure }
             connections.getValue(it)
-        }, deviceTimeoutMs = 1_000)
+        }, deviceTimeoutMs = 1_000, holdIdleMs = { holdIdleMs })
     }
 
     @After
@@ -428,6 +431,38 @@ class YubiKeyPivTest {
         usb()
         sign()
         verify(manager, times(1)).stopNfcDiscovery(activity)
+    }
+
+    @Test
+    fun configuredIdleTimeIsUsedForTheIdleTimer() = runBlocking<Unit> {
+        usb()
+        holdIdleMs = 120_000
+        sign()
+        verify(scheduler).schedule(any(Runnable::class.java), eq(120_000L), eq(TimeUnit.MILLISECONDS))
+    }
+
+    @Test
+    fun zeroIdleTimeClosesTheConnectionRightAway() = runBlocking<Unit> {
+        val card = usb()
+        holdIdleMs = 0
+        sign()
+        verify(card.connection).close()
+        verify(scheduler, never()).schedule(any(Runnable::class.java), anyLong(), any(TimeUnit::class.java))
+        assertFalse(client.canSignWithoutPin(Slot.AUTHENTICATION))
+        // Nothing is held, so the next login connects again and has to be given the PIN again.
+        sign()
+        verify(card.device, times(2)).openConnection(SmartCardConnection::class.java)
+        verify(card.session, times(2)).verifyPin(any(CharArray::class.java))
+    }
+
+    @Test
+    fun idleTimePreferenceIsReadWithFiveMinutesAsDefault() {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
+        assertEquals(5 * 60_000L, YubiKeyPiv.preferredHoldIdleMs(activity))
+        for ((value, expected) in listOf("0" to 0L, "60" to 60_000L, "3600" to 3_600_000L, "999999" to 24 * 3_600_000L, "-5" to 0L, "junk" to 5 * 60_000L)) {
+            prefs.edit().putString(PreferenceConstants.PIV_SESSION_IDLE_SECONDS, value).commit()
+            assertEquals(value, expected, YubiKeyPiv.preferredHoldIdleMs(activity))
+        }
     }
 
     @Test
