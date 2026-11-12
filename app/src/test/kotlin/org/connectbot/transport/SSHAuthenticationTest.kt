@@ -158,6 +158,44 @@ class SSHAuthenticationTest {
         checkSignatureRequest("alice@jump.example")
     }
 
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    @Test
+    fun selectedRsaPivKey_offersOnlySha2AndSignsWithTheAcceptedAlgorithm() = runTest {
+        val pair = KeyPairGenerator.getInstance("RSA").apply { initialize(2048) }.generateKeyPair()
+        val pubkey = Pubkey(
+            id = UUID(0, 42),
+            nickname = "YubiKey RSA",
+            type = "RSA",
+            storageType = org.connectbot.data.entity.KeyStorageType.PIV,
+            pivSlot = 0x9A,
+            publicKey = pair.public.encoded,
+            privateKey = null,
+            encrypted = false,
+            startup = false,
+            confirmation = false,
+            createdDate = 0,
+        )
+        `when`(repository.getByIdBlocking(pubkey.id)).thenReturn(pubkey)
+        val prompts = PromptManager()
+        `when`(bridge.promptManager).thenReturn(prompts)
+        ssh(pubkey.id).authenticate()
+        val data = "authentication request".toByteArray()
+
+        assertThat(offered.last().map { it.algorithmName }).containsExactly("rsa-sha2-512", "rsa-sha2-256")
+        // The legacy SHA-1 name was not offered, so it is not ours to sign.
+        assertThat(handler.onSignatureRequest(AuthPublicKey("ssh-rsa", offered.last().first().publicKeyBlob), data)).isNull()
+        assertThat(prompts.promptState.value).isNull()
+
+        val pending = async { handler.onSignatureRequest(offered.last().last(), data) }
+        runCurrent()
+        val prompt = prompts.promptState.value as PromptRequest.YubiKeyPivPrompt
+        assertThat(prompt.signatureAlgorithm).isEqualTo("rsa-sha2-256")
+        assertThat(prompt.publicKey).isEqualTo(pair.public)
+        val signature = "signature".toByteArray()
+        prompts.respond(PromptResponse.YubiKeyPivResponse(prompt, signature))
+        assertThat(pending.await()).isEqualTo(signature)
+    }
+
     @Test
     fun encryptedRsaKey_withoutRememberingUnlockedKeys_canSignForTargetAndJumpHost() = runTest {
         val pair = KeyPairGenerator.getInstance("RSA").apply { initialize(4096) }.generateKeyPair()

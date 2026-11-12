@@ -40,7 +40,6 @@ import com.yubico.yubikit.core.YubiKeyDevice
 import com.yubico.yubikit.core.smartcard.ApduException
 import com.yubico.yubikit.core.smartcard.SW
 import com.yubico.yubikit.core.smartcard.SmartCardConnection
-import com.yubico.yubikit.piv.KeyType
 import com.yubico.yubikit.piv.PinPolicy
 import com.yubico.yubikit.piv.PivSession
 import com.yubico.yubikit.piv.Slot
@@ -56,12 +55,11 @@ import kotlinx.coroutines.withTimeoutOrNull
 import org.connectbot.sshlib.AuthPublicKey
 import org.connectbot.sshlib.SshSigning
 import org.connectbot.util.PreferenceConstants
+import org.connectbot.util.PubkeyUtils
 import java.io.IOException
 import java.security.GeneralSecurityException
-import java.security.KeyPair
 import java.security.MessageDigest
 import java.security.PublicKey
-import java.security.Signature
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
@@ -72,7 +70,6 @@ import java.util.concurrent.atomic.AtomicReference
 import kotlin.coroutines.CoroutineContext
 
 internal object YubiKeyPiv {
-    private const val SIGNATURE_ALGORITHM = "ecdsa-sha2-nistp256"
     private const val DEVICE_TIMEOUT_MS = 60_000L
 
     // How long to keep NFC reader mode on for the key to be lifted from the phone after it was used.
@@ -98,9 +95,30 @@ internal object YubiKeyPiv {
         requireNotNull(id) { "Missing PIV slot" },
     ).also { require(it != Slot.ATTESTATION) }
 
-    fun encodePublicKey(publicKey: PublicKey): AuthPublicKey = SshSigning.encodePublicKey(KeyPair(publicKey, null)).also {
-        require(it.algorithmName == SIGNATURE_ALGORITHM)
+    /**
+     * The identities to offer the server for [publicKey]: one per SSH algorithm name it can sign with,
+     * in order of preference (RSA keys are offered with SHA-2 only).
+     */
+    fun offers(publicKey: PublicKey): List<AuthPublicKey> {
+        val algorithm = PivAlgorithm.fromPublicKey(publicKey)
+            ?: throw UnsupportedKey(UnsupportedKey.Reason.ALGORITHM, PivAlgorithm.describe(publicKey))
+        val blob = SshSigning.encodePublicKeyBlob(publicKey)
+        return algorithm.sshNames.map { AuthPublicKey(it, blob) }
     }
+
+    /** Short name of the key's algorithm for display, such as "EC P-384", or null if it is not a PIV-capable key. */
+    fun algorithmLabel(publicKey: PublicKey): String? = PivAlgorithm.fromPublicKey(publicKey)?.label
+
+    /** The key type name to save [publicKey] under, as used by the other kinds of keys. */
+    fun storedType(publicKey: PublicKey): String = PivAlgorithm.fromPublicKey(publicKey)?.storedType
+        ?: throw UnsupportedKey(UnsupportedKey.Reason.ALGORITHM, PivAlgorithm.describe(publicKey))
+
+    /** [algorithmLabel] for a saved key, falling back to its stored type if it cannot be decoded. */
+    fun algorithmLabel(storedType: String?, encodedPublicKey: ByteArray?): String? = try {
+        algorithmLabel(PubkeyUtils.decodePublic(encodedPublicKey, storedType))
+    } catch (_: Exception) {
+        null
+    } ?: storedType
 
     /** Short SHA-256 fingerprint in the form ssh-keygen prints, for telling keys in the same slot apart. */
     fun shortFingerprint(publicKey: PublicKey): String {
@@ -114,7 +132,14 @@ internal object YubiKeyPiv {
     suspend fun readPublicKey(activity: Activity, slot: Slot): PublicKey = client.readPublicKey(activity, slot)
 
     @MainThread
-    suspend fun sign(activity: Activity, slot: Slot, expectedKey: PublicKey, pin: CharArray, data: ByteArray): ByteArray = client.sign(activity, slot, expectedKey, pin, data)
+    suspend fun sign(
+        activity: Activity,
+        slot: Slot,
+        expectedKey: PublicKey,
+        pin: CharArray,
+        data: ByteArray,
+        signatureAlgorithm: String? = null,
+    ): ByteArray = client.sign(activity, slot, expectedKey, pin, data, signatureAlgorithm)
 
     suspend fun canSignWithoutPin(slot: Slot): Boolean = client.canSignWithoutPin(slot)
 
@@ -165,6 +190,11 @@ internal object YubiKeyPiv {
         @MainThread
         suspend fun readPublicKey(activity: Activity, slot: Slot): PublicKey = withSession(activity) { session, _, _ -> readSlotKey(session, slot).publicKey }
 
+        /**
+         * Signs [data] with the key [expectedKey]. [slot] is where the key was saved; if it is not there any
+         * more, the card's other slots are searched for it. [signatureAlgorithm] is the SSH algorithm name the
+         * server accepted, which matters for RSA; it defaults to the key's own.
+         */
         @MainThread
         suspend fun sign(
             activity: Activity,
@@ -172,26 +202,30 @@ internal object YubiKeyPiv {
             expectedKey: PublicKey,
             pin: CharArray,
             data: ByteArray,
-        ): ByteArray = withSession(activity, retryRejectedHeldKey = true) { session, connection, checkActive ->
-            val slotKey = locateKey(session, slot, expectedKey)
+            signatureAlgorithm: String? = null,
+        ): ByteArray {
+            val algorithm = PivAlgorithm.fromPublicKey(expectedKey)
+                ?: throw UnsupportedKey(UnsupportedKey.Reason.ALGORITHM, PivAlgorithm.describe(expectedKey))
+            val sshName = signatureAlgorithm ?: algorithm.defaultSshName
+            if (sshName !in algorithm.sshNames) throw UnsupportedKey(UnsupportedKey.Reason.ALGORITHM, sshName)
 
-            verifyPin(session, connection, slotKey.pinPolicy, pin, checkActive)
-            val pinUnverified = slotKey.pinPolicy != PinPolicy.NEVER && pin.isEmpty()
+            return withSession(activity, retryRejectedHeldKey = true) { session, connection, checkActive ->
+                val slotKey = locateKey(session, slot, expectedKey, algorithm)
 
-            checkActive()
-            val digest = MessageDigest.getInstance("SHA-256").digest(data)
-            val der = try {
-                session.rawSignOrDecrypt(slotKey.slot, KeyType.ECCP256, digest)
-            } catch (e: ApduException) {
-                // We relied on the card remembering the PIN, and it does not (anymore).
-                if (pinUnverified && e.sw == SW.SECURITY_CONDITION_NOT_SATISFIED) throw PinRequired()
-                throw e
+                verifyPin(session, connection, slotKey.pinPolicy, pin, checkActive)
+                val pinUnverified = slotKey.pinPolicy != PinPolicy.NEVER && pin.isEmpty()
+
+                checkActive()
+                PivSignature.sign(algorithm, sshName, expectedKey, data) { input ->
+                    try {
+                        session.rawSignOrDecrypt(slotKey.slot, algorithm.keyType, input)
+                    } catch (e: ApduException) {
+                        // We relied on the card remembering the PIN, and it does not (anymore).
+                        if (pinUnverified && e.sw == SW.SECURITY_CONDITION_NOT_SATISFIED) throw PinRequired()
+                        throw e
+                    }
+                }
             }
-            val verifier = Signature.getInstance("SHA256withECDSA")
-            verifier.initVerify(expectedKey)
-            verifier.update(data)
-            if (!verifier.verify(der)) throw WrongKey()
-            SshSigning.encodeEcdsaSignature(SIGNATURE_ALGORITHM, der)
         }
 
         /**
@@ -199,7 +233,7 @@ internal object YubiKeyPiv {
          * instance when it was imported into a second YubiKey or moved on newer firmware. The key is matched by
          * its public key, so searching the other slots can never select a different key.
          */
-        private fun locateKey(session: PivSession, hint: Slot, expected: PublicKey): SlotKey {
+        private fun locateKey(session: PivSession, hint: Slot, expected: PublicKey, algorithm: PivAlgorithm): SlotKey {
             var unsupportedAtHint: UnsupportedKey? = null
             try {
                 val atHint = readSlotKey(session, hint)
@@ -214,7 +248,7 @@ internal object YubiKeyPiv {
             for (candidate in Slot.values()) {
                 if (candidate == hint || candidate == Slot.ATTESTATION) continue
                 val found = try {
-                    readSlotKey(session, candidate).takeIf { sameKey(it.publicKey, expected) }
+                    readSlotKey(session, candidate).takeIf { it.algorithm == algorithm && sameKey(it.publicKey, expected) }
                 } catch (_: PivFailure) {
                     null // Empty, or a key type we cannot use.
                 } catch (_: ApduException) {
@@ -231,7 +265,7 @@ internal object YubiKeyPiv {
         }
 
         private fun sameKey(a: PublicKey, b: PublicKey): Boolean = try {
-            encodePublicKey(a) == encodePublicKey(b)
+            SshSigning.encodePublicKeyBlob(a).contentEquals(SshSigning.encodePublicKeyBlob(b))
         } catch (_: Exception) {
             false
         }
@@ -368,7 +402,7 @@ internal object YubiKeyPiv {
             session.close()
         }
 
-        private data class SlotKey(val slot: Slot, val publicKey: PublicKey, val pinPolicy: PinPolicy)
+        private data class SlotKey(val slot: Slot, val publicKey: PublicKey, val pinPolicy: PinPolicy, val algorithm: PivAlgorithm)
 
         private fun readSlotKey(session: PivSession, slot: Slot): SlotKey {
             if (!session.supports(PivSession.FEATURE_METADATA)) throw UnsupportedKey(UnsupportedKey.Reason.FIRMWARE)
@@ -380,8 +414,9 @@ internal object YubiKeyPiv {
                 if (e.sw == SW.REFERENCED_DATA_NOT_FOUND) throw EmptySlot()
                 throw e
             }
-            if (metadata.keyType != KeyType.ECCP256) throw UnsupportedKey(UnsupportedKey.Reason.ALGORITHM, describeKeyType(metadata.keyType))
-            return SlotKey(slot, metadata.publicKeyValues.toPublicKey(), metadata.pinPolicy)
+            val algorithm = PivAlgorithm.fromKeyType(metadata.keyType)
+                ?: throw UnsupportedKey(UnsupportedKey.Reason.ALGORITHM, PivAlgorithm.describe(metadata.keyType))
+            return SlotKey(slot, metadata.publicKeyValues.toPublicKey(), metadata.pinPolicy, algorithm)
         }
 
         // The SDK handles Android USB permission. Keep reader mode and USB discovery scoped to one visible
@@ -563,17 +598,6 @@ internal object YubiKeyPiv {
                 result.completeExceptionally(e)
             }
         }
-    }
-
-    // Names a key type in the error shown for a slot holding one that is not supported.
-    private fun describeKeyType(keyType: KeyType): String = when (keyType) {
-        KeyType.RSA1024 -> "RSA 1024"
-        KeyType.RSA2048 -> "RSA 2048"
-        KeyType.RSA3072 -> "RSA 3072"
-        KeyType.RSA4096 -> "RSA 4096"
-        KeyType.ECCP384 -> "EC P-384"
-        KeyType.ED25519 -> "Ed25519"
-        else -> keyType.name
     }
 
     open class PivFailure : IOException()

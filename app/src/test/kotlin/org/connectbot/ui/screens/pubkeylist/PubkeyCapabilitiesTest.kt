@@ -181,13 +181,16 @@ class PubkeyCapabilitiesTest {
             dispatchers,
             mock(BiometricKeyManager::class.java),
         )
-        val keys = List(2) {
-            KeyPairGenerator.getInstance("EC").apply { initialize(ECGenParameterSpec("secp256r1")) }.generateKeyPair()
-        }
+        val keys = mapOf(
+            "EC" to KeyPairGenerator.getInstance("EC").apply { initialize(ECGenParameterSpec("secp384r1")) }.generateKeyPair(),
+            "RSA" to KeyPairGenerator.getInstance("RSA").apply { initialize(2048) }.generateKeyPair(),
+            "Ed25519" to KeyPairGenerator.getInstance("Ed25519").generateKeyPair(),
+        )
         val nicknames = mutableSetOf<String>()
-        for (pair in keys) {
+        for ((type, pair) in keys) {
             model.registerYubiKey(Slot.AUTHENTICATION, pair.public)
             val key = requireNotNull(model.uiState.value.pendingNicknameConfirmation)
+            assertEquals(type, key.type)
             assertTrue(key.nickname.contains("SHA256:"))
             nicknames.add(key.nickname)
         }

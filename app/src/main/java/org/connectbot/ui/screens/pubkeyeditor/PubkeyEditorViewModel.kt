@@ -33,6 +33,7 @@ import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Fido2Transport
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.piv.YubiKeyPiv
 import org.connectbot.util.PubkeyUtils
 import timber.log.Timber
 import java.util.UUID
@@ -101,7 +102,7 @@ class PubkeyEditorViewModel @Inject constructor(
                     _uiState.update {
                         it.copy(
                             nickname = pubkey.nickname,
-                            keyType = pubkey.type,
+                            keyType = if (pubkey.isPiv) YubiKeyPiv.algorithmLabel(pubkey.type, pubkey.publicKey).orEmpty() else pubkey.type,
                             isEncrypted = pubkey.encrypted,
                             isPiv = pubkey.isPiv,
                             pivSlot = pubkey.pivSlot,

@@ -756,7 +756,7 @@ class PubkeyListViewModel @Inject constructor(
     fun registerYubiKey(slot: Slot, publicKey: PublicKey) {
         val pubkey = Pubkey(
             nickname = context.getString(R.string.pubkey_piv_nickname, slot.stringAlias.uppercase(), YubiKeyPiv.shortFingerprint(publicKey)),
-            type = "EC",
+            type = YubiKeyPiv.storedType(publicKey),
             storageType = KeyStorageType.PIV,
             pivSlot = YubiKeyPiv.slotId(slot),
             privateKey = null,

@@ -177,6 +177,7 @@ fun PubkeyEditorScreenContent(
                         value = if (uiState.isPiv) {
                             stringResource(
                                 R.string.pubkey_piv_type,
+                                uiState.keyType,
                                 uiState.pivSlot?.toString(16)?.uppercase().orEmpty(),
                             )
                         } else {

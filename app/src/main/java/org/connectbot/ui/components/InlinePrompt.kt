@@ -146,7 +146,7 @@ fun InlinePrompt(
                         onResponse(PromptResponse.YubiKeyPivResponse(promptRequest, signature))
                     },
                     operation = { activity, slot, pin ->
-                        YubiKeyPiv.sign(activity, slot, promptRequest.publicKey, pin, promptRequest.dataToSign)
+                        YubiKeyPiv.sign(activity, slot, promptRequest.publicKey, pin, promptRequest.dataToSign, promptRequest.signatureAlgorithm)
                     },
                     signingPrompt = promptRequest,
                 )

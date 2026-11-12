@@ -2571,8 +2571,8 @@
 
     <!-- Action and title for registering a public SSH identity from a YubiKey. -->
     <string name="pubkey_piv_add">Add YubiKey PIV</string>
-    <!-- Key algorithm and hardware storage label. %1$s is the two-digit hexadecimal PIV slot. -->
-    <string name="pubkey_piv_type">EC P-256 · YubiKey PIV (slot %1$s)</string>
+    <!-- Key algorithm and hardware storage label. %1$s is the key algorithm, such as "EC P-256" or "RSA 2048". %2$s is the two-digit hexadecimal PIV slot. -->
+    <string name="pubkey_piv_type">%1$s · YubiKey PIV (slot %2$s)</string>
     <!-- Default nickname for a newly registered YubiKey key. %1$s is the two-digit hexadecimal PIV slot. %2$s is a short fingerprint that tells apart keys in the same slot of different YubiKeys. -->
     <string name="pubkey_piv_nickname">YubiKey PIV slot %1$s (%2$s)</string>
     <!-- Accessibility label for a PIV key whose private key is on a YubiKey. -->
@@ -2611,8 +2611,8 @@
     <string name="pubkey_piv_timeout">The YubiKey did not respond in time.</string>
     <!-- Error when the YubiKey is too old to describe the key in a PIV slot. -->
     <string name="pubkey_piv_unsupported_firmware">This YubiKey cannot report details about its PIV keys. ConnectBot needs firmware 5.3 or later.</string>
-    <!-- Error when the key in a PIV slot is of a type that cannot be used for SSH here. %1$s is the key type, such as "RSA 2048". -->
-    <string name="pubkey_piv_unsupported_algorithm">The key in this slot is %1$s, which ConnectBot cannot use for SSH. Only EC P-256 keys are supported.</string>
+    <!-- Error when the key in a PIV slot is of a type that cannot be used for SSH here. %1$s is the key type, such as "RSA 1024". -->
+    <string name="pubkey_piv_unsupported_algorithm">The key in this slot is %1$s, which ConnectBot cannot use for SSH. Supported are EC P-256, EC P-384, RSA 2048, 3072 and 4096, and Ed25519.</string>
     <!-- Error when the chosen PIV slot does not contain a key. -->
     <string name="pubkey_piv_empty_slot">This PIV slot is empty.</string>
     <!-- Error when the connected token does not match the saved SSH public key. -->
