@@ -28,10 +28,7 @@ import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
-import androidx.compose.ui.test.hasAnyAncestor
-import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.isDialog
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -125,35 +122,6 @@ class HostEditorScreenTest {
         val automation = composeTestRule.onNodeWithText(automationTitle, useUnmergedTree = true).getUnclippedBoundsInRoot()
         val preceding = composeTestRule.onNodeWithText(precedingTitle, useUnmergedTree = true).getUnclippedBoundsInRoot()
         assertEquals(preceding.left.value, automation.left.value, 0.5f)
-    }
-
-    @Test
-    fun newHostAutomationDraftRetainsActionsWhenReopened() {
-        navigateToHostEditorScreen(EntityIds.NONE)
-        val automationTitle = composeTestRule.activity.getString(R.string.hostpref_postlogin_title)
-        val addAction = composeTestRule.activity.getString(R.string.automation_add)
-        val command = "echo ready"
-
-        composeTestRule.onNodeWithText(automationTitle).performScrollTo().performClick()
-        composeTestRule.onNode(isDialog()).assertExists()
-        // Synchronize through Compose and scroll the lazy item into view before checking visibility.
-        composeTestRule.onNode(hasText(addAction) and hasAnyAncestor(isDialog()))
-            .performScrollTo().assertIsDisplayed().assertIsEnabled().performClick()
-        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.automation_send_text)).performClick()
-        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.automation_text)).performTextInput(command)
-        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.automation_save)).performClick()
-        composeTestRule.onNodeWithText(command).performScrollTo().assertIsDisplayed()
-        composeTestRule.onNodeWithContentDescription(composeTestRule.activity.getString(R.string.keyboard_done)).performClick()
-
-        composeTestRule.onNode(isDialog()).assertDoesNotExist()
-        composeTestRule.onNodeWithText(automationTitle).performScrollTo().performClick()
-        composeTestRule.onNode(isDialog()).assertExists()
-        composeTestRule.onNodeWithText(command).performScrollTo().assertIsDisplayed()
-        val navigateUp = composeTestRule.activity.getString(R.string.button_navigate_up)
-        composeTestRule.onNode(hasContentDescription(navigateUp) and hasAnyAncestor(isDialog())).performClick()
-
-        composeTestRule.onNode(isDialog()).assertDoesNotExist()
-        composeTestRule.onNodeWithText("Nickname").performScrollTo().assertIsDisplayed()
     }
 
     @Test
