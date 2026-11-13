@@ -65,6 +65,7 @@ data class SettingsUiState(
     val authOnLaunch: Boolean = false,
     val canAuthenticate: Boolean = false,
     val memkeys: Boolean = true,
+    val pivSessionIdleSeconds: String = PreferenceConstants.PIV_SESSION_IDLE_SECONDS_DEFAULT,
     val connectionAlerts: Boolean = true,
     val notificationsAvailable: Boolean = true,
     val wifilock: Boolean = true,
@@ -212,6 +213,8 @@ class SettingsViewModel @Inject constructor(
             authOnLaunch = prefs.getBoolean(PreferenceConstants.AUTH_ON_LAUNCH, false),
             canAuthenticate = canAuthenticate,
             memkeys = prefs.getBoolean(PreferenceConstants.MEMKEYS, true),
+            pivSessionIdleSeconds = prefs.getString(PreferenceConstants.PIV_SESSION_IDLE_SECONDS, null)
+                ?: PreferenceConstants.PIV_SESSION_IDLE_SECONDS_DEFAULT,
             connectionAlerts = prefs.getBoolean(PreferenceConstants.CONNECTION_ALERTS, true),
             wifilock = prefs.getBoolean(PreferenceConstants.WIFI_LOCK, true),
             backupkeys = prefs.getBoolean(PreferenceConstants.BACKUP_KEYS, false),
@@ -261,6 +264,10 @@ class SettingsViewModel @Inject constructor(
 
     fun updateMemkeys(value: Boolean) {
         updateBooleanPref("memkeys", value) { copy(memkeys = value) }
+    }
+
+    fun updatePivSessionIdle(seconds: String) {
+        updateStringPref(PreferenceConstants.PIV_SESSION_IDLE_SECONDS, seconds) { copy(pivSessionIdleSeconds = seconds) }
     }
 
     fun updateConnectionAlerts(value: Boolean) {

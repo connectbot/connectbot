@@ -310,7 +310,7 @@ class PubkeyListScreenTest {
         )
         setPubkeyListContent(PubkeyListUiState(pubkeys = listOf(key)))
         composeTestRule.onNodeWithText(
-            composeTestRule.activity.getString(R.string.pubkey_piv_type, "9C"),
+            composeTestRule.activity.getString(R.string.pubkey_piv_type, "EC", "9C"),
         ).assertExists()
     }
 

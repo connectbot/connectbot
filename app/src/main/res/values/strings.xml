@@ -336,6 +336,19 @@
 	<!-- Summary for the volume keys control font size preference -->
 	<string name="pref_volumefont_summary">"Font size can also be changed in profile settings"</string>
 
+	<!-- Name for the preference of how long a USB-connected YubiKey is kept connected after it was used. While it is connected, the YubiKey remembers the PIN and other apps cannot use it. -->
+	<string name="pref_piv_session_idle_title">Keep YubiKey PIV connected after use</string>
+	<!-- Option for the YubiKey connection preference: disconnect immediately, so the PIN is asked for on every login. -->
+	<string name="pref_piv_session_idle_never">Not at all (ask for the PIN every time)</string>
+	<!-- Option for the YubiKey connection preference: stay connected for one minute after use. -->
+	<string name="pref_piv_session_idle_1_minute">1 minute</string>
+	<!-- Option for the YubiKey connection preference: stay connected for five minutes after use. -->
+	<string name="pref_piv_session_idle_5_minutes">5 minutes</string>
+	<!-- Option for the YubiKey connection preference: stay connected for fifteen minutes after use. -->
+	<string name="pref_piv_session_idle_15_minutes">15 minutes</string>
+	<!-- Option for the YubiKey connection preference: stay connected for one hour after use. -->
+	<string name="pref_piv_session_idle_1_hour">1 hour</string>
+
 	<!-- Name for the memorize keys preference -->
 	<string name="pref_memkeys_title">"Remember keys in memory"</string>
 	<!-- Summary for the memorize keys preference -->
@@ -2558,8 +2571,10 @@
 
     <!-- Action and title for registering a public SSH identity from a YubiKey. -->
     <string name="pubkey_piv_add">Add YubiKey PIV</string>
-    <!-- Key algorithm and hardware storage label. %1$s is the two-digit hexadecimal PIV slot. -->
-    <string name="pubkey_piv_type">EC P-256 · YubiKey PIV (slot %1$s)</string>
+    <!-- Key algorithm and hardware storage label. %1$s is the key algorithm, such as "EC P-256" or "RSA 2048". %2$s is the two-digit hexadecimal PIV slot. -->
+    <string name="pubkey_piv_type">%1$s · YubiKey PIV (slot %2$s)</string>
+    <!-- Default nickname for a newly registered YubiKey key. %1$s is the two-digit hexadecimal PIV slot. %2$s is a short fingerprint that tells apart keys in the same slot of different YubiKeys. -->
+    <string name="pubkey_piv_nickname">YubiKey PIV slot %1$s (%2$s)</string>
     <!-- Accessibility label for a PIV key whose private key is on a YubiKey. -->
     <string name="pubkey_piv_hardware">YubiKey PIV hardware key</string>
     <!-- Input label for a hexadecimal slot identifier. -->
@@ -2594,8 +2609,12 @@
     <string name="pubkey_piv_pin_required">Enter the PIV PIN to use this key.</string>
     <!-- Error when discovery or touch confirmation times out. -->
     <string name="pubkey_piv_timeout">The YubiKey did not respond in time.</string>
-    <!-- Error when the device or slot has an unsupported key type or firmware. -->
-    <string name="pubkey_piv_unsupported_key">Use a YubiKey with firmware 5.3 or later and an ECC P-256 key in this slot.</string>
+    <!-- Error when the YubiKey is too old to describe the key in a PIV slot. -->
+    <string name="pubkey_piv_unsupported_firmware">This YubiKey cannot report details about its PIV keys. ConnectBot needs firmware 5.3 or later.</string>
+    <!-- Error when the key in a PIV slot is of a type that cannot be used for SSH here. %1$s is the key type, such as "RSA 1024". -->
+    <string name="pubkey_piv_unsupported_algorithm">The key in this slot is %1$s, which ConnectBot cannot use for SSH. Supported are EC P-256, EC P-384, RSA 2048, 3072 and 4096, and Ed25519.</string>
+    <!-- Error when the chosen PIV slot does not contain a key. -->
+    <string name="pubkey_piv_empty_slot">This PIV slot is empty.</string>
     <!-- Error when the connected token does not match the saved SSH public key. -->
     <string name="pubkey_piv_wrong_key">This PIV slot does not match the saved SSH key. Connect the registered YubiKey.</string>
     <!-- Error when the reader cannot use the PIV slot or hardware touch is not confirmed. -->

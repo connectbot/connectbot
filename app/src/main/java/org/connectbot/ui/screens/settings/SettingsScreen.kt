@@ -183,6 +183,7 @@ fun SettingsScreen(
         onNavigateToKeyboard = onNavigateToKeyboard,
         onAuthOnLaunchChange = viewModel::updateAuthOnLaunch,
         onMemkeysChange = viewModel::updateMemkeys,
+        onPivSessionIdleChange = viewModel::updatePivSessionIdle,
         onConnectionAlertsChange = viewModel::updateConnectionAlerts,
         onWifilockChange = viewModel::updateWifilock,
         onBackupkeysChange = viewModel::updateBackupkeys,
@@ -273,6 +274,7 @@ fun SettingsScreenContent(
     highlightItem: String? = null,
     onZmodemChange: (Boolean) -> Unit = {},
     onNavigateToKeyboard: () -> Unit = {},
+    onPivSessionIdleChange: (String) -> Unit = {},
 ) {
     Scaffold(
         topBar = {
@@ -301,9 +303,9 @@ fun SettingsScreenContent(
 
         LaunchedEffect(highlightItem) {
             if (highlightItem == "conn_persist" || highlightItem == "connection_alerts") {
-                // When canAuthenticate: items are [security header, authOnLaunch, memkeys, connectionAlerts]
-                // When !canAuthenticate: items are [memkeys, connectionAlerts]
-                val connectionAlertsIndex = if (uiState.canAuthenticate) 3 else 1
+                // When canAuthenticate: items are [security header, authOnLaunch, memkeys, pivSessionIdle, connectionAlerts]
+                // When !canAuthenticate: items are [memkeys, pivSessionIdle, connectionAlerts]
+                val connectionAlertsIndex = if (uiState.canAuthenticate) 4 else 2
                 listState.animateScrollToItem(connectionAlertsIndex)
                 delay(300)
                 highlightConnectionAlerts = true
@@ -334,6 +336,24 @@ fun SettingsScreenContent(
                     summary = stringResource(R.string.pref_memkeys_summary),
                     checked = uiState.memkeys,
                     onCheckedChange = onMemkeysChange,
+                )
+            }
+
+            item {
+                val pivIdleEntries = listOf(
+                    stringResource(R.string.pref_piv_session_idle_never) to "0",
+                    stringResource(R.string.pref_piv_session_idle_1_minute) to "60",
+                    stringResource(R.string.pref_piv_session_idle_5_minutes) to "300",
+                    stringResource(R.string.pref_piv_session_idle_15_minutes) to "900",
+                    stringResource(R.string.pref_piv_session_idle_1_hour) to "3600",
+                )
+                ListPreference(
+                    title = stringResource(R.string.pref_piv_session_idle_title),
+                    summary = pivIdleEntries.firstOrNull { it.second == uiState.pivSessionIdleSeconds }?.first
+                        ?: stringResource(R.string.pref_piv_session_idle_5_minutes),
+                    value = uiState.pivSessionIdleSeconds,
+                    entries = pivIdleEntries,
+                    onValueChange = onPivSessionIdleChange,
                 )
             }
 

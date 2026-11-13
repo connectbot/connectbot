@@ -536,6 +536,7 @@ private fun PubkeyListItem(
                     if (pubkey.isPiv) {
                         stringResource(
                             R.string.pubkey_piv_type,
+                            remember(pubkey.type, pubkey.publicKey) { YubiKeyPiv.algorithmLabel(pubkey.type, pubkey.publicKey).orEmpty() },
                             pubkey.pivSlot?.toString(16)?.uppercase().orEmpty(),
                         )
                     } else {

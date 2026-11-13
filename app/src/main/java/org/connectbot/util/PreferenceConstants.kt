@@ -23,6 +23,10 @@ package org.connectbot.util
 object PreferenceConstants {
     const val MEMKEYS: String = "memkeys"
 
+    /** How long, in seconds, the connection to a YubiKey stays open after use; 0 closes it right away. */
+    const val PIV_SESSION_IDLE_SECONDS: String = "pivSessionIdleSeconds"
+    const val PIV_SESSION_IDLE_SECONDS_DEFAULT: String = "300"
+
     const val SCROLLBACK: String = "scrollback"
 
     const val ROTATION: String = "rotation"
