@@ -14,7 +14,7 @@ asm = "9.11.1"
 ksp = "2.3.13"
 hilt = "2.60.1"
 hiltNavigationCompose = "1.4.0"
-sonarqube = "7.5.0.8588"
+sonarqube = "7.6.0.18749"
 
 compileSdk = "37"
 minSdk = "24"
