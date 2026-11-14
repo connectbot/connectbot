@@ -228,6 +228,7 @@ class ConsoleScreenTest {
             var disconnected = false
             `when`(bridge.isConnecting).thenAnswer { connecting }
             `when`(bridge.isDisconnected).thenAnswer { disconnected }
+            `when`(bridge.disconnectReason).thenReturn(DisconnectReason.USER_REQUESTED)
             val state = MutableStateFlow(ConsoleUiState(bridges = listOf(bridge), isLoading = false))
             val viewModel = mock(ConsoleViewModel::class.java)
             `when`(viewModel.uiState).thenReturn(state)
