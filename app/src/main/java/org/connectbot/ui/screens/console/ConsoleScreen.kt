@@ -173,12 +173,12 @@ import org.connectbot.ui.components.AuthBannerDialog
 import org.connectbot.ui.components.ConnectionInfoDialog
 import org.connectbot.ui.components.Fido2NfcTapOverlay
 import org.connectbot.ui.components.FloatingTextInputDialog
-import org.connectbot.ui.components.TerminalTextInput
-import org.connectbot.ui.components.rememberTouchExplorationEnabled
 import org.connectbot.ui.components.InlinePrompt
 import org.connectbot.ui.components.ResizeDialog
 import org.connectbot.ui.components.TerminalKeyboard
+import org.connectbot.ui.components.TerminalTextInput
 import org.connectbot.ui.components.UrlScanDialog
+import org.connectbot.ui.components.rememberTouchExplorationEnabled
 import org.connectbot.ui.screens.keyboard.ConsoleKeyboardSettings
 import org.connectbot.ui.screens.keyboard.KeyboardWorkflowDialog
 import org.connectbot.ui.theme.terminal

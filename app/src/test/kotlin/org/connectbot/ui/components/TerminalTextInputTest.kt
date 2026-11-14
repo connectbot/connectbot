@@ -14,14 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.connectbot.ui.components
 
+import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performImeAction
+import androidx.compose.ui.test.performKeyInput
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.pressKey
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.junit.Assert.assertEquals
@@ -33,6 +37,15 @@ import org.junit.runner.RunWith
 class TerminalTextInputTest {
     @get:Rule
     val compose = createComposeRule()
+
+    @Test
+    fun hardwareEnterSubmitsWithoutALineFeed() {
+        val sent = mutableListOf<String>()
+        compose.setContent { ConnectBotTheme { TerminalTextInput(onSend = { sent += it }) } }
+        compose.onNodeWithText("Terminal input").performTextInput("pwd")
+        compose.onNodeWithText("Terminal input").performKeyInput { pressKey(Key.Enter) }
+        compose.runOnIdle { assertEquals(listOf("pwd\r"), sent) }
+    }
 
     @Test
     fun sendButtonSubmitsOnceWithCarriageReturnAndClearsDraft() {
