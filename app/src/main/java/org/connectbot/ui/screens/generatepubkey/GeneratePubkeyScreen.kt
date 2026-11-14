@@ -50,6 +50,7 @@ import androidx.compose.material3.rememberSliderState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -180,11 +181,15 @@ fun GeneratePubkeyScreenContent(
 
             // Bit Strength
             if (uiState.allowBitStrengthChange) {
-                val sliderState = rememberSliderState(
-                    value = uiState.bits.toFloat(),
-                    trackRange = uiState.minBits.toFloat()..uiState.maxBits.toFloat(),
-                    steps = ((uiState.maxBits - uiState.minBits) / 8) - 1,
-                )
+                val stepSize = if (uiState.keyType == KeyType.RSA) 1024 else 8
+                val steps = ((uiState.maxBits - uiState.minBits) / stepSize) - 1
+                val sliderState = key(uiState.keyType, uiState.minBits, uiState.maxBits, steps) {
+                    rememberSliderState(
+                        value = uiState.bits.toFloat(),
+                        trackRange = uiState.minBits.toFloat()..uiState.maxBits.toFloat(),
+                        steps = steps,
+                    )
+                }
                 sliderState.value = uiState.bits.toFloat()
                 Text(
                     text = "${stringResource(R.string.prompt_bits)} ${uiState.bits}",
