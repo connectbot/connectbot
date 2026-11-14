@@ -17,7 +17,13 @@
 
 package org.connectbot.ui.components
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
@@ -37,6 +43,30 @@ import org.junit.runner.RunWith
 class TerminalTextInputTest {
     @get:Rule
     val compose = createComposeRule()
+
+    @Test
+    fun draftCanBeReviewedExplicitlyAndIsHiddenAgainAfterSend() {
+        compose.setContent { ConnectBotTheme { TerminalTextInput(onSend = {}) } }
+        compose.onNodeWithText("Terminal input").performTextInput("echo 世界")
+        compose.onNodeWithText("Terminal input").assert(SemanticsMatcher.keyIsDefined(SemanticsProperties.Password))
+        compose.onNodeWithText("Show input").performClick()
+        compose.onNodeWithText("Terminal input").assertTextEquals("Terminal input", "echo 世界")
+        compose.onNodeWithText("Send").performClick()
+        compose.onNodeWithText("Show input").assertExists()
+    }
+
+    @Test
+    fun replacingSessionClearsAndHidesTheDraft() {
+        var session by mutableStateOf(0)
+        val sent = mutableListOf<String>()
+        compose.setContent { ConnectBotTheme { TerminalTextInput(onSend = { sent += it }, sessionKey = session) } }
+        compose.onNodeWithText("Terminal input").performTextInput("private draft")
+        compose.onNodeWithText("Show input").performClick()
+        compose.runOnIdle { session = 1 }
+        compose.onNodeWithText("Terminal input").assertTextEquals("Terminal input", "")
+        compose.onNodeWithText("Show input").assertExists()
+        compose.runOnIdle { assertEquals(emptyList<String>(), sent) }
+    }
 
     @Test
     fun hardwareEnterSubmitsWithoutALineFeed() {
@@ -71,6 +101,6 @@ class TerminalTextInputTest {
         compose.setContent { ConnectBotTheme { TerminalTextInput(onSend = { sent += it }) } }
         compose.onNodeWithText("Terminal input").performTextInput("first\nsecond")
         compose.onNodeWithText("Send").performClick()
-        compose.runOnIdle { assertEquals(listOf("\r"), sent) }
+        compose.runOnIdle { assertEquals(emptyList<String>(), sent) }
     }
 }

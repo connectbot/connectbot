@@ -2603,7 +2603,13 @@
 	<!-- Label of the docked, single-line terminal editor used with TalkBack. -->
 	<string name="terminal_input_label">Terminal input</string>
 	<!-- Explains why the terminal draft is masked and that multiline paste is not accepted. -->
-	<string name="terminal_input_sensitive_hint">Hidden input, single line only</string>
+	<string name="terminal_input_sensitive_hint">Single line. Hidden again after sending.</string>
+	<!-- Opt-in reveal of the sensitive terminal draft, reset after sending or leaving the app. -->
+	<string name="terminal_input_show">Show input</string>
+	<!-- Masks a previously revealed terminal draft. -->
+	<string name="terminal_input_hide">Hide input</string>
+	<!-- Rejects multiline edits in the single-line terminal draft without sending anything. -->
+	<string name="terminal_input_multiline_error">Multiple lines were not pasted. Enter a single line.</string>
 	<!-- Switches from the draft editor to the terminal’s direct keyboard for interactive apps. -->
 	<string name="terminal_input_raw_keyboard">Use terminal keyboard</string>
 </resources>

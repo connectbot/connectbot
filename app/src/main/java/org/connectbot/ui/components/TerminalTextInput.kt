@@ -29,6 +29,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -42,6 +43,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -50,20 +52,29 @@ import org.connectbot.R
 
 /** A single-line, memory-only draft. Never echo input into the terminal buffer. */
 @Composable
-internal fun TerminalTextInput(onSend: (String) -> Unit, modifier: Modifier = Modifier) {
+internal fun TerminalTextInput(onSend: (String) -> Unit, modifier: Modifier = Modifier, sessionKey: Any = Unit) {
     // Shells do not tell us whether the next line is a password. Treat every draft as sensitive.
-    var draft by remember { mutableStateOf("") }
+    var draft by remember(sessionKey) { mutableStateOf("") }
+    var showInput by remember(sessionKey) { mutableStateOf(false) }
+    var rejectedPaste by remember(sessionKey) { mutableStateOf(false) }
     val lifecycle = LocalLifecycleOwner.current.lifecycle
-    DisposableEffect(lifecycle) {
+    DisposableEffect(lifecycle, sessionKey) {
         val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_STOP) draft = ""
+            if (event == Lifecycle.Event.ON_STOP) {
+                draft = ""
+                showInput = false
+                rejectedPaste = false
+            }
         }
         lifecycle.addObserver(observer)
         onDispose { lifecycle.removeObserver(observer) }
     }
     val send = {
-        onSend(draft + "\r")
-        draft = ""
+        if (!rejectedPaste) {
+            onSend(draft + "\r")
+            draft = ""
+            showInput = false
+        }
     }
     Row(
         modifier = modifier.fillMaxWidth().padding(horizontal = 8.dp),
@@ -74,12 +85,21 @@ internal fun TerminalTextInput(onSend: (String) -> Unit, modifier: Modifier = Mo
             value = draft,
             onValueChange = { value ->
                 // A pasted newline must not silently turn one submission into several commands.
-                if ('\n' !in value && '\r' !in value) draft = value
+                rejectedPaste = '\n' in value || '\r' in value
+                if (!rejectedPaste) draft = value
             },
             label = { Text(stringResource(R.string.terminal_input_label)) },
-            supportingText = { Text(stringResource(R.string.terminal_input_sensitive_hint)) },
+            supportingText = {
+                Text(stringResource(if (rejectedPaste) R.string.terminal_input_multiline_error else R.string.terminal_input_sensitive_hint))
+            },
+            isError = rejectedPaste,
+            trailingIcon = {
+                TextButton(onClick = { showInput = !showInput }) {
+                    Text(stringResource(if (showInput) R.string.terminal_input_hide else R.string.terminal_input_show))
+                }
+            },
             singleLine = true,
-            visualTransformation = PasswordVisualTransformation(),
+            visualTransformation = if (showInput) VisualTransformation.None else PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password,
                 autoCorrectEnabled = false,
@@ -88,7 +108,7 @@ internal fun TerminalTextInput(onSend: (String) -> Unit, modifier: Modifier = Mo
             keyboardActions = KeyboardActions(onSend = { send() }),
             modifier = Modifier.weight(1f),
         )
-        Button(onClick = { send() }, modifier = Modifier.heightIn(min = 48.dp)) {
+        Button(onClick = { send() }, enabled = !rejectedPaste, modifier = Modifier.heightIn(min = 48.dp)) {
             Text(stringResource(R.string.button_send))
         }
     }

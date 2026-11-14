@@ -531,7 +531,7 @@ private fun ConsoleTerminalPage(
             typeface = terminalTypeface,
             initialFontSize = fontSize.sp,
             keyboardEnabled = true,
-            showSoftKeyboard = showSoftwareKeyboard && isActive && !(showInputDock && useTextInput),
+            showSoftKeyboard = showSoftwareKeyboard && isActive && !(touchExplorationEnabled && useTextInput),
             resizeSuspended = resizeSuspended,
             focusRequester = termFocusRequester,
             forcedSize = forceSize,
@@ -619,7 +619,7 @@ private fun ConsoleTerminalPage(
                         .onSizeChanged { inputDockHeight = with(keyboardDensity) { it.height.toDp() } },
                 ) {
                     if (useTextInput) {
-                        TerminalTextInput(onSend = bridge::injectString)
+                        TerminalTextInput(onSend = bridge::injectString, sessionKey = bridge)
                     }
                     TextButton(onClick = {
                         useTextInput = !useTextInput
