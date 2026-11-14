@@ -34,7 +34,7 @@ jobs:
         uses: gradle/actions/wrapper-validation@v6.4.1
 
       - name: Set up JDK
-        uses: actions/setup-java@v6.2.0
+        uses: actions/setup-java@v6.3.0
         with:
           distribution: 'zulu'
           java-version: '17'
