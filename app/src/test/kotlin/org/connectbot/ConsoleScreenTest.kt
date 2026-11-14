@@ -24,6 +24,7 @@ import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR
 import android.view.View
 import android.view.ViewGroup
+import android.view.accessibility.AccessibilityManager
 import androidx.compose.material3.Text
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
@@ -33,6 +34,8 @@ import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
+import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
@@ -43,6 +46,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performKeyInput
+import androidx.compose.ui.test.performTextInput
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
@@ -72,6 +76,7 @@ import org.connectbot.service.DisconnectReason
 import org.connectbot.service.ModifierLevel
 import org.connectbot.service.ModifierState
 import org.connectbot.service.PromptManager
+import org.connectbot.service.PromptRequest
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalEmulatorKeyDispatcher
 import org.connectbot.service.TerminalKeyListener
@@ -195,6 +200,71 @@ class ConsoleScreenTest {
     private fun navigateToConsoleScreen(hostId: UUID = EntityIds.NONE) {
         composeTestRule.runOnUiThread {
             navController.navigate("console/$hostId")
+        }
+    }
+
+    @Test
+    fun touchExplorationInputSendsAndYieldsToPrompts() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        val accessibility = context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
+        val shadow = org.robolectric.Shadows.shadowOf(accessibility)
+        composeTestRule.runOnUiThread { shadow.setTouchExplorationEnabled(true) }
+        try {
+            val emulator = TerminalEmulatorFactory.create()
+            val bridge = mockTerminalBridge()
+            `when`(bridge.host).thenReturn(Host(id = UUID(0, 31), nickname = "test"))
+            `when`(bridge.terminalEmulator).thenReturn(emulator)
+            `when`(bridge.fontSizeFlow).thenReturn(MutableStateFlow(14f))
+            `when`(bridge.fontWeightFlow).thenReturn(MutableStateFlow(TerminalFontWeight.NORMAL))
+            `when`(bridge.delKeyModeFlow).thenReturn(MutableStateFlow(DelKeyMode.Delete))
+            `when`(bridge.transportMessages).thenReturn(MutableSharedFlow())
+            `when`(bridge.keyboardErrors).thenReturn(MutableSharedFlow())
+            `when`(bridge.keyHandler).thenReturn(TerminalKeyListener(TerminalEmulatorKeyDispatcher(emulator)))
+            val prompt = MutableStateFlow<PromptRequest?>(null)
+            val prompts = mock(PromptManager::class.java)
+            `when`(prompts.promptState).thenReturn(prompt)
+            `when`(bridge.promptManager).thenReturn(prompts)
+            var connecting = false
+            var disconnected = false
+            `when`(bridge.isConnecting).thenAnswer { connecting }
+            `when`(bridge.isDisconnected).thenAnswer { disconnected }
+            val state = MutableStateFlow(ConsoleUiState(bridges = listOf(bridge), isLoading = false))
+            val viewModel = mock(ConsoleViewModel::class.java)
+            `when`(viewModel.uiState).thenReturn(state)
+            `when`(viewModel.networkStatusMessages).thenReturn(MutableSharedFlow())
+            setContent(mockConsoleViewModel = viewModel)
+            navigateToConsoleScreen(bridge.host.id)
+
+            composeTestRule.onNodeWithText("Terminal input").performTextInput("cmd")
+            composeTestRule.onNodeWithText("Send").performClick()
+            org.mockito.Mockito.verify(bridge).injectString("cmd\r")
+            composeTestRule.onNodeWithText("Use terminal keyboard").performClick()
+            composeTestRule.onNodeWithText("Terminal input").assertDoesNotExist()
+            composeTestRule.onNodeWithText("Use text input").performClick()
+            composeTestRule.onNodeWithText("Terminal input").performTextInput("discard this draft")
+            composeTestRule.runOnIdle { prompt.value = PromptRequest.BooleanPrompt(null, "Confirm test") }
+            composeTestRule.onNodeWithText("Send").assertDoesNotExist()
+            composeTestRule.runOnIdle { prompt.value = null }
+            composeTestRule.onNodeWithText("Terminal input").assertIsDisplayed()
+            composeTestRule.onNodeWithText("Terminal input").assert(
+                SemanticsMatcher.expectValue(
+                    androidx.compose.ui.semantics.SemanticsProperties.EditableText,
+                    androidx.compose.ui.text.AnnotatedString(""),
+                ),
+            )
+            composeTestRule.runOnIdle {
+                connecting = true
+                state.value = state.value.copy(revision = state.value.revision + 1)
+            }
+            composeTestRule.onNodeWithText("Send").assertDoesNotExist()
+            composeTestRule.runOnIdle {
+                connecting = false
+                disconnected = true
+                state.value = state.value.copy(revision = state.value.revision + 1)
+            }
+            composeTestRule.onNodeWithText("Send").assertDoesNotExist()
+        } finally {
+            composeTestRule.runOnUiThread { shadow.setTouchExplorationEnabled(false) }
         }
     }
 
