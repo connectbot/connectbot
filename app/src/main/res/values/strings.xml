@@ -2600,4 +2600,10 @@
     <string name="pubkey_piv_wrong_key">This PIV slot does not match the saved SSH key. Connect the registered YubiKey.</string>
     <!-- Error when the reader cannot use the PIV slot or hardware touch is not confirmed. -->
     <string name="pubkey_piv_failed">Could not use the PIV slot. Check that PIV is enabled, the slot contains a key, and any required touch was confirmed.</string>
+	<!-- Label of the docked, single-line terminal editor used with TalkBack. -->
+	<string name="terminal_input_label">Terminal input</string>
+	<!-- Explains why the terminal draft is masked and that multiline paste is not accepted. -->
+	<string name="terminal_input_sensitive_hint">Hidden input, single line only</string>
+	<!-- Switches from the draft editor to the terminal’s direct keyboard for interactive apps. -->
+	<string name="terminal_input_raw_keyboard">Use terminal keyboard</string>
 </resources>
