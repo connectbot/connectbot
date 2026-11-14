@@ -176,7 +176,9 @@ import org.connectbot.ui.components.FloatingTextInputDialog
 import org.connectbot.ui.components.InlinePrompt
 import org.connectbot.ui.components.ResizeDialog
 import org.connectbot.ui.components.TerminalKeyboard
+import org.connectbot.ui.components.TerminalTextInput
 import org.connectbot.ui.components.UrlScanDialog
+import org.connectbot.ui.components.rememberTouchExplorationEnabled
 import org.connectbot.ui.screens.keyboard.ConsoleKeyboardSettings
 import org.connectbot.ui.screens.keyboard.KeyboardWorkflowDialog
 import org.connectbot.ui.theme.terminal
@@ -486,6 +488,12 @@ private fun ConsoleTerminalPage(
 ) {
     val keyboardDensity = LocalDensity.current
     var keyboardHeight by remember { mutableStateOf(0.dp) }
+    val touchExplorationEnabled = rememberTouchExplorationEnabled()
+    var useTextInput by remember(bridge, touchExplorationEnabled) { mutableStateOf(touchExplorationEnabled) }
+    var inputDockHeight by remember { mutableStateOf(0.dp) }
+    val prompt by bridge.promptManager.promptState.collectAsState()
+    val showInputDock = touchExplorationEnabled && isActive && prompt == null && !disconnected && !connecting
+    val dockHeight = if (showInputDock) inputDockHeight else 0.dp
     var consoleHeight by remember { mutableStateOf(480.dp) }
     Box(modifier = modifier.onSizeChanged { consoleHeight = with(keyboardDensity) { it.height.toDp() } }) {
         val fontResult = rememberTerminalTypefaceResultFromStoredValue(bridge.fontFamily)
@@ -516,14 +524,14 @@ private fun ConsoleTerminalPage(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
-                    bottom = if (keyboardAlwaysVisible) keyboardHeight else 0.dp,
+                    bottom = dockHeight + if (keyboardAlwaysVisible) keyboardHeight else 0.dp,
                 )
                 .then(terminalModifier)
                 .testTag("terminal"),
             typeface = terminalTypeface,
             initialFontSize = fontSize.sp,
             keyboardEnabled = true,
-            showSoftKeyboard = showSoftwareKeyboard && isActive,
+            showSoftKeyboard = showSoftwareKeyboard && isActive && !(touchExplorationEnabled && useTextInput),
             resizeSuspended = resizeSuspended,
             focusRequester = termFocusRequester,
             forcedSize = forceSize,
@@ -559,7 +567,11 @@ private fun ConsoleTerminalPage(
         )
 
         SideEffect {
-            bridge.onTextInputRequest = onTextInputRequest
+            bridge.onTextInputRequest = if (touchExplorationEnabled) {
+                { useTextInput = true }
+            } else {
+                onTextInputRequest
+            }
         }
 
         if (isActive) {
@@ -569,6 +581,7 @@ private fun ConsoleTerminalPage(
                 exit = fadeOut(animationSpec = tween(durationMillis = 100)),
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
+                    .padding(bottom = dockHeight)
                     .testTag("terminal_keyboard"),
             ) {
                 TerminalKeyboard(
@@ -581,7 +594,11 @@ private fun ConsoleTerminalPage(
                     onShowIme = {
                         onShowSoftwareKeyboardChange(true)
                     },
-                    onOpenTextInput = onTextInputRequest,
+                    onOpenTextInput = if (touchExplorationEnabled) {
+                        { useTextInput = true }
+                    } else {
+                        onTextInputRequest
+                    },
                     onPasteRequest = onPasteRequest,
                     onScrollInProgressChange = onKeyboardScrollInProgressChange,
                     imeVisible = imeVisible,
@@ -591,6 +608,29 @@ private fun ConsoleTerminalPage(
                     onToggleComposeMode = onToggleComposeMode,
                     onShortcutModifierChange = onShortcutModifierChange,
                 )
+            }
+
+            if (showInputDock) {
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.surface)
+                        .onSizeChanged { inputDockHeight = with(keyboardDensity) { it.height.toDp() } },
+                ) {
+                    if (useTextInput) {
+                        TerminalTextInput(onSend = bridge::injectString, sessionKey = bridge)
+                    }
+                    TextButton(onClick = {
+                        useTextInput = !useTextInput
+                        if (!useTextInput) {
+                            termFocusRequester.requestFocus()
+                            onShowSoftwareKeyboardChange(true)
+                        }
+                    }) {
+                        Text(stringResource(if (useTextInput) R.string.terminal_input_raw_keyboard else R.string.terminal_input_use_text))
+                    }
+                }
             }
 
             ConsoleAuthenticationOverlay(bridge, disconnected, connecting, termFocusRequester, onDisconnectRequest, onReconnect)
