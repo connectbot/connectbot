@@ -22,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assert
@@ -48,6 +49,19 @@ import org.junit.runner.RunWith
 class TerminalTextInputTest {
     @get:Rule
     val compose = createComposeRule()
+
+    @Test
+    fun repeatedActivationDoesNotSendAnAccidentalEmptyEnter() {
+        val sent = mutableListOf<String>()
+        compose.setContent { ConnectBotTheme { TerminalTextInput(onSend = { sent += it }) } }
+        compose.onNodeWithText("Terminal input").performTextInput("cmd")
+        val click = requireNotNull(compose.onNodeWithText("Send").fetchSemanticsNode().config[SemanticsActions.OnClick].action)
+        compose.runOnIdle {
+            click()
+            click()
+            assertEquals(listOf("cmd\r"), sent)
+        }
+    }
 
     @Test
     fun leavingTheAppClearsAndHidesTheDraft() {

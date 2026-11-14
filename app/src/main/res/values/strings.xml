@@ -2602,8 +2602,8 @@
     <string name="pubkey_piv_failed">Could not use the PIV slot. Check that PIV is enabled, the slot contains a key, and any required touch was confirmed.</string>
 	<!-- Label of the docked, single-line terminal editor used with TalkBack. -->
 	<string name="terminal_input_label">Terminal input</string>
-	<!-- Explains why the terminal draft is masked and that multiline paste is not accepted. -->
-	<string name="terminal_input_sensitive_hint">Single line. Hidden again after sending.</string>
+	<!-- Explains how to review a terminal draft and that sending masks it again. -->
+	<string name="terminal_input_sensitive_hint">Show input to review. Hidden again after sending.</string>
 	<!-- Opt-in reveal of the sensitive terminal draft, reset after sending or leaving the app. -->
 	<string name="terminal_input_show">Show input</string>
 	<!-- Masks a previously revealed terminal draft. -->

@@ -18,6 +18,7 @@
 package org.connectbot.ui.components
 
 import android.content.Context
+import android.os.SystemClock
 import android.view.accessibility.AccessibilityManager
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -37,6 +38,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -64,6 +66,7 @@ internal fun TerminalTextInput(onSend: (String) -> Unit, modifier: Modifier = Mo
     var draft by remember(sessionKey) { mutableStateOf("") }
     var showInput by remember(sessionKey) { mutableStateOf(false) }
     var rejectedPaste by remember(sessionKey) { mutableStateOf(false) }
+    var lastTextSubmission by remember(sessionKey) { mutableLongStateOf(Long.MIN_VALUE) }
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     DisposableEffect(lifecycle, sessionKey) {
         val observer = LifecycleEventObserver { _, event ->
@@ -71,17 +74,22 @@ internal fun TerminalTextInput(onSend: (String) -> Unit, modifier: Modifier = Mo
                 draft = ""
                 showInput = false
                 rejectedPaste = false
+                lastTextSubmission = Long.MIN_VALUE
             }
         }
         lifecycle.addObserver(observer)
         onDispose { lifecycle.removeObserver(observer) }
     }
-    val send = {
-        if (!rejectedPaste) {
-            onSend(draft + "\r")
-            draft = ""
-            showInput = false
-        }
+    fun send() {
+        if (rejectedPaste) return
+        val now = SystemClock.uptimeMillis()
+        // Do not turn an accidental second activation into confirmation of a
+        // remote prompt. Intentional empty Enter remains available after this gap.
+        if (draft.isEmpty() && lastTextSubmission != Long.MIN_VALUE && now - lastTextSubmission < 300L) return
+        onSend(draft + "\r")
+        if (draft.isNotEmpty()) lastTextSubmission = now
+        draft = ""
+        showInput = false
     }
     Row(
         modifier = modifier.fillMaxWidth().padding(horizontal = 8.dp),
