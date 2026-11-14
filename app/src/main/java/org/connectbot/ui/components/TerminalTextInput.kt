@@ -26,10 +26,14 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -40,6 +44,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -90,12 +97,18 @@ internal fun TerminalTextInput(onSend: (String) -> Unit, modifier: Modifier = Mo
             },
             label = { Text(stringResource(R.string.terminal_input_label)) },
             supportingText = {
-                Text(stringResource(if (rejectedPaste) R.string.terminal_input_multiline_error else R.string.terminal_input_sensitive_hint))
+                Text(
+                    stringResource(if (rejectedPaste) R.string.terminal_input_multiline_error else R.string.terminal_input_sensitive_hint),
+                    modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
+                )
             },
             isError = rejectedPaste,
             trailingIcon = {
-                TextButton(onClick = { showInput = !showInput }) {
-                    Text(stringResource(if (showInput) R.string.terminal_input_hide else R.string.terminal_input_show))
+                IconToggleButton(checked = showInput, onCheckedChange = { showInput = it }) {
+                    Icon(
+                        if (showInput) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                        contentDescription = stringResource(if (showInput) R.string.terminal_input_hide else R.string.terminal_input_show),
+                    )
                 }
             },
             singleLine = true,

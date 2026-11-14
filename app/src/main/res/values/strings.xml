@@ -2612,4 +2612,6 @@
 	<string name="terminal_input_multiline_error">Multiple lines were not pasted. Enter a single line.</string>
 	<!-- Switches from the draft editor to the terminal’s direct keyboard for interactive apps. -->
 	<string name="terminal_input_raw_keyboard">Use terminal keyboard</string>
+	<!-- Switches from direct terminal keys back to the docked draft editor. -->
+	<string name="terminal_input_use_text">Use text input</string>
 </resources>

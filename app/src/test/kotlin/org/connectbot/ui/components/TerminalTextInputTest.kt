@@ -17,21 +17,26 @@
 
 package org.connectbot.ui.components
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assert
-import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performImeAction
 import androidx.compose.ui.test.performKeyInput
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.pressKey
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.junit.Assert.assertEquals
@@ -45,26 +50,45 @@ class TerminalTextInputTest {
     val compose = createComposeRule()
 
     @Test
+    fun leavingTheAppClearsAndHidesTheDraft() {
+        val owner = object : LifecycleOwner {
+            val registry = LifecycleRegistry(this)
+            override val lifecycle: Lifecycle get() = registry
+        }
+        compose.setContent {
+            CompositionLocalProvider(LocalLifecycleOwner provides owner) {
+                ConnectBotTheme { TerminalTextInput(onSend = {}) }
+            }
+        }
+        compose.runOnIdle { owner.registry.currentState = Lifecycle.State.RESUMED }
+        compose.onNodeWithText("Terminal input").performTextInput("private draft")
+        compose.onNodeWithContentDescription("Show input").performClick()
+        compose.runOnIdle { owner.registry.currentState = Lifecycle.State.CREATED }
+        compose.onNodeWithText("Terminal input").assert(SemanticsMatcher.expectValue(SemanticsProperties.EditableText, androidx.compose.ui.text.AnnotatedString("")))
+        compose.onNodeWithContentDescription("Show input").assertExists()
+    }
+
+    @Test
     fun draftCanBeReviewedExplicitlyAndIsHiddenAgainAfterSend() {
         compose.setContent { ConnectBotTheme { TerminalTextInput(onSend = {}) } }
         compose.onNodeWithText("Terminal input").performTextInput("echo 世界")
         compose.onNodeWithText("Terminal input").assert(SemanticsMatcher.keyIsDefined(SemanticsProperties.Password))
-        compose.onNodeWithText("Show input").performClick()
-        compose.onNodeWithText("Terminal input").assertTextEquals("Terminal input", "echo 世界")
+        compose.onNodeWithContentDescription("Show input").performClick()
+        compose.onNodeWithText("Terminal input").assert(SemanticsMatcher.expectValue(SemanticsProperties.EditableText, androidx.compose.ui.text.AnnotatedString("echo 世界")))
         compose.onNodeWithText("Send").performClick()
-        compose.onNodeWithText("Show input").assertExists()
+        compose.onNodeWithContentDescription("Show input").assertExists()
     }
 
     @Test
     fun replacingSessionClearsAndHidesTheDraft() {
-        var session by mutableStateOf(0)
+        var session by mutableIntStateOf(0)
         val sent = mutableListOf<String>()
         compose.setContent { ConnectBotTheme { TerminalTextInput(onSend = { sent += it }, sessionKey = session) } }
         compose.onNodeWithText("Terminal input").performTextInput("private draft")
-        compose.onNodeWithText("Show input").performClick()
+        compose.onNodeWithContentDescription("Show input").performClick()
         compose.runOnIdle { session = 1 }
-        compose.onNodeWithText("Terminal input").assertTextEquals("Terminal input", "")
-        compose.onNodeWithText("Show input").assertExists()
+        compose.onNodeWithText("Terminal input").assert(SemanticsMatcher.expectValue(SemanticsProperties.EditableText, androidx.compose.ui.text.AnnotatedString("")))
+        compose.onNodeWithContentDescription("Show input").assertExists()
         compose.runOnIdle { assertEquals(emptyList<String>(), sent) }
     }
 
@@ -84,7 +108,7 @@ class TerminalTextInputTest {
         compose.onNodeWithText("Terminal input").performTextInput("echo hello")
         compose.onNodeWithText("Send").performClick()
         compose.runOnIdle { assertEquals(listOf("echo hello\r"), sent) }
-        compose.onNodeWithText("Terminal input").assertTextEquals("Terminal input", "")
+        compose.onNodeWithText("Terminal input").assert(SemanticsMatcher.expectValue(SemanticsProperties.EditableText, androidx.compose.ui.text.AnnotatedString("")))
     }
 
     @Test

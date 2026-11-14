@@ -628,7 +628,7 @@ private fun ConsoleTerminalPage(
                             onShowSoftwareKeyboardChange(true)
                         }
                     }) {
-                        Text(stringResource(if (useTextInput) R.string.terminal_input_raw_keyboard else R.string.terminal_input_label))
+                        Text(stringResource(if (useTextInput) R.string.terminal_input_raw_keyboard else R.string.terminal_input_use_text))
                     }
                 }
             }
