@@ -70,6 +70,7 @@ import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import org.connectbot.R
 import org.connectbot.service.TerminalBridge
+import org.connectbot.terminal.VTermKey
 import kotlin.math.roundToInt
 
 private const val PREF_FLOATING_INPUT_X = "floating_input_x"
@@ -142,12 +143,14 @@ fun FloatingTextInputDialog(
         }
     }
 
-    // Send text helper function
+    // Paste (bracketed when the remote app enables it) so inner newlines don't submit, then press
+    // Enter once to submit
     fun sendText() {
-        if (text.isNotEmpty()) {
-            bridge.injectString(text)
-            text = ""
-        }
+        val body = text.trimEnd('\n')
+        if (body.isEmpty()) return
+        bridge.terminalEmulator.pasteText(body)
+        bridge.terminalEmulator.dispatchKey(0, VTermKey.ENTER)
+        text = ""
     }
 
     Popup(
