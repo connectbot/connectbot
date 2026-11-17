@@ -18,9 +18,11 @@
 package org.connectbot.ui.components
 
 import android.content.Context
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.hasSetTextAction
@@ -31,6 +33,10 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTextReplacement
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeDown
+import androidx.compose.ui.test.swipeUp
+import androidx.compose.ui.unit.dp
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.connectbot.R
@@ -39,6 +45,7 @@ import org.connectbot.terminal.TerminalEmulator
 import org.connectbot.terminal.VTermKey
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -114,6 +121,35 @@ class FloatingTextInputDialogTest {
 
         mode(R.string.terminal_text_input_mode_paste).performClick()
         mode(R.string.terminal_text_input_mode_send_close).assertExists()
+    }
+
+    @Test
+    fun draggingTheDraftResizesThePanel() {
+        // Like the console: the panel height stays within limits, which is also what ends a fling
+        var height = 400f
+        var resized = 0f
+        composeTestRule.setContent {
+            FloatingTextInputDialog(
+                bridge = bridge,
+                onDismiss = {},
+                onResize = { delta ->
+                    val target = (height + delta).coerceIn(100f, 800f)
+                    (target - height).also {
+                        height = target
+                        resized += it
+                    }
+                },
+                modifier = Modifier.height(400.dp),
+            )
+        }
+
+        composeTestRule.onNode(hasSetTextAction()).performTouchInput { swipeDown() }
+        composeTestRule.waitForIdle()
+        assertTrue("dragging down past the draft's top shrinks the panel ($resized)", resized < 0)
+        resized = 0f
+        composeTestRule.onNode(hasSetTextAction()).performTouchInput { swipeUp() }
+        composeTestRule.waitForIdle()
+        assertTrue("dragging up grows the panel ($resized)", resized > 0)
     }
 
     @Test

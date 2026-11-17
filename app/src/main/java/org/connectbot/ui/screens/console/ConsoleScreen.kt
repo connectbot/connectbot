@@ -24,6 +24,7 @@ import android.content.Context
 import android.content.res.Configuration
 import androidx.annotation.VisibleForTesting
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -35,6 +36,7 @@ import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
@@ -45,16 +47,19 @@ import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imeAnimationSource
 import androidx.compose.foundation.layout.imeAnimationTarget
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -96,6 +101,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -105,6 +111,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEvent
@@ -136,6 +143,7 @@ import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withLink
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.edit
@@ -791,6 +799,22 @@ fun ConsoleScreen(
     var showDisconnectDialog by remember { mutableStateOf(false) }
     var showSessionPickerDialog by remember { mutableStateOf(false) }
     var showTextInputDialog by remember { mutableStateOf(false) }
+
+    // The text input is a panel that slides up from the bottom and pushes the terminal up above it; its
+    // height (px) animates in from 0, follows drags, and animates back to 0 on close
+    var textInputHeight by remember { mutableFloatStateOf(0f) }
+    var textInputMaxHeight by remember { mutableFloatStateOf(0f) }
+    LaunchedEffect(showTextInputDialog) {
+        if (showTextInputDialog) animate(textInputHeight, textInputMaxHeight) { value, _ -> textInputHeight = value }
+    }
+
+    fun closeTextInput() {
+        coroutineScope.launch {
+            animate(textInputHeight, 0f) { value, _ -> textInputHeight = value }
+            showTextInputDialog = false
+            termFocusRequester.requestFocus()
+        }
+    }
     var showExtraKeyboard by remember { mutableStateOf(true) } // Start visible to show animation
     var hasPlayedKeyboardAnimation by remember { mutableStateOf(false) }
     var showTitleBar by remember { mutableStateOf(!titleBarHide) }
@@ -1242,11 +1266,21 @@ fun ConsoleScreen(
                 }
 
                 uiState.bridges.isNotEmpty() -> {
-                    Box(
+                    BoxWithConstraints(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .weight(1f),
+                            .weight(1f)
+                            .clipToBounds(),
                     ) {
+                        val boxHeight = constraints.maxHeight
+                        SideEffect { textInputMaxHeight = boxHeight.toFloat() }
+                        // While the text input is open the terminal keeps the height it had when it opened, so the
+                        // keyboard coming up for the text input doesn't resize it (and the server's PTY). It is only
+                        // moved, so its last rows always sit right above the panel.
+                        val openedAtHeight = remember(showTextInputDialog) { boxHeight }
+                        val terminalHeight = if (showTextInputDialog) openedAtHeight else boxHeight
+                        val panelHeight = textInputHeight.coerceIn(0f, boxHeight.toFloat())
+                        val terminalShift = boxHeight - panelHeight - terminalHeight
                         val bridge = uiState.bridges[uiState.currentBridgeIndex]
                         val terminalModifier = if (swipeBetweenSessions) {
                             Modifier.sessionSwipeNavigation(
@@ -1268,7 +1302,8 @@ fun ConsoleScreen(
                                 isActive = true,
                                 keyboardAlwaysVisible = keyboardAlwaysVisible,
                                 pgUpDnGestureEnabled = pgUpDnGestureEnabled,
-                                showSoftwareKeyboard = showSoftwareKeyboard,
+                                // The text input panel has the keyboard while it is open
+                                showSoftwareKeyboard = showSoftwareKeyboard && !showTextInputDialog,
                                 resizeSuspended = resizeSuspended,
                                 forceSize = forceSize,
                                 termFocusRequester = termFocusRequester,
@@ -1307,7 +1342,11 @@ fun ConsoleScreen(
                                 onShortcutModifierChange = {
                                     composeController?.syncImeShortcutInputMode(imeShortcutInputMode)
                                 },
-                                modifier = Modifier.fillMaxSize(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentHeight(Alignment.Top, unbounded = true)
+                                    .height(with(density) { terminalHeight.toDp() })
+                                    .offset { IntOffset(0, terminalShift.roundToInt()) },
                                 terminalModifier = terminalModifier,
                             )
                         }
@@ -1333,6 +1372,27 @@ fun ConsoleScreen(
                                     }
                                 },
                                 modifier = Modifier.align(Alignment.TopCenter).padding(8.dp),
+                            )
+                        }
+
+                        if (showTextInputDialog && promptState == null && currentBridge != null) {
+                            // TODO: Get selected text from TerminalEmulator when selection is implemented
+                            val selectedText = ""
+                            val minPanelHeight = with(density) { 140.dp.toPx() }
+
+                            FloatingTextInputDialog(
+                                bridge = currentBridge,
+                                initialText = selectedText,
+                                onDismiss = ::closeTextInput,
+                                onResize = { delta ->
+                                    val target = (panelHeight + delta).coerceIn(minPanelHeight, boxHeight.toFloat())
+                                    textInputHeight = target
+                                    target - panelHeight
+                                },
+                                modifier = Modifier
+                                    .align(Alignment.BottomCenter)
+                                    .fillMaxWidth()
+                                    .height(with(density) { panelHeight.toDp() }),
                             )
                         }
                     }
@@ -1413,20 +1473,6 @@ fun ConsoleScreen(
                 onSelectBridge = { index ->
                     showSessionPickerDialog = false
                     selectBridgePreservingKeyboard(index)
-                },
-            )
-        }
-
-        if (showTextInputDialog && promptState == null && currentBridge != null) {
-            // TODO: Get selected text from TerminalEmulator when selection is implemented
-            val selectedText = ""
-
-            FloatingTextInputDialog(
-                bridge = currentBridge,
-                initialText = selectedText,
-                onDismiss = {
-                    showTextInputDialog = false
-                    termFocusRequester.requestFocus()
                 },
             )
         }
