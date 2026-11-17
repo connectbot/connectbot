@@ -1394,6 +1394,8 @@
 	<string name="hostpref_jumphost_summary">Connect through another SSH host</string>
 	<!-- Option for no jump host (direct connection) -->
 	<string name="list_jumphost_none">None (direct connection)</string>
+	<!-- Displayed in terminal when starting a shell that runs on this device instead of connecting to a remote host. The variable is the protocol name (e.g., local or shizuku) and should not be translated. -->
+	<string name="terminal_starting_shell">"Starting %1$s shell"</string>
 	<!-- Terminal message when connecting via jump host -->
 	<string name="terminal_connecting_via_jump">Connecting via jump host: %s</string>
 	<!-- Terminal message when connected to jump host -->

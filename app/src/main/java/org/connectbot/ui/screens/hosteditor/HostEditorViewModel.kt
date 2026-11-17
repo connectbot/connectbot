@@ -495,15 +495,17 @@ class HostEditorViewModel @Inject constructor(
             // Only SSH and Mosh hosts can have a jump host
             val jumpHostId = if (state.protocol == "ssh" || state.protocol == "mosh") state.jumpHostId else null
 
+            val usesNetwork = TransportFactory.usesNetwork(state.protocol)
             val host = Host(
                 id = existingHost?.id ?: draftHostId,
                 repositoryId = existingHost?.repositoryId ?: EntityIds.LOCAL,
                 crypto = state.crypto,
                 nickname = state.nickname,
                 protocol = state.protocol,
-                username = state.username,
-                hostname = state.hostname,
-                port = state.port.toIntOrNull() ?: getDefaultPort(state.protocol).toIntOrNull() ?: 22,
+                // On-device shells have no address; drop values left over from another protocol.
+                username = if (usesNetwork) state.username else "",
+                hostname = if (usesNetwork) state.hostname else "",
+                port = if (usesNetwork) state.port.toIntOrNull() ?: getDefaultPort(state.protocol).toIntOrNull() ?: 22 else 0,
                 color = state.color.takeIf { it != "gray" },
                 pubkeyId = state.pubkeyId,
                 profileId = state.profileId,
