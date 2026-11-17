@@ -17,6 +17,8 @@
 
 package org.connectbot.ui.components
 
+import android.content.Context
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -36,6 +38,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.OpenInFull
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -48,6 +53,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -56,6 +62,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -71,6 +78,7 @@ import androidx.preference.PreferenceManager
 import org.connectbot.R
 import org.connectbot.service.TerminalBridge
 import org.connectbot.terminal.VTermKey
+import org.json.JSONArray
 import kotlin.math.roundToInt
 
 private const val PREF_FLOATING_INPUT_X = "floating_input_x"
@@ -84,6 +92,12 @@ private const val DEFAULT_HEIGHT_RATIO = 0.25f
 private const val MIN_WIDTH_DP = 200f
 private const val MIN_HEIGHT_DP = 80f
 
+// Prompts get their own file so BackupAgent, which uploads the default preferences, never sees them
+private const val PROMPT_PREFS = "text_input_prompts"
+private const val PREF_DRAFT = "draft"
+private const val PREF_HISTORY = "history"
+private const val HISTORY_SIZE = 30
+
 /**
  * Floating, draggable text input dialog with Compose TextField for full IME support.
  * Features:
@@ -92,6 +106,8 @@ private const val MIN_HEIGHT_DP = 80f
  * - Persistent positioning saved in SharedPreferences
  * - Material Design 3 styling with blue accent
  * - Full text selection support
+ * - Opens empty; the draft is saved on every edit and moves into history on the next open
+ * - History of sent, cleared and left-over prompts to flip through, so no text is ever lost
  */
 @Composable
 fun FloatingTextInputDialog(
@@ -123,7 +139,20 @@ fun FloatingTextInputDialog(
     var windowHeightPx by remember { mutableFloatStateOf(screenHeightPx * savedHeight) }
 
     // Text state and focus
+    val prompts = remember { context.getSharedPreferences(PROMPT_PREFS, Context.MODE_PRIVATE) }
     var text by remember { mutableStateOf(initialText) }
+    var history by remember {
+        // Each open starts empty; what was left in the draft (sent, or closed by accident) is one "older" tap away
+        val loaded = addToHistory(parseHistory(prompts.getString(PREF_HISTORY, null)), prompts.getString(PREF_DRAFT, "").orEmpty())
+        prompts.edit {
+            putString(PREF_HISTORY, JSONArray(loaded).toString())
+            remove(PREF_DRAFT)
+        }
+        mutableStateOf(loaded)
+    }
+
+    // -1 shows the draft, otherwise history[pos]. Editing always turns the text into the draft.
+    var pos by remember { mutableIntStateOf(-1) }
     val focusRequester = remember { FocusRequester() }
 
     // Request focus when shown
@@ -143,14 +172,40 @@ fun FloatingTextInputDialog(
         }
     }
 
+    fun savedDraft() = prompts.getString(PREF_DRAFT, "").orEmpty()
+
+    fun keep(value: String) {
+        history = addToHistory(history, value)
+        prompts.edit { putString(PREF_HISTORY, JSONArray(history).toString()) }
+    }
+
+    fun setDraft(value: String) {
+        // Leaving an old prompt by editing it replaces the draft, so keep the draft first
+        if (pos >= 0) keep(savedDraft())
+        pos = -1
+        text = value
+        prompts.edit { putString(PREF_DRAFT, value) }
+    }
+
+    fun show(newPos: Int) {
+        pos = newPos
+        text = if (newPos < 0) savedDraft() else history[newPos]
+    }
+
+    fun clear() {
+        keep(text) // one "older" tap brings it back
+        setDraft("")
+    }
+
     // Paste (bracketed when the remote app enables it) so inner newlines don't submit, then press
-    // Enter once to submit
+    // Enter once to submit. Text stays for tweaking and resending.
     fun sendText() {
         val body = text.trimEnd('\n')
         if (body.isEmpty()) return
         bridge.terminalEmulator.pasteText(body)
         bridge.terminalEmulator.dispatchKey(0, VTermKey.ENTER)
-        text = ""
+        keep(text)
+        if (pos >= 0) pos = 0 // the sent prompt moved to the top
     }
 
     Popup(
@@ -198,26 +253,20 @@ fun FloatingTextInputDialog(
                         }
                         .padding(horizontal = 12.dp),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
                     Text(
                         text = stringResource(R.string.terminal_text_input_dialog_title),
                         style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.onPrimary,
+                        maxLines = 1,
                         modifier = Modifier.weight(1f),
                     )
 
-                    IconButton(
-                        onClick = onDismiss,
-                        modifier = Modifier.size(24.dp),
-                    ) {
-                        Icon(
-                            Icons.Default.Close,
-                            contentDescription = stringResource(R.string.button_close),
-                            tint = MaterialTheme.colorScheme.onPrimary,
-                            modifier = Modifier.size(18.dp),
-                        )
-                    }
+                    HeaderButton(Icons.Default.KeyboardArrowUp, R.string.terminal_text_input_older, enabled = pos < history.lastIndex) { show(pos + 1) }
+                    HeaderButton(Icons.Default.KeyboardArrowDown, R.string.terminal_text_input_newer, enabled = pos >= 0) { show(pos - 1) }
+                    HeaderButton(Icons.Default.Delete, R.string.terminal_text_input_clear, enabled = text.isNotEmpty(), onClick = ::clear)
+                    HeaderButton(Icons.Default.Close, R.string.button_close, onClick = onDismiss)
                 }
 
                 // TextField with send button and resize handle to the right
@@ -228,7 +277,7 @@ fun FloatingTextInputDialog(
                 ) {
                     TextField(
                         value = text,
-                        onValueChange = { text = it },
+                        onValueChange = ::setDraft,
                         placeholder = {
                             Text(stringResource(R.string.terminal_text_input_dialog_label))
                         },
@@ -301,3 +350,22 @@ fun FloatingTextInputDialog(
         }
     }
 }
+
+@Composable
+private fun HeaderButton(icon: ImageVector, @StringRes description: Int, enabled: Boolean = true, onClick: () -> Unit) {
+    IconButton(onClick = onClick, enabled = enabled, modifier = Modifier.size(24.dp)) {
+        Icon(
+            icon,
+            contentDescription = stringResource(description),
+            tint = MaterialTheme.colorScheme.onPrimary.copy(alpha = if (enabled) 1f else 0.38f),
+            modifier = Modifier.size(18.dp),
+        )
+    }
+}
+
+/** Newest first, without duplicates; blank text isn't worth keeping. */
+private fun addToHistory(history: List<String>, text: String): List<String> = if (text.isBlank()) history else (listOf(text) + history.filter { it != text }).take(HISTORY_SIZE)
+
+private fun parseHistory(json: String?): List<String> = json?.let {
+    runCatching { JSONArray(it).let { array -> List(array.length(), array::getString) } }.getOrNull()
+}.orEmpty()

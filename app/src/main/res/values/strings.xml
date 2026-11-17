@@ -1134,6 +1134,12 @@
 
 	<!-- Content description for the resize handle in the floating text input dialog -->
 	<string name="terminal_text_input_resize_handle">Resize</string>
+	<!-- Content description for the floating text input dialog button that shows the previous, older sent or cleared prompt -->
+	<string name="terminal_text_input_older">Older prompt</string>
+	<!-- Content description for the floating text input dialog button that shows the next, newer prompt, ending at the unsent draft -->
+	<string name="terminal_text_input_newer">Newer prompt</string>
+	<!-- Content description for the floating text input dialog button that empties the text field; the text stays in the prompt history -->
+	<string name="terminal_text_input_clear">Clear text</string>
 
 	<!-- Menu item in console toolbar to open floating text input dialog -->
 	<string name="console_menu_text_input">Text input</string>
