@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.11.2][1.11.2]
+
+### Fixed
+- Skip Android cryptographic providers that advertise X25519 but fail when used, and fall back to Tink if needed.
+
 ## [1.11.1][1.11.1]
 
 ### Added
@@ -425,6 +430,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Color picker color numbers are now localized
 
 
+[1.11.2]: https://github.com/connectbot/connectbot/compare/v1.11.1...v1.11.2
 [1.11.1]: https://github.com/connectbot/connectbot/compare/v1.11.0...v1.11.1
 [1.11.0]: https://github.com/connectbot/connectbot/compare/v1.10.9...v1.11.0
 [1.10.9]: https://github.com/connectbot/connectbot/compare/v1.10.8...v1.10.9
