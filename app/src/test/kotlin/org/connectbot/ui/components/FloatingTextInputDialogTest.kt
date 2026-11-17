@@ -27,6 +27,7 @@ import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTextReplacement
@@ -36,11 +37,14 @@ import org.connectbot.R
 import org.connectbot.service.TerminalBridge
 import org.connectbot.terminal.TerminalEmulator
 import org.connectbot.terminal.VTermKey
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.inOrder
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 
@@ -73,9 +77,10 @@ class FloatingTextInputDialogTest {
         val order = inOrder(emulator)
         order.verify(emulator).pasteText("echo hello")
         order.verify(emulator).dispatchKey(0, VTermKey.ENTER)
-        field().assert(hasText("echo hello"))
+        assertFalse(shown) // default mode sends and closes
 
-        reopen()
+        composeTestRule.waitForIdle()
+        shown = true
         field().assert(!hasText("echo hello"))
         field().performTextInput("unsent") // then closed by accident
         reopen()
@@ -86,6 +91,29 @@ class FloatingTextInputDialogTest {
         field().assert(hasText("unsent"))
         older.performClick()
         field().assert(hasText("echo hello"))
+    }
+
+    @Test
+    fun modeToggleSwitchesToSendOnlyThenPasteOnly() {
+        var dismissed = 0
+        composeTestRule.setContent { FloatingTextInputDialog(bridge = bridge, onDismiss = { dismissed++ }) }
+        val mode = { id: Int -> composeTestRule.onNodeWithText(context.getString(id)) }
+        val send = { composeTestRule.onNodeWithContentDescription(context.getString(R.string.button_send)).performClick() }
+        composeTestRule.onNode(hasSetTextAction()).performTextInput("ls")
+
+        mode(R.string.terminal_text_input_mode_send_close).performClick()
+        send()
+        verify(emulator).dispatchKey(0, VTermKey.ENTER)
+        assertEquals(0, dismissed)
+
+        mode(R.string.terminal_text_input_mode_send).performClick()
+        send()
+        verify(emulator, times(2)).pasteText("ls")
+        verify(emulator).dispatchKey(0, VTermKey.ENTER) // still only the first Enter
+        assertEquals(1, dismissed)
+
+        mode(R.string.terminal_text_input_mode_paste).performClick()
+        mode(R.string.terminal_text_input_mode_send_close).assertExists()
     }
 
     @Test

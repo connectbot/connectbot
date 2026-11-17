@@ -20,6 +20,7 @@ package org.connectbot.ui.components
 import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -42,6 +43,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.OpenInFull
+import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -68,6 +70,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -197,15 +200,19 @@ fun FloatingTextInputDialog(
         setDraft("")
     }
 
+    // Resets on every open: sending and closing is the usual case
+    var mode by remember { mutableStateOf(SendMode.SEND_AND_CLOSE) }
+
     // Paste (bracketed when the remote app enables it) so inner newlines don't submit, then press
-    // Enter once to submit. Text stays for tweaking and resending.
+    // Enter once to submit unless only pasting. Kept text moves to history on the next open.
     fun sendText() {
         val body = text.trimEnd('\n')
         if (body.isEmpty()) return
         bridge.terminalEmulator.pasteText(body)
-        bridge.terminalEmulator.dispatchKey(0, VTermKey.ENTER)
+        if (mode.enter) bridge.terminalEmulator.dispatchKey(0, VTermKey.ENTER)
         keep(text)
         if (pos >= 0) pos = 0 // the sent prompt moved to the top
+        if (mode.close) onDismiss()
     }
 
     Popup(
@@ -255,13 +262,29 @@ fun FloatingTextInputDialog(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
-                    Text(
-                        text = stringResource(R.string.terminal_text_input_dialog_title),
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        maxLines = 1,
-                        modifier = Modifier.weight(1f),
-                    )
+                    Box(modifier = Modifier.weight(1f)) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .clickable(onClickLabel = stringResource(R.string.terminal_text_input_mode_change), role = Role.Button) {
+                                    mode = SendMode.entries[(mode.ordinal + 1) % SendMode.entries.size]
+                                },
+                        ) {
+                            Text(
+                                text = stringResource(mode.label),
+                                style = MaterialTheme.typography.titleSmall,
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                maxLines = 1,
+                            )
+                            Icon(
+                                Icons.Default.SwapHoriz,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onPrimary,
+                                modifier = Modifier.padding(start = 4.dp).size(16.dp),
+                            )
+                        }
+                    }
 
                     HeaderButton(Icons.Default.KeyboardArrowUp, R.string.terminal_text_input_older, enabled = pos < history.lastIndex) { show(pos + 1) }
                     HeaderButton(Icons.Default.KeyboardArrowDown, R.string.terminal_text_input_newer, enabled = pos >= 0) { show(pos - 1) }
@@ -369,3 +392,9 @@ private fun addToHistory(history: List<String>, text: String): List<String> = if
 private fun parseHistory(json: String?): List<String> = json?.let {
     runCatching { JSONArray(it).let { array -> List(array.length(), array::getString) } }.getOrNull()
 }.orEmpty()
+
+private enum class SendMode(@StringRes val label: Int, val enter: Boolean, val close: Boolean) {
+    SEND_AND_CLOSE(R.string.terminal_text_input_mode_send_close, enter = true, close = true),
+    SEND(R.string.terminal_text_input_mode_send, enter = true, close = false),
+    PASTE(R.string.terminal_text_input_mode_paste, enter = false, close = true),
+}
