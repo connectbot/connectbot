@@ -118,6 +118,21 @@ sealed class Transport {
         override fun parseUri(input: String): Uri? = org.connectbot.transport.Mosh.getUri(input)
     }
 
+    /**
+     * Shizuku transport - local shell with adb (shell uid) privileges via Shizuku
+     */
+    object Shizuku : Transport() {
+        override val protocolName = "shizuku"
+        override val defaultPort = 0
+        override val usesNetwork = false
+
+        override fun getFormatHint(context: Context): String = ShizukuShell.getFormatHint(context)
+
+        override fun createInstance(): AbsTransport = ShizukuShell()
+
+        override fun parseUri(input: String): Uri? = ShizukuShell.getUri(input)
+    }
+
     companion object {
         /**
          * Get a transport by its protocol name.
@@ -129,6 +144,7 @@ sealed class Transport {
             "mosh" -> Mosh
             "telnet" -> Telnet
             "local" -> Local
+            "shizuku" -> Shizuku
             else -> null
         }
 
@@ -136,7 +152,7 @@ sealed class Transport {
          * Get all available transports
          */
         @JvmStatic
-        fun allTransports(): List<Transport> = listOf(Ssh, Mosh, Telnet, Local)
+        fun allTransports(): List<Transport> = listOf(Ssh, Mosh, Telnet, Local, Shizuku)
 
         /**
          * Get transport from a URI

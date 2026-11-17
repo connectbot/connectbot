@@ -173,7 +173,7 @@ data class Host(
 
         // Build authority based on protocol
         when (protocol) {
-            "local" -> {
+            "local", "shizuku" -> {
                 builder.fragment(nickname)
             }
 
@@ -234,6 +234,19 @@ data class Host(
             id = UUID.randomUUID(),
             nickname = nickname,
             protocol = "local",
+            username = "",
+            hostname = "",
+            port = 0,
+        )
+
+        /**
+         * Create a new Shizuku shell host with default values.
+         */
+        @JvmStatic
+        fun createShizukuHost(nickname: String): Host = Host(
+            id = UUID.randomUUID(),
+            nickname = nickname,
+            protocol = "shizuku",
             username = "",
             hostname = "",
             port = 0,

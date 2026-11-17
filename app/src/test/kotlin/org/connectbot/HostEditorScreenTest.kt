@@ -394,6 +394,37 @@ class HostEditorScreenTest {
     }
 
     @Test
+    fun hostEditorScreen_shizukuProtocol_hidesHostFieldsAndEnablesSave() {
+        navigateToHostEditorScreen(EntityIds.NONE)
+
+        composeTestRule
+            .onNodeWithText("ssh")
+            .performScrollTo()
+            .performClick()
+
+        composeTestRule.waitForIdle()
+
+        composeTestRule
+            .onNodeWithText("shizuku")
+            .performClick()
+
+        composeTestRule.waitForIdle()
+
+        composeTestRule
+            .onNodeWithText("Username")
+            .assertIsNotDisplayed()
+        composeTestRule
+            .onNodeWithText("Host")
+            .assertIsNotDisplayed()
+        composeTestRule
+            .onNodeWithText("Port")
+            .assertIsNotDisplayed()
+        composeTestRule
+            .onNodeWithTag("add_host_button")
+            .assertIsDisplayed()
+    }
+
+    @Test
     fun hostEditorScreen_localProtocol_saveButtonEnabled() {
         navigateToHostEditorScreen(EntityIds.NONE)
 
