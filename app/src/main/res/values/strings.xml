@@ -1399,6 +1399,20 @@
 	<string name="terminal_jump_not_found">Jump host not found in saved hosts</string>
 	<!-- Password prompt prefix for jump host -->
 	<string name="terminal_jump_password">Password for jump host %s:</string>
+	<!-- Title for the host editor switch that only uses the jump host when the host cannot be reached directly -->
+	<string name="hostpref_jumphost_fallback_title">Use jump host only as fallback</string>
+	<!-- Summary for the jump host fallback switch in the host editor -->
+	<string name="hostpref_jumphost_fallback_summary">Try a direct connection first and use the jump host only if the host is not reachable</string>
+	<!-- Label for the field setting how long the direct connection attempt may take before the jump host is used -->
+	<string name="hostpref_jumphost_fallback_timeout_title">Direct connection timeout (seconds)</string>
+	<!-- Help text for the jump host fallback timeout field in the host editor -->
+	<string name="hostpref_jumphost_fallback_timeout_summary">How long to wait for the host to answer directly before using the jump host</string>
+	<!-- Inline validation error for an invalid jump host fallback timeout -->
+	<string name="hostpref_jumphost_fallback_timeout_error">Enter a whole number from 1 to 60.</string>
+	<!-- Terminal message when a fallback jump host is skipped because the host answered directly -->
+	<string name="terminal_jump_skipped_direct">Host is directly reachable, skipping jump host</string>
+	<!-- Terminal message when a fallback jump host is used because the host did not answer directly -->
+	<string name="terminal_jump_fallback_used">Host is not directly reachable, using jump host</string>
 
 	<!-- Button text to view application logs for debugging -->
 	<string name="view_logs">View Logs</string>

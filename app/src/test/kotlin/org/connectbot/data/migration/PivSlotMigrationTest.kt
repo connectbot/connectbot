@@ -67,7 +67,7 @@ class PivSlotMigrationTest {
         try {
             val dao = database.pubkeyDao()
             val existing = requireNotNull(dao.getById(existingId))
-            assertEquals(20, database.openHelper.writableDatabase.version)
+            assertEquals(21, database.openHelper.writableDatabase.version)
             assertEquals("EC", existing.type)
             assertEquals(KeyStorageType.EXPORTABLE, existing.storageType)
             assertTrue(existing.privateKey!!.contentEquals(byteArrayOf(1)))

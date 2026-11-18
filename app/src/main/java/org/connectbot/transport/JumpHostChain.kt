@@ -20,7 +20,13 @@ package org.connectbot.transport
 import androidx.annotation.StringRes
 import org.connectbot.R
 import org.connectbot.data.entity.Host
+import org.connectbot.util.HostConstants
 import java.io.IOException
+import java.net.Inet4Address
+import java.net.Inet6Address
+import java.net.InetAddress
+import java.net.InetSocketAddress
+import java.net.Socket
 import java.util.UUID
 
 internal const val MAX_JUMP_HOSTS = 32
@@ -40,4 +46,38 @@ internal fun resolveJumpHostChain(target: Host, findHost: (UUID) -> Host?): List
         nextId = nextHost.jumpHostId
     }
     return chain
+}
+
+/**
+ * Whether the host accepts a direct TCP connection, honoring its IP version preference.
+ * Blocks for up to the host's fallback timeout per resolved address, so call it off the main thread.
+ */
+internal fun isDirectlyReachable(host: Host): Boolean {
+    val timeoutMs = host.jumpHostFallbackTimeout
+        .coerceIn(HostConstants.MIN_JUMP_HOST_FALLBACK_TIMEOUT, HostConstants.MAX_JUMP_HOST_FALLBACK_TIMEOUT) * 1000
+    val hostname = host.hostname.trim().trim('[', ']')
+    if (hostname.isEmpty()) return false
+    val addresses = try {
+        InetAddress.getAllByName(hostname).toList()
+    } catch (e: IOException) {
+        return false
+    }.let { all ->
+        if (HostConstants.isIpAddress(hostname)) {
+            all
+        } else {
+            when (host.ipVersion) {
+                HostConstants.IPVERSION_IPV4_ONLY -> all.filterIsInstance<Inet4Address>()
+                HostConstants.IPVERSION_IPV6_ONLY -> all.filterIsInstance<Inet6Address>()
+                else -> all
+            }
+        }
+    }
+    return addresses.any { address ->
+        try {
+            Socket().use { it.connect(InetSocketAddress(address, host.port), timeoutMs) }
+            true
+        } catch (e: IOException) {
+            false
+        }
+    }
 }

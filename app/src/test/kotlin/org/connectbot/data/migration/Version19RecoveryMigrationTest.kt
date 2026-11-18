@@ -101,7 +101,7 @@ class Version19RecoveryMigrationTest {
                     assertEquals("alice", host.username)
                     assertEquals(key.id, host.pubkeyId)
                     val db = database.openHelper.writableDatabase
-                    assertEquals(20, db.version)
+                    assertEquals(21, db.version)
                     db.query("SELECT piv_slot FROM pubkeys").use { cursor ->
                         assertTrue(cursor.moveToFirst())
                         if (hasPivSlot) assertEquals(154, cursor.getInt(0)) else assertTrue(cursor.isNull(0))
