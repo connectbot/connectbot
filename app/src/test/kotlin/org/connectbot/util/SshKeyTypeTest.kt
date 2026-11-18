@@ -63,6 +63,13 @@ class SshKeyTypeTest {
     }
 
     @Test
+    fun ed25519Oid_mapsToEd25519() {
+        assertThat(SshKeyType.fromJavaAlgorithm("1.3.101.112")).isEqualTo(SshKeyType.ED25519)
+        assertThat(SshKeyType.fromStoredType("1.3.101.112")).isEqualTo(SshKeyType.ED25519)
+        assertThat(SshKeyType.fromJavaAlgorithm("1.3.101.110")).isNull()
+    }
+
+    @Test
     fun ed25519_usesStandardKeyFactoryAlgorithm() {
         assertThat(SshKeyType.ED25519.keyFactoryAlgorithm).isEqualTo("Ed25519")
     }
