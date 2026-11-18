@@ -1,0 +1,16 @@
+name: Check Trilead package access
+on:
+  push:
+    branches: [release-check/1.11.3-package]
+permissions:
+  packages: read
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify GitHub Packages access and artifact digest
+        env:
+          PACKAGES_TOKEN: ${{ github.token }}
+        run: |
+          printf 'user = "%s:%s"\n' "$GITHUB_ACTOR" "$PACKAGES_TOKEN" | curl --config - --fail --silent --show-error --location --max-time 30 --output sshlib.jar https://maven.pkg.github.com/connectbot/trilead-ssh2/org/connectbot/sshlib/2.2.53/sshlib-2.2.53.jar
+          echo '53c290611508eb84138da9cbdb7b35b860579dcdba15e5179b33f588dd806890  sshlib.jar' | sha256sum --check
