@@ -29,12 +29,20 @@ enum class SshKeyType(
     ;
 
     companion object {
+        private const val ED25519_OID = "1.3.101.112"
+
         fun fromStoredType(value: String?): SshKeyType? = when (val normalizedValue = value?.lowercase()) {
             "rsa", "ssh-rsa", "rsa-sha2-256", "rsa-sha2-512" -> RSA
+
             "dsa", "ssh-dss" -> DSA
+
             "ec", "ecdsa" -> EC
-            "ed25519", "eddsa", "ssh-ed25519" -> ED25519
+
+            // Keys imported before the OID was mapped were stored under it.
+            "ed25519", "eddsa", "ssh-ed25519", ED25519_OID -> ED25519
+
             "imported" -> LEGACY_IMPORTED
+
             else -> if (normalizedValue?.startsWith("ecdsa-sha2-") == true) EC else null
         }
 
@@ -47,9 +55,14 @@ enum class SshKeyType(
 
         fun fromJavaAlgorithm(value: String): SshKeyType? = when (value.lowercase()) {
             "rsa" -> RSA
+
             "dsa" -> DSA
+
             "ec", "ecdsa" -> EC
-            "ed25519", "eddsa" -> ED25519
+
+            // Some providers name Ed25519 keys by their OID.
+            "ed25519", "eddsa", ED25519_OID -> ED25519
+
             else -> null
         }
     }
