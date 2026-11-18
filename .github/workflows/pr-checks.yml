@@ -75,6 +75,7 @@ jobs:
     permissions:
       actions: read
       contents: write
+      packages: read
       pull-requests: write
       id-token: write
       attestations: write

@@ -37,6 +37,14 @@ allprojects {
         mavenLocal()
         google()
         mavenCentral()
+        maven {
+            name = "githubPackages"
+            url = uri("https://maven.pkg.github.com/connectbot/trilead-ssh2")
+            credentials(PasswordCredentials::class)
+            content {
+                includeModule("org.connectbot", "sshlib")
+            }
+        }
     }
 }
 

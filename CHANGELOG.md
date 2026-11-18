@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.11.3][1.11.3]
+
+### Fixed
+- Offer the hybrid ML-KEM-768 and X25519 SSH key exchange when the bundled ML-KEM implementation is available and the Android provider cannot supply it.
+
 ## [1.11.2][1.11.2]
 
 ### Fixed
@@ -430,6 +435,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Color picker color numbers are now localized
 
 
+[1.11.3]: https://github.com/connectbot/connectbot/compare/v1.11.2...v1.11.3
 [1.11.2]: https://github.com/connectbot/connectbot/compare/v1.11.1...v1.11.2
 [1.11.1]: https://github.com/connectbot/connectbot/compare/v1.11.0...v1.11.1
 [1.11.0]: https://github.com/connectbot/connectbot/compare/v1.10.9...v1.11.0

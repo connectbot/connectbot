@@ -27,6 +27,7 @@ jobs:
     needs: [check-inputs]
     permissions:
       contents: write
+      packages: read
       pull-requests: write
 
     steps:
@@ -64,6 +65,9 @@ jobs:
 
       - name: Run checks and unit coverage
         # Aggregate Kover verification has no rules but compiles both release variants.
+        env:
+          ORG_GRADLE_PROJECT_githubPackagesUsername: ${{ github.actor }}
+          ORG_GRADLE_PROJECT_githubPackagesPassword: ${{ github.token }}
         run: ./gradlew --profile check koverXmlReportOssDebug koverXmlReportGoogleDebug -x :app:koverVerify
 
       - name: Store Gradle profile
@@ -99,6 +103,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      packages: read
     strategy:
       matrix:
         include:
@@ -141,6 +146,8 @@ jobs:
         env:
           FLAVOR_TASK: ${{ matrix.task }}
           IS_PUSH: ${{ (github.event_name == 'push') }}
+          ORG_GRADLE_PROJECT_githubPackagesUsername: ${{ github.actor }}
+          ORG_GRADLE_PROJECT_githubPackagesPassword: ${{ github.token }}
         run: |
           tasks=(":app:assemble${FLAVOR_TASK}Release")
           if [[ "$IS_PUSH" == 'true' ]]; then
@@ -223,6 +230,7 @@ jobs:
     needs: [check-inputs]
     permissions:
       contents: read
+      packages: read
     strategy:
       matrix:
         include:
@@ -270,6 +278,8 @@ jobs:
         uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2.38.0
         env:
           FLAVOR_TASK: ${{ matrix.task }}
+          ORG_GRADLE_PROJECT_githubPackagesUsername: ${{ github.actor }}
+          ORG_GRADLE_PROJECT_githubPackagesPassword: ${{ github.token }}
         with:
           api-level: 29
           target: default
@@ -325,6 +335,7 @@ jobs:
     needs: [check-inputs, verify, instrumentation]
     permissions:
       contents: read
+      packages: read
 
     steps:
       - name: Checkout (with history)
@@ -382,6 +393,8 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ORG_GRADLE_PROJECT_githubPackagesUsername: ${{ github.actor }}
+          ORG_GRADLE_PROJECT_githubPackagesPassword: ${{ github.token }}
         run: ./gradlew --profile :app:sonar -Dsonar.projectVersion=${{ github.sha }}
 
       - name: Store Gradle profile
