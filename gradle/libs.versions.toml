@@ -34,7 +34,7 @@ termlib = "0.3.15"
 
 yubikit = "3.3.0"
 
-playServicesBasement = "18.12.0"
+playServicesBasement = "18.12.1"
 playFeatureDelivery = "2.1.0"
 conscrypt = "2.9.0"
 conscryptOpenJdk = "2.9.0"
