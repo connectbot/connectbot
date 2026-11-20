@@ -87,6 +87,8 @@ data class HostEditorUiState(
     val quickDisconnect: Boolean = false,
     val automationCount: Int = 0,
     val jumpHostId: UUID? = null,
+    val jumpHostFallback: Boolean = false,
+    val jumpHostFallbackTimeout: String = HostConstants.DEFAULT_JUMP_HOST_FALLBACK_TIMEOUT.toString(),
     val availableJumpHosts: List<Host> = emptyList(),
     val ipVersion: String = "IPV4_AND_IPV6",
     val telnetEchoMode: TelnetEchoMode = TelnetEchoMode.AUTO,
@@ -106,6 +108,16 @@ data class HostEditorUiState(
     val isLoading: Boolean = false,
     val error: String? = null,
 ) : java.io.Serializable {
+    val isJumpHostFallbackTimeoutValid: Boolean
+        get() = jumpHostFallbackTimeout.all { it in '0'..'9' } &&
+            jumpHostFallbackTimeout.toIntOrNull()?.let {
+                it in HostConstants.MIN_JUMP_HOST_FALLBACK_TIMEOUT..HostConstants.MAX_JUMP_HOST_FALLBACK_TIMEOUT
+            } == true
+
+    /** Only validate the timeout while it can take effect. */
+    val needsJumpHostFallbackTimeout: Boolean
+        get() = (protocol == "ssh" || protocol == "mosh") && jumpHostId != null && jumpHostFallback
+
     val isMoshNetworkTimeoutValid: Boolean
         get() = moshNetworkTimeout.isBlank() ||
             (moshNetworkTimeout.all { it in '0'..'9' } && moshNetworkTimeout.toIntOrNull() != null)
@@ -239,6 +251,8 @@ class HostEditorViewModel @Inject constructor(
                             stayConnected = host.stayConnected,
                             quickDisconnect = host.quickDisconnect,
                             jumpHostId = host.jumpHostId,
+                            jumpHostFallback = host.jumpHostFallback,
+                            jumpHostFallbackTimeout = host.jumpHostFallbackTimeout.toString(),
                             ipVersion = host.ipVersion,
                             telnetEchoMode = host.telnetEchoMode,
                             telnetNegotiationMode = host.telnetNegotiationMode,
@@ -427,6 +441,14 @@ class HostEditorViewModel @Inject constructor(
         _uiState.update { it.copy(jumpHostId = value, hasUnsavedChanges = true) }
     }
 
+    fun updateJumpHostFallback(value: Boolean) {
+        _uiState.update { it.copy(jumpHostFallback = value, hasUnsavedChanges = true) }
+    }
+
+    fun updateJumpHostFallbackTimeout(value: String) {
+        _uiState.update { it.copy(jumpHostFallbackTimeout = value, hasUnsavedChanges = true) }
+    }
+
     fun updateTelnetEchoMode(value: TelnetEchoMode) {
         _uiState.update { it.copy(telnetEchoMode = value, hasUnsavedChanges = true) }
     }
@@ -476,6 +498,7 @@ class HostEditorViewModel @Inject constructor(
     suspend fun saveHost(): Boolean {
         if (_uiState.value.isSaving) return false
         if (_uiState.value.protocol == "mosh" && !_uiState.value.isMoshNetworkTimeoutValid) return false
+        if (_uiState.value.needsJumpHostFallbackTimeout && !_uiState.value.isJumpHostFallbackTimeoutValid) return false
         _uiState.update { it.copy(isSaving = true, error = null) }
         try {
             val state = _uiState.value
@@ -519,6 +542,11 @@ class HostEditorViewModel @Inject constructor(
                 scrollbackLines = existingHost?.scrollbackLines ?: 140,
                 useCtrlAltAsMetaKey = existingHost?.useCtrlAltAsMetaKey ?: false,
                 jumpHostId = jumpHostId,
+                jumpHostFallback = jumpHostId != null && state.jumpHostFallback,
+                jumpHostFallbackTimeout = state.jumpHostFallbackTimeout.toIntOrNull()
+                    ?.takeIf { state.isJumpHostFallbackTimeoutValid }
+                    ?: existingHost?.jumpHostFallbackTimeout
+                    ?: HostConstants.DEFAULT_JUMP_HOST_FALLBACK_TIMEOUT,
                 ipVersion = state.ipVersion,
                 telnetEchoMode = state.telnetEchoMode,
                 telnetNegotiationMode = state.telnetNegotiationMode,

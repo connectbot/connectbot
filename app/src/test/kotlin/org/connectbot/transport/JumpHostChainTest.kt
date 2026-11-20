@@ -20,8 +20,12 @@ package org.connectbot.transport
 import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertThrows
+import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.net.InetAddress
+import java.net.ServerSocket
 import java.util.UUID
 
 class JumpHostChainTest {
@@ -62,5 +66,23 @@ class JumpHostChainTest {
     @Test
     fun directConnectionDoesNotLookUpHosts() {
         assertEquals(emptyList<Host>(), resolveJumpHostChain(Host()) { error("Unexpected lookup") })
+    }
+
+    @Test
+    fun listeningPortIsDirectlyReachable() {
+        ServerSocket(0, 1, InetAddress.getLoopbackAddress()).use { server ->
+            assertTrue(isDirectlyReachable(Host(hostname = "127.0.0.1", port = server.localPort, jumpHostFallbackTimeout = 1)))
+        }
+    }
+
+    @Test
+    fun closedPortIsNotDirectlyReachable() {
+        val port = ServerSocket(0, 1, InetAddress.getLoopbackAddress()).use { it.localPort }
+        assertFalse(isDirectlyReachable(Host(hostname = "127.0.0.1", port = port, jumpHostFallbackTimeout = 1)))
+    }
+
+    @Test
+    fun blankHostnameIsNotDirectlyReachable() {
+        assertFalse(isDirectlyReachable(Host(hostname = " ")))
     }
 }

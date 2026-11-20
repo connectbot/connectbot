@@ -635,6 +635,35 @@ class HostEditorViewModelTest {
     }
 
     @Test
+    fun testSaveHost_persistsJumpHostFallbackOnlyWithJumpHost() = runTest {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        `when`(repository.saveHost(any(Host::class.java) ?: Host())).thenAnswer { invocation ->
+            invocation.arguments[0] as Host
+        }
+
+        viewModel.updateNickname("user@example.com")
+        viewModel.updateJumpHostId(UUID(0, 9))
+        viewModel.updateJumpHostFallback(true)
+        for (invalid in listOf("", "0", "61", "-1", "1.5")) {
+            viewModel.updateJumpHostFallbackTimeout(invalid)
+            assertFalse(viewModel.uiState.value.isJumpHostFallbackTimeoutValid)
+            assertFalse(viewModel.saveHost())
+        }
+        viewModel.updateJumpHostFallbackTimeout("1")
+        assertTrue(viewModel.saveHost())
+        viewModel.updateJumpHostId(null)
+        assertTrue(viewModel.saveHost())
+
+        val hostCaptor = ArgumentCaptor.forClass(Host::class.java)
+        verify(repository, times(2)).saveHost(hostCaptor.capture() ?: Host())
+        assertTrue(hostCaptor.allValues[0].jumpHostFallback)
+        assertEquals(1, hostCaptor.allValues[0].jumpHostFallbackTimeout)
+        assertEquals(UUID(0, 9), hostCaptor.allValues[0].jumpHostId)
+        assertFalse(hostCaptor.allValues[1].jumpHostFallback)
+    }
+
+    @Test
     fun testSaveHost_persistsNicknameAndAdvancedValuesDuringFirstEntry() = runTest {
         val viewModel = createViewModel()
         advanceUntilIdle()

@@ -33,6 +33,13 @@ object HostConstants {
     const val IPVERSION_IPV4_ONLY: String = "IPV4_ONLY"
     const val IPVERSION_IPV6_ONLY: String = "IPV6_ONLY"
 
+    /*
+     * Seconds to wait for a direct connection before falling back to the jump host
+     */
+    const val DEFAULT_JUMP_HOST_FALLBACK_TIMEOUT: Int = 3
+    const val MIN_JUMP_HOST_FALLBACK_TIMEOUT: Int = 1
+    const val MAX_JUMP_HOST_FALLBACK_TIMEOUT: Int = 60
+
     /**
      * Checks if the given hostname is an IPv4 address.
      */

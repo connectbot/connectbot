@@ -201,6 +201,9 @@ open class SSH : AbsTransport {
     private var loginCancelled = false
     private var jumpFailureReason = DisconnectReason.IO_ERROR
 
+    @VisibleForTesting
+    internal var directReachabilityProbe: (Host) -> Boolean = ::isDirectlyReachable
+
     @Volatile
     private var outputDrained: CompletableDeferred<Unit>? = null
 
@@ -1179,12 +1182,20 @@ open class SSH : AbsTransport {
         jumpFailureReason = DisconnectReason.IO_ERROR
         val currentHost = host ?: return
 
-        val jumpHosts = try {
+        var jumpHosts = try {
             resolveJumpHostChain(currentHost) { manager?.hostRepository?.findHostByIdBlocking(it) }
         } catch (e: JumpHostChainException) {
             bridge?.outputLine(manager?.res?.getString(e.messageResId))
             onDisconnect()
             return
+        }
+        if (currentHost.jumpHostFallback && jumpHosts.isNotEmpty()) {
+            if (withContext(dispatchers.io) { directReachabilityProbe(currentHost) }) {
+                bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_skipped_direct))
+                jumpHosts = emptyList()
+            } else {
+                bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_fallback_used))
+            }
         }
         var transportFactory: TransportFactory? = null
         for (index in jumpHosts.indices.reversed()) {

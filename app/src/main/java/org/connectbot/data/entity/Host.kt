@@ -110,6 +110,17 @@ data class Host(
     val jumpHostId: UUID? = null,
 
     /**
+     * When true, the jump host is only used if the host is not directly reachable.
+     * Has no effect without a [jumpHostId].
+     */
+    @ColumnInfo(name = "jump_host_fallback", defaultValue = "0")
+    val jumpHostFallback: Boolean = false,
+
+    /** Seconds a fallback-enabled host may take to accept a direct TCP connection, per resolved address. */
+    @ColumnInfo(name = "jump_host_fallback_timeout", defaultValue = "3")
+    val jumpHostFallbackTimeout: Int = HostConstants.DEFAULT_JUMP_HOST_FALLBACK_TIMEOUT,
+
+    /**
      * Profile ID for terminal-specific settings (font, colors, encoding, etc.).
      * Defaults to the stable UUID of the Local default profile.
      */

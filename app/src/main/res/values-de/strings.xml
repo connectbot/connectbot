@@ -463,6 +463,13 @@
   <string name="terminal_jump_auth_failed">Authentifizierung für Sprungserver fehlgeschlagen: %s</string>
   <string name="terminal_jump_not_found">Zwischenhost nicht in gespeicherten Hosts gefunden</string>
   <string name="terminal_jump_password">Passwort für Sprungserver %s</string>
+  <string name="hostpref_jumphost_fallback_title">Sprungserver nur als Ausweichlösung</string>
+  <string name="hostpref_jumphost_fallback_summary">Zuerst direkt verbinden und den Sprungserver nur nutzen, wenn der Host nicht erreichbar ist</string>
+  <string name="hostpref_jumphost_fallback_timeout_title">Timeout für Direktverbindung (Sekunden)</string>
+  <string name="hostpref_jumphost_fallback_timeout_summary">Wie lange auf eine direkte Antwort des Hosts gewartet wird, bevor der Sprungserver verwendet wird</string>
+  <string name="hostpref_jumphost_fallback_timeout_error">Geben Sie eine ganze Zahl von 1 bis 60 ein.</string>
+  <string name="terminal_jump_skipped_direct">Host ist direkt erreichbar, Sprungserver wird übersprungen</string>
+  <string name="terminal_jump_fallback_used">Host ist nicht direkt erreichbar, Sprungserver wird verwendet</string>
   <string name="view_logs">Protokolle anzeigen</string>
   <string name="logs_title">Anwendungsprotokolle</string>
   <string name="copy_logs">Kopieren Sie Protokolle</string>

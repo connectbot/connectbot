@@ -42,6 +42,7 @@ import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.inOrder
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.mockConstruction
+import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import java.io.IOException
@@ -142,6 +143,73 @@ class SSHJumpHostTest {
             clients.constructed().forEach { verify(it).disconnect() }
             verify(bridge).dispatchDisconnect(DisconnectReason.IO_ERROR)
         }
+    }
+
+    @Test
+    fun fallbackJumpHostIsSkippedWhenTargetIsDirectlyReachable() = runTest {
+        val jump = Host(id = UUID(0, 2), nickname = "jump", hostname = "jump.example", username = "alice")
+        val target = Host(id = UUID(0, 1), hostname = "target.example", username = "alice", jumpHostId = jump.id, jumpHostFallback = true, wantSession = false)
+        stubHosts(jump)
+        mockConstruction(SshClient::class.java) { client, _ ->
+            stubSuccessfulClient(client)
+        }.use { clients ->
+            val ssh = SSH(target, bridge, manager)
+            val probed = mutableListOf<Host>()
+            ssh.directReachabilityProbe = {
+                probed.add(it)
+                true
+            }
+            ssh.connect(this, dispatchers(), "UTF-8")
+            assertEquals(listOf(target), probed)
+            val direct = clients.constructed().single()
+            verify(direct, never()).openDirectTcpipTransport(anyString() ?: "", org.mockito.ArgumentMatchers.anyInt(), anyString() ?: "", org.mockito.ArgumentMatchers.anyInt())
+            verify(bridge).onConnected()
+            ssh.close()
+        }
+    }
+
+    @Test
+    fun fallbackJumpHostIsUsedWhenTargetIsNotDirectlyReachable() = runTest {
+        val jump = Host(id = UUID(0, 2), nickname = "jump", hostname = "jump.example", username = "alice")
+        val target = Host(id = UUID(0, 1), hostname = "target.example", username = "alice", jumpHostId = jump.id, jumpHostFallback = true, wantSession = false)
+        stubHosts(jump)
+        mockConstruction(SshClient::class.java) { client, _ ->
+            stubSuccessfulClient(client)
+        }.use { clients ->
+            val ssh = SSH(target, bridge, manager)
+            ssh.directReachabilityProbe = { false }
+            ssh.connect(this, dispatchers(), "UTF-8")
+            val opened = clients.constructed()
+            assertEquals(2, opened.size)
+            verify(opened[0]).openDirectTcpipTransport(target.hostname, target.port)
+            verify(bridge).onConnected()
+            ssh.close()
+        }
+    }
+
+    @Test
+    fun jumpHostWithoutFallbackDoesNotProbeTarget() = runTest {
+        val jump = Host(id = UUID(0, 2), nickname = "jump", hostname = "jump.example", username = "alice")
+        val target = Host(id = UUID(0, 1), hostname = "target.example", username = "alice", jumpHostId = jump.id, wantSession = false)
+        stubHosts(jump)
+        mockConstruction(SshClient::class.java) { client, _ ->
+            stubSuccessfulClient(client)
+        }.use { clients ->
+            val ssh = SSH(target, bridge, manager)
+            ssh.directReachabilityProbe = { throw AssertionError("Probe must not run without fallback") }
+            ssh.connect(this, dispatchers(), "UTF-8")
+            assertEquals(2, clients.constructed().size)
+            ssh.close()
+        }
+    }
+
+    private fun stubSuccessfulClient(client: SshClient) = runBlocking {
+        `when`(client.connect()).thenReturn(ConnectResult.Success)
+        `when`(client.authenticate(anyString() ?: "", any(AuthHandler::class.java) ?: fallbackHandler))
+            .thenReturn(AuthResult.Success)
+        `when`(client.openDirectTcpipTransport(anyString() ?: "", org.mockito.ArgumentMatchers.anyInt(), anyString() ?: "", org.mockito.ArgumentMatchers.anyInt()))
+            .thenReturn(mock(TransportFactory::class.java))
+        `when`(client.disconnectedFlow).thenReturn(MutableSharedFlow())
     }
 
     private fun TestScope.dispatchers(): CoroutineDispatchers = StandardTestDispatcher(testScheduler).let {
