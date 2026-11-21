@@ -86,6 +86,7 @@ import org.connectbot.data.entity.TelnetNewlinePolicy
 import org.connectbot.data.entity.TelnetNonBinaryPolicy
 import org.connectbot.data.keyboard.KeyboardDraft
 import org.connectbot.sshlib.SshCryptoPolicy
+import org.connectbot.transport.TransportFactory
 import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.common.getIconColors
 import org.connectbot.ui.common.getLocalizedColorSchemeDescription
@@ -237,8 +238,9 @@ fun HostEditorScreenContent(
     }
     var showProtocolMenu by remember { mutableStateOf(false) }
     var showAdvancedOptions by rememberSaveable(hostId) { mutableStateOf(false) }
-    val protocols = listOf("ssh", "mosh", "telnet", "local")
-    val canSave = (uiState.protocol == "local" || uiState.hostname.isNotBlank()) &&
+    val protocols = listOf("ssh", "mosh", "telnet", "local", "shizuku")
+    val usesNetwork = TransportFactory.usesNetwork(uiState.protocol)
+    val canSave = (!usesNetwork || uiState.hostname.isNotBlank()) &&
         (uiState.protocol != "mosh" || uiState.isMoshNetworkTimeoutValid)
 
     EditorScaffold(
@@ -317,7 +319,7 @@ fun HostEditorScreenContent(
             }
 
             // Only show username, hostname, and port for non-local protocols
-            if (uiState.protocol != "local") {
+            if (usesNetwork) {
                 // Show username field for SSH and Mosh protocols
                 if (uiState.protocol == "ssh" || uiState.protocol == "mosh") {
                     OutlinedTextField(
@@ -379,7 +381,7 @@ fun HostEditorScreenContent(
                 onPubkeySelect = onPubkeyChange,
             )
 
-            if (uiState.protocol != "local") {
+            if (usesNetwork) {
                 HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
                 Row(
                     modifier = Modifier

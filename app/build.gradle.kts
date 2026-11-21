@@ -128,6 +128,7 @@ android {
     }
 
     buildFeatures {
+        aidl = true
         buildConfig = true
         compose = true
     }
@@ -537,6 +538,8 @@ dependencies {
     implementation(libs.yubikit.android)
     implementation(libs.yubikit.piv)
     implementation(libs.termlib)
+    implementation(libs.shizuku.api)
+    implementation(libs.shizuku.provider)
     implementation(libs.telnetlib)
     implementation(libs.telnetlib.ktor)
     implementation(libs.androidx.media3.common.ktx)

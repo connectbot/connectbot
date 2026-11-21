@@ -859,6 +859,15 @@
 	<!-- Error message shown when trying to open a local shell but it's not available on the device -->
 	<string name="local_shell_unavailable">"Failure! Local shell is unavailable on this phone."</string>
 
+	<!-- Message shown in terminal when a Shizuku shell is requested but the Shizuku service is not installed or not running. Shizuku is the name of a third-party app and should not be translated. -->
+	<string name="shizuku_not_running">"Shizuku is not running. Install and start Shizuku, then try again."</string>
+	<!-- Message shown in terminal while waiting for the user to answer the Shizuku permission dialog. Shizuku is the name of a third-party app and should not be translated. -->
+	<string name="shizuku_requesting_permission">"Waiting for Shizuku permission…"</string>
+	<!-- Message shown in terminal when the user denied this app permission to use Shizuku. Shizuku is the name of a third-party app and should not be translated. -->
+	<string name="shizuku_permission_denied">"Shizuku permission was denied. Grant it in the Shizuku app, then try again."</string>
+	<!-- Message shown in terminal when the Shizuku shell could not be started. Parameter is the technical error message. Shizuku is the name of a third-party app and should not be translated. -->
+	<string name="shizuku_shell_failed">"Could not start the Shizuku shell: %1$s"</string>
+
 	<!-- Mosh transport messages -->
 	<!-- Message shown in terminal when Mosh support is being prepared or downloaded before connecting. -->
 	<string name="terminal_mosh_installing">"Preparing Mosh support…"</string>
@@ -1385,6 +1394,8 @@
 	<string name="hostpref_jumphost_summary">Connect through another SSH host</string>
 	<!-- Option for no jump host (direct connection) -->
 	<string name="list_jumphost_none">None (direct connection)</string>
+	<!-- Displayed in terminal when starting a shell that runs on this device instead of connecting to a remote host. The variable is the protocol name (e.g., local or shizuku) and should not be translated. -->
+	<string name="terminal_starting_shell">"Starting %1$s shell"</string>
 	<!-- Terminal message when connecting via jump host -->
 	<string name="terminal_connecting_via_jump">Connecting via jump host: %s</string>
 	<!-- Terminal message when connected to jump host -->

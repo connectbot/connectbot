@@ -838,7 +838,11 @@ class TerminalBridge {
             )
         }
 
-        outputLine(manager.res.getString(R.string.terminal_connecting, host.hostname, host.port, host.protocol))
+        if (newTransport.usesNetwork()) {
+            outputLine(manager.res.getString(R.string.terminal_connecting, host.hostname, host.port, host.protocol))
+        } else {
+            outputLine(manager.res.getString(R.string.terminal_starting_shell, host.protocol))
+        }
 
         connectionJob = scope.launch(dispatchers.io) {
             try {

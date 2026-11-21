@@ -97,6 +97,7 @@ import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.service.DisconnectReason
 import org.connectbot.service.descriptionResource
+import org.connectbot.transport.TransportFactory
 import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.components.DisconnectAllDialog
@@ -557,7 +558,8 @@ private fun HostListItem(
     Column(modifier = modifier) {
         ListItem(
             supportingContent = {
-                Text("${host.protocol}://${host.hostname}:${host.port}")
+                // On-device shells have no address to show.
+                Text(if (TransportFactory.usesNetwork(host.protocol)) "${host.protocol}://${host.hostname}:${host.port}" else host.protocol)
             },
             leadingContent = {
                 Box(
