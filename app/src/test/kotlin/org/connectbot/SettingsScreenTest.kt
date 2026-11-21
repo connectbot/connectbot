@@ -275,6 +275,31 @@ class SettingsScreenTest {
     }
 
     @Test
+    fun settingsScreenContent_pivSessionIdleShowsCurrentChoiceAndReturnsSelectedValue() {
+        var selected: String? = null
+        val title = composeTestRule.activity.getString(R.string.pref_piv_session_idle_title)
+        val current = composeTestRule.activity.getString(R.string.pref_piv_session_idle_15_minutes)
+        val never = composeTestRule.activity.getString(R.string.pref_piv_session_idle_never)
+
+        setSettingsContent(
+            uiState = SettingsUiState(pivSessionIdleSeconds = "900"),
+            onPivSessionIdleChange = { selected = it },
+        )
+
+        composeTestRule
+            .onNodeWithText(current)
+            .assertIsDisplayed()
+        composeTestRule
+            .onNodeWithText(title)
+            .performClick()
+        composeTestRule
+            .onNodeWithText(never)
+            .performClick()
+
+        assertTrue(selected == "0")
+    }
+
+    @Test
     fun settingsScreenContent_imeShortcutModeReturnsSelectedValue() {
         var selectedMode: ImeShortcutInputMode? = null
         val title = composeTestRule.activity.getString(R.string.pref_ime_shortcut_mode_title)
@@ -396,6 +421,7 @@ class SettingsScreenTest {
         uiState: SettingsUiState = SettingsUiState(),
         onAuthOnLaunchChange: (Boolean) -> Unit = {},
         onMemkeysChange: (Boolean) -> Unit = {},
+        onPivSessionIdleChange: (String) -> Unit = {},
         onConnectionAlertsChange: (Boolean) -> Unit = {},
         onWifilockChange: (Boolean) -> Unit = {},
         onBackupkeysChange: (Boolean) -> Unit = {},
@@ -415,6 +441,7 @@ class SettingsScreenTest {
                     onNavigateBack = {},
                     onAuthOnLaunchChange = onAuthOnLaunchChange,
                     onMemkeysChange = onMemkeysChange,
+                    onPivSessionIdleChange = onPivSessionIdleChange,
                     onConnectionAlertsChange = onConnectionAlertsChange,
                     onWifilockChange = onWifilockChange,
                     onBackupkeysChange = onBackupkeysChange,

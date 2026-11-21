@@ -275,6 +275,8 @@ sealed class PromptRequest {
         val slot: Slot,
         val publicKey: PublicKey,
         val dataToSign: ByteArray,
+        /** The SSH signature algorithm the server accepted, such as rsa-sha2-512; null for the key's own. */
+        val signatureAlgorithm: String? = null,
     ) : PromptRequest()
 
     data class HostKeyFingerprintPrompt(

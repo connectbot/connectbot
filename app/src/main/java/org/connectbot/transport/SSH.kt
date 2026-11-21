@@ -459,7 +459,7 @@ open class SSH : AbsTransport {
                                 bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_invalid))
                             } else if (pubkey.isPiv) {
                                 pivKey = pivAuthenticationKey(pubkey)
-                                pivKey?.let { keys.add(it.offer) }
+                                pivKey?.let { keys.addAll(it.offers) }
                             } else {
                                 val pair = getAuthenticationKey(pubkey)
                                 if (pair != null) {
@@ -480,8 +480,8 @@ open class SSH : AbsTransport {
 
                     override suspend fun onSignatureRequest(key: AuthPublicKey, dataToSign: ByteArray): ByteArray? {
                         if (key.algorithmName.startsWith("sk-")) return signFido2Key(key, dataToSign)
-                        pivKey?.takeIf { it.offer == key }?.let {
-                            return requestPivSignature(it, currentHost, currentHost.username, dataToSign)
+                        pivKey?.takeIf { key in it.offers }?.let {
+                            return requestPivSignature(it, currentHost, currentHost.username, dataToSign, key.algorithmName)
                         }
                         val keyPair = confirmedAuthenticationKey(client, key, uncachedKey) ?: return null
                         return try {
@@ -589,13 +589,12 @@ open class SSH : AbsTransport {
         val pubkey: Pubkey,
         val slot: Slot,
         val publicKey: PublicKey,
-        val offer: AuthPublicKey,
+        val offers: List<AuthPublicKey>,
     )
 
     private fun pivAuthenticationKey(pubkey: Pubkey): PivAuthenticationKey? = try {
         val publicKey = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
-        val offer = YubiKeyPiv.encodePublicKey(publicKey)
-        PivAuthenticationKey(pubkey, YubiKeyPiv.slotFromId(pubkey.pivSlot), publicKey, offer)
+        PivAuthenticationKey(pubkey, YubiKeyPiv.slotFromId(pubkey.pivSlot), publicKey, YubiKeyPiv.offers(publicKey))
     } catch (e: Exception) {
         Timber.w(e, "Unable to read YubiKey PIV identity")
         bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_fail, pubkey.nickname))
@@ -607,6 +606,7 @@ open class SSH : AbsTransport {
         target: Host,
         username: String,
         dataToSign: ByteArray,
+        signatureAlgorithm: String,
     ): ByteArray? = bridge?.promptManager?.requestYubiKeyPivSignature(
         PromptRequest.YubiKeyPivPrompt(
             keyNickname = key.pubkey.nickname,
@@ -614,6 +614,7 @@ open class SSH : AbsTransport {
             slot = key.slot,
             publicKey = key.publicKey,
             dataToSign = dataToSign,
+            signatureAlgorithm = signatureAlgorithm,
         ),
     )
 
@@ -1069,7 +1070,7 @@ open class SSH : AbsTransport {
                                 val pubkey = manager?.pubkeyRepository?.getByIdBlocking(pubkeyId)
                                 if (pubkey?.isPiv == true) {
                                     pivKey = pivAuthenticationKey(pubkey)
-                                    pivKey?.let { keys.add(it.offer) }
+                                    pivKey?.let { keys.addAll(it.offers) }
                                 } else if (pubkey != null) {
                                     val pair = getAuthenticationKey(pubkey)
                                     if (pair != null) {
@@ -1089,8 +1090,8 @@ open class SSH : AbsTransport {
 
                         override suspend fun onSignatureRequest(key: AuthPublicKey, dataToSign: ByteArray): ByteArray? {
                             if (key.algorithmName.startsWith("sk-")) return signFido2Key(key, dataToSign)
-                            pivKey?.takeIf { it.offer == key }?.let {
-                                return requestPivSignature(it, jumpHost, username, dataToSign)
+                            pivKey?.takeIf { key in it.offers }?.let {
+                                return requestPivSignature(it, jumpHost, username, dataToSign, key.algorithmName)
                             }
                             val keyPair = confirmedAuthenticationKey(jumpClient, key, uncachedKey) ?: return null
                             return try {
