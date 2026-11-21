@@ -15,7 +15,7 @@ jobs:
     name: Validate Renovate config
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/renovatebot/renovate:44.257.6@sha256:6a036e222c8b172734be034d22d3df96d73a4e701a38bd14ea1bb97887705e75
+      image: ghcr.io/renovatebot/renovate:44.257.8@sha256:68f58fa3b0e92875fa2f44c4ae02936186818b0170c2d39fe7261a2af5260f36
       options: --user root
     permissions:
       contents: read
