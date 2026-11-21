@@ -29,6 +29,7 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.ReceiveChannel
@@ -240,6 +241,7 @@ open class SSH : AbsTransport {
     private var agentLockPassphrase: String? = null
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    private var disconnectObserverJob: Job? = null
 
     constructor() : super()
 
@@ -946,6 +948,11 @@ open class SSH : AbsTransport {
             }
             session = openedSession
             outputDrained = CompletableDeferred()
+            if (useAuthAgent != HostConstants.AUTHAGENT_NO) {
+                if (!requestAgentForwarding(openedSession)) {
+                    Timber.w("SSH server rejected or did not support agent forwarding")
+                }
+            }
             val failure = when {
                 !openedSession.requestPty(getEmulation() ?: "xterm", columns, rows, width, height) -> R.string.terminal_pty_rejected
                 !openedSession.requestShell() -> R.string.terminal_shell_rejected
@@ -1259,7 +1266,8 @@ open class SSH : AbsTransport {
         }
         connected = true
 
-        this.scope.launch(start = CoroutineStart.UNDISPATCHED) {
+        disconnectObserverJob?.cancel()
+        disconnectObserverJob = this.scope.launch(start = CoroutineStart.UNDISPATCHED) {
             client?.disconnectedFlow?.collect { reason ->
                 handleConnectionLost(reason)
             }
@@ -1355,6 +1363,8 @@ open class SSH : AbsTransport {
 
         // Detach ownership before disconnecting: callbacks can re-enter close().
         val (closingSession, closingClient, closingJumps) = synchronized(jumpClients) {
+            disconnectObserverJob?.cancel()
+            disconnectObserverJob = null
             Triple(session, client, jumpClients.asReversed().toList()).also {
                 session = null
                 client = null
@@ -1658,12 +1668,16 @@ open class SSH : AbsTransport {
         this.useAuthAgent = useAuthAgent
     }
 
-    private fun promptForPubkeyUse(nickname: String): Boolean {
-        val result = bridge?.requestBooleanPrompt(
+    internal open suspend fun requestAgentForwarding(session: SshSession): Boolean = SshAgentForwarding.requestAgentForwarding(session)
+
+    private suspend fun promptForPubkeyUse(nickname: String): Boolean = try {
+        bridge?.promptManager?.requestBooleanPrompt(
             null,
             manager?.res?.getString(R.string.prompt_allow_agent_to_use_key, nickname) ?: "",
-        )
-        return result ?: false
+        ) ?: false
+    } catch (e: CancellationException) {
+        currentCoroutineContext().ensureActive()
+        false
     }
 
     inner class ConnectBotAgentProvider : AgentProvider {

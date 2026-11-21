@@ -44,19 +44,20 @@ class PromptManager {
         message: String,
     ): Boolean {
         val deferred = CompletableDeferred<PromptResponse>()
+        val prompt = PromptRequest.BooleanPrompt(
+            instructions = instructions,
+            message = message,
+        )
         currentDeferred = deferred
+        _promptState.update { prompt }
 
-        _promptState.update {
-            PromptRequest.BooleanPrompt(
-                instructions = instructions,
-                message = message,
-            )
+        return try {
+            val response = deferred.await()
+            (response as? PromptResponse.BooleanResponse)?.value ?: false
+        } finally {
+            if (currentDeferred === deferred) currentDeferred = null
+            _promptState.compareAndSet(prompt, null)
         }
-
-        val response = deferred.await()
-        _promptState.update { null }
-
-        return (response as? PromptResponse.BooleanResponse)?.value ?: false
     }
 
     /**

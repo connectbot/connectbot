@@ -805,6 +805,8 @@ class TerminalBridge {
             return
         }
         invalidateConfiguredInput()
+        networkGracePeriodJob?.cancel()
+        inGracePeriod = false
         connectionJob?.cancel()
         relayJob?.cancel()
         relay = null
