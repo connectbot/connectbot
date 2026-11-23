@@ -36,7 +36,7 @@ yubikit = "3.3.0"
 
 playServicesBasement = "18.12.1"
 playFeatureDelivery = "2.1.0"
-conscrypt = "2.9.0"
+conscrypt = "2.10.0"
 conscryptOpenJdk = "2.9.0"
 coroutines = "1.11.0"
 timber = "5.0.1"
