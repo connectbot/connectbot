@@ -1,5 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
+import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.api.dsl.CommonExtension
 import com.diffplug.spotless.extra.wtp.EclipseWtpFormatterStep
 
 buildscript {
@@ -24,7 +26,29 @@ plugins {
     alias(libs.plugins.spotless)
 }
 
+val compileSdkVersion = libs.versions.compileSdk.get().split('.', limit = 2)
+val sdkMajor = compileSdkVersion[0].toInt()
+val sdkMinor = compileSdkVersion.getOrNull(1)?.toInt()
+val minimumSdk = libs.versions.minSdk.get().toInt()
+val applicationTargetSdk = libs.versions.targetSdk.get().toInt()
+
 subprojects {
+    listOf("com.android.application", "com.android.library", "com.android.dynamic-feature").forEach { pluginId ->
+        pluginManager.withPlugin(pluginId) {
+            extensions.configure<CommonExtension> {
+                compileSdk {
+                    version = release(sdkMajor) {
+                        minorApiLevel = sdkMinor
+                    }
+                }
+                defaultConfig.minSdk = minimumSdk
+                if (this is ApplicationExtension) {
+                    defaultConfig.targetSdk = applicationTargetSdk
+                }
+            }
+        }
+    }
+
     buildscript {
         repositories {
             google()
