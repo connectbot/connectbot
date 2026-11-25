@@ -28,11 +28,6 @@ val prepareGoogleMoshArtifacts = tasks.named<PrepareMoshArtifacts>("prepareGoogl
 
 android {
     namespace = "org.connectbot.mosh"
-    compileSdk = libs.versions.compileSdk.get().toInt()
-
-    defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
-    }
 
     flavorDimensions += listOf("license")
     productFlavors {

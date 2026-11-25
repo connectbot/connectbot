@@ -79,24 +79,11 @@ tasks.named("check") { dependsOn(checkAppVersioning) }
 
 android {
     namespace = "org.connectbot"
-    compileSdk =
-        libs.versions.compileSdk
-            .get()
-            .toInt()
 
     dynamicFeatures += setOf(":mosh")
 
     defaultConfig {
         applicationId = "org.connectbot"
-
-        minSdk =
-            libs.versions.minSdk
-                .get()
-                .toInt()
-        targetSdk =
-            libs.versions.targetSdk
-                .get()
-                .toInt()
 
         vectorDrawables.useSupportLibrary = true
 

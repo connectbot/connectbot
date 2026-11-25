@@ -16,7 +16,7 @@ hilt = "2.60.1"
 hiltNavigationCompose = "1.4.0"
 sonarqube = "7.6.0.18749"
 
-compileSdk = "37"
+compileSdk = "37.1"
 minSdk = "24"
 targetSdk = "36"
 
