@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -131,22 +131,7 @@ class BiometricKeyManagerImpl(
             )
             setSignaturePaddings(KeyProperties.SIGNATURE_PADDING_RSA_PKCS1)
 
-            // Require biometric authentication for every use
-            setUserAuthenticationRequired(true)
-
-            // Set authentication validity duration - allows signing for N seconds after auth
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                setUserAuthenticationParameters(
-                    AUTH_VALIDITY_DURATION_SECONDS,
-                    KeyProperties.AUTH_BIOMETRIC_STRONG,
-                )
-            } else {
-                @Suppress("DEPRECATION")
-                setUserAuthenticationValidityDurationSeconds(AUTH_VALIDITY_DURATION_SECONDS)
-            }
-
-            // Invalidate key if new biometrics are enrolled
-            setInvalidatedByBiometricEnrollment(true)
+            configureAuthentication()
 
             // Use StrongBox if requested
             if (useStrongBox && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -204,22 +189,7 @@ class BiometricKeyManagerImpl(
                 KeyProperties.DIGEST_SHA512,
             )
 
-            // Require biometric authentication for every use
-            setUserAuthenticationRequired(true)
-
-            // Set authentication validity duration - allows signing for N seconds after auth
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                setUserAuthenticationParameters(
-                    AUTH_VALIDITY_DURATION_SECONDS,
-                    KeyProperties.AUTH_BIOMETRIC_STRONG,
-                )
-            } else {
-                @Suppress("DEPRECATION")
-                setUserAuthenticationValidityDurationSeconds(AUTH_VALIDITY_DURATION_SECONDS)
-            }
-
-            // Invalidate key if new biometrics are enrolled
-            setInvalidatedByBiometricEnrollment(true)
+            configureAuthentication()
 
             // Use StrongBox if requested
             if (useStrongBox && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -232,6 +202,21 @@ class BiometricKeyManagerImpl(
 
         Timber.d("EC key generated successfully (StrongBox: $useStrongBox)")
         return keyPair.public
+    }
+
+    private fun KeyGenParameterSpec.Builder.configureAuthentication() {
+        setUserAuthenticationRequired(true)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            setUserAuthenticationParameters(
+                AUTH_VALIDITY_DURATION_SECONDS,
+                KeyProperties.AUTH_BIOMETRIC_STRONG,
+            )
+        } else {
+            // Android 7 through 10 only expose the legacy authentication timeout.
+            @Suppress("DEPRECATION")
+            setUserAuthenticationValidityDurationSeconds(AUTH_VALIDITY_DURATION_SECONDS)
+        }
+        setInvalidatedByBiometricEnrollment(true)
     }
 
     override fun generateKey(alias: String, keyType: String, keySize: Int): PublicKey = when (keyType) {

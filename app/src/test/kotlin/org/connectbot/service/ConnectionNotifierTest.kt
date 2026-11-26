@@ -243,9 +243,6 @@ class ConnectionNotifierTest {
             }
             assertEquals(ConnectionNotifier.ATTENTION_CHANNEL, summary().channelId)
         }
-        assertEquals(NotificationCompat.PRIORITY_HIGH, alert(first.id).priority)
-        assertEquals(NotificationCompat.PRIORITY_HIGH, alert(second.id).priority)
-        assertEquals(NotificationCompat.PRIORITY_DEFAULT, summary().priority)
         val public = alert(second.id).publicVersion
         assertEquals("1 session connected · 2 need attention", text(public))
         assertEquals("ConnectBot", public.extras.getCharSequence(Notification.EXTRA_TITLE).toString())
@@ -253,7 +250,6 @@ class ConnectionNotifierTest {
         assertFalse(public.extras.toString().contains("staging"))
         notifier.handleAction(service, ConnectionNotifier.ACTION_SEEN_ALL, "")
         advanceUntilIdle()
-        assertEquals(NotificationCompat.PRIORITY_LOW, summary().priority)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             assertEquals(ConnectionNotifier.SESSION_CHANNEL, summary().channelId)
         }
@@ -298,13 +294,18 @@ class ConnectionNotifierTest {
 
     @Test
     @Config(sdk = [24])
+    @Suppress("DEPRECATION") // Notification priority controls alerts before channels were added.
     fun preChannelAndroidStillShowsGroupedSoundlessBellAlerts() = runTest(dispatcher) {
         notifier.showRunningNotification(service, listOf(first))
         notifier.showActivityNotification(service, first)
         advanceUntilIdle()
         assertEquals(NotificationCompat.PRIORITY_HIGH, alert(first.id).priority)
+        assertEquals(NotificationCompat.PRIORITY_DEFAULT, summary().priority)
         assertEquals("1 session connected · 1 needs attention", title(summary()))
         assertEquals(alert(first.id).group, summary().group)
+        notifier.handleAction(service, ConnectionNotifier.ACTION_SEEN_ALL, "")
+        advanceUntilIdle()
+        assertEquals(NotificationCompat.PRIORITY_LOW, summary().priority)
     }
 }
 

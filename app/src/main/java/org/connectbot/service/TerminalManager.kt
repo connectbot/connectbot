@@ -304,13 +304,9 @@ class TerminalManager :
         }
 
         vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            // API 31+ uses VibratorManager
-            val manager = getSystemService(VIBRATOR_MANAGER_SERVICE) as? VibratorManager
-            manager?.defaultVibrator
+            getSystemService(VibratorManager::class.java)?.defaultVibrator
         } else {
-            // Pre-API 31 uses direct Vibrator service
-            @Suppress("Deprecation")
-            getSystemService(VIBRATOR_SERVICE) as? Vibrator
+            getSystemService(Vibrator::class.java)
         }
 
         wantKeyVibration = prefs.getBoolean(PreferenceConstants.BUMPY_ARROWS, true)

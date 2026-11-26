@@ -17,7 +17,6 @@
 
 package org.connectbot.service
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.LinkAddress
@@ -26,6 +25,7 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.net.wifi.WifiManager
+import androidx.test.filters.SdkSuppress
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -41,6 +41,7 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import java.net.InetAddress
 import java.util.concurrent.ConcurrentHashMap
 
@@ -56,17 +57,43 @@ class ConnectivityMonitorTest {
     @Mock
     lateinit var wifiManager: WifiManager
 
+    @Mock
+    lateinit var wifiLock: WifiManager.WifiLock
+
     private lateinit var connectivityMonitor: ConnectivityMonitor
 
     @Before
+    @Suppress("DEPRECATION") // Stub the Wi-Fi lock used on API 24 through 28.
     fun setUp() {
         MockitoAnnotations.openMocks(this)
         `when`(terminalManager.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(connectivityManager)
         `when`(terminalManager.applicationContext).thenReturn(terminalManager)
         `when`(terminalManager.getSystemService(Context.WIFI_SERVICE)).thenReturn(wifiManager)
-        `when`(wifiManager.createWifiLock(anyString())).thenReturn(mock(WifiManager.WifiLock::class.java))
+        `when`(wifiManager.createWifiLock(anyString())).thenReturn(wifiLock)
 
         connectivityMonitor = ConnectivityMonitor(terminalManager, false)
+    }
+
+    @Test
+    @Config(sdk = [28])
+    fun wifiLockIsHeldForActiveSessionsOnAndroid9() {
+        connectivityMonitor.setWantWifiLock(true)
+        connectivityMonitor.incRef()
+        verify(wifiLock).acquire()
+
+        `when`(wifiLock.isHeld).thenReturn(true)
+        connectivityMonitor.decRef()
+        verify(wifiLock).release()
+    }
+
+    @Test
+    @Config(sdk = [29])
+    fun android10SkipsTheNonfunctionalWifiLock() {
+        connectivityMonitor.setWantWifiLock(true)
+        connectivityMonitor.incRef()
+        connectivityMonitor.decRef()
+
+        verify(terminalManager, never()).getSystemService(Context.WIFI_SERVICE)
     }
 
     @Test
@@ -100,9 +127,8 @@ class ConnectivityMonitorTest {
     }
 
     @Test
-    @TargetApi(28)
+    @SdkSuppress(minSdkVersion = 28)
     fun `monitor includes VPN networks`() {
-        `when`(connectivityManager.allNetworks).thenReturn(emptyArray())
         connectivityMonitor.init()
 
         val request = ArgumentCaptor.forClass(NetworkRequest::class.java)
@@ -111,7 +137,7 @@ class ConnectivityMonitorTest {
     }
 
     @Test
-    @TargetApi(29)
+    @SdkSuppress(minSdkVersion = 29)
     fun `default VPN validation update releases queued reconnects`() {
         val network = mock(Network::class.java)
         val initial = mock(NetworkCapabilities::class.java)
@@ -136,7 +162,7 @@ class ConnectivityMonitorTest {
     }
 
     @Test
-    @TargetApi(29)
+    @SdkSuppress(minSdkVersion = 29)
     fun `default VPN link update records tunnel addresses`() {
         val network = mock(Network::class.java)
         val capabilities = mock(NetworkCapabilities::class.java)
@@ -156,7 +182,7 @@ class ConnectivityMonitorTest {
     }
 
     @Test
-    @TargetApi(29)
+    @SdkSuppress(minSdkVersion = 29)
     fun `validated cellular network is reported as connected`() {
         val network = mock(Network::class.java)
         val capabilities = mock(NetworkCapabilities::class.java)
@@ -178,9 +204,9 @@ class ConnectivityMonitorTest {
     }
 
     @Test
+    @Suppress("DEPRECATION") // Verify initialization does not use the deprecated network enumeration.
     fun `init should query only the active network`() {
         val activeNetwork = mock(Network::class.java)
-        `when`(connectivityManager.allNetworks).thenReturn(emptyArray())
         `when`(connectivityManager.activeNetwork).thenReturn(activeNetwork)
 
         connectivityMonitor.init()
