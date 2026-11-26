@@ -556,10 +556,10 @@
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Pārslēdziet IME ievades režīmu.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Rakstīšanas režīms (IME)</string>
   <string name="hostpref_profile_edit" tools:machine_translated="true">Rediģēt atlasīto profilu</string>
-  <string name="terminal_mosh_installing" tools:machine_translated="true">Tiek sagatavots atbalsts programmai Mosh...</string>
-  <string name="terminal_mosh_starting" tools:machine_translated="true">Tiek izveidots Mosh savienojums...</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Tiek sagatavots atbalsts programmai Mosh…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Tiek izveidots Mosh savienojums…</string>
   <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Brīdinājums: Mosh instalācijas process pārsniedza noteikto laiku.</string>
-  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Tiek palaists mosh serveris attālajā datorā...</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Tiek palaists mosh serveris attālajā datorā…</string>
   <string name="terminal_mosh_server_failed" tools:machine_translated="true">Neizdevās palaist programmu “mosh-server” attālajā serverī.</string>
   <string name="terminal_mosh_client_failed" tools:machine_translated="true">Neizdevās palaist programmu “mosh-client”.</string>
   <string name="terminal_mosh_connected" tools:machine_translated="true">Mosh savienojums izveidots.</string>
@@ -572,7 +572,7 @@
   <string name="hostpref_locale_summary" tools:machine_translated="true">Mosh sesijas lokalizācija (piemēram, en_US.UTF-8).</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Mosh versija un avotkods</string>
-  <string name="pref_mosh_installing" tools:machine_translated="true">Tiek sagatavots atbalsts programmai Mosh...</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Tiek sagatavots atbalsts programmai Mosh…</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">Atteikties no izmaiņām?</string>
   <string name="editor_discard_changes_message" tools:machine_translated="true">Jūsu veiktās izmaiņas tiks zaudētas, ja jūs aizvērsit logu, nesaglabājot datus.</string>
   <string name="editor_discard" tools:machine_translated="true">Atcelt</string>

@@ -567,7 +567,7 @@
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">Comando per il server Mosh</string>
   <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Percorso o comando personalizzato per il server Mosh (lasciare vuoto per utilizzare l’impostazione predefinita).</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">Porta UDP di Mosh</string>
-  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Porta UDP fissa per Mosh (0 per l’intervallo automatico 60000-61000).</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Porta UDP fissa per Mosh (0 per l’intervallo automatico 60000–61000).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Impostazione della lingua</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Impostazione della localizzazione per la sessione Mosh (ad esempio, en_US.UTF-8).</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>

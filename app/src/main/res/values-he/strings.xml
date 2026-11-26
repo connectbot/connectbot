@@ -567,7 +567,7 @@
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">פקודה להגדרת שרת Mosh</string>
   <string name="hostpref_mosh_server_summary" tools:machine_translated="true">נתיב או פקודה מותאמת אישית עבור שרת Mosh (השאירו ריק כדי להשתמש בהגדרות ברירת המחדל).</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">יציאת UDP של Mosh</string>
-  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">יציאת UDP קבועה עבור mosh (0 מציין שימוש בטווח אוטומטי של 60000-61000).</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">יציאת UDP קבועה עבור mosh (0 מציין שימוש בטווח אוטומטי של 60000–61000).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">אזור תרבותי/שפה</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">הגדרת אזור עבור סשן Mosh (לדוגמה, en_US.UTF-8).</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>

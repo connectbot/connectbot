@@ -120,9 +120,9 @@
   <string name="pref_fullscreen_summary">Skrýt stavový řádek když je zobrazena konzole</string>
   <string name="pref_keyboard_category">Klávesnice</string>
   <string name="pref_shiftfkeys_title">Shift+číslo jsou F-klávesy</string>
-  <string name="pref_shiftfkeys_summary">Na fyzické klávesnici posílají klávesy s číslicemi stisk kláves Shift + F1-10</string>
+  <string name="pref_shiftfkeys_summary">Na fyzické klávesnici posílají klávesy s číslicemi stisk kláves Shift + F1–10</string>
   <string name="pref_ctrlfkeys_title">Ctrl+číslo jsou F-klávesy</string>
-  <string name="pref_ctrlfkeys_summary">Na softwarové klávesnici posílají klávesy s číslicemi stisk kláves Ctrl + F1-10</string>
+  <string name="pref_ctrlfkeys_summary">Na softwarové klávesnici posílají klávesy s číslicemi stisk kláves Ctrl + F1–10</string>
   <string name="pref_volumefont_title">Tlačítka ovládání hlasitosti mění velikost písma</string>
   <string name="pref_volumefont_summary">Velikost písma lze upravit v nastavení pro jednotlivé hostitele</string>
   <string name="pref_memkeys_title">Uchovávat klíče v paměti</string>

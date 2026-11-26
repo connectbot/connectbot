@@ -556,10 +556,10 @@
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Sanal klavyedeki IME giriş alanı için kompozisyon modunu etkinleştir/devre dışı bırak.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Kompozisyon modu (IME)</string>
   <string name="hostpref_profile_edit" tools:machine_translated="true">Seçili profili düzenle</string>
-  <string name="terminal_mosh_installing" tools:machine_translated="true">Mosh desteği hazırlanıyor...</string>
-  <string name="terminal_mosh_starting" tools:machine_translated="true">Mosh bağlantısı başlatılıyor...</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Mosh desteği hazırlanıyor…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Mosh bağlantısı başlatılıyor…</string>
   <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Uyarı: Mosh kurulumu zaman aşımına uğradı.</string>
-  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Uzak sunucuda mosh-server başlatılıyor...</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Uzak sunucuda mosh-server başlatılıyor…</string>
   <string name="terminal_mosh_server_failed" tools:machine_translated="true">Uzak sunucuda mosh-server başlatılamadı.</string>
   <string name="terminal_mosh_client_failed" tools:machine_translated="true">mosh istemcisi başlatılamadı.</string>
   <string name="terminal_mosh_connected" tools:machine_translated="true">Mosh bağlantısı kuruldu.</string>
@@ -567,12 +567,12 @@
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">Mosh sunucu komutu</string>
   <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Özel mosh sunucu yolu veya komutu (varsayılanı kullanmak için boş bırakın).</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">Mosh UDP bağlantı noktası</string>
-  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Mosh için sabit bir UDP bağlantı noktası (otomatik olarak 60000-61000 aralığında çalışması için 0 girin).</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Mosh için sabit bir UDP bağlantı noktası (otomatik olarak 60000–61000 aralığında çalışması için 0 girin).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Yerel Ayar</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Mosh oturumu için kullanılacak yerel ayar (örneğin, en_US.UTF-8).</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Mosh sürümü ve kaynak kodu</string>
-  <string name="pref_mosh_installing" tools:machine_translated="true">Mosh desteği hazırlanıyor...</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Mosh desteği hazırlanıyor…</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">Değişiklikleri kaydetmeden çıkmak istiyor musunuz?</string>
   <string name="editor_discard_changes_message" tools:machine_translated="true">Kaydetmeden çıkarsanız, yaptığınız değişiklikler kaybolacaktır.</string>
   <string name="editor_discard" tools:machine_translated="true">Kaydetmeden çıkış yap</string>

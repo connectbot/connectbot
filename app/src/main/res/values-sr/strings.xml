@@ -557,9 +557,9 @@
   <string name="console_menu_compose_mode" tools:machine_translated="true">Режим за унос текста (IME)</string>
   <string name="hostpref_profile_edit" tools:machine_translated="true">Uredi odabrani profil</string>
   <string name="terminal_mosh_installing" tools:machine_translated="true">Priprema podrške za Mosh…</string>
-  <string name="terminal_mosh_starting" tools:machine_translated="true">Покрећем Мош везу...</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Покрећем Мош везу…</string>
   <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Упозорење: Инсталација програма Mosh је истекла.</string>
-  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Покрећем сервер „mosh“ на удаљеном хосту...</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Покрећем сервер „mosh“ на удаљеном хосту…</string>
   <string name="terminal_mosh_server_failed" tools:machine_translated="true">Неуспешно покретање програма mosh-server на удаљеном серверу.</string>
   <string name="terminal_mosh_client_failed" tools:machine_translated="true">Неуспешно покретање клијентске апликације Mosh.</string>
   <string name="terminal_mosh_connected" tools:machine_translated="true">Успостављена је веза са програмом Mosh.</string>

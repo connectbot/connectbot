@@ -556,10 +556,10 @@
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">IME ulgamynyň girizilýän şypyndyz reżimini üýtgetmek üçin düwme</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Ýazmak reżimi (IME)</string>
   <string name="hostpref_profile_edit" tools:machine_translated="true">Saýlanan profili üýtgetmek üçin aşakdaky baglanty.</string>
-  <string name="terminal_mosh_installing" tools:machine_translated="true">Mosh ulgamyny gurmakda...</string>
-  <string name="terminal_mosh_starting" tools:machine_translated="true">Mosh baglanşygyny ýola salýarys...</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Mosh ulgamyny gurmakda…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Mosh baglanşygyny ýola salýarys…</string>
   <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Duýdurma: Mosh-yň gurnama wagty dolup geçdi.</string>
-  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Daşky serwerde mosh-serwery işe girizilýär...</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Daşky serwerde mosh-serwery işe girizilýär…</string>
   <string name="terminal_mosh_server_failed" tools:machine_translated="true">Daşky serwerde mosh-serweryni işe girizmek başarısız boldy.</string>
   <string name="terminal_mosh_client_failed" tools:machine_translated="true">Mosh-klient ulgamdyryş başarilmady.</string>
   <string name="terminal_mosh_connected" tools:machine_translated="true">Mosh baglanşygy ýola salyndy.</string>
@@ -567,12 +567,12 @@
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">Mosh serweri buýrugy</string>
   <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Kesgitlenän \"mosh-serwer\" ýoly ýa-da buýruk (standart ulanyň üçin boş goýuň).</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">Mosh-yň UDP porty</string>
-  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Mosh üçin gurnama edilen UDP porty (awtomatikiň özi üçin 0, şol birnäçe 60000-61000 aralygy).</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Mosh üçin gurnama edilen UDP porty (awtomatikiň özi üçin 0, şol birnäçe 60000–61000 aralygy).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Ýerli dil ulgamynyň sazlamalary</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Mosh seansy üçin dil ýerleşişi (mysal, en_US.UTF-8).</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Mosh-yň täze nusgasy we çeşme kody</string>
-  <string name="pref_mosh_installing" tools:machine_translated="true">Mosh ulgamynyň işläp başlamagy üçin taýarlanylýar...</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Mosh ulgamynyň işläp başlamagy üçin taýarlanylýar…</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">Üzgertmeleri saklamadykmy?</string>
   <string name="editor_discard_changes_message" tools:machine_translated="true">Siz özüňizi saklap bilmän gitseňiz, siz edýän üýtgetmeleriňiz ýitiriler.</string>
   <string name="editor_discard" tools:machine_translated="true">Üýtgetmeleri saklamadan çykyp gitmek</string>

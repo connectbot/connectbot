@@ -23,7 +23,7 @@
   <string name="pubkey_gather_entropy">Thu thập thông tin ngẫu nhiên (Entropy)</string>
   <string name="pubkey_touch_prompt">Chạm vào hộp thoại này để thu thập thông tin ngẫu nhiên: hoàn thành %1$d%%</string>
   <string name="pubkey_touch_hint">Để đảm bảo tính ngẫu nhiên trong quá trình tạo khóa, hãy di chuyển ngón tay của bạn một cách ngẫu nhiên trên hộp bên dưới.</string>
-  <string name="pubkey_generating">Đang tạo cặp khoá...</string>
+  <string name="pubkey_generating">Đang tạo cặp khoá…</string>
   <string name="pubkey_copy_private">Sao chép khóa riêng tư</string>
   <string name="pubkey_copy_private_openssh">Sao chép khóa riêng (OpenSSH)</string>
   <string name="pubkey_copy_private_pem">Sao chép khóa riêng (PEM)</string>
@@ -557,9 +557,9 @@
   <string name="console_menu_compose_mode" tools:machine_translated="true">Chế độ soạn thảo (IME)</string>
   <string name="hostpref_profile_edit" tools:machine_translated="true">Chỉnh sửa hồ sơ đã chọn</string>
   <string name="terminal_mosh_installing" tools:machine_translated="true">Đang chuẩn bị các tính năng hỗ trợ Mosh…</string>
-  <string name="terminal_mosh_starting" tools:machine_translated="true">Đang khởi tạo kết nối Mosh...</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Đang khởi tạo kết nối Mosh…</string>
   <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Cảnh báo: Quá trình cài đặt Mosh đã hết thời gian cho phép.</string>
-  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Đang khởi động mosh-server trên máy chủ từ xa...</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Đang khởi động mosh-server trên máy chủ từ xa…</string>
   <string name="terminal_mosh_server_failed" tools:machine_translated="true">Không thể khởi động mosh-server trên máy chủ từ xa.</string>
   <string name="terminal_mosh_client_failed" tools:machine_translated="true">Không thể khởi động chương trình mosh-client.</string>
   <string name="terminal_mosh_connected" tools:machine_translated="true">Kết nối Mosh đã được thiết lập.</string>

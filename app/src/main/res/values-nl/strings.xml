@@ -567,7 +567,7 @@
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">Opdracht voor de Mosh-server</string>
   <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Aangepast pad of commando voor de Mosh-server (laat dit leeg om de standaardinstelling te gebruiken).</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">Mosh UDP-poort</string>
-  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Vaste UDP-poort voor Mosh (gebruik 0 om een automatische poort in het bereik 60000-61000 te laten kiezen).</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Vaste UDP-poort voor Mosh (gebruik 0 om een automatische poort in het bereik 60000–61000 te laten kiezen).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Taalinstelling</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Taalinstelling voor de Mosh-sessie (bijv. en_US.UTF-8).</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>

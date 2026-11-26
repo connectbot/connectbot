@@ -78,11 +78,11 @@
   <string name="alert_wrong_password_msg">گذرواژه اشتباه است!</string>
   <string name="button_resize">تغییر اندازه</string>
   <string name="alert_disconnect_msg">اتصال قطع شد</string>
-  <string name="network_lost_grace_period">اتصال شبکه قطع شد، در حال انتظار برای برقراری مجدد اتصال...</string>
-  <string name="network_grace_period_expired">شبکه بازیابی نشد، در حال قطع اتصال...</string>
+  <string name="network_lost_grace_period">اتصال شبکه قطع شد، در حال انتظار برای برقراری مجدد اتصال…</string>
+  <string name="network_grace_period_expired">شبکه بازیابی نشد، در حال قطع اتصال…</string>
   <string name="network_restored_same_ip">شبکه بازیابی شد، اتصال برقرار ماند</string>
-  <string name="network_restored_ip_changed">شبکه دوباره فعال شد اما آدرس IP تغییر کرد، در حال اتصال مجدد...</string>
-  <string name="network_restored_no_previous_state">شبکه دوباره برقرار شد، در حال بررسی اتصال...</string>
+  <string name="network_restored_ip_changed">شبکه دوباره فعال شد اما آدرس IP تغییر کرد، در حال اتصال مجدد…</string>
+  <string name="network_restored_no_previous_state">شبکه دوباره برقرار شد، در حال بررسی اتصال…</string>
   <string name="pref_emulation_category">شبیه ساز ترمینال</string>
   <string name="pref_emulation_title">حالت شبیه سازی</string>
   <string name="pref_scrollback_title">اندازه اسکرول به عقب</string>
@@ -94,14 +94,14 @@
   <string name="dialog_customfont_hint">نام فونت گوگل (به عنوان مثال، Cascadia Code)</string>
   <string name="button_add">افزودن</string>
   <string name="button_remove">حذف کن</string>
-  <string name="font_validating">در حال بررسی اعتبار فونت...</string>
-  <string name="font_downloading">در حال دانلود فونت...</string>
+  <string name="font_validating">در حال بررسی اعتبار فونت…</string>
+  <string name="font_downloading">در حال دانلود فونت…</string>
   <string name="pref_localfont_title">فونت محلی را وارد کنید</string>
   <string name="pref_localfont_summary">یک فایل فونت از حافظه دستگاه وارد کنید (فرمت‌های TTF و OTF).</string>
   <string name="dialog_localfont_title">وارد کردن فونت</string>
   <string name="dialog_localfont_hint">نام نمایشی برای فونت</string>
   <string name="button_import">وارد کردن</string>
-  <string name="font_importing">در حال وارد کردن فونت...</string>
+  <string name="font_importing">در حال وارد کردن فونت…</string>
   <string name="pref_backupkeys_title">پشتیبان گیری از کلیدهای عمومی</string>
   <string name="pref_backupkeys_summary">نگهداشتن پشتیبان گیری های کلیدهای خصوصی با استفاده از ماشین پشتیبان گیر اندروید</string>
   <string name="pref_ui_category">رابط کاربری</string>
@@ -282,7 +282,7 @@
   <string name="terminal_auth">در حال تلاش برای احراز هویت</string>
   <string name="terminal_auth_pass">تلاش برای احراز هویت با استفاده از \'رمز عبور\'</string>
   <string name="terminal_auth_pass_fail">روش احراز هویت \'رمز عبور\' با شکست مواجه شد.</string>
-  <string name="terminal_auth_saved_password">تلاش برای استفاده از رمز عبور ذخیره شده...</string>
+  <string name="terminal_auth_saved_password">تلاش برای استفاده از رمز عبور ذخیره شده…</string>
   <string name="terminal_auth_saved_password_fail">احراز هویت با رمز عبور ذخیره شده با شکست مواجه شد.</string>
   <string name="terminal_auth_pubkey_any">تلاش برای احراز هویت با استفاده از روش \'کلید عمومی\' و هر کلید عمومی موجود در حافظه</string>
   <string name="terminal_auth_pubkey_invalid">کلید عمومی انتخاب‌شده نامعتبر است، لطفاً کلید را دوباره در ویرایشگر میزبان انتخاب کنید.</string>
@@ -429,8 +429,8 @@
   <string name="connect_anyway">به هر حال، اتصال برقرار شود</string>
   <string name="open_settings">تنظیمات را باز کنید</string>
   <string name="terminal_no_route">آیا می‌خواهید به یک هاست محلی دسترسی پیدا کنید؟ مجوزهای شبکه محلی را فعال کنید.</string>
-  <string name="loading_message">در حال بارگذاری...</string>
-  <string name="migration_checking">در حال بررسی پایگاه داده...</string>
+  <string name="loading_message">در حال بارگذاری…</string>
+  <string name="migration_checking">در حال بررسی پایگاه داده…</string>
   <string name="migration_title">انتقال پایگاه داده</string>
   <string name="migration_warning">لطفاً در حین انتقال، برنامه را نبندید.</string>
   <string name="migration_stats_hosts">تعداد هاست‌های منتقل‌شده: %d</string>
@@ -556,10 +556,10 @@
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">حالت ویرایش را برای ورودی‌های IME فعال یا غیرفعال کنید.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">حالت ویرایش (ورودی متنی چندزبانه)</string>
   <string name="hostpref_profile_edit" tools:machine_translated="true">ویرایش پروفایل انتخاب‌شده</string>
-  <string name="terminal_mosh_installing" tools:machine_translated="true">در حال آماده‌سازی پشتیبانی از Mosh...</string>
-  <string name="terminal_mosh_starting" tools:machine_translated="true">در حال برقراری ارتباط Mosh...</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">در حال آماده‌سازی پشتیبانی از Mosh…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">در حال برقراری ارتباط Mosh…</string>
   <string name="terminal_mosh_install_timeout" tools:machine_translated="true">هشدار: زمان نصب Mosh به پایان رسید.</string>
-  <string name="terminal_mosh_launching_server" tools:machine_translated="true">در حال راه‌اندازی mosh-server در سرور راه دور...</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">در حال راه‌اندازی mosh-server در سرور راه دور…</string>
   <string name="terminal_mosh_server_failed" tools:machine_translated="true">راه‌اندازی mosh-server در سرور راه دور با شکست مواجه شد.</string>
   <string name="terminal_mosh_client_failed" tools:machine_translated="true">راه‌اندازی mosh-client با خطا مواجه شد.</string>
   <string name="terminal_mosh_connected" tools:machine_translated="true">اتصال Mosh برقرار شد.</string>
@@ -572,7 +572,7 @@
   <string name="hostpref_locale_summary" tools:machine_translated="true">تنظیمات منطقه‌ای برای جلسه Mosh (مثلاً en_US.UTF-8)</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">نسخه و کد منبع Mosh</string>
-  <string name="pref_mosh_installing" tools:machine_translated="true">در حال آماده‌سازی پشتیبانی از Mosh...</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">در حال آماده‌سازی پشتیبانی از Mosh…</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">آیا می‌خواهید تغییرات را ذخیره نکنید؟</string>
   <string name="editor_discard_changes_message" tools:machine_translated="true">اگر بدون ذخیره کردن، از این صفحه خارج شوید، تغییرات شما از بین خواهد رفت.</string>
   <string name="editor_discard" tools:machine_translated="true">ذخیره نکردن</string>
@@ -976,7 +976,7 @@
   <string name="keyboard_customize" tools:machine_translated="true">سفارشی‌سازی کنید</string>
   <string name="keyboard_edit_shared" tools:machine_translated="true">ویرایش طرح‌بندی مشترک</string>
   <string name="keyboard_make_default" tools:machine_translated="true">به‌عنوان تنظیمات پیش‌فرض برنامه استفاده شود.</string>
-  <string name="keyboard_saving" tools:machine_translated="true">در حال ذخیره...</string>
+  <string name="keyboard_saving" tools:machine_translated="true">در حال ذخیره…</string>
   <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
   <string name="keyboard_copy_name" tools:machine_translated="true">سفارشی</string>
   <string name="keyboard_reset_inherited" tools:machine_translated="true">از کیبورد پیش‌فرض استفاده کنید.</string>

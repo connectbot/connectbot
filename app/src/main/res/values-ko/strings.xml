@@ -557,7 +557,7 @@
   <string name="console_menu_compose_mode" tools:machine_translated="true">조합 모드(IME)</string>
   <string name="hostpref_profile_edit" tools:machine_translated="true">선택한 프로필 수정</string>
   <string name="terminal_mosh_installing" tools:machine_translated="true">Mosh 지원 준비 중…</string>
-  <string name="terminal_mosh_starting" tools:machine_translated="true">Mosh 연결을 시작합니다...</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Mosh 연결을 시작합니다…</string>
   <string name="terminal_mosh_install_timeout" tools:machine_translated="true">경고: Mosh 설치 시간이 초과되었습니다.</string>
   <string name="terminal_mosh_launching_server" tools:machine_translated="true">원격 호스트에서 mosh 서버를 시작합니다.</string>
   <string name="terminal_mosh_server_failed" tools:machine_translated="true">원격 호스트에서 mosh 서버를 시작하는 데 실패했습니다.</string>

@@ -567,7 +567,7 @@
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">Mosh zerbitzariaren komandoa</string>
   <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Mosh-server bide edo komando pertsonalizatua (balio lehenetsia erabili nahi baduzu, utzi hutsik).</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">Mosh-en UDP ataka</string>
-  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Mosh-erako UDP portua zehaztu (0 automatikoa da, 60000-61000 tartean).</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Mosh-erako UDP portua zehaztu (0 automatikoa da, 60000–61000 tartean).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Hizkuntza-ingurunea</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Mosh saioaren hizkuntza-ingurunea (adibidez, en_US.UTF-8)</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>

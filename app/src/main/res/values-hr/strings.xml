@@ -567,7 +567,7 @@
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">naredba za Mosh poslužitelj</string>
   <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Prilagođena putanja ili naredba za mosh-poslužitelj (ostavite prazno za zadane postavke).</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">Mosh UDP port</string>
-  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Fiksni UDP port za mosh (0 za automatski odabir raspona 60000-61000)</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Fiksni UDP port za mosh (0 za automatski odabir raspona 60000–61000)</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Lokalizacija</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Lokalizacija za Mosh sesiju (npr., en_US.UTF-8)</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>

@@ -556,10 +556,10 @@
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">आईएमई इनपुटका लागि कम्पोज मोड सक्रिय/निष्क्रिय गर्नुहोस्।</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">लेखन मोड (आईएमई)</string>
   <string name="hostpref_profile_edit" tools:machine_translated="true">चयन गरिएको प्रोफाइल सम्पादन गर्नुहोस्।</string>
-  <string name="terminal_mosh_installing" tools:machine_translated="true">मोश समर्थन तयार भइरहेको छ...</string>
-  <string name="terminal_mosh_starting" tools:machine_translated="true">मोश जडान सुरु गर्दै...</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">मोश समर्थन तयार भइरहेको छ…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">मोश जडान सुरु गर्दै…</string>
   <string name="terminal_mosh_install_timeout" tools:machine_translated="true">चेतावनी: मोश स्थापनाको समय समाप्त भयो।</string>
-  <string name="terminal_mosh_launching_server" tools:machine_translated="true">दूरस्थ होस्टमा मोश सर्भर सुरु गर्दै...</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">दूरस्थ होस्टमा मोश सर्भर सुरु गर्दै…</string>
   <string name="terminal_mosh_server_failed" tools:machine_translated="true">दूरस्थ होस्टमा मोश सर्भर सुरु गर्न असफल।</string>
   <string name="terminal_mosh_client_failed" tools:machine_translated="true">मोश क्लाइन्ट सुरु गर्न असफल।</string>
   <string name="terminal_mosh_connected" tools:machine_translated="true">मोश जडान स्थापित भयो।</string>
@@ -572,7 +572,7 @@
   <string name="hostpref_locale_summary" tools:machine_translated="true">मोश सत्रको लागि स्थानीय भाषा सेटिङ (उदाहरणका लागि, en_US.UTF-8)।</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">मोशको जारी गरिएको संस्करण र स्रोत कोड।</string>
-  <string name="pref_mosh_installing" tools:machine_translated="true">मोश समर्थनको लागि तयारी भइरहेको छ...</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">मोश समर्थनको लागि तयारी भइरहेको छ…</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">परिवर्तनहरू रद्द गर्नुहुन्छ?</string>
   <string name="editor_discard_changes_message" tools:machine_translated="true">तपाईंले परिवर्तनहरू बचत नगरी छोड्नुभयो भने, तपाईंको गरिएका सम्पादनहरू हराउनेछन्।</string>
   <string name="editor_discard" tools:machine_translated="true">त्याग गर्नुहोस्।</string>

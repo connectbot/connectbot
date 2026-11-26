@@ -78,11 +78,11 @@
   <string name="alert_wrong_password_msg">La contrasenya no és correcta.</string>
   <string name="button_resize">Redimensiona</string>
   <string name="alert_disconnect_msg">Connexió perduda</string>
-  <string name="network_lost_grace_period">S\'ha perdut la connexió de xarxa, s\'està esperant per tornar a connectar-se...</string>
-  <string name="network_grace_period_expired">La xarxa no s\'ha restablert, desconnectant...</string>
+  <string name="network_lost_grace_period">S\'ha perdut la connexió de xarxa, s\'està esperant per tornar a connectar-se…</string>
+  <string name="network_grace_period_expired">La xarxa no s\'ha restablert, desconnectant…</string>
   <string name="network_restored_same_ip">La xarxa s\'ha restablert, la connexió s\'ha mantingut.</string>
-  <string name="network_restored_ip_changed">La xarxa s\'ha restablert, però l\'adreça IP ha canviat, tornant a connectar...</string>
-  <string name="network_restored_no_previous_state">La xarxa s\'ha restablert, s\'està verificant la connexió...</string>
+  <string name="network_restored_ip_changed">La xarxa s\'ha restablert, però l\'adreça IP ha canviat, tornant a connectar…</string>
+  <string name="network_restored_no_previous_state">La xarxa s\'ha restablert, s\'està verificant la connexió…</string>
   <string name="pref_emulation_category">Emulador del terminal</string>
   <string name="pref_emulation_title">Mode d\'emulació</string>
   <string name="pref_scrollback_title">Tamany de la història</string>
@@ -101,7 +101,7 @@
   <string name="dialog_localfont_title">Importa el tipus de lletra</string>
   <string name="dialog_localfont_hint">Nom per visualitzar de la font</string>
   <string name="button_import">Importa</string>
-  <string name="font_importing">S\'està carregant el tipus de lletra...</string>
+  <string name="font_importing">S\'està carregant el tipus de lletra…</string>
   <string name="pref_backupkeys_title">Còpia de seguretat de claus públiques</string>
   <string name="pref_backupkeys_summary">Crea una còpia de seguretat de les claus privades mitjançant el mecanisme de còpia d\'Android</string>
   <string name="pref_ui_category">Interfície d\'usuari</string>
@@ -429,7 +429,7 @@
   <string name="connect_anyway">Connecta de totes maneres</string>
   <string name="open_settings">Obriu la configuració</string>
   <string name="terminal_no_route">Intenteu accedir a un host local? Doneu permís a la xarxa local.</string>
-  <string name="loading_message">S\'està carregant...</string>
+  <string name="loading_message">S\'està carregant…</string>
   <string name="migration_checking">S\'està comprovant la base de dades…</string>
   <string name="migration_title">Migrant la base de dades</string>
   <string name="migration_warning">Si us plau, no tanqueu l\'aplicació durant la migració.</string>
@@ -567,7 +567,7 @@
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">Ordre del servidor Mosh</string>
   <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Ruta o ordre personalitzada per al servidor Mosh (deixeu-ho en blanc per utilitzar la configuració per defecte).</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">Port UDP de Mosh</string>
-  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Port UDP fix per a mosh (0 per a l’assignació automàtica en el rang 60000-61000)</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Port UDP fix per a mosh (0 per a l’assignació automàtica en el rang 60000–61000)</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Configuració regional</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Configuració regional per a la sessió de Mosh (per exemple, en_US.UTF-8)</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
@@ -980,7 +980,7 @@
   <string name="keyboard_customize" tools:machine_translated="true">Personalitza</string>
   <string name="keyboard_edit_shared" tools:machine_translated="true">Edita el disseny compartit.</string>
   <string name="keyboard_make_default" tools:machine_translated="true">Utilitza-ho com a configuració per defecte de l’aplicació.</string>
-  <string name="keyboard_saving" tools:machine_translated="true">S’està desant...</string>
+  <string name="keyboard_saving" tools:machine_translated="true">S’està desant…</string>
   <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
   <string name="keyboard_copy_name" tools:machine_translated="true">Personalitzat</string>
   <string name="keyboard_reset_inherited" tools:machine_translated="true">Utilitza el teclat heretat.</string>

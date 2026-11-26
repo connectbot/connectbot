@@ -556,10 +556,10 @@
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">გააქტივეთ/გაუქმეთ IME-ის შეყვანის რეჟიმი.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">შემადგენლობის რეჟიმი (IME)</string>
   <string name="hostpref_profile_edit" tools:machine_translated="true">შერჩეული პროფილის რედაქტირება</string>
-  <string name="terminal_mosh_installing" tools:machine_translated="true">Mosh-ის მხარდაჭერის მომზადება მიმდინარეობს...</string>
-  <string name="terminal_mosh_starting" tools:machine_translated="true">Mosh-თან კავშირის დაწყება...</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Mosh-ის მხარდაჭერის მომზადება მიმდინარეობს…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Mosh-თან კავშირის დაწყება…</string>
   <string name="terminal_mosh_install_timeout" tools:machine_translated="true">გაფრთხილება: Mosh-ის ინსტალაციის დრო ამოწურულია.</string>
-  <string name="terminal_mosh_launching_server" tools:machine_translated="true">mosh-სერვერის გაშვება დისტანციურ ჰოსტზე...</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">mosh-სერვერის გაშვება დისტანციურ ჰოსტზე…</string>
   <string name="terminal_mosh_server_failed" tools:machine_translated="true">მშორს მდებარე კომპიუტერზე mosh-server-ის გაშვება ვერ მოხერხდა.</string>
   <string name="terminal_mosh_client_failed" tools:machine_translated="true">mosh-კლიენტის გაშვება ვერ მოხერხდა.</string>
   <string name="terminal_mosh_connected" tools:machine_translated="true">Mosh-თან კავშირი დაწესდა.</string>
@@ -567,12 +567,12 @@
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">Mosh სერვერის ბრძანება</string>
   <string name="hostpref_mosh_server_summary" tools:machine_translated="true">mosh-server-ის მორგებული გზა ან ბრძანება (ნაგულისხმევისთვის დატოვეთ ცარიელი)</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">Mosh-ის UDP პორტი</string>
-  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">მუდმივი UDP პორტი პროგრამა Mosh-ისთვის (0 ავტომატური დიაპაზონის მისამართად, 60000-61000).</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">მუდმივი UDP პორტი პროგრამა Mosh-ისთვის (0 ავტომატური დიაპაზონის მისამართად, 60000–61000).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">ადგილმდებარეობა</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Mosh სესიისთვის დაყენებული ლოკალი (მაგ., en_US.UTF-8).</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Mosh-ის ვერსია და პროგრამული კოდი</string>
-  <string name="pref_mosh_installing" tools:machine_translated="true">მზადდება Mosh-ის მხარდაჭერა...</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">მზადდება Mosh-ის მხარდაჭერა…</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">შეინახოთ ცვლილებები?</string>
   <string name="editor_discard_changes_message" tools:machine_translated="true">თქვენი ცვლილებები დაკარგვა, თუ შენახვის გარეშე დახურავთ.</string>
   <string name="editor_discard" tools:machine_translated="true">უარყოფა</string>

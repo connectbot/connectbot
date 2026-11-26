@@ -540,7 +540,7 @@
   <string name="auth_banner_title" tools:machine_translated="true">Authentifizierungsnachricht von %1$s</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Authentifizierungsnachricht:</string>
   <string name="pref_imetogglekey_title" tools:machine_translated="true">IME-Umschalttaste anzeigen</string>
-  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Fügen Sie der Reihe mit den Sondertasten eine IME-Schaltfläche hinzu, mit der der Zusammensetzungsmodus für Sprachen aktiviert oder deaktiviert wird, die einen Zusammensetzungspuffer benötigen (z. B. Japanisch, Chinesisch, Koreanisch).</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Fügen Sie der Reihe mit den Sondertasten eine IME-Schaltfläche hinzu, mit welcher der Zusammensetzungsmodus für Sprachen aktiviert oder deaktiviert wird, die einen Zusammensetzungspuffer benötigen (z. B. Japanisch, Chinesisch, Koreanisch).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Einstellungen für Tastenkombinationen mit Strg/Alt für die vollständige IME-Eingabemethode</string>
   <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Keine Umgehung verwenden</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Rohe Tasteneingabeereignisse</string>
@@ -632,7 +632,7 @@
   <string name="automation_key_down" tools:machine_translated="true">Pfeil nach unten</string>
   <string name="automation_key_left" tools:machine_translated="true">Linkspfeil</string>
   <string name="automation_key_right" tools:machine_translated="true">Pfeil nach rechts</string>
-  <string name="automation_key_home" tools:machine_translated="true">Pos1</string>
+  <string name="automation_key_home" tools:machine_translated="true" tools:ignore="Typos">Pos1</string>
   <string name="automation_key_end" tools:machine_translated="true">Ende</string>
   <string name="automation_key_insert" tools:machine_translated="true">Einfügen</string>
   <string name="automation_key_page_up" tools:machine_translated="true">Bild auf</string>
@@ -758,7 +758,7 @@
   <string name="connection_info_ssh_port" tools:machine_translated="true">SSH-Port</string>
   <string name="connection_info_username" tools:machine_translated="true">Benutzername</string>
   <string name="connection_info_status" tools:machine_translated="true">Status</string>
-  <string name="connection_info_connecting" tools:machine_translated="true">Verbinde...</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">Verbinde…</string>
   <string name="connection_info_connected" tools:machine_translated="true">Verbunden</string>
   <string name="connection_info_disconnected" tools:machine_translated="true">Verbindung getrennt.</string>
   <string name="connection_info_local_address" tools:machine_translated="true">Lokale Adresse</string>

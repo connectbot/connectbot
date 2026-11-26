@@ -81,7 +81,7 @@
   <string name="network_lost_grace_period">فقد الاتصال بالشبكة، في انتظار إعادة الاتصال…</string>
   <string name="network_grace_period_expired">لم يتم استعادة الاتصال بالشبكة، جاري قطع الاتصال…</string>
   <string name="network_restored_same_ip">تم استعادة الشبكة، واستمر الاتصال.</string>
-  <string name="network_restored_ip_changed">تم استعادة الشبكة ولكن تم تغيير عنوان IP، إعادة الاتصال...</string>
+  <string name="network_restored_ip_changed">تم استعادة الشبكة ولكن تم تغيير عنوان IP، إعادة الاتصال…</string>
   <string name="network_restored_no_previous_state">تم استعادة الشبكة، جارٍ التحقق من الاتصال…</string>
   <string name="pref_emulation_category">محاكاة الطرفية</string>
   <string name="pref_emulation_title">وضع المحاكاة</string>
@@ -94,14 +94,14 @@
   <string name="dialog_customfont_hint">اسم خط Google (مثل Cascadia Code)</string>
   <string name="button_add">أضف</string>
   <string name="button_remove">إزالة</string>
-  <string name="font_validating">التحقق من صحة الخط...</string>
+  <string name="font_validating">التحقق من صحة الخط…</string>
   <string name="font_downloading">جارٍ تنزيل الخط…</string>
   <string name="pref_localfont_title">استيراد خط محلي</string>
   <string name="pref_localfont_summary">استيراد ملف خط من وحدة التخزين (TTF أو OTF)</string>
   <string name="dialog_localfont_title">استيراد الخط</string>
   <string name="dialog_localfont_hint">اسم العرض للخط</string>
   <string name="button_import">استيراد</string>
-  <string name="font_importing">جاري استيراد الخط...</string>
+  <string name="font_importing">جاري استيراد الخط…</string>
   <string name="pref_backupkeys_title">النسخ الإحتياطي للمفاتيح العمومية</string>
   <string name="pref_backupkeys_summary">احتفظ بنسخ احتياطية من المفاتيح الخاصة باستخدام آلية النسخ الاحتياطي في نظام Android.</string>
   <string name="pref_ui_category">واجهة المستخدم</string>
@@ -282,7 +282,7 @@
   <string name="terminal_auth">جارٍ محاولة المصادقة</string>
   <string name="terminal_auth_pass">جارٍ محاولة المصادقة باستخدام \"كلمة المرور\"</string>
   <string name="terminal_auth_pass_fail">فشلت طريقة المصادقة \'كلمة المرور\'</string>
-  <string name="terminal_auth_saved_password">جارٍ تجربة كلمة المرور المحفوظة...</string>
+  <string name="terminal_auth_saved_password">جارٍ تجربة كلمة المرور المحفوظة…</string>
   <string name="terminal_auth_saved_password_fail">فشل المصادقة باستخدام كلمة المرور المحفوظة.</string>
   <string name="terminal_auth_pubkey_any">جارٍ محاولة المصادقة باستخدام \'المفتاح العام\' مع أي من المفاتيح العامة الموجودة في الذاكرة.</string>
   <string name="terminal_auth_pubkey_invalid">المفتاح العام المحدد غير صالح، حاول إعادة تحديده في محرر المضيف.</string>
@@ -322,7 +322,7 @@
   <string name="error_invalid_json">ملف JSON غير صالح</string>
   <string name="title_palette_editor">تعديل لوحة الألوان</string>
   <string name="button_reset_all_colors">إعادة تعيين الكل</string>
-  <string name="section_ansi_colors">ألوان ANSI (0-15)</string>
+  <string name="section_ansi_colors">ألوان ANSI (0–15)</string>
   <string name="dialog_title_edit_color">تعديل اللون %1$d</string>
   <string name="dialog_title_reset_all">هل تريد إعادة تعيين جميع الألوان؟</string>
   <string name="dialog_message_reset_all">سيؤدي هذا إلى إعادة تعيين جميع الألوان الـ 256 إلى قيمها الافتراضية. لا يمكن التراجع عن هذا الإجراء.</string>
@@ -429,7 +429,7 @@
   <string name="connect_anyway">واصل الاتصال على أي حال</string>
   <string name="open_settings">افتح الإعدادات</string>
   <string name="terminal_no_route">هل تحاول الوصول إلى جهاز محلي؟ امنح التطبيق إذن الوصول إلى الشبكة المحلية.</string>
-  <string name="loading_message">جاري التحميل...</string>
+  <string name="loading_message">جاري التحميل…</string>
   <string name="migration_checking">جارٍ فحص قاعدة البيانات…</string>
   <string name="migration_title">ترحيل قاعدة البيانات</string>
   <string name="migration_warning">يرجى عدم إغلاق التطبيق أثناء عملية النقل.</string>
@@ -567,7 +567,7 @@
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">أمر خادم Mosh</string>
   <string name="hostpref_mosh_server_summary" tools:machine_translated="true">مسار أو أمر مخصص لخادم Mosh (اتركه فارغًا لاستخدام الإعداد الافتراضي).</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">منفذ UDP الخاص بـ Mosh</string>
-  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">منفذ UDP ثابت لبرنامج Mosh (0 يعني تحديد تلقائي للنطاق 60000-61000).</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">منفذ UDP ثابت لبرنامج Mosh (0 يعني تحديد تلقائي للنطاق 60000–61000).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">الإعدادات المحلية</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">الإعدادات المحلية لجلسة برنامج Mosh (مثل: en_US.UTF-8)</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
@@ -725,7 +725,7 @@
   <string name="known_host_import" tools:machine_translated="true">استيراد مفتاح المضيف</string>
   <string name="known_host_import_title" tools:machine_translated="true">استيراد مفتاح المضيف</string>
   <string name="known_host_import_key_label" tools:machine_translated="true">مفتاح OpenSSH العام</string>
-  <string name="known_host_import_help" tools:machine_translated="true">الصق المفتاح العام الكامل، مثل \"ssh-ed25519 AAAA...\". لا يمكن استيراد بصمة المفتاح وحدها.</string>
+  <string name="known_host_import_help" tools:machine_translated="true" tools:ignore="TypographyEllipsis">الصق المفتاح العام الكامل، مثل \"ssh-ed25519 AAAA...\". لا يمكن استيراد بصمة المفتاح وحدها.</string>
   <string name="known_host_import_invalid" tools:machine_translated="true">أدخل مفتاح OpenSSH عامًا صالحًا. يجب أن تتطابق الخوارزمية مع المفتاح المُرمَّز.</string>
   <string name="known_host_import_confirm" tools:machine_translated="true">استيراد</string>
   <string name="logs_exit_history" tools:machine_translated="true">أحدث عمليات إنهاء العمليات</string>
@@ -992,7 +992,7 @@
   <string name="keyboard_customize" tools:machine_translated="true">تخصيص</string>
   <string name="keyboard_edit_shared" tools:machine_translated="true">تحرير التخطيط المشترك</string>
   <string name="keyboard_make_default" tools:machine_translated="true">استخدم كإعداد افتراضي للتطبيق.</string>
-  <string name="keyboard_saving" tools:machine_translated="true">جارٍ الحفظ...</string>
+  <string name="keyboard_saving" tools:machine_translated="true">جارٍ الحفظ…</string>
   <string name="keyboard_context_name" tools:machine_translated="true">%1$s — %2$s</string>
   <string name="keyboard_copy_name" tools:machine_translated="true">مخصص</string>
   <string name="keyboard_reset_inherited" tools:machine_translated="true">استخدم لوحة المفاتيح الافتراضية.</string>

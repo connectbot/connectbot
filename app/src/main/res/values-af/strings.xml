@@ -567,7 +567,7 @@
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">Mosh-bedienersopdrag</string>
   <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Pasgemaakte mosh-bedienerspad of -opdrag (laat leeg vir die verstekwaarde)</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">Mosh UDP-poort</string>
-  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Vaste UDP-poort vir mosh (0 vir outomatiese 60000-61000-reeks)</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Vaste UDP-poort vir mosh (0 vir outomatiese 60000–61000-reeks)</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Plaaslike instellings</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Plaaslike instellings vir die Mosh-sessie (bv. en_US.UTF-8)</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>

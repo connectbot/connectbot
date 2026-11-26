@@ -567,7 +567,7 @@
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">Mosh-serverkommando</string>
   <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Angiv en brugerdefineret sti eller kommando til Mosh-serveren (lad feltet stå tomt for at bruge standardindstillingen).</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">Mosh UDP-port</string>
-  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Fastlagt UDP-port til mosh (0 for automatisk valg inden for området 60000-61000)</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Fastlagt UDP-port til mosh (0 for automatisk valg inden for området 60000–61000)</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Sprogindstilling</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Sprogindstilling for Mosh-sessionen (f.eks. en_US.UTF-8)</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
