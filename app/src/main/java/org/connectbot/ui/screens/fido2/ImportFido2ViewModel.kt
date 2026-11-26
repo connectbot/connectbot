@@ -371,7 +371,6 @@ class ImportFido2ViewModel @Inject constructor(
 
     override fun onCleared() {
         cancelImport()
-        super.onCleared()
     }
 
     fun clearError() {

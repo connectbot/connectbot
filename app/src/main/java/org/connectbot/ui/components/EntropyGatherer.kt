@@ -46,8 +46,8 @@ private const val MILLIS_BETWEEN_INPUTS = 50L
 @Composable
 fun EntropyGatherer(
     onGatherEntropy: (ByteArray) -> Unit,
-    onProgressUpdate: (Int) -> Unit = {},
     modifier: Modifier = Modifier,
+    onProgressUpdate: (Int) -> Unit = {},
 ) {
     val entropyGenerator = remember { DragEntropyGenerator() }
     val backgroundColor = MaterialTheme.colorScheme.surfaceVariant

@@ -18,12 +18,12 @@
 package org.connectbot.service
 
 import android.Manifest
-import android.annotation.TargetApi
 import android.app.BackgroundServiceStartNotAllowedException
 import android.app.Notification
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import androidx.test.filters.SdkSuppress
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -97,7 +97,7 @@ class TerminalManagerForegroundTest {
     }
 
     @Test
-    @TargetApi(31)
+    @SdkSuppress(minSdkVersion = 31)
     @Config(sdk = [31])
     fun android12BackgroundBindingDoesNotCrash() {
         val service = spy(manager)

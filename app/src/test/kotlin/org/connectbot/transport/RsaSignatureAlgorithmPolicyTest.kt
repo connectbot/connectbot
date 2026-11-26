@@ -94,7 +94,7 @@ class RsaSignatureAlgorithmPolicyTest {
         }
         return connection.javaClass.getDeclaredField("serverSigAlgs").run {
             isAccessible = true
-            get(connection) as Set<String>
+            (get(connection) as Set<*>).map { it as String }.toSet()
         }
     }
 }

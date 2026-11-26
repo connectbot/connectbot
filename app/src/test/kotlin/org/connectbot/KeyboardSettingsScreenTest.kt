@@ -17,7 +17,6 @@
 
 package org.connectbot
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.Bitmap
 import androidx.activity.ComponentActivity
@@ -57,6 +56,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import androidx.room.Room
+import androidx.test.filters.SdkSuppress
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.connectbot.data.ConnectBotDatabase
@@ -158,7 +158,7 @@ class KeyboardSettingsScreenTest {
         node.performClick()
     }
 
-    @TargetApi(34)
+    @SdkSuppress(minSdkVersion = 34)
     @Config(sdk = [34], qualifiers = "w411dp-h891dp")
     @GraphicsMode(GraphicsMode.Mode.NATIVE)
     @Test
@@ -252,7 +252,7 @@ class KeyboardSettingsScreenTest {
         rule.onNodeWithText(rule.activity.getString(R.string.keyboard_save)).assertIsNotEnabled()
     }
 
-    @TargetApi(34)
+    @SdkSuppress(minSdkVersion = 34)
     @Config(sdk = [34], qualifiers = "w411dp-h891dp")
     @GraphicsMode(GraphicsMode.Mode.NATIVE)
     @Test
@@ -274,7 +274,7 @@ class KeyboardSettingsScreenTest {
         assertEquals(1, db.keyboardDao().layouts().size)
     }
 
-    @TargetApi(34)
+    @SdkSuppress(minSdkVersion = 34)
     @Config(sdk = [34], qualifiers = "w411dp-h891dp")
     @GraphicsMode(GraphicsMode.Mode.NATIVE)
     @Test
@@ -408,7 +408,7 @@ class KeyboardSettingsScreenTest {
         rule.onNodeWithText(rule.activity.getString(R.string.keyboard_add_layout)).assertIsDisplayed()
     }
 
-    @TargetApi(34)
+    @SdkSuppress(minSdkVersion = 34)
     @Config(sdk = [34], qualifiers = "w411dp-h891dp")
     @GraphicsMode(GraphicsMode.Mode.NATIVE)
     @Test
@@ -620,7 +620,7 @@ class KeyboardSettingsScreenTest {
         rule.onAllNodesWithContentDescription(rule.activity.getString(R.string.keyboard_save)).onLast().assertIsDisplayed()
     }
 
-    @TargetApi(34)
+    @SdkSuppress(minSdkVersion = 34)
     @Config(sdk = [34], qualifiers = "w411dp-h891dp")
     @GraphicsMode(GraphicsMode.Mode.NATIVE)
     @Test

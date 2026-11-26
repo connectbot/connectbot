@@ -57,9 +57,9 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.IntOffset
@@ -100,12 +100,13 @@ fun FloatingTextInputDialog(
 ) {
     val context = LocalContext.current
     val prefs = remember { PreferenceManager.getDefaultSharedPreferences(context) }
-    val configuration = LocalConfiguration.current
+    val containerSize = LocalWindowInfo.current.containerSize
+    if (containerSize.width == 0 || containerSize.height == 0) return
     val density = LocalDensity.current
 
     // Calculate screen dimensions
-    val screenWidthPx = with(density) { configuration.screenWidthDp.dp.toPx() }
-    val screenHeightPx = with(density) { configuration.screenHeightDp.dp.toPx() }
+    val screenWidthPx = containerSize.width.toFloat()
+    val screenHeightPx = containerSize.height.toFloat()
     val minWidthPx = with(density) { MIN_WIDTH_DP.dp.toPx() }
     val minHeightPx = with(density) { MIN_HEIGHT_DP.dp.toPx() }
 
@@ -180,16 +181,16 @@ fun FloatingTextInputDialog(
                             MaterialTheme.colorScheme.primary,
                             RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp),
                         )
-                        .pointerInput(Unit) {
+                        .pointerInput(screenWidthPx, screenHeightPx) {
                             detectDragGestures { change, dragAmount ->
                                 change.consume()
                                 offsetX = (offsetX + dragAmount.x).coerceIn(
                                     0f,
-                                    screenWidthPx - windowWidthPx,
+                                    (screenWidthPx - windowWidthPx).coerceAtLeast(0f),
                                 )
                                 offsetY = (offsetY + dragAmount.y).coerceIn(
                                     0f,
-                                    screenHeightPx - windowHeightPx,
+                                    (screenHeightPx - windowHeightPx).coerceAtLeast(0f),
                                 )
                             }
                         }
@@ -270,16 +271,16 @@ fun FloatingTextInputDialog(
                         Box(
                             modifier = Modifier
                                 .size(24.dp)
-                                .pointerInput(Unit) {
+                                .pointerInput(screenWidthPx, screenHeightPx) {
                                     detectDragGestures { change, dragAmount ->
                                         change.consume()
                                         windowWidthPx = (windowWidthPx + dragAmount.x).coerceIn(
                                             minWidthPx,
-                                            screenWidthPx - offsetX,
+                                            (screenWidthPx - offsetX).coerceAtLeast(minWidthPx),
                                         )
                                         windowHeightPx = (windowHeightPx + dragAmount.y).coerceIn(
                                             minHeightPx,
-                                            screenHeightPx - offsetY,
+                                            (screenHeightPx - offsetY).coerceAtLeast(minHeightPx),
                                         )
                                     }
                                 },
