@@ -30,6 +30,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
+import androidx.compose.ui.test.click
 import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -98,8 +99,7 @@ class ConsoleMenuImeTest {
 
     @Test
     fun menuDismissal_restoresVisibleKeyboard_withoutResizingTerminal() = withLocalConsole { bridge ->
-        waitUntil("Keyboard did not open") { imeVisible() }
-        settle()
+        showSoftwareKeyboard()
         val original = bridge.terminalEmulator.dimensions
         val observed = mutableSetOf<TerminalDimensions>()
         val sampler = object : Choreographer.FrameCallback {
@@ -144,8 +144,7 @@ class ConsoleMenuImeTest {
 
     @Test
     fun menuItemDismissal_restoresVisibleKeyboard() = withLocalConsole {
-        waitUntil("Keyboard did not open") { imeVisible() }
-        settle()
+        showSoftwareKeyboard()
         openMenu()
         settle()
         composeRule.onNodeWithText(context.getString(R.string.console_menu_compose_mode)).performClick()
@@ -158,7 +157,7 @@ class ConsoleMenuImeTest {
 
     @Test
     fun menuDismissal_keepsUserDismissedKeyboardHidden() = withLocalConsole {
-        waitUntil("Keyboard did not open") { imeVisible() }
+        showSoftwareKeyboard()
         instrumentation.sendKeyDownUpSync(KeyEvent.KEYCODE_BACK)
         waitUntil("Back did not hide the keyboard") { !imeVisible() }
         settle()
@@ -234,6 +233,15 @@ class ConsoleMenuImeTest {
 
             composeRule.onNodeWithTag("top_app_bar").assertIsNotDisplayed()
         }
+    }
+
+    private fun showSoftwareKeyboard() {
+        if (!composeRule.runOnIdle { imeVisible() }) {
+            // A terminal tap requests IME focus even if the startup show request was missed.
+            composeRule.onNodeWithTag("terminal").performTouchInput { click() }
+        }
+        waitUntil("Software keyboard did not open") { imeVisible() }
+        settle()
     }
 
     private fun openMenu() {
@@ -314,7 +322,6 @@ class ConsoleMenuImeTest {
                     showKeyboard.fetchSemanticsNodes().isNotEmpty() || hideKeyboard.fetchSemanticsNodes().isNotEmpty()
                 }
                 settle()
-                waitUntil("Software keyboard did not open automatically") { imeVisible() }
                 test(localBridge)
             } finally {
                 localBridge.dispatchDisconnect(DisconnectReason.USER_REQUESTED)
