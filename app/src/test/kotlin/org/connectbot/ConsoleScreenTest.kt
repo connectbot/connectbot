@@ -204,7 +204,7 @@ class ConsoleScreenTest {
         hostname: String = "test-host",
         isDisconnected: Boolean = false,
     ): TerminalBridge {
-        val bridge = mock(TerminalBridge::class.java)
+        val bridge = mockTerminalBridge()
         val host = Host(
             id = UUID(0, id),
             hostname = hostname,
