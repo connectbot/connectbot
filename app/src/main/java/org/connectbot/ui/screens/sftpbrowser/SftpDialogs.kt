@@ -126,6 +126,7 @@ fun GoToPathDialog(
 fun DownloadConflictDialog(
     conflict: DownloadConflict,
     onOverwrite: () -> Unit,
+    onResume: () -> Unit,
     onRename: (String) -> Unit,
     onCancel: () -> Unit,
 ) {
@@ -138,6 +139,7 @@ fun DownloadConflictDialog(
         text = {
             Column {
                 Text(stringResource(R.string.sftp_download_conflict_message, conflict.filename))
+                if (conflict.canOverwrite) Text(stringResource(R.string.sftp_download_resume_warning))
                 OutlinedTextField(
                     value = name,
                     onValueChange = { name = it },
@@ -155,6 +157,9 @@ fun DownloadConflictDialog(
             }
         },
         dismissButton = {
+            TextButton(onClick = onResume, enabled = conflict.canOverwrite) {
+                Text(stringResource(R.string.sftp_download_resume))
+            }
             TextButton(onClick = onOverwrite, enabled = conflict.canOverwrite) {
                 Text(stringResource(R.string.sftp_download_overwrite))
             }

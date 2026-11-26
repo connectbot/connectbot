@@ -23,6 +23,7 @@ import android.content.Context
 import android.database.MatrixCursor
 import android.net.Uri
 import android.os.Bundle
+import android.os.ParcelFileDescriptor
 import android.provider.DocumentsContract
 import androidx.lifecycle.SavedStateHandle
 import com.trilead.ssh2.SFTPv3DirectoryEntry
@@ -51,6 +52,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito.doAnswer
@@ -313,6 +315,36 @@ class SftpBrowserBehaviorTest {
         verify(resolver).openOutputStream(target, "wt")
         assertNull(vm.uiState.value.downloadConflict)
         assertNull(vm.uiState.value.error)
+    }
+
+    @Test
+    fun resumeKeepsExistingBytesAndUsesTheirLengthAsRemoteOffset() = runTest(dispatcher) {
+        val vm = browser()
+        advanceUntilIdle()
+        localDownloads("report.pdf" to false)
+        val tree = Uri.parse("content://test/tree/root")
+        val target = DocumentsContract.buildDocumentUriUsingTree(tree, "report.pdf")
+        val file = java.io.File.createTempFile("sftp-resume", ".tmp")
+        try {
+            file.writeBytes(byteArrayOf(1, 2))
+            `when`(resolver.openFileDescriptor(target, "rw")).thenAnswer {
+                ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_WRITE)
+            }
+            doAnswer {
+                it.getArgument<java.io.OutputStream>(1).write(byteArrayOf(3))
+                Unit
+            }.`when`(operations).downloadFile(eq("/home/test/report.pdf") ?: "", any(java.io.OutputStream::class.java) ?: ByteArrayOutputStream(), anyLong(), any() ?: { _, _ -> })
+            vm.downloadFiles(listOf(entry("report.pdf")), tree)
+            advanceUntilIdle()
+            vm.resumeDownload()
+            advanceUntilIdle()
+            org.junit.Assert.assertArrayEquals(byteArrayOf(1, 2, 3), file.readBytes())
+            verify(operations).downloadFile(eq("/home/test/report.pdf") ?: "", any(java.io.OutputStream::class.java) ?: ByteArrayOutputStream(), eq(2L), any() ?: { _, _ -> })
+            verify(resolver, never()).openOutputStream(target, "wt")
+            assertNull(vm.uiState.value.error)
+        } finally {
+            file.delete()
+        }
     }
 
     @Test

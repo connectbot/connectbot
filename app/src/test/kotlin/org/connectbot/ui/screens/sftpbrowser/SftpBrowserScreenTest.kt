@@ -135,6 +135,8 @@ class SftpBrowserScreenTest {
         render()
         rule.onNode(hasSetTextAction()).assertIsDisplayed()
         rule.onNode(hasSetTextAction() and hasText("report(1).pdf")).assertIsDisplayed()
+        click(R.string.sftp_download_resume)
+        verify(vm).resumeDownload()
         click(R.string.sftp_download_overwrite)
         verify(vm).resolveDownloadConflict("report.pdf")
         rule.onNode(hasSetTextAction()).performTextReplacement("renamed.pdf")
@@ -144,6 +146,7 @@ class SftpBrowserScreenTest {
         verify(vm).cancelTransfer()
         update(state.value.copy(downloadConflict = DownloadConflict("folder", "folder(1)", false)))
         rule.onNodeWithText(text(R.string.sftp_download_overwrite)).assertIsNotEnabled()
+        rule.onNodeWithText(text(R.string.sftp_download_resume)).assertIsNotEnabled()
     }
 
     @Test

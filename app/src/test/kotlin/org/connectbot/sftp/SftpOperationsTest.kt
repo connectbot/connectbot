@@ -64,6 +64,42 @@ class SftpOperationsTest {
     }
 
     @Test
+    fun resumesFromOffsetAndReportsTotalProgress() = runBlocking {
+        val client = mock(SFTPv3Client::class.java)
+        val handle = mock(SFTPv3FileHandle::class.java)
+        `when`(client.stat("/file")).thenReturn(SFTPv3FileAttributes().apply { size = 5L })
+        `when`(client.openFileRO("/file")).thenReturn(handle)
+        `when`(client.read(eq(handle), anyLong(), any(ByteArray::class.java), eq(0), anyInt())).thenAnswer {
+            if (it.getArgument<Long>(1) == 3L) {
+                byteArrayOf(4, 5).copyInto(it.getArgument(2))
+                2
+            } else {
+                -1
+            }
+        }
+        val output = ByteArrayOutputStream().apply { write(byteArrayOf(1, 2, 3)) }
+        val progress = mutableListOf<Pair<Long, Long>>()
+        SftpOperations(client).downloadFile("/file", output, 3) { done, total -> progress.add(done to total) }
+        assertArrayEquals(byteArrayOf(1, 2, 3, 4, 5), output.toByteArray())
+        assertEquals(listOf(3L to 5L, 5L to 5L), progress)
+        verify(client).read(eq(handle), eq(3L), any(ByteArray::class.java), eq(0), anyInt())
+        verify(client).closeFile(handle)
+    }
+
+    @Test
+    fun resumeRejectsOffsetBeyondRemoteSizeBeforeOpeningFile() = runBlocking {
+        val client = mock(SFTPv3Client::class.java)
+        `when`(client.stat("/file")).thenReturn(SFTPv3FileAttributes().apply { size = 2L })
+        try {
+            SftpOperations(client).downloadFile("/file", ByteArrayOutputStream(), 3)
+            fail("Invalid offset must fail")
+        } catch (_: IOException) {
+            verify(client, org.mockito.Mockito.never()).openFileRO("/file")
+        }
+        Unit
+    }
+
+    @Test
     fun transfersAlwaysCloseHandlesAndIgnoreOnlyCloseErrors() = runBlocking {
         val client = mock(SFTPv3Client::class.java)
         val handle = mock(SFTPv3FileHandle::class.java)

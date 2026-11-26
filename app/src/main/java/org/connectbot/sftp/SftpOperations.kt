@@ -132,22 +132,29 @@ class SftpOperations(private val client: SFTPv3Client) {
      * Download a file from the remote server.
      *
      * @param remotePath The path of the file to download
-     * @param outputStream The stream to write the file contents to
+     * @param outputStream The stream positioned where the downloaded bytes should be written
+     * @param startOffset The remote offset to start reading from
      * @param progressCallback Called with (bytesTransferred, totalBytes) during transfer
      * @throws IOException if the transfer fails
      */
     suspend fun downloadFile(
         remotePath: String,
         outputStream: OutputStream,
+        startOffset: Long = 0,
         progressCallback: (Long, Long) -> Unit = { _, _ -> },
     ) = withContext(Dispatchers.IO) {
+        require(startOffset >= 0) { "Download offset cannot be negative" }
         val attrs = client.stat(remotePath)
         val totalSize = attrs.size ?: 0L
+        if (startOffset > 0 && (attrs.size == null || startOffset > totalSize)) {
+            throw IOException("Cannot resume: local file is larger than the remote file or remote size is unknown")
+        }
 
         val handle = client.openFileRO(remotePath)
         try {
             val buffer = ByteArray(BUFFER_SIZE)
-            var offset = 0L
+            var offset = startOffset
+            if (startOffset > 0) progressCallback(startOffset, totalSize)
 
             while (isActive) {
                 val bytesRead = client.read(handle, offset, buffer, 0, buffer.size)

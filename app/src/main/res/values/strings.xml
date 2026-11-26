@@ -2684,4 +2684,8 @@
     <string name="sftp_download_rename">Save with new name</string>
     <!-- SFTP download conflict dialog action to replace the existing file contents. -->
     <string name="sftp_download_overwrite">Overwrite</string>
+    <!-- Action to continue a partial SFTP download using the existing local file. -->
+    <string name="sftp_download_resume">Resume</string>
+    <!-- Warning in the SFTP download conflict dialog explaining the resume requirement. -->
+    <string name="sftp_download_resume_warning">Resume assumes the existing file matches the beginning of the remote file.</string>
 </resources>

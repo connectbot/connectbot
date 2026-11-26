@@ -400,6 +400,7 @@ fun SftpBrowserScreen(
         DownloadConflictDialog(
             conflict = conflict,
             onOverwrite = { viewModel.resolveDownloadConflict(conflict.filename) },
+            onResume = { viewModel.resumeDownload() },
             onRename = { viewModel.resolveDownloadConflict(it) },
             onCancel = { viewModel.cancelTransfer() },
         )

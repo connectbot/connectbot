@@ -19,6 +19,7 @@ package org.connectbot.ui.screens.sftpbrowser
 
 import android.content.Context
 import android.net.Uri
+import android.os.ParcelFileDescriptor
 import android.provider.DocumentsContract
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -102,6 +103,10 @@ data class DownloadConflict(
     val canOverwrite: Boolean,
 )
 
+private data class DownloadDestination(val uri: Uri, val resume: Boolean = false)
+
+private data class DownloadDecision(val filename: String, val resume: Boolean = false)
+
 private data class LocalDownloadDocument(val uri: Uri, val isDirectory: Boolean)
 
 internal fun suggestedDownloadName(filename: String, existingNames: Set<String>): String {
@@ -169,7 +174,7 @@ class SftpBrowserViewModel @Inject constructor(
     private var pendingKeyPassphraseCallback: ((String?) -> Unit)? = null
     private var pendingBiometricCallback: ((Boolean) -> Unit)? = null
     private var transferJob: Job? = null
-    private var downloadConflictDecision: CompletableDeferred<String?>? = null
+    private var downloadConflictDecision: CompletableDeferred<DownloadDecision?>? = null
 
     init {
         loadHost()
@@ -372,7 +377,7 @@ class SftpBrowserViewModel @Inject constructor(
         transferJob = viewModelScope.launch {
             try {
                 withContext(dispatchers.io) {
-                    downloadFile(operations, entry, destinationUri, 1, 1)
+                    downloadFile(operations, entry, DownloadDestination(destinationUri), 1, 1)
                 }
             } catch (_: CancellationException) {
                 // The user cancelled the transfer.
@@ -440,8 +445,13 @@ class SftpBrowserViewModel @Inject constructor(
 
     fun resolveDownloadConflict(filename: String) {
         if (filename.isNotBlank() && filename != "." && filename != ".." && '/' !in filename && '\u0000' !in filename) {
-            downloadConflictDecision?.complete(filename)
+            downloadConflictDecision?.complete(DownloadDecision(filename))
         }
+    }
+
+    fun resumeDownload() {
+        val conflict = _uiState.value.downloadConflict ?: return
+        if (conflict.canOverwrite) downloadConflictDecision?.complete(DownloadDecision(conflict.filename, resume = true))
     }
 
     fun cancelTransfer() {
@@ -453,28 +463,30 @@ class SftpBrowserViewModel @Inject constructor(
     private suspend fun downloadFile(
         operations: SftpOperations,
         entry: SftpEntry,
-        destinationUri: Uri,
+        destination: DownloadDestination,
         fileIndex: Int,
         fileCount: Int,
     ) {
-        val outputStream = context.contentResolver.openOutputStream(destinationUri, "wt")
-            ?: throw IOException("Cannot open output stream")
-
-        updateTransferProgress(entry.filename, false, 0, entry.size ?: 0, fileIndex, fileCount)
-        outputStream.use { stream ->
-            operations.downloadFile(
-                remotePath = entry.fullPath,
-                outputStream = stream,
-            ) { bytesTransferred, totalBytes ->
-                updateTransferProgress(
-                    entry.filename,
-                    false,
-                    bytesTransferred,
-                    totalBytes,
-                    fileIndex,
-                    fileCount,
-                )
+        suspend fun transfer(stream: java.io.OutputStream, offset: Long) {
+            updateTransferProgress(entry.filename, false, offset, entry.size ?: 0, fileIndex, fileCount)
+            operations.downloadFile(entry.fullPath, stream, offset) { bytesTransferred, totalBytes ->
+                updateTransferProgress(entry.filename, false, bytesTransferred, totalBytes, fileIndex, fileCount)
             }
+        }
+
+        if (destination.resume) {
+            val descriptor = context.contentResolver.openFileDescriptor(destination.uri, "rw")
+                ?: throw IOException("Cannot open file for resume")
+            ParcelFileDescriptor.AutoCloseOutputStream(descriptor).use { stream ->
+                val offset = descriptor.statSize
+                if (offset < 0) throw IOException("Cannot determine local file size for resume")
+                stream.channel.position(offset)
+                transfer(stream, offset)
+            }
+        } else {
+            val stream = context.contentResolver.openOutputStream(destination.uri, "wt")
+                ?: throw IOException("Cannot open output stream")
+            stream.use { transfer(it, 0) }
         }
     }
 
@@ -542,12 +554,12 @@ class SftpBrowserViewModel @Inject constructor(
         }
     }
 
-    private suspend fun resolveDownloadDestination(directoryUri: Uri, filename: String): Uri? {
+    private suspend fun resolveDownloadDestination(directoryUri: Uri, filename: String): DownloadDestination? {
         var name = filename
         while (true) {
             val documents = localDocuments(directoryUri)
-            val existing = documents[name] ?: return createDocument(directoryUri, name)
-            val decision = CompletableDeferred<String?>()
+            val existing = documents[name] ?: return DownloadDestination(createDocument(directoryUri, name))
+            val decision = CompletableDeferred<DownloadDecision?>()
             val conflict = DownloadConflict(name, suggestedDownloadName(name, documents.keys), !existing.isDirectory)
             val selectedName = withContext(dispatchers.main) {
                 downloadConflictDecision = decision
@@ -561,8 +573,8 @@ class SftpBrowserViewModel @Inject constructor(
                     }
                 }
             } ?: return null
-            if (selectedName == name && !existing.isDirectory) return existing.uri
-            name = selectedName
+            if (selectedName.filename == name && !existing.isDirectory) return DownloadDestination(existing.uri, selectedName.resume)
+            name = selectedName.filename
         }
     }
 
