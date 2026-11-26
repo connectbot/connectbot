@@ -378,13 +378,41 @@ jobs:
       actions: read
       contents: read
     steps:
+      - name: Select SonarQube inputs
+        id: inputs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # A partial rerun can reuse successful jobs from earlier attempts of this run.
+          ids=$(gh api --paginate --slurp "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts" | jq -er '
+            [.[] | .artifacts[] | select(.expired == false)] as $artifacts |
+            ["sonar-verify", "sonar-instrumentation-oss", "sonar-instrumentation-google"] |
+            map(. as $prefix |
+              [$artifacts[] | .id as $id |
+                .name | capture("^" + $prefix + "-(?<attempt>[0-9]+)$") |
+                {id: $id, attempt: (.attempt | tonumber)}] |
+              max_by(.attempt) |
+              if . == null then error("Missing artifact for " + $prefix) else .id end
+            ) | join(",")')
+          echo "ids=$ids" >> "$GITHUB_OUTPUT"
+
       # Only data crosses into the authenticated workflow; never execute these inputs.
       - name: Download SonarQube inputs
         uses: actions/download-artifact@v8.0.2
         with:
-          pattern: sonar-*-${{ github.run_attempt }}
+          artifact-ids: ${{ steps.inputs.outputs.ids }}
+          github-token: ${{ github.token }}
           merge-multiple: true
           path: sonar-inputs
+
+      - name: Verify assembled coverage reports
+        run: |
+          for report in kover/{ctap2,reportOssDebug,reportGoogleDebug}.xml androidTest/{oss,google}/report.xml; do
+            if [[ ! -s "sonar-inputs/reports/$report" ]]; then
+              echo "::error::Missing or empty SonarQube report: $report"
+              exit 1
+            fi
+          done
 
       - name: Store isolated analysis inputs
         uses: actions/upload-artifact@v7.0.2
