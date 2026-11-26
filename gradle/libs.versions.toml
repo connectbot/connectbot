@@ -41,7 +41,7 @@ conscryptOpenJdk = "2.10.0"
 coroutines = "1.11.0"
 timber = "5.0.1"
 slf4j = "2.0.20"
-re2j = "1.8"
+re2j = "1.9"
 reorderable = "3.1.0"
 
 recyclerview = "1.4.0"
