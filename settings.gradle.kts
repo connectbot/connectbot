@@ -1,5 +1,3 @@
-@file:Suppress("ktlint:standard:property-naming")
-
 pluginManagement {
     includeBuild("build-logic")
     repositories {
@@ -8,9 +6,9 @@ pluginManagement {
     }
 }
 
-val TRANSLATIONS_ONLY: String? by settings
+val translationsOnly = providers.gradleProperty("TRANSLATIONS_ONLY").orNull
 
-if (TRANSLATIONS_ONLY.isNullOrBlank()) {
+if (translationsOnly.isNullOrBlank()) {
     include(":app")
     include(":ctap2")
     include(":ctap2-android")
