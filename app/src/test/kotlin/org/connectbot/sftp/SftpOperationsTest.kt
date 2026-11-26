@@ -20,7 +20,11 @@ package org.connectbot.sftp
 import com.trilead.ssh2.SFTPv3Client
 import com.trilead.ssh2.SFTPv3FileAttributes
 import com.trilead.ssh2.SFTPv3FileHandle
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runCurrent
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
@@ -33,6 +37,7 @@ import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito.doThrow
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.never
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
@@ -41,6 +46,27 @@ import java.io.ByteArrayOutputStream
 import java.io.IOException
 
 class SftpOperationsTest {
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    @Test
+    fun fileOperationsUseProvidedDispatcher() = runTest {
+        val tasks = ArrayDeque<Runnable>()
+        val io = object : kotlinx.coroutines.CoroutineDispatcher() {
+            override fun dispatch(context: kotlin.coroutines.CoroutineContext, block: Runnable) {
+                tasks.addLast(block)
+            }
+        }
+        val client = mock(SFTPv3Client::class.java)
+        val attrs = SFTPv3FileAttributes()
+        `when`(client.stat("/file")).thenReturn(attrs)
+        val operations = SftpOperations(client, io)
+        val job = launch { assertSame(attrs, operations.stat("/file")) }
+        runCurrent()
+        verify(client, never()).stat("/file")
+        tasks.removeFirst().run()
+        verify(client).stat("/file")
+        job.join()
+    }
+
     @Test
     fun downloadsBytesReportsProgressAndClosesHandle() = runBlocking {
         val client = mock(SFTPv3Client::class.java)
@@ -57,7 +83,7 @@ class SftpOperationsTest {
         }
         val output = ByteArrayOutputStream()
         val progress = mutableListOf<Pair<Long, Long>>()
-        SftpOperations(client).downloadFile("/file", output) { done, total -> progress.add(done to total) }
+        SftpOperations(client, Dispatchers.Unconfined).downloadFile("/file", output) { done, total -> progress.add(done to total) }
         assertArrayEquals(byteArrayOf(1, 2, 3), output.toByteArray())
         assertEquals(listOf(3L to 3L), progress)
         verify(client).closeFile(handle)
@@ -79,7 +105,7 @@ class SftpOperationsTest {
         }
         val output = ByteArrayOutputStream().apply { write(byteArrayOf(1, 2, 3)) }
         val progress = mutableListOf<Pair<Long, Long>>()
-        SftpOperations(client).downloadFile("/file", output, 3) { done, total -> progress.add(done to total) }
+        SftpOperations(client, Dispatchers.Unconfined).downloadFile("/file", output, 3) { done, total -> progress.add(done to total) }
         assertArrayEquals(byteArrayOf(1, 2, 3, 4, 5), output.toByteArray())
         assertEquals(listOf(3L to 5L, 5L to 5L), progress)
         verify(client).read(eq(handle), eq(3L), any(ByteArray::class.java), eq(0), anyInt())
@@ -91,7 +117,7 @@ class SftpOperationsTest {
         val client = mock(SFTPv3Client::class.java)
         `when`(client.stat("/file")).thenReturn(SFTPv3FileAttributes().apply { size = 2L })
         try {
-            SftpOperations(client).downloadFile("/file", ByteArrayOutputStream(), 3)
+            SftpOperations(client, Dispatchers.Unconfined).downloadFile("/file", ByteArrayOutputStream(), 3)
             fail("Invalid offset must fail")
         } catch (_: IOException) {
             verify(client, org.mockito.Mockito.never()).openFileRO("/file")
@@ -107,7 +133,7 @@ class SftpOperationsTest {
         `when`(client.openFileRO("/empty")).thenReturn(handle)
         `when`(client.read(eq(handle), anyLong(), any(ByteArray::class.java), eq(0), anyInt())).thenReturn(0)
         doThrow(IOException("closed")).`when`(client).closeFile(handle)
-        val operations = SftpOperations(client)
+        val operations = SftpOperations(client, Dispatchers.Unconfined)
         operations.downloadFile("/empty", ByteArrayOutputStream())
         `when`(client.createFileTruncate("/upload")).thenReturn(handle)
         val progress = mutableListOf<Long>()
@@ -126,7 +152,7 @@ class SftpOperationsTest {
         `when`(client.openFileRO("/file")).thenReturn(handle)
         `when`(client.read(eq(handle), anyLong(), any(ByteArray::class.java), eq(0), anyInt())).thenThrow(IOException("read failed"))
         try {
-            SftpOperations(client).downloadFile("/file", ByteArrayOutputStream())
+            SftpOperations(client, Dispatchers.Unconfined).downloadFile("/file", ByteArrayOutputStream())
             fail("Read errors must propagate")
         } catch (e: IOException) {
             assertEquals("read failed", e.message)
@@ -143,7 +169,7 @@ class SftpOperationsTest {
         `when`(client.ls("/a")).thenReturn(java.util.Vector())
         `when`(client.canonicalPath("/a")).thenReturn("/resolved")
         `when`(client.readLink("/a")).thenReturn("/target")
-        val operations = SftpOperations(client)
+        val operations = SftpOperations(client, Dispatchers.Unconfined)
         assertSame(attributes, operations.stat("/a"))
         assertSame(attributes, operations.lstat("/a"))
         assertTrue(operations.listDirectory("/a").isEmpty())

@@ -134,7 +134,7 @@ class SftpConnectionManager @Inject constructor(
 
             // Create SFTP client
             val sftpClient = SFTPv3Client(connection)
-            val operations = SftpOperations(sftpClient)
+            val operations = SftpOperations(sftpClient, dispatchers.io)
 
             // Store session
             val session = SftpSession(host.id, connection, sftpClient, operations, jumpConnections.toList())
@@ -187,7 +187,8 @@ class SftpConnectionManager @Inject constructor(
         } catch (e: Exception) {
             try {
                 jc.close()
-            } catch (_: Exception) {
+            } catch (closeError: Exception) {
+                Log.w(TAG, "Error closing failed jump connection", closeError)
             }
             jumpConnections.remove(jc)
             throw e
@@ -280,28 +281,7 @@ class SftpConnectionManager @Inject constructor(
 
         var tries = 0
         while (!connection.isAuthenticationComplete && tries++ < AUTH_TRIES) {
-            // Try public key authentication
-            if (host.pubkeyId != HostConstants.PUBKEYID_NEVER &&
-                connection.isAuthMethodAvailable(host.username, AUTH_PUBLICKEY)
-            ) {
-                if (tryPublicKeyAuth(connection, host, promptHandler, keyCache)) {
-                    return true
-                }
-            }
-
-            // Try keyboard-interactive authentication
-            if (connection.isAuthMethodAvailable(host.username, AUTH_KEYBOARDINTERACTIVE)) {
-                if (tryKeyboardInteractiveAuth(connection, host, promptHandler)) {
-                    return true
-                }
-            }
-
-            // Try password authentication
-            if (connection.isAuthMethodAvailable(host.username, AUTH_PASSWORD)) {
-                if (tryPasswordAuth(connection, host, promptHandler)) {
-                    return true
-                }
-            }
+            if (tryAuthenticationMethods(connection, host, promptHandler, keyCache)) return true
 
             // If no auth methods available, break
             if (!connection.isAuthMethodAvailable(host.username, AUTH_PUBLICKEY) &&
@@ -315,52 +295,57 @@ class SftpConnectionManager @Inject constructor(
         return connection.isAuthenticationComplete
     }
 
+    private suspend fun tryAuthenticationMethods(
+        connection: Connection,
+        host: Host,
+        promptHandler: SftpPromptHandler,
+        keyCache: SftpAuthKeyCache,
+    ): Boolean {
+        if (host.pubkeyId != HostConstants.PUBKEYID_NEVER &&
+            connection.isAuthMethodAvailable(host.username, AUTH_PUBLICKEY) &&
+            tryPublicKeyAuth(connection, host, promptHandler, keyCache)
+        ) {
+            return true
+        }
+
+        if (connection.isAuthMethodAvailable(host.username, AUTH_KEYBOARDINTERACTIVE) &&
+            tryKeyboardInteractiveAuth(connection, host, promptHandler)
+        ) {
+            return true
+        }
+
+        if (connection.isAuthMethodAvailable(host.username, AUTH_PASSWORD) &&
+            tryPasswordAuth(connection, host, promptHandler)
+        ) {
+            return true
+        }
+
+        return false
+    }
+
     private suspend fun tryPublicKeyAuth(
         connection: Connection,
         host: Host,
         promptHandler: SftpPromptHandler,
         keyCache: SftpAuthKeyCache,
     ): Boolean {
-        val pubkeyId = host.pubkeyId
-
-        if (pubkeyId == HostConstants.PUBKEYID_ANY) {
-            // Try all available keys
-            val allKeys = pubkeyRepository.getAll()
-            for (pubkey in allKeys) {
-                val keyPair = loadKeyPair(pubkey, promptHandler, keyCache) ?: continue
-                try {
-                    if (connection.authenticateWithPublicKey(host.username, keyPair)) {
-                        Log.d(TAG, "Authenticated with key: ${pubkey.nickname}")
-                        return true
-                    }
-                } catch (e: Exception) {
-                    if (e.isBiometricKeyAuthenticationException()) {
-                        keyCache.remove(pubkey)
-                    }
-                    Log.d(TAG, "Key ${pubkey.nickname} failed: ${e.message}")
+        val pubkeys = when (host.pubkeyId) {
+            HostConstants.PUBKEYID_ANY -> pubkeyRepository.getAll()
+            HostConstants.PUBKEYID_NEVER -> emptyList()
+            else -> listOfNotNull(pubkeyRepository.getById(host.pubkeyId))
+        }
+        for (pubkey in pubkeys) {
+            val keyPair = loadKeyPair(pubkey, promptHandler, keyCache) ?: continue
+            try {
+                if (connection.authenticateWithPublicKey(host.username, keyPair)) {
+                    Log.d(TAG, "Authenticated with key: ${pubkey.nickname}")
+                    return true
                 }
-            }
-        } else if (pubkeyId != HostConstants.PUBKEYID_NEVER) {
-            // Try specific key
-            val pubkey = pubkeyRepository.getById(pubkeyId)
-            if (pubkey != null) {
-                val keyPair = loadKeyPair(pubkey, promptHandler, keyCache)
-                if (keyPair != null) {
-                    try {
-                        if (connection.authenticateWithPublicKey(host.username, keyPair)) {
-                            Log.d(TAG, "Authenticated with key: ${pubkey.nickname}")
-                            return true
-                        }
-                    } catch (e: Exception) {
-                        if (e.isBiometricKeyAuthenticationException()) {
-                            keyCache.remove(pubkey)
-                        }
-                        Log.d(TAG, "Key ${pubkey.nickname} failed: ${e.message}")
-                    }
-                }
+            } catch (e: Exception) {
+                if (e.isBiometricKeyAuthenticationException()) keyCache.remove(pubkey)
+                Log.d(TAG, "Key ${pubkey.nickname} failed: ${e.message}")
             }
         }
-
         return false
     }
 
@@ -438,29 +423,19 @@ class SftpConnectionManager @Inject constructor(
         connection: Connection,
         host: Host,
         promptHandler: SftpPromptHandler,
-    ): Boolean {
-        return try {
-            connection.authenticateWithKeyboardInteractive(
-                host.username,
-                object : InteractiveCallback {
-                    override fun replyToChallenge(
-                        name: String,
-                        instruction: String,
-                        numPrompts: Int,
-                        prompt: Array<String>,
-                        echo: BooleanArray,
-                    ): Array<String> {
-                        val responses = kotlinx.coroutines.runBlocking {
-                            promptHandler.handleKeyboardInteractive(name, instruction, prompt, echo)
-                        }
-                        return responses ?: Array(numPrompts) { "" }
-                    }
-                },
-            )
-        } catch (e: Exception) {
-            Log.d(TAG, "Keyboard-interactive auth failed: ${e.message}")
-            false
-        }
+    ): Boolean = try {
+        connection.authenticateWithKeyboardInteractive(
+            host.username,
+            InteractiveCallback { name, instruction, numPrompts, prompt, echo ->
+                val responses = kotlinx.coroutines.runBlocking {
+                    promptHandler.handleKeyboardInteractive(name, instruction, prompt, echo)
+                }
+                responses ?: Array(numPrompts) { "" }
+            },
+        )
+    } catch (e: Exception) {
+        Log.d(TAG, "Keyboard-interactive auth failed: ${e.message}")
+        false
     }
 
     private suspend fun tryPasswordAuth(
@@ -509,55 +484,16 @@ class SftpConnectionManager @Inject constructor(
                     true
                 }
 
-                // No known hosts - this is a new key
-                knownHosts.isEmpty() -> {
-                    val accepted = kotlinx.coroutines.runBlocking {
-                        promptHandler.confirmHostKey(
-                            hostname = hostname,
-                            keyType = getKeyType(serverHostKeyAlgorithm) ?: "UNKNOWN",
-                            fingerprint = sha256,
-                            isNewKey = true,
-                        )
-                    }
-
-                    if (accepted) {
-                        kotlinx.coroutines.runBlocking {
-                            hostRepository.saveKnownHost(host, hostname, port, serverHostKeyAlgorithm, serverHostKey)
-                        }
-                    }
-                    accepted
-                }
-
-                // We have hosts with this algorithm but key doesn't match - key has changed
-                hostsWithSameAlgo.isNotEmpty() -> {
-                    val accepted = kotlinx.coroutines.runBlocking {
-                        promptHandler.confirmHostKey(
-                            hostname = hostname,
-                            keyType = getKeyType(serverHostKeyAlgorithm) ?: "UNKNOWN",
-                            fingerprint = sha256,
-                            isNewKey = false,
-                        )
-                    }
-
-                    if (accepted) {
-                        kotlinx.coroutines.runBlocking {
-                            hostRepository.saveKnownHost(host, hostname, port, serverHostKeyAlgorithm, serverHostKey)
-                        }
-                    }
-                    accepted
-                }
-
-                // New algorithm for this host - treat as new key
+                // Unknown algorithms are new keys; a mismatch for a known algorithm is a changed key.
                 else -> {
                     val accepted = kotlinx.coroutines.runBlocking {
                         promptHandler.confirmHostKey(
                             hostname = hostname,
                             keyType = getKeyType(serverHostKeyAlgorithm) ?: "UNKNOWN",
                             fingerprint = sha256,
-                            isNewKey = true,
+                            isNewKey = hostsWithSameAlgo.isEmpty(),
                         )
                     }
-
                     if (accepted) {
                         kotlinx.coroutines.runBlocking {
                             hostRepository.saveKnownHost(host, hostname, port, serverHostKeyAlgorithm, serverHostKey)

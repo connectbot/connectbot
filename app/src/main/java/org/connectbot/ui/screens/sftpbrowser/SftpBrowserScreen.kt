@@ -83,7 +83,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.R
 import timber.log.Timber
 
@@ -285,115 +285,21 @@ fun SftpBrowserScreen(
         },
         modifier = modifier,
     ) { padding ->
-        Box(
-            modifier = Modifier
-                .padding(padding)
-                .fillMaxSize(),
-        ) {
-            when {
-                uiState.isConnecting -> {
-                    Column(
-                        modifier = Modifier.align(Alignment.Center),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
-                    ) {
-                        CircularProgressIndicator()
-                        Text(
-                            text = stringResource(R.string.sftp_connecting, uiState.host?.hostname ?: ""),
-                            style = MaterialTheme.typography.bodyMedium,
-                        )
-                    }
-                }
-
-                !uiState.isConnected && uiState.error != null -> {
-                    Column(
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
-                    ) {
-                        Text(
-                            text = stringResource(R.string.sftp_connection_failed, uiState.error ?: ""),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.error,
-                        )
-                        TextButton(onClick = { viewModel.connect() }) {
-                            Text(stringResource(R.string.sftp_retry))
-                        }
-                    }
-                }
-
-                uiState.isConnected -> {
-                    PullToRefreshBox(
-                        isRefreshing = uiState.isLoading,
-                        onRefresh = { viewModel.refresh() },
-                        modifier = Modifier.fillMaxSize(),
-                    ) {
-                        if (uiState.entries.isEmpty() && !uiState.isLoading) {
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center,
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.sftp_empty_directory),
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                )
-                            }
-                        } else {
-                            LazyColumn(
-                                modifier = Modifier.fillMaxSize(),
-                                contentPadding = PaddingValues(bottom = 88.dp),
-                            ) {
-                                items(
-                                    items = uiState.entries,
-                                    key = { it.fullPath },
-                                ) { entry ->
-                                    SftpEntryItem(
-                                        entry = entry,
-                                        isSelected = entry.fullPath in selectedEntries,
-                                        onClick = {
-                                            if (selectedEntries.isNotEmpty() && !entry.isDirectory) {
-                                                selectedEntries = selectedEntries.toggle(entry)
-                                            } else if (entry.isDirectory || entry.filename == "..") {
-                                                if (entry.filename == "..") {
-                                                    viewModel.navigateUp()
-                                                } else {
-                                                    viewModel.navigateTo(entry.fullPath)
-                                                }
-                                            } else {
-                                                // Download on click for files
-                                                pendingDownloadEntries = listOf(entry)
-                                                downloadDirectoryPicker.launch(null)
-                                            }
-                                        },
-                                        onDownload = {
-                                            pendingDownloadEntries = listOf(entry)
-                                            downloadDirectoryPicker.launch(null)
-                                        },
-                                        onDelete = {
-                                            viewModel.showDeleteDialog(entry)
-                                        },
-                                        onSelectionChange = {
-                                            selectedEntries = selectedEntries.toggle(entry)
-                                        },
-                                    )
-                                    HorizontalDivider()
-                                }
-                            }
-                        }
-                    }
-                }
-
-                else -> {
-                    // Initial state - waiting to connect
-                    CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center),
-                    )
-                }
-            }
-        }
+        SftpBrowserContent(
+            uiState = uiState,
+            onConnect = viewModel::connect,
+            onRefresh = viewModel::refresh,
+            onNavigateUp = viewModel::navigateUp,
+            onNavigateTo = viewModel::navigateTo,
+            onDelete = viewModel::showDeleteDialog,
+            selectedEntries = selectedEntries,
+            onSelectionChange = { selectedEntries = it },
+            onDownload = { entry ->
+                pendingDownloadEntries = listOf(entry)
+                downloadDirectoryPicker.launch(null)
+            },
+            modifier = Modifier.padding(padding),
+        )
     }
 
     uiState.downloadConflict?.let { conflict ->
@@ -467,6 +373,129 @@ fun SftpBrowserScreen(
             onSuccess = { viewModel.onBiometricSuccess() },
             onFailure = { viewModel.onBiometricFailure() },
         )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SftpBrowserContent(
+    uiState: SftpBrowserUiState,
+    onConnect: () -> Unit,
+    onRefresh: () -> Unit,
+    onNavigateUp: () -> Unit,
+    onNavigateTo: (String) -> Unit,
+    onDelete: (SftpEntry) -> Unit,
+    selectedEntries: Map<String, SftpEntry>,
+    onSelectionChange: (Map<String, SftpEntry>) -> Unit,
+    onDownload: (SftpEntry) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = Modifier
+            .then(modifier)
+            .fillMaxSize(),
+    ) {
+        when {
+            uiState.isConnecting -> {
+                Column(
+                    modifier = Modifier.align(Alignment.Center),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                ) {
+                    CircularProgressIndicator()
+                    Text(
+                        text = stringResource(R.string.sftp_connecting, uiState.host?.hostname ?: ""),
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                }
+            }
+
+            !uiState.isConnected && uiState.error != null -> {
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                ) {
+                    Text(
+                        text = stringResource(R.string.sftp_connection_failed, uiState.error ?: ""),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                    TextButton(onClick = { onConnect() }) {
+                        Text(stringResource(R.string.sftp_retry))
+                    }
+                }
+            }
+
+            uiState.isConnected -> {
+                PullToRefreshBox(
+                    isRefreshing = uiState.isLoading,
+                    onRefresh = { onRefresh() },
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    if (uiState.entries.isEmpty() && !uiState.isLoading) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Text(
+                                text = stringResource(R.string.sftp_empty_directory),
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                    } else {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            contentPadding = PaddingValues(bottom = 88.dp),
+                        ) {
+                            items(
+                                items = uiState.entries,
+                                key = { it.fullPath },
+                            ) { entry ->
+                                SftpEntryItem(
+                                    entry = entry,
+                                    isSelected = entry.fullPath in selectedEntries,
+                                    onClick = {
+                                        if (selectedEntries.isNotEmpty() && !entry.isDirectory) {
+                                            onSelectionChange(selectedEntries.toggle(entry))
+                                        } else if (entry.isDirectory || entry.filename == "..") {
+                                            if (entry.filename == "..") {
+                                                onNavigateUp()
+                                            } else {
+                                                onNavigateTo(entry.fullPath)
+                                            }
+                                        } else {
+                                            // Download on click for files
+                                            onDownload(entry)
+                                        }
+                                    },
+                                    onDownload = {
+                                        onDownload(entry)
+                                    },
+                                    onDelete = {
+                                        onDelete(entry)
+                                    },
+                                    onSelectionChange = {
+                                        onSelectionChange(selectedEntries.toggle(entry))
+                                    },
+                                )
+                                HorizontalDivider()
+                            }
+                        }
+                    }
+                }
+            }
+
+            else -> {
+                // Initial state - waiting to connect
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center),
+                )
+            }
+        }
     }
 }
 

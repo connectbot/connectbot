@@ -21,7 +21,7 @@ import com.trilead.ssh2.SFTPv3Client
 import com.trilead.ssh2.SFTPv3DirectoryEntry
 import com.trilead.ssh2.SFTPv3FileAttributes
 import com.trilead.ssh2.SFTPv3FileHandle
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
 import java.io.IOException
@@ -32,7 +32,7 @@ import java.io.OutputStream
  * Kotlin-friendly wrapper around SFTPv3Client providing suspend functions for all operations.
  * All I/O operations are run on Dispatchers.IO.
  */
-class SftpOperations(private val client: SFTPv3Client) {
+class SftpOperations(private val client: SFTPv3Client, private val ioDispatcher: CoroutineDispatcher) {
 
     companion object {
         private const val BUFFER_SIZE = 32768 // 32KB - max size for SFTP read/write
@@ -44,7 +44,7 @@ class SftpOperations(private val client: SFTPv3Client) {
      * @param path The directory path to list
      * @return List of directory entries
      */
-    suspend fun listDirectory(path: String): List<SFTPv3DirectoryEntry> = withContext(Dispatchers.IO) {
+    suspend fun listDirectory(path: String): List<SFTPv3DirectoryEntry> = withContext(ioDispatcher) {
         @Suppress("UNCHECKED_CAST")
         client.ls(path) as List<SFTPv3DirectoryEntry>
     }
@@ -55,7 +55,7 @@ class SftpOperations(private val client: SFTPv3Client) {
      * @param path The path to get attributes for
      * @return The file attributes
      */
-    suspend fun stat(path: String): SFTPv3FileAttributes = withContext(Dispatchers.IO) {
+    suspend fun stat(path: String): SFTPv3FileAttributes = withContext(ioDispatcher) {
         client.stat(path)
     }
 
@@ -65,7 +65,7 @@ class SftpOperations(private val client: SFTPv3Client) {
      * @param path The path to get attributes for
      * @return The file attributes
      */
-    suspend fun lstat(path: String): SFTPv3FileAttributes = withContext(Dispatchers.IO) {
+    suspend fun lstat(path: String): SFTPv3FileAttributes = withContext(ioDispatcher) {
         client.lstat(path)
     }
 
@@ -75,7 +75,7 @@ class SftpOperations(private val client: SFTPv3Client) {
      * @param path The path of the directory to create
      * @param permissions POSIX permissions (default 0755)
      */
-    suspend fun mkdir(path: String, permissions: Int = 493) = withContext(Dispatchers.IO) {
+    suspend fun mkdir(path: String, permissions: Int = 493) = withContext(ioDispatcher) {
         // 0755 octal = 493 decimal
         client.mkdir(path, permissions)
     }
@@ -85,7 +85,7 @@ class SftpOperations(private val client: SFTPv3Client) {
      *
      * @param path The path of the directory to remove
      */
-    suspend fun rmdir(path: String) = withContext(Dispatchers.IO) {
+    suspend fun rmdir(path: String) = withContext(ioDispatcher) {
         client.rmdir(path)
     }
 
@@ -94,7 +94,7 @@ class SftpOperations(private val client: SFTPv3Client) {
      *
      * @param path The path of the file to remove
      */
-    suspend fun rm(path: String) = withContext(Dispatchers.IO) {
+    suspend fun rm(path: String) = withContext(ioDispatcher) {
         client.rm(path)
     }
 
@@ -104,7 +104,7 @@ class SftpOperations(private val client: SFTPv3Client) {
      * @param oldPath The current path
      * @param newPath The new path
      */
-    suspend fun mv(oldPath: String, newPath: String) = withContext(Dispatchers.IO) {
+    suspend fun mv(oldPath: String, newPath: String) = withContext(ioDispatcher) {
         client.mv(oldPath, newPath)
     }
 
@@ -114,7 +114,7 @@ class SftpOperations(private val client: SFTPv3Client) {
      * @param path The path to resolve
      * @return The canonical path
      */
-    suspend fun canonicalPath(path: String): String = withContext(Dispatchers.IO) {
+    suspend fun canonicalPath(path: String): String = withContext(ioDispatcher) {
         client.canonicalPath(path)
     }
 
@@ -124,7 +124,7 @@ class SftpOperations(private val client: SFTPv3Client) {
      * @param path The path of the symlink
      * @return The target path
      */
-    suspend fun readLink(path: String): String = withContext(Dispatchers.IO) {
+    suspend fun readLink(path: String): String = withContext(ioDispatcher) {
         client.readLink(path)
     }
 
@@ -142,7 +142,7 @@ class SftpOperations(private val client: SFTPv3Client) {
         outputStream: OutputStream,
         startOffset: Long = 0,
         progressCallback: (Long, Long) -> Unit = { _, _ -> },
-    ) = withContext(Dispatchers.IO) {
+    ) = withContext(ioDispatcher) {
         require(startOffset >= 0) { "Download offset cannot be negative" }
         val attrs = client.stat(remotePath)
         val totalSize = attrs.size ?: 0L
@@ -189,7 +189,7 @@ class SftpOperations(private val client: SFTPv3Client) {
         remotePath: String,
         totalSize: Long,
         progressCallback: (Long, Long) -> Unit = { _, _ -> },
-    ) = withContext(Dispatchers.IO) {
+    ) = withContext(ioDispatcher) {
         val handle = client.createFileTruncate(remotePath)
         try {
             val buffer = ByteArray(BUFFER_SIZE)

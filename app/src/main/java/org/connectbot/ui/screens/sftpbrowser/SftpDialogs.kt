@@ -24,9 +24,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextObfuscationMode
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedSecureTextField
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -43,7 +46,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import org.connectbot.R
 
@@ -312,26 +314,24 @@ fun PasswordDialog(
     onSubmit: (String) -> Unit,
     onCancel: () -> Unit,
 ) {
-    var password by remember { mutableStateOf("") }
+    val password = rememberTextFieldState()
 
     AlertDialog(
         onDismissRequest = onCancel,
         title = { Text(stringResource(R.string.sftp_authentication)) },
         text = {
-            OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
+            OutlinedSecureTextField(
+                state = password,
+                textObfuscationMode = TextObfuscationMode.Hidden,
                 label = { Text(prompt) },
-                singleLine = true,
-                visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 modifier = Modifier.fillMaxWidth(),
             )
         },
         confirmButton = {
             TextButton(
-                onClick = { onSubmit(password) },
-                enabled = password.isNotEmpty(),
+                onClick = { onSubmit(password.text.toString()) },
+                enabled = password.text.isNotEmpty(),
             ) {
                 Text(stringResource(R.string.button_ok))
             }
@@ -350,26 +350,24 @@ fun KeyPassphraseDialog(
     onSubmit: (String) -> Unit,
     onCancel: () -> Unit,
 ) {
-    var passphrase by remember { mutableStateOf("") }
+    val passphrase = rememberTextFieldState()
 
     AlertDialog(
         onDismissRequest = onCancel,
         title = { Text(stringResource(R.string.sftp_key_passphrase)) },
         text = {
-            OutlinedTextField(
-                value = passphrase,
-                onValueChange = { passphrase = it },
+            OutlinedSecureTextField(
+                state = passphrase,
+                textObfuscationMode = TextObfuscationMode.Hidden,
                 label = { Text(prompt) },
-                singleLine = true,
-                visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 modifier = Modifier.fillMaxWidth(),
             )
         },
         confirmButton = {
             TextButton(
-                onClick = { onSubmit(passphrase) },
-                enabled = passphrase.isNotEmpty(),
+                onClick = { onSubmit(passphrase.text.toString()) },
+                enabled = passphrase.text.isNotEmpty(),
             ) {
                 Text(stringResource(R.string.button_ok))
             }

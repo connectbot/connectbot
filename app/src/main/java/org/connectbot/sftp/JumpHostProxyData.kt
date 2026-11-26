@@ -35,10 +35,6 @@ import java.net.Socket
  *                       This connection must remain open for the duration of the tunneled connection.
  */
 class JumpHostProxyData(val jumpConnection: Connection) : ProxyData {
-    init {
-        requireNotNull(jumpConnection) { "Jump host connection cannot be null" }
-    }
-
     /**
      * Opens a tunneled connection to the target host through the jump host.
      *

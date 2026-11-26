@@ -63,13 +63,6 @@ fun SftpEntryItem(
 
     Box(modifier = modifier) {
         ListItem(
-            headlineContent = {
-                Text(
-                    text = entry.filename,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            },
             supportingContent = {
                 val details = buildString {
                     if (!entry.isDirectory) {
@@ -121,6 +114,13 @@ fun SftpEntryItem(
                 onClick = onClick,
                 onLongClick = { showMenu = true },
             ),
+            content = {
+                Text(
+                    text = entry.filename,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            },
         )
 
         DropdownMenu(
