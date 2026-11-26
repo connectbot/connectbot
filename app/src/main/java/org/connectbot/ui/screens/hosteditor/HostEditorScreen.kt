@@ -172,6 +172,8 @@ fun HostEditorScreen(
             )
         },
         onJumpHostChange = viewModel::updateJumpHostId,
+        onJumpHostFallbackChange = viewModel::updateJumpHostFallback,
+        onJumpHostFallbackTimeoutChange = viewModel::updateJumpHostFallbackTimeout,
         onIpVersionChange = viewModel::updateIpVersion,
         onTelnetEchoModeChange = viewModel::updateTelnetEchoMode,
         onTelnetNegotiationModeChange = viewModel::updateTelnetNegotiationMode,
@@ -220,6 +222,8 @@ fun HostEditorScreenContent(
     onCryptoChange: (HostCryptoConfig) -> Unit = {},
     onResolveCrypto: suspend (HostCryptoConfig) -> SshCryptoPolicy? = { null },
     onCancelMoshInstall: () -> Unit = {},
+    onJumpHostFallbackChange: (Boolean) -> Unit = {},
+    onJumpHostFallbackTimeoutChange: (String) -> Unit = {},
     onTelnetEchoModeChange: (TelnetEchoMode) -> Unit = {},
     onTelnetNegotiationModeChange: (TelnetNegotiationMode) -> Unit = {},
     onTelnetNonBinaryPolicyChange: (TelnetNonBinaryPolicy) -> Unit = {},
@@ -239,7 +243,8 @@ fun HostEditorScreenContent(
     var showAdvancedOptions by rememberSaveable(hostId) { mutableStateOf(false) }
     val protocols = listOf("ssh", "mosh", "telnet", "local")
     val canSave = (uiState.protocol == "local" || uiState.hostname.isNotBlank()) &&
-        (uiState.protocol != "mosh" || uiState.isMoshNetworkTimeoutValid)
+        (uiState.protocol != "mosh" || uiState.isMoshNetworkTimeoutValid) &&
+        (!uiState.needsJumpHostFallbackTimeout || uiState.isJumpHostFallbackTimeoutValid)
 
     EditorScaffold(
         title = stringResource(if (hostId == EntityIds.NONE) R.string.hostpref_add_host else R.string.hostpref_setting_title),
@@ -589,6 +594,37 @@ fun HostEditorScreenContent(
                     availableJumpHosts = uiState.availableJumpHosts,
                     onJumpHostSelect = onJumpHostChange,
                 )
+                if (uiState.jumpHostId != null) {
+                    SwitchPreference(
+                        title = stringResource(R.string.hostpref_jumphost_fallback_title),
+                        summary = stringResource(R.string.hostpref_jumphost_fallback_summary),
+                        checked = uiState.jumpHostFallback,
+                        onCheckedChange = onJumpHostFallbackChange,
+                        modifier = Modifier.padding(top = 8.dp),
+                    )
+                    if (uiState.jumpHostFallback) {
+                        OutlinedTextField(
+                            value = uiState.jumpHostFallbackTimeout,
+                            onValueChange = onJumpHostFallbackTimeoutChange,
+                            label = { Text(stringResource(R.string.hostpref_jumphost_fallback_timeout_title)) },
+                            isError = !uiState.isJumpHostFallbackTimeoutValid,
+                            supportingText = {
+                                Text(
+                                    stringResource(
+                                        if (uiState.isJumpHostFallbackTimeoutValid) {
+                                            R.string.hostpref_jumphost_fallback_timeout_summary
+                                        } else {
+                                            R.string.hostpref_jumphost_fallback_timeout_error
+                                        },
+                                    ),
+                                )
+                            },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                            singleLine = true,
+                        )
+                    }
+                }
             }
 
             // SSH Auth agent

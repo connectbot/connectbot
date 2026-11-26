@@ -83,6 +83,7 @@ import java.util.UUID
  * - Version 18: Added base font weight to profiles, defaulting to normal (AutoMigration)
  * - Version 19: Added FIDO2 credential fields to pubkeys (AutoMigration)
  * - Version 20: Added PIV slot to pubkeys, accepting both shipped version-19 layouts (manual migration)
+ * - Version 21: Added jump_host_fallback and jump_host_fallback_timeout to hosts, defaulting to always using the jump host (AutoMigration)
  * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:
@@ -104,7 +105,7 @@ import java.util.UUID
         KeyboardMacro::class,
         KeyboardSettings::class,
     ],
-    version = 20,
+    version = 21,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -122,6 +123,7 @@ import java.util.UUID
         AutoMigration(from = 16, to = 17, spec = ConnectBotDatabase.KeyboardMigration::class),
         AutoMigration(from = 17, to = 18, spec = ConnectBotDatabase.FontWeightMigration::class),
         AutoMigration(from = 18, to = 19),
+        AutoMigration(from = 20, to = 21, spec = CryptoPolicyMigration::class),
     ],
 )
 @TypeConverters(Converters::class)
