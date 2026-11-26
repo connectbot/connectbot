@@ -18,11 +18,14 @@
 package org.connectbot.ui
 
 import android.content.Intent
+import android.nfc.NfcAdapter
+import android.nfc.Tag
 import android.os.Bundle
 import android.os.Looper
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.runBlocking
 import org.connectbot.fido2.Fido2Manager
 import org.connectbot.service.ConnectionNotifier
 import org.junit.Assert.assertEquals
@@ -91,6 +94,24 @@ class MainActivityIntentTest {
             controller.saveInstanceState(savedState)
             assertEquals("shortcut-session", savedState.getString(ConnectionNotifier.EXTRA_SESSION_ID))
             assertTrue(savedState.getBoolean(ConnectionNotifier.EXTRA_RECONNECT))
+        } finally {
+            controller.destroy()
+        }
+    }
+
+    @Test
+    fun forwardsDiscoveredNfcTagToFido2Manager() {
+        val controller = Robolectric.buildActivity(MainActivity::class.java).create()
+        try {
+            val manager = mock(Fido2Manager::class.java)
+            `when`(manager.waitingForNfcSigning).thenReturn(MutableStateFlow(false))
+            controller.get().fido2Manager = manager
+            val tag = mock(Tag::class.java)
+
+            controller.newIntent(Intent(NfcAdapter.ACTION_TECH_DISCOVERED).putExtra(NfcAdapter.EXTRA_TAG, tag))
+            shadowOf(Looper.getMainLooper()).idle()
+
+            runBlocking { verify(manager).connectToNfcTag(tag) }
         } finally {
             controller.destroy()
         }
