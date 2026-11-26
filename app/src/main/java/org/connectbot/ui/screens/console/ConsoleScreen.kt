@@ -58,6 +58,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.ContentPaste
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Info
@@ -65,7 +66,6 @@ import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LinkOff
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.OpenInNew
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.SwapHoriz
@@ -1590,7 +1590,7 @@ fun ConsoleScreen(
                                     viewModel.openNewSession()
                                 },
                                 leadingIcon = {
-                                    Icon(Icons.Default.OpenInNew, contentDescription = null)
+                                    Icon(Icons.AutoMirrored.Filled.OpenInNew, contentDescription = null)
                                 },
                                 enabled = currentBridge != null,
                             )

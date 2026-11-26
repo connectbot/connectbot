@@ -92,10 +92,6 @@ class TerminalManager :
     private val _bridgesFlow = MutableStateFlow<List<TerminalBridge>>(emptyList())
     val bridgesFlow: StateFlow<List<TerminalBridge>> = _bridgesFlow.asStateFlow()
 
-    @Deprecated("Use bridgesFlow instead", ReplaceWith("bridgesFlow.value"))
-    val bridges: List<TerminalBridge>
-        get() = _bridges.toList()
-
     // Maps for multi-session support: hostId -> list of bridges
     private val hostBridgesMap: MutableMap<UUID, MutableList<WeakReference<TerminalBridge>>> = HashMap()
 
@@ -107,13 +103,6 @@ class TerminalManager :
 
     // Session ID counter (starts at 1)
     private val nextSessionId = AtomicLong(1L)
-
-    // Legacy maps for backwards compatibility (deprecated)
-    @Deprecated("Use hostBridgesMap instead")
-    private val hostBridgeMap: MutableMap<Host, WeakReference<TerminalBridge>> = HashMap()
-
-    @Deprecated("Use getConnectedBridges instead")
-    private val nicknameBridgeMap: MutableMap<String, WeakReference<TerminalBridge>> = HashMap()
 
     private val _disconnected = ArrayList<Host>()
     private val _disconnectedFlow = MutableStateFlow<List<Host>>(emptyList())
@@ -426,11 +415,11 @@ class TerminalManager :
      * Open a new SSH session using the given parameters.
      * Multiple sessions to the same host are now allowed.
      */
-    private fun openConnection(host: Host): TerminalBridge {
+    private suspend fun openConnection(host: Host): TerminalBridge = withContext(dispatchers.io) {
         endedSessionAttention.remove(host.id)
         val sessionId = generateSessionId()
-        val bridge = TerminalBridge(this, host, sessionId, dispatchers)
-        bridge.setOnDisconnectedListener(this)
+        val bridge = TerminalBridge(this@TerminalManager, host, sessionId, dispatchers)
+        bridge.setOnDisconnectedListener(this@TerminalManager)
         bridge.startConnection()
 
         synchronized(_bridges) {
@@ -444,12 +433,6 @@ class TerminalManager :
 
             // Mark as last-used session for this host
             lastUsedSessionByHost[host.id] = sessionId
-
-            // Legacy maps (for backwards compatibility)
-            @Suppress("DEPRECATION")
-            hostBridgeMap[bridge.host] = wr
-            @Suppress("DEPRECATION")
-            nicknameBridgeMap[bridge.host.nickname] = wr
 
             _bridgesFlow.value = _bridges.toList()
         }
@@ -467,14 +450,14 @@ class TerminalManager :
         // Android 8 and 16 ActiveServices.setServiceForegroundInnerLocked establishes it
         // before posting the notification; Android controls whether that notification is visible.
         // https://android.googlesource.com/platform/frameworks/base/+/refs/heads/android16-release/services/core/java/com/android/server/am/ActiveServices.java
-        connectionNotifier.showRunningNotification(this, notificationSessions())
+        connectionNotifier.showRunningNotification(this@TerminalManager, notificationSessions())
 
         // also update database with new connected time
         touchHost(host)
 
         notifyHostStatusChanged()
 
-        return bridge
+        bridge
     }
 
     fun getScrollback(): Int {
@@ -529,30 +512,6 @@ class TerminalManager :
         scope.launch(dispatchers.io) {
             hostRepository.touchHost(host)
         }
-    }
-
-    /**
-     * Find a connected [TerminalBridge] with the given Host.
-     *
-     * @param host the Host to search for
-     * @return TerminalBridge that uses the Host
-     */
-    fun getConnectedBridge(host: Host): TerminalBridge? {
-        val wr = hostBridgeMap[host]
-        return wr?.get()
-    }
-
-    /**
-     * Find a connected [TerminalBridge] using its nickname.
-     *
-     * @param nickname
-     * @return TerminalBridge that matches nickname
-     */
-    @Deprecated("Use getConnectedBridges(hostId) for multi-session support")
-    fun getConnectedBridge(nickname: String?): TerminalBridge? {
-        @Suppress("DEPRECATION")
-        val wr = nicknameBridgeMap[nickname ?: return null]
-        return wr?.get()
     }
 
     /**
@@ -662,12 +621,6 @@ class TerminalManager :
                     lastUsedSessionByHost[bridge.host.id] = remaining.last().sessionId
                 }
             }
-
-            // Legacy maps cleanup
-            @Suppress("DEPRECATION")
-            hostBridgeMap.remove(bridge.host)
-            @Suppress("DEPRECATION")
-            nicknameBridgeMap.remove(bridge.host.nickname)
 
             if (bridge.isUsingNetwork()) {
                 connectivityMonitor.decRef()

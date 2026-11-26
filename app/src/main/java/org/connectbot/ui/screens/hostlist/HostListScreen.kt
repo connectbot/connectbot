@@ -38,6 +38,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Computer
@@ -51,7 +52,6 @@ import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LinkOff
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.OpenInNew
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Badge
 import androidx.compose.material3.CircularProgressIndicator
@@ -689,7 +689,7 @@ private fun HostListItem(
                                         onOpenNewSession()
                                     },
                                     leadingIcon = {
-                                        Icon(Icons.Default.OpenInNew, null)
+                                        Icon(Icons.AutoMirrored.Filled.OpenInNew, null)
                                     },
                                 )
                             }
@@ -781,7 +781,7 @@ private fun HostListItem(
                     onOpenNewSession()
                 },
                 leadingIcon = {
-                    Icon(Icons.Default.OpenInNew, null)
+                    Icon(Icons.AutoMirrored.Filled.OpenInNew, null)
                 },
             )
         }

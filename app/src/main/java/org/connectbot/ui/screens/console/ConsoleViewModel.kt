@@ -363,9 +363,7 @@ class ConsoleViewModel @Inject constructor(
         val currentBridge = getCurrentBridge() ?: return
         viewModelScope.launch {
             try {
-                val newBridge = withContext(dispatchers.io) {
-                    terminalManager?.openConnectionForHostId(currentBridge.host.id)
-                }
+                val newBridge = terminalManager?.openConnectionForHostId(currentBridge.host.id)
                 // Navigate to the new session
                 newBridge?.let { bridge ->
                     selectBridgeBySessionId(bridge.sessionId)

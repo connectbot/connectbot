@@ -526,7 +526,7 @@ class MainActivity : AppCompatActivity() {
                 val nickname = uri.fragment ?: uri.authority
                 Timber.d("handleConnectionUri: nickname=$nickname")
                 var bridge = manager.bridgesFlow.value.find { it.notificationSessionId == sessionId }
-                    ?: manager.getConnectedBridge(nickname)
+                    ?: manager.bridgesFlow.value.lastOrNull { it.host.nickname == nickname }
 
                 if (bridge == null) {
                     Timber.d("Creating new connection for URI: $uri with nickname: $nickname")

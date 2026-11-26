@@ -240,9 +240,7 @@ class HostListViewModel @Inject constructor(
     fun connectToHost(host: Host) {
         viewModelScope.launch {
             try {
-                withContext(dispatchers.io) {
-                    terminalManager?.openConnectionForHostId(host.id)
-                }
+                terminalManager?.openConnectionForHostId(host.id)
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(error = e.message ?: "Failed to connect")
