@@ -78,7 +78,7 @@
   <string name="alert_wrong_password_msg">ססמה שגויה!</string>
   <string name="button_resize">שינוי גודל</string>
   <string name="alert_disconnect_msg">החיבור אבד</string>
-  <string name="network_lost_grace_period">החיבור לרשת אבד, ממתין לחיבור מחדש...</string>
+  <string name="network_lost_grace_period">החיבור לרשת אבד, ממתין לחיבור מחדש…</string>
   <string name="network_grace_period_expired">החיבור לרשת לא שוחזר, מתנתק…</string>
   <string name="network_restored_same_ip">הרשת שוחזרה, החיבור נשמר</string>
   <string name="network_restored_ip_changed">הרשת שוחזרה אך כתובת ה-IP השתנתה, מתחבר מחדש…</string>
@@ -94,14 +94,14 @@
   <string name="dialog_customfont_hint">שם גופן של גוגל (לדוגמה, Cascadia Code)</string>
   <string name="button_add">הוסף</string>
   <string name="button_remove">הסר</string>
-  <string name="font_validating">בדיקת תקינות הגופן...</string>
+  <string name="font_validating">בדיקת תקינות הגופן…</string>
   <string name="font_downloading">מוריד גופן…</string>
   <string name="pref_localfont_title">ייבא גופן מקומי</string>
   <string name="pref_localfont_summary">ייבא קובץ גופן מהאחסון (TTF, OTF)</string>
   <string name="dialog_localfont_title">ייבא גופן</string>
   <string name="dialog_localfont_hint">שם התצוגה של הגופן</string>
   <string name="button_import">ייבא</string>
-  <string name="font_importing">ייבוא גופן...</string>
+  <string name="font_importing">ייבוא גופן…</string>
   <string name="pref_backupkeys_title">גבה את מפתחות ה-SSH הציבוריים</string>
   <string name="pref_backupkeys_summary">שמרו גיבויים של המפתחות הפרטיים באמצעות מנגנון הגיבוי של אנדרואיד.</string>
   <string name="pref_ui_category">מנשק משתמש</string>
@@ -429,8 +429,8 @@
   <string name="connect_anyway">התחבר בכל מקרה</string>
   <string name="open_settings">פתח הגדרות</string>
   <string name="terminal_no_route">האם אתה מנסה לגשת למחשב מקומי? הענק הרשאות לרשת המקומית.</string>
-  <string name="loading_message">טוען...</string>
-  <string name="migration_checking">בדיקת מסד הנתונים...</string>
+  <string name="loading_message">טוען…</string>
+  <string name="migration_checking">בדיקת מסד הנתונים…</string>
   <string name="migration_title">העברת מסד נתונים</string>
   <string name="migration_warning">אנא אל תסגרו את האפליקציה במהלך ההעברה</string>
   <string name="migration_stats_hosts">מספר המארחים שהועברו: %d</string>
@@ -567,7 +567,7 @@
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">פקודה להגדרת שרת Mosh</string>
   <string name="hostpref_mosh_server_summary" tools:machine_translated="true">נתיב או פקודה מותאמת אישית עבור שרת Mosh (השאירו ריק כדי להשתמש בהגדרות ברירת המחדל).</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">יציאת UDP של Mosh</string>
-  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">יציאת UDP קבועה עבור mosh (0 מציין שימוש בטווח אוטומטי של 60000-61000).</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">יציאת UDP קבועה עבור mosh (0 מציין שימוש בטווח אוטומטי של 60000–61000).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">אזור תרבותי/שפה</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">הגדרת אזור עבור סשן Mosh (לדוגמה, en_US.UTF-8).</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>

@@ -556,10 +556,10 @@
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Activați/dezactivați modul de compunere pentru introducerea textului prin intermediul IME.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Modul de compunere (IME)</string>
   <string name="hostpref_profile_edit" tools:machine_translated="true">Editează profilul selectat.</string>
-  <string name="terminal_mosh_installing" tools:machine_translated="true">Se pregătește suportul pentru Mosh...</string>
-  <string name="terminal_mosh_starting" tools:machine_translated="true">Se inițializează conexiunea Mosh...</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Se pregătește suportul pentru Mosh…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Se inițializează conexiunea Mosh…</string>
   <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Atenție: Instalarea Mosh a depășit timpul limită.</string>
-  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Se lansează serverul Mosh pe gazda de la distanță...</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Se lansează serverul Mosh pe gazda de la distanță…</string>
   <string name="terminal_mosh_server_failed" tools:machine_translated="true">Nu s-a putut porni serverul Mosh pe gazda de la distanță.</string>
   <string name="terminal_mosh_client_failed" tools:machine_translated="true">Nu s-a putut porni clientul Mosh.</string>
   <string name="terminal_mosh_connected" tools:machine_translated="true">Conexiunea Mosh a fost stabilită.</string>
@@ -567,12 +567,12 @@
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">Comanda pentru serverul Mosh.</string>
   <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Cale personalizată sau comandă pentru serverul Mosh (lăsați câmpul gol pentru a utiliza valoarea implicită).</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">Portul UDP pentru Mosh</string>
-  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Port UDP fix pentru Mosh (0 pentru intervalul automat 60000-61000).</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Port UDP fix pentru Mosh (0 pentru intervalul automat 60000–61000).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Setări regionale</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Setarea locală pentru sesiunea Mosh (de exemplu, en_US.UTF-8).</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Versiunea și codul sursă ale programului Mosh.</string>
-  <string name="pref_mosh_installing" tools:machine_translated="true">Se pregătește suportul pentru Mosh...</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Se pregătește suportul pentru Mosh…</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">Anulați modificările?</string>
   <string name="editor_discard_changes_message" tools:machine_translated="true">Modificările efectuate vor fi pierdute dacă închideți fereastra fără a salva.</string>
   <string name="editor_discard" tools:machine_translated="true">Anulează</string>

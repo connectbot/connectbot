@@ -57,9 +57,9 @@
   <string name="pubkey_biometric_description" tools:machine_translated="true">Proteja esta chave com sua impressão digital</string>
   <string name="hostpref_save_host" tools:machine_translated="true">Salvar servidor</string>
   <string name="pref_language_download" tools:machine_translated="true">Baixar pacote de idiomas</string>
-  <string name="terminal_mosh_installing" tools:machine_translated="true">Preparando o suporte para o Mosh...</string>
-  <string name="terminal_mosh_starting" tools:machine_translated="true">Iniciando a conexão Mosh...</string>
-  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Iniciando o servidor Mosh no computador remoto...</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Preparando o suporte para o Mosh…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Iniciando a conexão Mosh…</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Iniciando o servidor Mosh no computador remoto…</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Localidade para a sessão do Mosh (por exemplo, pt_BR.UTF-8).</string>
   <string name="editor_discard_changes_message" tools:machine_translated="true">Suas alterações serão perdidas se você sair sem salvar.</string>
   <string name="host_status_auth_failed" tools:machine_translated="true">A autenticação falhou. Verifique seu nome de usuário, senha ou chave antes de tentar se conectar novamente.</string>

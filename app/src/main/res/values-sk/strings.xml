@@ -556,10 +556,10 @@
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Prepnite režim zadávania znakov pre IME.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Režim na zadávanie znakov (IME)</string>
   <string name="hostpref_profile_edit" tools:machine_translated="true">Upraviť vybratý profil</string>
-  <string name="terminal_mosh_installing" tools:machine_translated="true">Príprava podpory pre Mosh...</string>
-  <string name="terminal_mosh_starting" tools:machine_translated="true">Nadväzujem spojenie Mosh...</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Príprava podpory pre Mosh…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Nadväzujem spojenie Mosh…</string>
   <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Upozornenie: Inštalácia programu Mosh sa nedokončila včas.</string>
-  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Spúšťam server Mosh na vzdialenom počítači...</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Spúšťam server Mosh na vzdialenom počítači…</string>
   <string name="terminal_mosh_server_failed" tools:machine_translated="true">Nepodarilo sa spustiť server Mosh na vzdialenom počítači.</string>
   <string name="terminal_mosh_client_failed" tools:machine_translated="true">Nepodarilo sa spustiť klienta Mosh.</string>
   <string name="terminal_mosh_connected" tools:machine_translated="true">Spojenie Mosh úspešne nadviazané.</string>
@@ -572,7 +572,7 @@
   <string name="hostpref_locale_summary" tools:machine_translated="true">Nastavenie lokality pre reláciu Mosh (napr. en_US.UTF-8).</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Verzia programu Mosh a zdrojový kód.</string>
-  <string name="pref_mosh_installing" tools:machine_translated="true">Pripravuje sa podpora pre Mosh...</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Pripravuje sa podpora pre Mosh…</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">Zrušiť zmeny?</string>
   <string name="editor_discard_changes_message" tools:machine_translated="true">Vaše úpravy sa stratia, ak odídete bez uloženia zmien.</string>
   <string name="editor_discard" tools:machine_translated="true">Zrušiť zmeny</string>

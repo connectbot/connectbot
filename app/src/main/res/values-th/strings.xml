@@ -557,9 +557,9 @@
   <string name="console_menu_compose_mode" tools:machine_translated="true">โหมดการพิมพ์ (สำหรับระบบ IME)</string>
   <string name="hostpref_profile_edit" tools:machine_translated="true">แก้ไขโปรไฟล์ที่เลือก</string>
   <string name="terminal_mosh_installing" tools:machine_translated="true">กำลังเตรียมการติดตั้งส่วนประกอบที่รองรับโปรแกรม Mosh…</string>
-  <string name="terminal_mosh_starting" tools:machine_translated="true">กำลังเริ่มต้นการเชื่อมต่อแบบ Mosh...</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">กำลังเริ่มต้นการเชื่อมต่อแบบ Mosh…</string>
   <string name="terminal_mosh_install_timeout" tools:machine_translated="true">คำเตือน: การติดตั้งโปรแกรม Mosh ใช้เวลานานเกินไป</string>
-  <string name="terminal_mosh_launching_server" tools:machine_translated="true">กำลังเริ่มการทำงานของโปรแกรม mosh-server บนเครื่องเซิร์ฟเวอร์ระยะไกล...</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">กำลังเริ่มการทำงานของโปรแกรม mosh-server บนเครื่องเซิร์ฟเวอร์ระยะไกล…</string>
   <string name="terminal_mosh_server_failed" tools:machine_translated="true">ไม่สามารถเริ่มต้นใช้งาน mosh-server บนเครื่องระยะไกลได้</string>
   <string name="terminal_mosh_client_failed" tools:machine_translated="true">ไม่สามารถเริ่มต้นโปรแกรม mosh-client ได้</string>
   <string name="terminal_mosh_connected" tools:machine_translated="true">การเชื่อมต่อแบบ Mosh สำเร็จแล้ว</string>
@@ -567,7 +567,7 @@
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">คำสั่งสำหรับเซิร์ฟเวอร์ Mosh</string>
   <string name="hostpref_mosh_server_summary" tools:machine_translated="true">ระบุเส้นทางหรือคำสั่งสำหรับเซิร์ฟเวอร์ Mosh ที่กำหนดเอง (หากต้องการใช้ค่าเริ่มต้น ให้เว้นว่างไว้)</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">พอร์ต UDP ของ Mosh</string>
-  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">กำหนดพอร์ต UDP ที่แน่นอนสำหรับโปรแกรม mosh (หากตั้งค่าเป็น 0 โปรแกรมจะเลือกพอร์ตโดยอัตโนมัติในช่วง 60000-61000)</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">กำหนดพอร์ต UDP ที่แน่นอนสำหรับโปรแกรม mosh (หากตั้งค่าเป็น 0 โปรแกรมจะเลือกพอร์ตโดยอัตโนมัติในช่วง 60000–61000)</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">ภาษาท้องถิ่น</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">ภาษาที่ใช้สำหรับเซสชันของโปรแกรม Mosh (เช่น en_US.UTF-8)</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>

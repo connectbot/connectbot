@@ -556,10 +556,10 @@
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Вклучете/исклучете режимот за составување за внесување преку IME.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Режим за составување (IME)</string>
   <string name="hostpref_profile_edit" tools:machine_translated="true">Уреди го избраниот профил.</string>
-  <string name="terminal_mosh_installing" tools:machine_translated="true">Се подготвува поддршката за Mosh...</string>
-  <string name="terminal_mosh_starting" tools:machine_translated="true">Почнува поврзувањето со Mosh...</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Се подготвува поддршката за Mosh…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Почнува поврзувањето со Mosh…</string>
   <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Предупредување: Инсталацијата на Mosh го надмина дозволеното време.</string>
-  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Покренување на „mosh-server“ на далечниот хост...</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Покренување на „mosh-server“ на далечниот хост…</string>
   <string name="terminal_mosh_server_failed" tools:machine_translated="true">Не успеа да се стартува mosh-server на далечниот хост.</string>
   <string name="terminal_mosh_client_failed" tools:machine_translated="true">Не успеа да се стартува клиентот на Mosh.</string>
   <string name="terminal_mosh_connected" tools:machine_translated="true">Воспоставена е врската со Mosh.</string>
@@ -572,7 +572,7 @@
   <string name="hostpref_locale_summary" tools:machine_translated="true">Локација за сесијата на „Mosh“ (на пример, en_US.UTF-8).</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Верзијата на Mosh и изворниот код</string>
-  <string name="pref_mosh_installing" tools:machine_translated="true">Се подготвува поддршката за Mosh...</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Се подготвува поддршката за Mosh…</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">Да се откажат промените?</string>
   <string name="editor_discard_changes_message" tools:machine_translated="true">Вашите измени нема да бидат зачувани ако излезете без да ги снимите.</string>
   <string name="editor_discard" tools:machine_translated="true">Откажи</string>

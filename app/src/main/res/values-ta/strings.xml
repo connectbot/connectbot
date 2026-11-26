@@ -556,10 +556,10 @@
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">ஐ.எம்.இ உள்ளீட்டிற்கான கலவை பயன்முறையை மாற்றவும்.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">உருவாக்கு முறை (ஐ.எம்.இ)</string>
   <string name="hostpref_profile_edit" tools:machine_translated="true">தேர்ந்தெடுக்கப்பட்ட விவரத்தை திருத்து</string>
-  <string name="terminal_mosh_installing" tools:machine_translated="true">மொஷ் ஆதரவு தயார் செய்யப்படுகிறது...</string>
-  <string name="terminal_mosh_starting" tools:machine_translated="true">மொஷ் இணைப்பு தொடங்குகிறது...</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">மொஷ் ஆதரவு தயார் செய்யப்படுகிறது…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">மொஷ் இணைப்பு தொடங்குகிறது…</string>
   <string name="terminal_mosh_install_timeout" tools:machine_translated="true">எச்சரிக்கை: மோஷ் நிறுவுதல் நேர வரம்பை மீறியது.</string>
-  <string name="terminal_mosh_launching_server" tools:machine_translated="true">தொலைதூர சேவையகத்தில் மோஷ் சர்வரைத் தொடங்குகிறது...</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">தொலைதூர சேவையகத்தில் மோஷ் சர்வரைத் தொடங்குகிறது…</string>
   <string name="terminal_mosh_server_failed" tools:machine_translated="true">தொலைதூர கணினியில் மோஷ் சேவையகம் தொடங்க முடியவில்லை.</string>
   <string name="terminal_mosh_client_failed" tools:machine_translated="true">மோஷ் கிளையண்டை இயக்க முடியவில்லை.</string>
   <string name="terminal_mosh_connected" tools:machine_translated="true">மோஷ் இணைப்பு நிறுவப்பட்டது.</string>
@@ -567,12 +567,12 @@
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">மொஷ் சேவையக கட்டளை</string>
   <string name="hostpref_mosh_server_summary" tools:machine_translated="true">தனிப்பயனாக்கப்பட்ட மோஷ் சேவையகப் பாதை அல்லது கட்டளை (இயல்புநிலைக்கு, இதை வெறுமையாக விடவும்).</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">மொஷ் யுடிபி போர்ட்</string>
-  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">மொஷ் பயன்பாட்டிற்கான நிலையான யுடிபி போர்ட் (தானியங்கி முறையில் 60000-61000 வரம்பிற்கு, பூஜ்ஜியம் என குறிப்பிடவும்).</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">மொஷ் பயன்பாட்டிற்கான நிலையான யுடிபி போர்ட் (தானியங்கி முறையில் 60000–61000 வரம்பிற்கு, பூஜ்ஜியம் என குறிப்பிடவும்).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">பிராந்திய அமைப்பு</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">மோஷ் அமர்வுக்கான பிராந்திய அமைப்பு (எடுத்துக்காட்டாக, en_US.UTF-8).</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">மொஷ் வெளியீடு மற்றும் மூலக் குறியீடு</string>
-  <string name="pref_mosh_installing" tools:machine_translated="true">மொஷ் ஆதரத்தை தயார் செய்து கொண்டிருக்கிறது...</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">மொஷ் ஆதரத்தை தயார் செய்து கொண்டிருக்கிறது…</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">மாற்றங்களை நிராகரிக்கவா?</string>
   <string name="editor_discard_changes_message" tools:machine_translated="true">நீங்கள் மாற்றங்களைச் சேமிக்காமல் வெளியேறினால், நீங்கள் செய்த திருத்தங்கள் அனைத்தும் இழக்கப்படும்.</string>
   <string name="editor_discard" tools:machine_translated="true">மாற்றங்களைச் சேமிக்காமல் வெளியேறு.</string>

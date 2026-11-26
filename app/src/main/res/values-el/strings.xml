@@ -567,7 +567,7 @@
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">Εντολή διαμόρφωσης του διακομιστή Mosh</string>
   <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Προσαρμοσμένη διαδρομή ή εντολή για τον διακομιστή Mosh (αφήστε το κενό για την προεπιλεγμένη ρύθμιση).</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">Θύρα UDP του Mosh</string>
-  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Σταθερή θύρα UDP για το Mosh (0 για αυτόματη επιλογή από το εύρος 60000-61000).</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Σταθερή θύρα UDP για το Mosh (0 για αυτόματη επιλογή από το εύρος 60000–61000).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Τοπικές ρυθμίσεις</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Τοπικές ρυθμίσεις για τη συνεδρία του Mosh (π.χ., en_US.UTF-8)</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>

@@ -530,10 +530,10 @@
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Alternar o modo de composição para a entrada de texto do IME.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Modo de composição (IME)</string>
   <string name="hostpref_profile_edit" tools:machine_translated="true">Editar perfil selecionado</string>
-  <string name="terminal_mosh_installing" tools:machine_translated="true">A preparar o suporte para o Mosh...</string>
-  <string name="terminal_mosh_starting" tools:machine_translated="true">A iniciar a conexão Mosh...</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">A preparar o suporte para o Mosh…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">A iniciar a conexão Mosh…</string>
   <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Aviso: o tempo limite para a instalação do Mosh foi atingido.</string>
-  <string name="terminal_mosh_launching_server" tools:machine_translated="true">A iniciar o servidor Mosh no computador remoto...</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">A iniciar o servidor Mosh no computador remoto…</string>
   <string name="terminal_mosh_server_failed" tools:machine_translated="true">Falha ao iniciar o servidor Mosh no computador remoto.</string>
   <string name="terminal_mosh_client_failed" tools:machine_translated="true">Falha ao iniciar o cliente Mosh.</string>
   <string name="terminal_mosh_connected" tools:machine_translated="true">Conexão Mosh estabelecida.</string>
@@ -546,7 +546,7 @@
   <string name="hostpref_locale_summary" tools:machine_translated="true">Localidade para a sessão do Mosh (por exemplo, pt_PT.UTF-8).</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Versão do Mosh e código-fonte.</string>
-  <string name="pref_mosh_installing" tools:machine_translated="true">Preparando o suporte para o Mosh...</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Preparando o suporte para o Mosh…</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">Descartar alterações?</string>
   <string name="editor_discard_changes_message" tools:machine_translated="true">As suas alterações serão perdidas se sair sem guardar.</string>
   <string name="editor_discard" tools:machine_translated="true">Descartar</string>

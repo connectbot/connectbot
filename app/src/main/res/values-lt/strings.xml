@@ -556,10 +556,10 @@
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Perjunkite įvesties metodų rengimo režimą.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Rašymo režimas (IME)</string>
   <string name="hostpref_profile_edit" tools:machine_translated="true">Redaguoti pasirinktą profilį</string>
-  <string name="terminal_mosh_installing" tools:machine_translated="true">Ruošiamas „Mosh“ palaikymas...</string>
-  <string name="terminal_mosh_starting" tools:machine_translated="true">Pradedamas „Mosh“ ryšio užmezgimas...</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Ruošiamas „Mosh“ palaikymas…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Pradedamas „Mosh“ ryšio užmezgimas…</string>
   <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Įspėjimas: „Mosh“ įdiegimo laikas baigėsi.</string>
-  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Paleidžiamas „mosh-server“ nuotoliniame kompiuteryje...</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Paleidžiamas „mosh-server“ nuotoliniame kompiuteryje…</string>
   <string name="terminal_mosh_server_failed" tools:machine_translated="true">Nepavyko paleisti „mosh-server“ nuotoliniame kompiuteryje.</string>
   <string name="terminal_mosh_client_failed" tools:machine_translated="true">Nepavyko paleisti „mosh“ kliento.</string>
   <string name="terminal_mosh_connected" tools:machine_translated="true">„Mosh“ ryšys užmegztas.</string>
@@ -572,7 +572,7 @@
   <string name="hostpref_locale_summary" tools:machine_translated="true">„Mosh“ sesijos lokalė (pvz., „en_US.UTF-8“)</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">„Mosh“ versija ir šaltinio kodas</string>
-  <string name="pref_mosh_installing" tools:machine_translated="true">Ruošiamasi įdiegti „Mosh“ palaikymą...</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Ruošiamasi įdiegti „Mosh“ palaikymą…</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">Ar atsisakyti pakeitimų?</string>
   <string name="editor_discard_changes_message" tools:machine_translated="true">Jūsų atlikti pakeitimai bus prarasti, jei išeisite neįrašę jų.</string>
   <string name="editor_discard" tools:machine_translated="true">Atšaukti</string>

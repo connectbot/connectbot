@@ -567,7 +567,7 @@
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">Skipun fyrir Mosh-þjóninn</string>
   <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Sérsniðin slóð eða skipun fyrir Mosh-þjóninn (látið þetta reit vera tómt til að nota sjálfgefið gildi).</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">UDP-tenging Mosh</string>
-  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Fastur UDP-töluhafn fyrir Mosh (0 fyrir sjálfvirkt svið 60000-61000)</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Fastur UDP-töluhafn fyrir Mosh (0 fyrir sjálfvirkt svið 60000–61000)</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Staðsetning</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Staðsetning fyrir Mosh-lotu (td. en_US.UTF-8)</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>

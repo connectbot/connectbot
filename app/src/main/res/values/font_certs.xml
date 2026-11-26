@@ -15,7 +15,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="Typos">
     <!-- Google Fonts Provider certificate for downloadable fonts -->
     <array name="com_google_android_gms_fonts_certs">
         <item>@array/com_google_android_gms_fonts_certs_dev</item>

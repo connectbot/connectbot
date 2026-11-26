@@ -567,7 +567,7 @@
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">Команда за Mosh сървъра</string>
   <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Потребителски път или команда за mosh-сървъра (оставете полето празно, за да се използва стойността по подразбиране).</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">UDP порт на Mosh</string>
-  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Фиксиран UDP порт за mosh (0 за автоматичен диапазон 60000-61000)</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Фиксиран UDP порт за mosh (0 за автоматичен диапазон 60000–61000)</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Регионални настройки</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Езикова настройка за сесията на Mosh (например, en_US.UTF-8)</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>

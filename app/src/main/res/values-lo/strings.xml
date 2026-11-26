@@ -556,10 +556,10 @@
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">ປ່ຽນໄປໃຊ້ໂໝດການປ້ອນຂໍ້ມູນແບບ IME</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">ໂໝດສ້າງຂໍ້ຄວາມ (IME)</string>
   <string name="hostpref_profile_edit" tools:machine_translated="true">ແກ້ໄຂຂໍ້ມູນທີ່ເລືອກໄວ້</string>
-  <string name="terminal_mosh_installing" tools:machine_translated="true">ກຳລັງກະກຽມການຕິດຕັ້ງສ່ວນປະກອບເພີ່ມເຕີມຂອງ Mosh...</string>
-  <string name="terminal_mosh_starting" tools:machine_translated="true">ກຳລັງສ້າງການເຊື່ອມຕໍ່ກັບ Mosh...</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">ກຳລັງກະກຽມການຕິດຕັ້ງສ່ວນປະກອບເພີ່ມເຕີມຂອງ Mosh…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">ກຳລັງສ້າງການເຊື່ອມຕໍ່ກັບ Mosh…</string>
   <string name="terminal_mosh_install_timeout" tools:machine_translated="true">ຄຳເຕືອນ: ການຕິດຕັ້ງໂປຣແກຼມ Mosh ສิ้นສຸດເວລາ.</string>
-  <string name="terminal_mosh_launching_server" tools:machine_translated="true">ກຳລັງເປີດໃຊ້ງານ mosh-server ໃນເຄື່ອງແມ່ຂ່າຍທາງໄກ...</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">ກຳລັງເປີດໃຊ້ງານ mosh-server ໃນເຄື່ອງແມ່ຂ່າຍທາງໄກ…</string>
   <string name="terminal_mosh_server_failed" tools:machine_translated="true">ບໍ່ສາມາດເປີດໃຊ້ງານ mosh-server ໃນເຄື່ອງແມ່ຂ່າຍທາງໄກໄດ້</string>
   <string name="terminal_mosh_client_failed" tools:machine_translated="true">ບໍ່ສາມາດເປີດໂປຣແກຼມ mosh-client ເລີ່ມຕົ້ນໄດ້</string>
   <string name="terminal_mosh_connected" tools:machine_translated="true">ການເຊື່ອມຕໍ່ Mosh ສ້າງສຳເລັດແລ້ວ</string>
@@ -567,12 +567,12 @@
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">ຄຳສັ່ງຂອງເຊີເວີ Mosh</string>
   <string name="hostpref_mosh_server_summary" tools:machine_translated="true">ກຳນົດເສັ້ນທາງ ຫຼື ຄຳສັ່ງຂອງ mosh-server ແບບກຳນົດເອງ (ຖ້າບໍ່ຕ້ອງການ, ປ່ອຍໄວ້ຫວ່າງເພື່ອໃຊ້ຄ່າເລີ່ມຕົ້ນ)</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">ພອດ UDP ສຳລັບ Mosh</string>
-  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">ກຳນົດພອດ UDP ແບບຄົງທີ່ສໍາລັບ Mosh (ຕັ້ງເປັນ 0 ເພື່ອໃຫ້ລະບົບເລືອກເອງໃນຊ່ວງ 60000-61000)</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">ກຳນົດພອດ UDP ແບບຄົງທີ່ສໍາລັບ Mosh (ຕັ້ງເປັນ 0 ເພື່ອໃຫ້ລະບົບເລືອກເອງໃນຊ່ວງ 60000–61000)</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">ການຕັ້ງຄ່າພາສາ ແລະພື້ນທີ່</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">ການຕັ້ງຄ່າພາສາສໍາລັບເຊສຊັນຂອງ Mosh (ຕົວຢ່າງ: en_US.UTF-8)</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">ສະບັບປ່ອຍອອກມາຂອງ Mosh ແລະລະຫັດແຫຼ່ງ</string>
-  <string name="pref_mosh_installing" tools:machine_translated="true">ກຳລັງກະກຽມເພື່ອຕິດຕັ້ງສ່ວນປະກອບທີ່ຮອງຮັບ Mosh...</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">ກຳລັງກະກຽມເພື່ອຕິດຕັ້ງສ່ວນປະກອບທີ່ຮອງຮັບ Mosh…</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">ຍົກເລີກການປ່ຽນແປງບໍ?</string>
   <string name="editor_discard_changes_message" tools:machine_translated="true">ການແກ້ໄຂຂອງທ່ານຈະສູນຫາຍໄປຖ້າທ່ານອອກຈາກໜ້າຈໍໂດຍບໍ່ໄດ້ບັນທຶກໄວ້.</string>
   <string name="editor_discard" tools:machine_translated="true">ຍົກເລີກ</string>
@@ -664,7 +664,7 @@
   <string name="pref_notification_channels_title" tools:machine_translated="true">ຈັດການຊ່ອງທາງແຈ້ງເຕືອນໃນການຕັ້ງຄ່າ</string>
   <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
   <string name="notification_connected" tools:machine_translated="true">ເຊື່ອມຕໍ່ແລ້ວ</string>
-  <string name="notification_connecting" tools:machine_translated="true">ກຳລັງເຊື່ອມຕໍ່...</string>
+  <string name="notification_connecting" tools:machine_translated="true">ກຳລັງເຊື່ອມຕໍ່…</string>
   <string name="notification_disconnected" tools:machine_translated="true">ເຊື່ອມຕໍ່ຖືກຕັດການ</string>
   <string name="notification_bell" tools:machine_translated="true">ສັນຍານເຕືອນຈາກເຄື່ອງ​ terminal</string>
   <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
@@ -1092,5 +1092,5 @@
   <string name="zmodem_failed" tools:machine_translated="true">ການສົ່ງຕໍ່ໄຟລ໌ບໍ່ສຳເລັດ.</string>
   <string name="zmodem_dismiss" tools:machine_translated="true">ປິດໜ້າຕ່າງການແຈ້ງເຕືອນກ່ຽວກັບຂໍ້ຜິດພາດໃນການສົ່ງໄຟລ໌</string>
   <string name="zmodem_progress_total" tools:machine_translated="true">%1$s: %2$d / %3$d ໄບ້</string>
-  <string name="zmodem_cancelling" tools:machine_translated="true">ກຳລັງຍົກເລີກການສົ່ງຂໍ້ມູນ...</string>
+  <string name="zmodem_cancelling" tools:machine_translated="true">ກຳລັງຍົກເລີກການສົ່ງຂໍ້ມູນ…</string>
 </resources>

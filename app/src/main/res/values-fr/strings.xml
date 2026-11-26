@@ -322,7 +322,7 @@
   <string name="error_invalid_json">Fichier JSON invalide</string>
   <string name="title_palette_editor">Éditer la palette de couleurs</string>
   <string name="button_reset_all_colors">Réinitialiser tout</string>
-  <string name="section_ansi_colors">Couleurs ANSI (0-15)</string>
+  <string name="section_ansi_colors">Couleurs ANSI (0–15)</string>
   <string name="dialog_title_edit_color">Éditer la couleur %1$d</string>
   <string name="dialog_title_reset_all">Réinitialiser toutes les couleurs</string>
   <string name="dialog_message_reset_all">Ceci réinitialisera les 256 couleurs à leurs valeurs par défaut Cette action ne peut pas être annulée</string>
@@ -567,7 +567,7 @@
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">Commande du serveur Mosh</string>
   <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Chemin d’accès ou commande personnalisée pour le serveur Mosh (laissez ce champ vide pour utiliser la valeur par défaut).</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">Port UDP de Mosh</string>
-  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Port UDP fixe pour Mosh (0 pour une sélection automatique dans la plage 60000-61000)</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Port UDP fixe pour Mosh (0 pour une sélection automatique dans la plage 60000–61000)</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Paramètres régionaux</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Paramètres régionaux pour la session Mosh (par exemple, en_US.UTF-8)</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>

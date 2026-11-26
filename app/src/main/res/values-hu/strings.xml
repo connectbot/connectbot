@@ -758,7 +758,7 @@
   <string name="connection_info_ssh_port" tools:machine_translated="true">SSH port</string>
   <string name="connection_info_username" tools:machine_translated="true">Felhasználónév</string>
   <string name="connection_info_status" tools:machine_translated="true">Állapot</string>
-  <string name="connection_info_connecting" tools:machine_translated="true">Csatlakozás folyamatban...</string>
+  <string name="connection_info_connecting" tools:machine_translated="true">Csatlakozás folyamatban…</string>
   <string name="connection_info_connected" tools:machine_translated="true">Csatlakoztatva</string>
   <string name="connection_info_disconnected" tools:machine_translated="true">Kapcsolat bontva.</string>
   <string name="connection_info_local_address" tools:machine_translated="true">Helyi cím</string>

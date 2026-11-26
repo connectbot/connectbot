@@ -322,7 +322,7 @@
   <string name="error_invalid_json">无效的 JSON 文件</string>
   <string name="title_palette_editor">编辑颜色调板</string>
   <string name="button_reset_all_colors">重置所有设置</string>
-  <string name="section_ansi_colors">ANSI 颜色（0-15）</string>
+  <string name="section_ansi_colors">ANSI 颜色（0–15）</string>
   <string name="dialog_title_edit_color">编辑颜色 %1$d</string>
   <string name="dialog_title_reset_all">重置所有颜色？</string>
   <string name="dialog_message_reset_all">这将把所有 256 种颜色重置为其默认值。此操作无法撤销。</string>
@@ -567,7 +567,7 @@
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">Mosh 服务器命令</string>
   <string name="hostpref_mosh_server_summary" tools:machine_translated="true">自定义 mosh-server 的路径或命令（留空则使用默认设置）。</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">Mosh UDP 端口</string>
-  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">为 Mosh 设置固定的 UDP 端口（设置为 0 时，将自动选择 60000-61000 范围内的端口）。</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">为 Mosh 设置固定的 UDP 端口（设置为 0 时，将自动选择 60000–61000 范围内的端口）。</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">区域设置。</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Mosh 会话的区域设置（例如，en_US.UTF-8）</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
