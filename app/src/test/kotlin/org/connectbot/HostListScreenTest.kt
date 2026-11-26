@@ -20,10 +20,12 @@ package org.connectbot
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
+import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTouchInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -420,6 +422,57 @@ class HostListScreenTest {
             .performClick()
     }
 
+    @Test
+    fun connectedHostShowsSessionCountAndOpensNewSessionsFromBothMenus() {
+        val host = testHost(UUID(0, 1), "shared")
+        var opened = 0
+        setHostListContent(
+            uiState = HostListUiState(
+                hosts = listOf(host),
+                connectionStates = mapOf(host.id to ConnectionState.CONNECTED),
+                sessionCounts = mapOf(host.id to 2),
+            ),
+            onOpenNewSession = { selected ->
+                assertTrue(selected == host)
+                opened++
+            },
+        )
+        composeTestRule.onNodeWithText("2").assertIsDisplayed()
+        openHostMenu(host)
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.list_host_new_session)).performClick()
+        assertTrue(opened == 1)
+        composeTestRule.onNodeWithTag(HostListTestTags.itemRow(host.id)).performTouchInput { longClick() }
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.list_host_new_session)).performClick()
+        assertTrue(opened == 2)
+    }
+
+    @Test
+    fun disconnectedHostLongPressDoesNotOfferNewSession() {
+        val host = testHost(UUID(0, 1), "offline")
+        setHostListContent(
+            uiState = HostListUiState(
+                hosts = listOf(host),
+                connectionStates = mapOf(host.id to ConnectionState.DISCONNECTED),
+            ),
+        )
+        composeTestRule.onNodeWithTag(HostListTestTags.itemRow(host.id)).performTouchInput { longClick() }
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.list_host_new_session)).assertDoesNotExist()
+    }
+
+    @Test
+    fun shortcutLongPressDoesNotOfferNewSessionForConnectedHost() {
+        val host = testHost(UUID(0, 1), "shared")
+        setHostListContent(
+            makingShortcut = true,
+            uiState = HostListUiState(
+                hosts = listOf(host),
+                connectionStates = mapOf(host.id to ConnectionState.CONNECTED),
+            ),
+        )
+        composeTestRule.onNodeWithTag(HostListTestTags.itemRow(host.id)).performTouchInput { longClick() }
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.list_host_new_session)).assertDoesNotExist()
+    }
+
     private fun openHostMenu(host: Host) {
         composeTestRule
             .onNodeWithTag(HostListTestTags.itemMenuButton(host.id))
@@ -445,6 +498,7 @@ class HostListScreenTest {
         onDisconnectAll: () -> Unit = {},
         onExportHosts: () -> Unit = {},
         onImportHosts: () -> Unit = {},
+        onOpenNewSession: (Host) -> Unit = {},
     ) {
         composeTestRule.setContent {
             ConnectBotTheme {
@@ -467,6 +521,7 @@ class HostListScreenTest {
                     onDisconnectAll = onDisconnectAll,
                     onExportHosts = onExportHosts,
                     onImportHosts = onImportHosts,
+                    onOpenNewSession = onOpenNewSession,
                 )
             }
         }

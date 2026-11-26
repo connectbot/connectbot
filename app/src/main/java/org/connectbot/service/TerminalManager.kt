@@ -74,6 +74,7 @@ import java.lang.ref.WeakReference
 import java.security.KeyPair
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
 
 /**
@@ -91,8 +92,17 @@ class TerminalManager :
     private val _bridgesFlow = MutableStateFlow<List<TerminalBridge>>(emptyList())
     val bridgesFlow: StateFlow<List<TerminalBridge>> = _bridgesFlow.asStateFlow()
 
-    private val hostBridgeMap: MutableMap<Host, WeakReference<TerminalBridge>> = HashMap()
-    private val nicknameBridgeMap: MutableMap<String, WeakReference<TerminalBridge>> = HashMap()
+    // Maps for multi-session support: hostId -> list of bridges
+    private val hostBridgesMap: MutableMap<UUID, MutableList<WeakReference<TerminalBridge>>> = HashMap()
+
+    // Quick lookup by session ID
+    private val bridgesBySessionId: MutableMap<Long, WeakReference<TerminalBridge>> = HashMap()
+
+    // Track last-used session per host for navigation
+    private val lastUsedSessionByHost: MutableMap<UUID, Long> = HashMap()
+
+    // Session ID counter (starts at 1)
+    private val nextSessionId = AtomicLong(1L)
 
     private val _disconnected = ArrayList<Host>()
     private val _disconnectedFlow = MutableStateFlow<List<Host>>(emptyList())
@@ -120,12 +130,10 @@ class TerminalManager :
     private val _hostStatusChanged = MutableSharedFlow<Unit>(replay = 0, extraBufferCapacity = 10)
     val hostStatusChangedFlow: SharedFlow<Unit> = _hostStatusChanged.asSharedFlow()
 
-    private val _serviceErrors =
-        MutableSharedFlow<ServiceError>(replay = 0, extraBufferCapacity = 10)
+    private val _serviceErrors = MutableSharedFlow<ServiceError>(replay = 0, extraBufferCapacity = 10)
     val serviceErrors: SharedFlow<ServiceError> = _serviceErrors.asSharedFlow()
 
-    private val _loadedKeysChanged =
-        MutableSharedFlow<Set<String>>(replay = 1, extraBufferCapacity = 1)
+    private val _loadedKeysChanged = MutableSharedFlow<Set<String>>(replay = 1, extraBufferCapacity = 1)
     val loadedKeysChangedFlow: SharedFlow<Set<String>> = _loadedKeysChanged.asSharedFlow()
 
     // Encrypted keys marked "unlock at startup" that still need a passphrase from the user.
@@ -399,24 +407,33 @@ class TerminalManager :
     }
 
     /**
-     * Open a new SSH session using the given parameters.
+     * Generate a unique session ID for a new bridge.
      */
-    private fun openConnection(host: Host): TerminalBridge {
-        // throw exception if terminal already open
-        if (getConnectedBridge(host) != null) {
-            throw IllegalArgumentException("Connection already open for that nickname")
-        }
+    private fun generateSessionId(): Long = nextSessionId.getAndIncrement()
 
+    /**
+     * Open a new SSH session using the given parameters.
+     * Multiple sessions to the same host are now allowed.
+     */
+    private suspend fun openConnection(host: Host): TerminalBridge = withContext(dispatchers.io) {
         endedSessionAttention.remove(host.id)
-        val bridge = TerminalBridge(this, host, dispatchers)
-        bridge.setOnDisconnectedListener(this)
+        val sessionId = generateSessionId()
+        val bridge = TerminalBridge(this@TerminalManager, host, sessionId, dispatchers)
+        bridge.setOnDisconnectedListener(this@TerminalManager)
         bridge.startConnection()
 
         synchronized(_bridges) {
             _bridges.add(bridge)
             val wr = WeakReference(bridge)
-            hostBridgeMap[bridge.host] = wr
-            nicknameBridgeMap[bridge.host.nickname] = wr
+
+            // Add to multi-session maps
+            val hostBridges = hostBridgesMap.getOrPut(host.id) { mutableListOf() }
+            hostBridges.add(wr)
+            bridgesBySessionId[sessionId] = wr
+
+            // Mark as last-used session for this host
+            lastUsedSessionByHost[host.id] = sessionId
+
             _bridgesFlow.value = _bridges.toList()
         }
 
@@ -433,14 +450,14 @@ class TerminalManager :
         // Android 8 and 16 ActiveServices.setServiceForegroundInnerLocked establishes it
         // before posting the notification; Android controls whether that notification is visible.
         // https://android.googlesource.com/platform/frameworks/base/+/refs/heads/android16-release/services/core/java/com/android/server/am/ActiveServices.java
-        connectionNotifier.showRunningNotification(this, notificationSessions())
+        connectionNotifier.showRunningNotification(this@TerminalManager, notificationSessions())
 
         // also update database with new connected time
         touchHost(host)
 
         notifyHostStatusChanged()
 
-        return bridge
+        bridge
     }
 
     fun getScrollback(): Int {
@@ -498,41 +515,112 @@ class TerminalManager :
     }
 
     /**
-     * Find a connected [TerminalBridge] with the given Host.
+     * Get all connected bridges for a given host ID.
+     * Supports multiple sessions per host.
      *
-     * @param host the Host to search for
-     * @return TerminalBridge that uses the Host
+     * @param hostId the database ID of the host
+     * @return List of connected TerminalBridge objects for this host
      */
-    fun getConnectedBridge(host: Host): TerminalBridge? {
-        val wr = hostBridgeMap[host]
-        return wr?.get()
+    fun getConnectedBridges(hostId: UUID): List<TerminalBridge> {
+        synchronized(_bridges) {
+            return hostBridgesMap[hostId]?.mapNotNull { it.get() } ?: emptyList()
+        }
     }
 
     /**
-     * Find a connected [TerminalBridge] using its nickname.
+     * Get a bridge by its session ID.
      *
-     * @param nickname
-     * @return TerminalBridge that matches nickname
+     * @param sessionId the unique session identifier
+     * @return TerminalBridge with that session ID, or null if not found
      */
-    fun getConnectedBridge(nickname: String?): TerminalBridge? {
-        val wr = nicknameBridgeMap[nickname ?: return null]
-        return wr?.get()
+    fun getBridgeBySessionId(sessionId: Long): TerminalBridge? {
+        synchronized(_bridges) {
+            return bridgesBySessionId[sessionId]?.get()
+        }
     }
+
+    /**
+     * Get the number of active sessions for a host.
+     *
+     * @param hostId the database ID of the host
+     * @return number of active sessions
+     */
+    fun getSessionCount(hostId: UUID): Int {
+        synchronized(_bridges) {
+            return hostBridgesMap[hostId]?.count { it.get() != null } ?: 0
+        }
+    }
+
+    /**
+     * Get the last-used bridge for a host.
+     * Returns the most recently opened or interacted-with session.
+     *
+     * @param hostId the database ID of the host
+     * @return the last-used TerminalBridge, or the first available if none tracked
+     */
+    fun getLastUsedBridge(hostId: UUID): TerminalBridge? {
+        synchronized(_bridges) {
+            val lastSessionId = lastUsedSessionByHost[hostId]
+            if (lastSessionId != null) {
+                val bridge = bridgesBySessionId[lastSessionId]?.get()
+                if (bridge != null) return bridge
+            }
+            // Fallback to first available session
+            return hostBridgesMap[hostId]?.firstNotNullOfOrNull { it.get() }
+        }
+    }
+
+    /**
+     * Mark a session as recently used.
+     * Called when user interacts with a session.
+     *
+     * @param sessionId the session to mark as used
+     */
+    fun markSessionUsed(sessionId: Long) {
+        synchronized(_bridges) {
+            val bridge = bridgesBySessionId[sessionId]?.get() ?: return
+            lastUsedSessionByHost[bridge.host.id] = sessionId
+        }
+    }
+
+    /**
+     * Check if any sessions are connected for a host.
+     *
+     * @param hostId the database ID of the host
+     * @return true if at least one session is connected
+     */
+    fun isHostConnected(hostId: UUID): Boolean = getSessionCount(hostId) > 0
 
     /**
      * Called by child bridge when somehow it's been disconnected.
      */
     override fun onDisconnected(bridge: TerminalBridge) {
         var shouldHideRunningNotification = false
-        Timber.d("Bridge Disconnected. Removing it.")
+        Timber.d("Bridge Disconnected. Removing it. SessionId=${bridge.sessionId}")
         endedSessionAttention[bridge.host.id] = bridge.sessionAttention
 
         synchronized(_bridges) {
             // remove this bridge from our list
             _bridges.remove(bridge)
 
-            hostBridgeMap.remove(bridge.host)
-            nicknameBridgeMap.remove(bridge.host.nickname)
+            // Remove from multi-session maps
+            bridgesBySessionId.remove(bridge.sessionId)
+            hostBridgesMap[bridge.host.id]?.removeIf { it.get() == bridge || it.get() == null }
+            // Clean up empty lists
+            if (hostBridgesMap[bridge.host.id]?.isEmpty() == true) {
+                hostBridgesMap.remove(bridge.host.id)
+            }
+
+            // Update last-used if this was the last-used session
+            if (lastUsedSessionByHost[bridge.host.id] == bridge.sessionId) {
+                // Set to another session if one exists, or remove
+                val remaining = hostBridgesMap[bridge.host.id]?.mapNotNull { it.get() }
+                if (remaining.isNullOrEmpty()) {
+                    lastUsedSessionByHost.remove(bridge.host.id)
+                } else {
+                    lastUsedSessionByHost[bridge.host.id] = remaining.last().sessionId
+                }
+            }
 
             if (bridge.isUsingNetwork()) {
                 connectivityMonitor.decRef()
@@ -563,8 +651,7 @@ class TerminalManager :
 
     private fun emitLoadedKeysChanged() {
         scope.launch {
-            val keys = HashSet(loadedKeypairs.keys)
-            _loadedKeysChanged.emit(keys)
+            _loadedKeysChanged.emit(loadedKeypairs.keys.toSet())
         }
     }
 
@@ -713,11 +800,7 @@ class TerminalManager :
 
         loadedKeypairs[pubkey.nickname] = keyHolder
 
-        Timber.d(
-            "Added biometric key '%s' to in-memory cache (expires in %d seconds)",
-            pubkey.nickname,
-            BIOMETRIC_AUTH_VALIDITY_SECONDS,
-        )
+        Timber.d("Added biometric key '%s' to in-memory cache (expires in %d seconds)", pubkey.nickname, BIOMETRIC_AUTH_VALIDITY_SECONDS)
         emitLoadedKeysChanged()
         return BiometricKeyResult.Success
     }
@@ -823,10 +906,10 @@ class TerminalManager :
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        /*
-         * We want this service to continue running until it is explicitly
-         * stopped, so return sticky.
-         */
+		/*
+		 * We want this service to continue running until it is explicitly
+		 * stopped, so return sticky.
+		 */
         return START_STICKY
     }
 
@@ -841,10 +924,7 @@ class TerminalManager :
     }
 
     override fun onUnbind(intent: Intent): Boolean {
-        Timber.i(
-            "Someone unbound from TerminalManager with %d bridges active",
-            bridgesFlow.value.size,
-        )
+        Timber.i("Someone unbound from TerminalManager with %d bridges active", bridgesFlow.value.size)
 
         setResizeAllowed(true)
 

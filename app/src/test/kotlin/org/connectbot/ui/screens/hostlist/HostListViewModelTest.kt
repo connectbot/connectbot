@@ -37,10 +37,12 @@ import org.connectbot.service.TerminalManager
 import org.connectbot.util.HostConstants
 import org.connectbot.util.PreferenceConstants
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mockito
 import org.mockito.kotlin.any
 import org.mockito.kotlin.inOrder
 import org.mockito.kotlin.mock
@@ -232,5 +234,44 @@ class HostListViewModelTest {
         val inOrder = inOrder(terminalManager, repository)
         inOrder.verify(terminalManager).disconnectHost(host.id)
         inOrder.verify(repository).deleteHost(host)
+    }
+
+    @Test
+    fun openingNewSessionUsesSavedHostIdAndReportsConnectionFailures() = runTest {
+        val host = Host(id = UUID(0, 1), hostname = "host", username = "user")
+        val manager = createTerminalManager()
+        val viewModel = createViewModel()
+        viewModel.setTerminalManager(manager)
+        viewModel.connectToHost(host)
+        advanceUntilIdle()
+        Mockito.verify(manager).openConnectionForHostId(host.id)
+        Mockito.`when`(manager.openConnectionForHostId(host.id)).thenThrow(IllegalStateException("offline"), IllegalStateException())
+        viewModel.connectToHost(host)
+        advanceUntilIdle()
+        assertEquals("offline", viewModel.uiState.value.error)
+        viewModel.connectToHost(host)
+        advanceUntilIdle()
+        assertEquals("Failed to connect", viewModel.uiState.value.error)
+    }
+
+    @Test
+    fun sessionLookupsHandleUnboundServiceAndMultipleSessions() = runTest {
+        val host = Host(id = UUID(0, 1), hostname = "host")
+        val viewModel = createViewModel()
+        assertEquals(null, viewModel.getLastUsedSessionId(host.id))
+        assertFalse(viewModel.isHostConnected(host.id))
+        assertEquals(0, viewModel.getSessionCount(host.id))
+        viewModel.connectToHost(host)
+        advanceUntilIdle()
+        val manager = createTerminalManager()
+        val bridge = Mockito.mock(org.connectbot.service.TerminalBridge::class.java)
+        Mockito.`when`(bridge.sessionId).thenReturn(42L)
+        Mockito.`when`(manager.getLastUsedBridge(host.id)).thenReturn(bridge)
+        Mockito.`when`(manager.getSessionCount(host.id)).thenReturn(2)
+        Mockito.`when`(manager.isHostConnected(host.id)).thenReturn(true)
+        viewModel.setTerminalManager(manager)
+        assertEquals(42L, viewModel.getLastUsedSessionId(host.id))
+        assertTrue(viewModel.isHostConnected(host.id))
+        assertEquals(2, viewModel.getSessionCount(host.id))
     }
 }
