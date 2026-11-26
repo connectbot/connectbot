@@ -92,8 +92,45 @@ class ConnectivityMonitorTest {
         connectivityMonitor.setWantWifiLock(true)
         connectivityMonitor.incRef()
         connectivityMonitor.decRef()
+        connectivityMonitor.cleanup()
 
         verify(terminalManager, never()).getSystemService(Context.WIFI_SERVICE)
+    }
+
+    @Test
+    @Config(sdk = [28])
+    fun cleanupReleasesAHeldWifiLock() {
+        connectivityMonitor.setWantWifiLock(true)
+        connectivityMonitor.incRef()
+        `when`(wifiLock.isHeld).thenReturn(true)
+
+        connectivityMonitor.cleanup()
+
+        verify(wifiLock).release()
+    }
+
+    @Test
+    @Config(sdk = [28])
+    fun cleanupAndReferenceChangesLeaveAnUnheldWifiLockAlone() {
+        connectivityMonitor.incRef()
+        connectivityMonitor.decRef()
+        connectivityMonitor.cleanup()
+
+        verify(wifiLock, never()).acquire()
+        verify(wifiLock, never()).release()
+    }
+
+    @Test
+    @Config(sdk = [28])
+    fun additionalReferencesKeepTheExistingWifiLock() {
+        connectivityMonitor.setWantWifiLock(true)
+        connectivityMonitor.incRef()
+        `when`(wifiLock.isHeld).thenReturn(true)
+        connectivityMonitor.incRef()
+        connectivityMonitor.decRef()
+
+        verify(wifiLock).acquire()
+        verify(wifiLock, never()).release()
     }
 
     @Test
