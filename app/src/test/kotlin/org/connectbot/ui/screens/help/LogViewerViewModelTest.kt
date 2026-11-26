@@ -17,12 +17,13 @@
 
 package org.connectbot.ui.screens.help
 
-import android.annotation.TargetApi
 import android.app.ActivityManager
 import android.app.ApplicationExitInfo
 import android.content.Context
 import android.net.Uri
+import androidx.annotation.RequiresApi
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.filters.SdkSuppress
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.connectbot.data.LogRepository
@@ -65,14 +66,14 @@ class LogViewerViewModelTest {
         return LogViewerViewModel(logRepository, context, CoroutineDispatchers(dispatcher, dispatcher, dispatcher))
     }
 
-    @TargetApi(30)
+    @RequiresApi(30)
     private fun crash(timestamp: Long, reason: Int = ApplicationExitInfo.REASON_CRASH_NATIVE): ApplicationExitInfo = mock(ApplicationExitInfo::class.java).also {
         `when`(it.timestamp).thenReturn(timestamp)
         `when`(it.reason).thenReturn(reason)
     }
 
     @Test
-    @TargetApi(30)
+    @SdkSuppress(minSdkVersion = 30)
     fun savesNewestNativeTraceWithoutChangingBytesAndClosesStream() = runTest {
         val viewModel = createViewModel(StandardTestDispatcher(testScheduler))
         val older = crash(1)
@@ -100,7 +101,7 @@ class LogViewerViewModelTest {
     }
 
     @Test
-    @TargetApi(30)
+    @SdkSuppress(minSdkVersion = 30)
     fun skipsRemovedTraceAndExportsOlderRetainedTrace() = runTest {
         val viewModel = createViewModel(StandardTestDispatcher(testScheduler))
         val removed = crash(2)
@@ -116,7 +117,7 @@ class LogViewerViewModelTest {
     }
 
     @Test
-    @TargetApi(30)
+    @SdkSuppress(minSdkVersion = 30)
     fun missingTraceDoesNotOverwriteDestination() = runTest {
         val viewModel = createViewModel(StandardTestDispatcher(testScheduler))
         val nativeCrash = crash(1)
@@ -130,7 +131,7 @@ class LogViewerViewModelTest {
     }
 
     @Test
-    @TargetApi(30)
+    @SdkSuppress(minSdkVersion = 30)
     fun readFailureReturnsFailure() = runTest {
         val viewModel = createViewModel(StandardTestDispatcher(testScheduler))
         val nativeCrash = crash(1)
@@ -142,7 +143,7 @@ class LogViewerViewModelTest {
     }
 
     @Test
-    @TargetApi(30)
+    @SdkSuppress(minSdkVersion = 30)
     fun writeFailureClosesTrace() = runTest {
         val viewModel = createViewModel(StandardTestDispatcher(testScheduler))
         val nativeCrash = crash(1)
@@ -163,7 +164,7 @@ class LogViewerViewModelTest {
 
     @Test
     @Config(sdk = [30])
-    @TargetApi(30)
+    @SdkSuppress(minSdkVersion = 30)
     fun android11DoesNotAttemptToReadNativeTombstone() = runTest {
         val viewModel = createViewModel(StandardTestDispatcher(testScheduler))
 
@@ -173,7 +174,7 @@ class LogViewerViewModelTest {
 
     @Test
     @Config(sdk = [30])
-    @TargetApi(30)
+    @SdkSuppress(minSdkVersion = 30)
     fun logsIncludeExitMetadataNewestFirstWithoutReadingTraces() = runTest {
         val repository = mock(LogRepository::class.java)
         `when`(repository.getLogs()).thenReturn("existing application log")
@@ -206,7 +207,7 @@ class LogViewerViewModelTest {
     }
 
     @Test
-    @TargetApi(30)
+    @SdkSuppress(minSdkVersion = 30)
     fun emptyExitHistoryKeepsApplicationLogs() = runTest {
         val repository = mock(LogRepository::class.java)
         `when`(repository.getLogs()).thenReturn("existing log")
@@ -219,7 +220,7 @@ class LogViewerViewModelTest {
     }
 
     @Test
-    @TargetApi(30)
+    @SdkSuppress(minSdkVersion = 30)
     fun deniedExitHistoryKeepsApplicationLogs() = runTest {
         val repository = mock(LogRepository::class.java)
         `when`(repository.getLogs()).thenReturn("existing log")

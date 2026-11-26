@@ -22,6 +22,7 @@ import android.content.SharedPreferences
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.util.Base64
+import androidx.core.content.edit
 import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
 import java.security.KeyStore
@@ -123,11 +124,11 @@ class SecurePasswordStorage @Inject constructor(
     fun savePassword(hostId: UUID, password: String?) {
         val key = getPasswordKey(hostId)
         if (password.isNullOrEmpty()) {
-            prefs.edit().remove(key).apply()
+            prefs.edit { remove(key) }
         } else {
             val encrypted = encrypt(password)
             if (encrypted != null) {
-                prefs.edit().putString(key, encrypted).apply()
+                prefs.edit { putString(key, encrypted) }
             }
         }
     }
@@ -158,7 +159,7 @@ class SecurePasswordStorage @Inject constructor(
      * @param hostId The unique host ID
      */
     fun deletePassword(hostId: UUID) {
-        prefs.edit().remove(getPasswordKey(hostId)).apply()
+        prefs.edit { remove(getPasswordKey(hostId)) }
     }
 
     private fun getPasswordKey(hostId: UUID): String = "$KEY_PREFIX$hostId"

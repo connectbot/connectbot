@@ -17,7 +17,6 @@
 
 package org.connectbot
 
-import android.annotation.TargetApi
 import android.graphics.Bitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.test.assertIsDisplayed
@@ -36,6 +35,7 @@ import androidx.compose.ui.test.performTextReplacement
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeUp
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.filters.SdkSuppress
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.connectbot.data.EntityIds
@@ -74,7 +74,7 @@ class SettingsScreenTest {
     @Test
     @Config(sdk = [34], qualifiers = "w411dp-h891dp")
     @GraphicsMode(GraphicsMode.Mode.NATIVE)
-    @TargetApi(26)
+    @SdkSuppress(minSdkVersion = 26)
     fun captureTerminalKeyboardSettingsRow() {
         setSettingsContent()
         composeTestRule.onNode(hasScrollAction()).performScrollToNode(hasText(composeTestRule.activity.getString(R.string.pref_keyboard_category)))
@@ -122,7 +122,7 @@ class SettingsScreenTest {
     @Test
     @Config(sdk = [34], qualifiers = "w411dp-h891dp")
     @GraphicsMode(GraphicsMode.Mode.NATIVE)
-    @TargetApi(26)
+    @SdkSuppress(minSdkVersion = 26)
     fun blockedNotificationsExplainBackgroundSupportAndOpenSettings() {
         var settingsOpened = false
         setSettingsContent(

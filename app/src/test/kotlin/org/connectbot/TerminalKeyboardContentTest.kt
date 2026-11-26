@@ -147,7 +147,7 @@ class TerminalKeyboardContentTest {
         val empty = KeyboardItem(layoutId = layout.id, column = 2, kind = "layer", target = "2")
         val session = mutableIntStateOf(0)
         val pressed = mutableListOf<KeyboardItem>()
-        rule.setContent { ConnectBotTheme { KeyboardGrid(layout, listOf(base, jump, fourth, back, cycle, empty), emptyList(), onPress = { pressed.add(it) }, sessionKey = session.value) } }
+        rule.setContent { ConnectBotTheme { KeyboardGrid(layout, listOf(base, jump, fourth, back, cycle, empty), emptyList(), onPress = { pressed.add(it) }, sessionKey = session.intValue) } }
         rule.onNodeWithTag("keyboard_button_${empty.id}").assertIsNotEnabled()
         rule.onNodeWithTag("keyboard_button_${jump.id}").performClick()
         rule.onNodeWithTag("keyboard_button_${base.id}").assertDoesNotExist()
@@ -165,7 +165,7 @@ class TerminalKeyboardContentTest {
             cycleAction()
         }
         rule.onNodeWithTag("keyboard_button_${fourth.id}").assertIsDisplayed()
-        rule.runOnIdle { session.value++ }
+        rule.runOnIdle { session.intValue++ }
         rule.onNodeWithTag("keyboard_button_${base.id}").assertIsDisplayed()
         assertTrue(pressed.all { it.kind == "layer" })
     }
@@ -180,7 +180,7 @@ class TerminalKeyboardContentTest {
             ConnectBotTheme {
                 val density = LocalDensity.current
                 CompositionLocalProvider(LocalDensity provides Density(density.density, 2f), LocalLayoutDirection provides LayoutDirection.Rtl) {
-                    Box(Modifier.width(containerWidth.value.dp).testTag("container")) {
+                    Box(Modifier.width(containerWidth.intValue.dp).testTag("container")) {
                         val draft = drafts.getValue(selected.value)
                         KeyboardGrid(draft.layout, draft.items, draft.macros, onPress = {}, modifier = Modifier.fillMaxWidth().testTag("grid"))
                     }
@@ -191,7 +191,7 @@ class TerminalKeyboardContentTest {
             for (width in listOf(320, 411, 800)) {
                 rule.runOnIdle {
                     selected.value = preset
-                    containerWidth.value = width
+                    containerWidth.intValue = width
                 }
                 val draft = drafts.getValue(preset)
                 val grid = rule.onNodeWithTag("grid").fetchSemanticsNode()

@@ -18,13 +18,13 @@
 package org.connectbot.ui.screens.settings
 
 import android.Manifest
-import android.annotation.TargetApi
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.provider.Settings
+import androidx.test.filters.SdkSuppress
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -149,7 +149,7 @@ class SettingsViewModelNotificationTest {
     }
 
     @Test
-    @TargetApi(26)
+    @SdkSuppress(minSdkVersion = 26)
     fun appNotificationSettingsIntentIsEmittedAfterChannelsExist() = runTest(dispatcher) {
         val viewModel = viewModel()
         val manager = context.getSystemService(NotificationManager::class.java)
@@ -175,7 +175,7 @@ class SettingsViewModelNotificationTest {
     }
 
     @Test
-    @TargetApi(26)
+    @SdkSuppress(minSdkVersion = 26)
     fun openingSettingsPreservesBlockedChannels() = runTest(dispatcher) {
         val manager = context.getSystemService(NotificationManager::class.java)
         manager.createNotificationChannel(NotificationChannel(ConnectionNotifier.BELL_CHANNEL, "Bells", NotificationManager.IMPORTANCE_NONE))

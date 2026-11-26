@@ -20,11 +20,12 @@ package org.connectbot.util
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.createBitmap
 import androidx.core.graphics.drawable.IconCompat
+import androidx.core.graphics.toColorInt
 import org.connectbot.R
 
 /**
@@ -58,16 +59,12 @@ object ShortcutIconGenerator {
         backgroundColor: String?,
         style: IconStyle,
     ): IconCompat {
-        val bitmap = Bitmap.createBitmap(
-            ADAPTIVE_ICON_SIZE,
-            ADAPTIVE_ICON_SIZE,
-            Bitmap.Config.ARGB_8888,
-        )
+        val bitmap = createBitmap(ADAPTIVE_ICON_SIZE, ADAPTIVE_ICON_SIZE)
         val canvas = Canvas(bitmap)
 
         val bgColor = try {
             if (backgroundColor != null) {
-                Color.parseColor(backgroundColor)
+                backgroundColor.toColorInt()
             } else {
                 ContextCompat.getColor(context, R.color.host_blue)
             }
@@ -109,12 +106,12 @@ object ShortcutIconGenerator {
         style: IconStyle,
         sizePx: Int,
     ): Bitmap {
-        val bitmap = Bitmap.createBitmap(sizePx, sizePx, Bitmap.Config.ARGB_8888)
+        val bitmap = createBitmap(sizePx, sizePx)
         val canvas = Canvas(bitmap)
 
         val bgColor = try {
             if (backgroundColor != null) {
-                Color.parseColor(backgroundColor)
+                backgroundColor.toColorInt()
             } else {
                 ContextCompat.getColor(context, R.color.host_blue)
             }

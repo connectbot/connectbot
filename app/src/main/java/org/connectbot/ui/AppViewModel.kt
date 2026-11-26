@@ -139,7 +139,6 @@ class AppViewModel @Inject constructor(
     }
 
     override fun onCleared() {
-        super.onCleared()
         prefs.unregisterOnSharedPreferenceChangeListener(themePrefListener)
     }
 

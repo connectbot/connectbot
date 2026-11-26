@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ package org.connectbot.util
 import android.content.Context
 import android.graphics.Typeface
 import android.net.Uri
-import android.util.Log
+import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 import java.util.concurrent.ConcurrentHashMap
@@ -61,15 +61,15 @@ class LocalFontProvider(private val context: Context) {
         val typeface = Typeface.createFromFile(destFile)
         if (typeface != null) {
             fontCache[fileName] = typeface
-            Log.d(TAG, "Imported font: $displayName -> $fileName")
+            Timber.d("Imported font: $displayName -> $fileName")
             fileName
         } else {
             destFile.delete()
-            Log.w(TAG, "Failed to create typeface from: $displayName")
+            Timber.w("Failed to create typeface from: $displayName")
             null
         }
     } catch (e: Exception) {
-        Log.e(TAG, "Failed to import font: $displayName", e)
+        Timber.e(e, "Failed to import font: $displayName")
         null
     }
 
@@ -82,7 +82,7 @@ class LocalFontProvider(private val context: Context) {
 
         val fontFile = File(fontsDir, fileName)
         if (!fontFile.exists()) {
-            Log.w(TAG, "Font file not found: $fileName")
+            Timber.w("Font file not found: $fileName")
             return null
         }
 
@@ -93,7 +93,7 @@ class LocalFontProvider(private val context: Context) {
             }
             typeface
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to load font: $fileName", e)
+            Timber.e(e, "Failed to load font: $fileName")
             null
         }
     }
@@ -153,7 +153,6 @@ class LocalFontProvider(private val context: Context) {
     }
 
     companion object {
-        private const val TAG = "LocalFontProvider"
         private const val FONTS_DIR = "fonts"
 
         /**

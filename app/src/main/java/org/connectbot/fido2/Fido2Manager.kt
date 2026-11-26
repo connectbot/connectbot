@@ -21,7 +21,6 @@ import android.app.Activity
 import android.content.Context
 import android.nfc.Tag
 import android.nfc.TagLostException
-import android.util.Log
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -204,7 +203,7 @@ class Fido2Manager @Inject constructor(
         val generation = importGeneration.get()
 
         if (session == null) {
-            Log.e(TAG, "retryUsbWithPin: No session or protocol available")
+            Timber.e("retryUsbWithPin: No session or protocol available")
             callback?.invoke(Fido2Result.Error("No device connection"))
             usbCredentialCallback = null
             pendingPin = null
@@ -212,7 +211,7 @@ class Fido2Manager @Inject constructor(
         }
 
         if (pin == null) {
-            Log.e(TAG, "retryUsbWithPin: No PIN provided")
+            Timber.e("retryUsbWithPin: No PIN provided")
             callback?.invoke(Fido2Result.PinRequired(null))
             usbCredentialCallback = null
             return
@@ -569,8 +568,6 @@ class Fido2Manager @Inject constructor(
     private fun sha256(data: ByteArray): ByteArray = MessageDigest.getInstance("SHA-256").digest(data)
 
     companion object {
-        private const val TAG = "Fido2Manager"
-
         /** SSH relying party ID used by OpenSSH for FIDO2 keys */
         const val SSH_RP_ID = "ssh:"
     }

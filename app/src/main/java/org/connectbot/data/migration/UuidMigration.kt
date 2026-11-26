@@ -18,6 +18,7 @@
 package org.connectbot.data.migration
 
 import android.content.ContentValues
+import android.database.Cursor
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import org.connectbot.data.EntityIds
@@ -78,9 +79,9 @@ object UuidMigration : Migration(14, 15) {
                             }
                         } else {
                             when (cursor.getType(index)) {
-                                1 -> values.put(column, cursor.getLong(index))
-                                2 -> values.put(column, cursor.getDouble(index))
-                                4 -> values.put(column, cursor.getBlob(index))
+                                Cursor.FIELD_TYPE_INTEGER -> values.put(column, cursor.getLong(index))
+                                Cursor.FIELD_TYPE_FLOAT -> values.put(column, cursor.getDouble(index))
+                                Cursor.FIELD_TYPE_BLOB -> values.put(column, cursor.getBlob(index))
                                 else -> values.put(column, cursor.getString(index))
                             }
                         }

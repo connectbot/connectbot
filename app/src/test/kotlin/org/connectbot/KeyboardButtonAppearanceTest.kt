@@ -17,7 +17,6 @@
 
 package org.connectbot
 
-import android.annotation.TargetApi
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -38,6 +37,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performTextReplacement
 import androidx.compose.ui.unit.dp
+import androidx.test.filters.SdkSuppress
 import org.connectbot.data.keyboard.KeyboardItem
 import org.connectbot.data.keyboard.KeyboardLayout
 import org.connectbot.ui.components.KeyboardGridButton
@@ -58,7 +58,7 @@ import java.util.UUID
 class KeyboardButtonAppearanceTest {
     @get:Rule val rule = createAndroidComposeRule<ComponentActivity>()
 
-    @TargetApi(34)
+    @SdkSuppress(minSdkVersion = 34)
     @Config(sdk = [34])
     @GraphicsMode(GraphicsMode.Mode.NATIVE)
     @Test
