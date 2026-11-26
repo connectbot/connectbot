@@ -111,7 +111,7 @@ objenesis = { module = "org.objenesis:objenesis", version.ref = "objenesis" }
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 # Match the Robolectric SDK versions used by the app's unit tests.
-android-test-sdk24 = { module = "org.robolectric:android-all-instrumented", version = "7.0.0_r1-robolectric-r1-i7" }
+android-test-sdk24 = { module = "org.robolectric:android-all-instrumented", version = "7.1.0_r7-robolectric-r1-i7" }
 android-test-sdk27 = { module = "org.robolectric:android-all-instrumented", version = "8.1.0-robolectric-4611349-i7" }
 android-test-sdk28 = { module = "org.robolectric:android-all-instrumented", version = "9-robolectric-4913185-2-i7" }
 android-test-sdk29 = { module = "org.robolectric:android-all-instrumented", version = "10-robolectric-5803371-i7" }
