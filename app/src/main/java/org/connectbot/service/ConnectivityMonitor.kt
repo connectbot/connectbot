@@ -25,6 +25,7 @@ import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.net.wifi.WifiManager
 import android.net.wifi.WifiManager.WifiLock
+import android.os.Build
 import timber.log.Timber
 import java.util.concurrent.ConcurrentHashMap
 
@@ -41,11 +42,14 @@ class ConnectivityMonitor(
         Context.CONNECTIVITY_SERVICE,
     ) as ConnectivityManager
 
-    private val wifiManager: WifiManager = terminalManager.applicationContext.getSystemService(
-        Context.WIFI_SERVICE,
-    ) as WifiManager
-
-    private val wifiLock: WifiLock = wifiManager.createWifiLock(TAG)
+    private val wifiLock: WifiLock? = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+        val wifiManager = terminalManager.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        // Android 10 made this Wi-Fi lock mode a no-op.
+        @Suppress("DEPRECATION")
+        wifiManager.createWifiLock(TAG)
+    } else {
+        null
+    }
 
     private var networkRef = 0
     private val lock = Any()
@@ -162,7 +166,7 @@ class ConnectivityMonitor(
             Timber.w(e, "Failed to unregister network callback")
         }
 
-        if (wifiLock.isHeld) {
+        if (wifiLock?.isHeld == true) {
             wifiLock.release()
         }
     }
@@ -283,14 +287,14 @@ class ConnectivityMonitor(
     }
 
     private fun acquireWifiLockIfNecessaryLocked() {
-        if (lockingWifi && networkRef > 0 && !wifiLock.isHeld) {
+        if (lockingWifi && networkRef > 0 && wifiLock?.isHeld == false) {
             wifiLock.acquire()
             Timber.d("WiFi lock acquired (ref count: $networkRef)")
         }
     }
 
     private fun releaseWifiLockIfNecessaryLocked() {
-        if (networkRef == 0 && wifiLock.isHeld) {
+        if (networkRef == 0 && wifiLock?.isHeld == true) {
             wifiLock.release()
             Timber.d("WiFi lock released")
         }

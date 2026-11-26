@@ -30,7 +30,6 @@ import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
-import org.connectbot.sshlib.SshKeys
 import org.connectbot.util.BiometricAvailability
 import org.connectbot.util.BiometricKeyManager
 import org.connectbot.util.PubkeyUtils
@@ -95,11 +94,6 @@ class GeneratePubkeyViewModel @Inject constructor(
 ) : ViewModel() {
     companion object {
         private val ECDSA_SIZES = intArrayOf(256, 384, 521)
-    }
-
-    init {
-        // Ensure Ed25519 provider is available
-        SshKeys.ensureEd25519Support()
     }
 
     private val _uiState = MutableStateFlow(

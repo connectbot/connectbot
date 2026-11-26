@@ -19,7 +19,6 @@ package org.connectbot.service
 
 import android.content.ClipData
 import android.content.ClipboardManager
-import android.content.Context
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.net.Network
@@ -145,7 +144,6 @@ internal class AuthBannerQueue {
  * This class also provides SSH hostkey verification prompting, and password
  * prompting.
  */
-@Suppress("DEPRECATION") // for ClipboardManager
 class TerminalBridge {
     private val scope: CoroutineScope
     private var connectionJob: Job? = null
@@ -456,9 +454,6 @@ class TerminalBridge {
     private val _fontSizeFlow = MutableStateFlow(-1f)
     val fontSizeFlow: StateFlow<Float> = _fontSizeFlow.asStateFlow()
 
-    @Deprecated("Use fontSizeFlow instead")
-    private val fontSizeChangedListeners: MutableList<FontSizeChangedListener>
-
     private val localOutput: MutableList<String>
 
     /**
@@ -497,8 +492,6 @@ class TerminalBridge {
         defaultPaint.isFakeBoldText = true // more readable?
 
         localOutput = mutableListOf()
-
-        fontSizeChangedListeners = mutableListOf()
 
         // Store encoding and font family from profile for later use
         encoding = profile.encoding
@@ -562,7 +555,7 @@ class TerminalBridge {
                 Timber.i("OSC 52 clipboard copy: ${text.length} chars")
                 scope.launch(dispatchers.io) {
                     try {
-                        val clipboard = manager.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
+                        val clipboard = manager.getSystemService(ClipboardManager::class.java)
                         clipboard?.setPrimaryClip(ClipData.newPlainText("terminal", text))
                     } catch (e: RuntimeException) {
                         Timber.w(e, "Cannot copy terminal text to clipboard")
@@ -1298,9 +1291,6 @@ class TerminalBridge {
 //        // refresh any bitmap with new font size
 //        parent?.let { parentChanged(it) }
 
-        for (ofscl in fontSizeChangedListeners) {
-            ofscl.onFontSizeChanged(sizeSp)
-        }
         // Note: Font size is now stored in profiles, not hosts.
         // Runtime font size changes are session-only and not persisted.
     }

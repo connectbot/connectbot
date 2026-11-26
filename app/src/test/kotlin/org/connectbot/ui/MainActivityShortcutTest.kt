@@ -19,7 +19,6 @@ package org.connectbot.ui
 
 import android.app.Activity
 import android.content.Intent
-import androidx.core.content.IntentCompat
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import org.connectbot.R
@@ -42,37 +41,37 @@ class MainActivityShortcutTest {
 
     @Test
     fun emptyNicknameUsesHostnameForShortcutLabel() {
-        createShortcut(Host(id = UUID(0, 1), nickname = "", hostname = "example.org"))
+        val shortcut = createAndCaptureShortcut(Host(id = UUID(0, 1), nickname = "", hostname = "example.org"))
 
         assertEquals(Activity.RESULT_OK, shadowOf(activity).resultCode)
-        assertEquals("example.org", shadowOf(activity).resultIntent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME))
+        assertEquals("example.org", shortcut.shortLabel)
         assertTrue(activity.isFinishing)
     }
 
     @Test
     fun blankNicknameUsesHostnameForShortcutLabel() {
-        createShortcut(Host(id = UUID(0, 1), nickname = "   ", hostname = "example.org"))
+        val shortcut = createAndCaptureShortcut(Host(id = UUID(0, 1), nickname = "   ", hostname = "example.org"))
 
-        assertEquals("example.org", shadowOf(activity).resultIntent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME))
+        assertEquals("example.org", shortcut.shortLabel)
     }
 
     @Test
     fun localHostWithoutNicknameUsesLocalizedAppName() {
-        createShortcut(Host.createLocalHost(""))
+        val shortcut = createAndCaptureShortcut(Host.createLocalHost(""))
 
-        assertEquals(activity.getString(R.string.app_name), shadowOf(activity).resultIntent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME))
+        assertEquals(activity.getString(R.string.app_name), shortcut.shortLabel)
     }
 
     @Test
     fun namedHostKeepsItsShortcutLabel() {
         val host = Host(id = UUID(0, 1), nickname = "Production", hostname = "example.org")
-        createShortcut(host)
-        val destination = IntentCompat.getParcelableExtra(shadowOf(activity).resultIntent, Intent.EXTRA_SHORTCUT_INTENT, Intent::class.java)
-        assertEquals(Intent.ACTION_VIEW, destination?.action)
-        assertEquals(host.getUri(), destination?.data)
-        assertEquals(Intent.FLAG_ACTIVITY_CLEAR_TOP, destination?.flags)
+        val shortcut = createAndCaptureShortcut(host)
+        val destination = shortcut.intent
+        assertEquals(Intent.ACTION_VIEW, destination.action)
+        assertEquals(host.getUri(), destination.data)
+        assertEquals(Intent.FLAG_ACTIVITY_CLEAR_TOP, destination.flags)
 
-        assertEquals("Production", shadowOf(activity).resultIntent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME))
+        assertEquals("Production", shortcut.shortLabel)
     }
 
     @Test
@@ -97,5 +96,19 @@ class MainActivityShortcutTest {
             IconStyle::class.java,
         ).apply { isAccessible = true }
         method.invoke(activity, host, null, IconStyle.TERMINAL)
+    }
+
+    private fun createAndCaptureShortcut(host: Host): ShortcutInfoCompat {
+        lateinit var shortcut: ShortcutInfoCompat
+        mockStatic(ShortcutManagerCompat::class.java).use { shortcuts ->
+            shortcuts.`when`<Intent> {
+                ShortcutManagerCompat.createShortcutResultIntent(any(), any(ShortcutInfoCompat::class.java))
+            }.thenAnswer {
+                shortcut = it.getArgument(1)
+                Intent()
+            }
+            createShortcut(host)
+        }
+        return shortcut
     }
 }

@@ -274,7 +274,6 @@ private fun KnownHostListItem(
     modifier: Modifier = Modifier,
 ) {
     ListItem(
-        headlineContent = { Text(item.endpoint) },
         supportingContent = {
             SelectionContainer {
                 Text(
@@ -295,7 +294,9 @@ private fun KnownHostListItem(
             }
         },
         modifier = modifier,
-    )
+    ) {
+        Text(item.endpoint)
+    }
 }
 
 @PreviewScreen

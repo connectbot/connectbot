@@ -17,6 +17,7 @@
 
 package org.connectbot.ui.components
 
+import android.content.ClipData
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
@@ -58,6 +59,7 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -65,9 +67,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalClipboard
+import androidx.compose.ui.platform.toClipEntry
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -75,6 +77,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.piv.YubiKeyPiv
 import org.connectbot.service.PromptRequest
@@ -310,7 +313,8 @@ private fun HostKeyFingerprintPromptContent(
     onReject: () -> Unit,
 ) {
     val terminalColors = MaterialTheme.colorScheme.terminal
-    val clipboardManager = LocalClipboardManager.current
+    val clipboard = LocalClipboard.current
+    val scope = rememberCoroutineScope()
 
     // Fingerprint format options
     val formats = listOf(
@@ -374,7 +378,10 @@ private fun HostKeyFingerprintPromptContent(
 
             IconButton(
                 onClick = {
-                    clipboardManager.setText(AnnotatedString(formats[selectedFormatIndex].second))
+                    val (label, fingerprint) = formats[selectedFormatIndex]
+                    scope.launch {
+                        clipboard.setClipEntry(ClipData.newPlainText(label, fingerprint).toClipEntry())
+                    }
                 },
             ) {
                 Icon(

@@ -605,6 +605,7 @@ dependencies {
     testImplementation(libs.asm)
     testImplementation(libs.androidx.test.core)
     testImplementation(libs.androidx.test.ext.junit)
+    testImplementation(libs.androidx.test.runner)
     testImplementation(libs.yubikit.android)
     testImplementation(libs.yubikit.fido) {
         // YubiKit 3.0.0 declares Moshi but does not reference it; Okio is transitive.

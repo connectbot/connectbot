@@ -32,10 +32,6 @@ import java.security.spec.X509EncodedKeySpec
 import java.util.Arrays
 
 object PubkeyUtils {
-    init {
-        SshKeys.ensureEd25519Support()
-    }
-
     private const val TAG = "CB.PubkeyUtils"
 
     // Size in bytes of salt to use.
