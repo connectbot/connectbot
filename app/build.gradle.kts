@@ -409,9 +409,23 @@ kotlin {
     }
 }
 
+// Resolve each SDK separately so Gradle retains every required version of android-all-instrumented.
+val robolectricSdks = libs.bundles.robolectric.sdks.get().map { sdk ->
+    configurations.detachedConfiguration(dependencies.create(sdk)).apply {
+        isTransitive = false
+    }
+}
+val robolectricSdkDirectory = layout.buildDirectory.dir("robolectric-sdks")
+val stageRobolectricSdks = tasks.register<Sync>("stageRobolectricSdks") {
+    from(robolectricSdks)
+    into(robolectricSdkDirectory)
+}
+
 tasks.withType<Test>().configureEach {
-    // Use Maven Central's canonical endpoint for Robolectric runtime downloads.
-    systemProperty("robolectric.dependency.repo.url", "https://repo.maven.apache.org/maven2")
+    dependsOn(stageRobolectricSdks)
+    inputs.dir(robolectricSdkDirectory).withPropertyName("robolectricSdks").withPathSensitivity(PathSensitivity.RELATIVE)
+    // Load the SDKs staged from Gradle's dependency cache.
+    systemProperty("robolectric.dependency.dir", robolectricSdkDirectory.get().asFile.absolutePath)
     // Mockito's inline mock maker appends to the bootstrap classpath.
     jvmArgs("--add-opens", "java.base/java.lang=ALL-UNNAMED", "-Xshare:off")
     // Robolectric's cached Android resources use a heap separate from the Gradle daemon.

@@ -110,6 +110,15 @@ mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "
 objenesis = { module = "org.objenesis:objenesis", version.ref = "objenesis" }
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+# Match the Robolectric SDK versions used by the app's unit tests.
+android-test-sdk24 = { module = "org.robolectric:android-all-instrumented", version = "7.0.0_r1-robolectric-r1-i7" }
+android-test-sdk27 = { module = "org.robolectric:android-all-instrumented", version = "8.1.0-robolectric-4611349-i7" }
+android-test-sdk28 = { module = "org.robolectric:android-all-instrumented", version = "9-robolectric-4913185-2-i7" }
+android-test-sdk29 = { module = "org.robolectric:android-all-instrumented", version = "10-robolectric-5803371-i7" }
+android-test-sdk30 = { module = "org.robolectric:android-all-instrumented", version = "11-robolectric-6757853-i7" }
+android-test-sdk31 = { module = "org.robolectric:android-all-instrumented", version = "12-robolectric-7732740-i7" }
+android-test-sdk34 = { module = "org.robolectric:android-all-instrumented", version = "14-robolectric-10818077-i7" }
+android-test-sdk35 = { module = "org.robolectric:android-all-instrumented", version = "15-robolectric-14663667-2-i7" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 conscrypt-openjdk-uber = { module = "org.conscrypt:conscrypt-openjdk-uber", version.ref = "conscryptOpenJdk" }
 
@@ -152,6 +161,9 @@ androidx-navigation-testing = { group = "androidx.navigation", name = "navigatio
 
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradle-plugin = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp" }
+
+[bundles]
+robolectric-sdks = ["android-test-sdk24", "android-test-sdk27", "android-test-sdk28", "android-test-sdk29", "android-test-sdk30", "android-test-sdk31", "android-test-sdk34", "android-test-sdk35"]
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
