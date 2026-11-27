@@ -31,6 +31,7 @@ zmodemlib = "0.1.1"
 telnetlib = "0.1.1"
 sshlib = "0.6.9"
 termlib = "0.3.15"
+shizuku = "13.1.5"
 
 yubikit = "3.3.0"
 
@@ -82,6 +83,8 @@ telnetlib = { module = "org.connectbot.telnetlib:telnetlib", version.ref = "teln
 telnetlib-ktor = { module = "org.connectbot.telnetlib:telnetlib-ktor", version.ref = "telnetlib" }
 sshlib = { module = "org.connectbot.sshlib:sshlib", version.ref = "sshlib" }
 termlib = { module = "org.connectbot:termlib", version.ref = "termlib" }
+shizuku-api = { module = "dev.rikka.shizuku:api", version.ref = "shizuku" }
+shizuku-provider = { module = "dev.rikka.shizuku:provider", version.ref = "shizuku" }
 play-services-basement = { module = "com.google.android.gms:play-services-basement", version.ref = "playServicesBasement" }
 play-feature-delivery = { module = "com.google.android.play:feature-delivery-ktx", version.ref = "playFeatureDelivery" }
 conscrypt-android = { module = "org.conscrypt:conscrypt-android", version.ref = "conscrypt" }

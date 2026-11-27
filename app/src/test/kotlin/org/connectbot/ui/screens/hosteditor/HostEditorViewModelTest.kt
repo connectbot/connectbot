@@ -665,6 +665,27 @@ class HostEditorViewModelTest {
     }
 
     @Test
+    fun testSaveHost_onDeviceShell_dropsAddressFromPreviousProtocol() = runTest {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        `when`(repository.saveHost(any(Host::class.java) ?: Host())).thenAnswer { invocation ->
+            invocation.arguments[0] as Host
+        }
+
+        viewModel.updateNickname("admin@example.com:2222")
+        viewModel.updateProtocol("shizuku")
+
+        assertTrue(viewModel.saveHost())
+        val hostCaptor = ArgumentCaptor.forClass(Host::class.java)
+        verify(repository).saveHost(hostCaptor.capture() ?: Host())
+        val savedHost = hostCaptor.value
+        assertEquals("shizuku", savedHost.protocol)
+        assertEquals("", savedHost.username)
+        assertEquals("", savedHost.hostname)
+        assertEquals(0, savedHost.port)
+    }
+
+    @Test
     fun testUpdateProtocol_toMosh_updatesProtocol() = runTest {
         val viewModel = createViewModel()
         advanceUntilIdle()

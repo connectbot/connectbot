@@ -27,6 +27,9 @@
 	<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 	<uses-permission android:name="android.permission.FOREGROUND_SERVICE_REMOTE_MESSAGING" />
 
+	<!-- Shizuku (adb-level local shell) -->
+	<uses-permission android:name="moe.shizuku.manager.permission.API_V23" />
+
 	<!-- FIDO2 security key support -->
 	<uses-permission android:name="android.permission.NFC" />
 
@@ -116,6 +119,15 @@
 				android:name="autoStoreLocales"
 				android:value="true" />
 		</service>
+
+		<!-- Receives the Shizuku binder when the Shizuku server is running. -->
+		<provider
+			android:name="rikka.shizuku.ShizukuProvider"
+			android:authorities="${applicationId}.shizuku"
+			android:enabled="true"
+			android:exported="true"
+			android:multiprocess="false"
+			android:permission="android.permission.INTERACT_ACROSS_USERS_FULL" />
 
 		<meta-data
 			android:name="com.google.android.backup.api_key"

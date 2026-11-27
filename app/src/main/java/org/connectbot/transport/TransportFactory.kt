@@ -83,6 +83,13 @@ object TransportFactory {
     }
 
     /**
+     * Check if a protocol connects over the network.
+     * @param protocol The protocol name
+     * @return false for on-device shells that have no hostname or port
+     */
+    fun usesNetwork(protocol: String): Boolean = Transport.fromProtocol(protocol)?.usesNetwork ?: true
+
+    /**
      * Get the format hint for a given protocol.
      * @param protocol The protocol name
      * @param context Android context for accessing resources
