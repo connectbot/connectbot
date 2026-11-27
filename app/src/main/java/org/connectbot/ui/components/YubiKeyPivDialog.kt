@@ -210,10 +210,15 @@ private fun pivOperationError(resources: Resources, error: Exception, automatic:
     // The card forgot the PIN after all: just let the user type it.
     is YubiKeyPiv.PinRequired -> if (automatic) null else resources.getString(R.string.pubkey_piv_pin_required)
 
+    is YubiKeyPiv.UnsupportedKey -> when (error.reason) {
+        YubiKeyPiv.UnsupportedKey.Reason.FIRMWARE -> resources.getString(R.string.pubkey_piv_unsupported_firmware)
+        YubiKeyPiv.UnsupportedKey.Reason.ALGORITHM -> resources.getString(R.string.pubkey_piv_unsupported_algorithm, error.algorithm.orEmpty())
+    }
+
     else -> resources.getString(
         when (error) {
             is YubiKeyPiv.DeviceTimeout -> R.string.pubkey_piv_timeout
-            is YubiKeyPiv.UnsupportedKey -> R.string.pubkey_piv_unsupported_key
+            is YubiKeyPiv.EmptySlot -> R.string.pubkey_piv_empty_slot
             is YubiKeyPiv.WrongKey -> R.string.pubkey_piv_wrong_key
             else -> R.string.pubkey_piv_failed
         },
