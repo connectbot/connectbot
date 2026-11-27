@@ -536,6 +536,7 @@ dependencies {
     implementation(libs.sshlib)
     implementation(libs.yubikit.android)
     implementation(libs.yubikit.piv)
+    implementation(libs.sshlib.legacy)
     implementation(libs.termlib)
     implementation(libs.telnetlib)
     implementation(libs.telnetlib.ktor)

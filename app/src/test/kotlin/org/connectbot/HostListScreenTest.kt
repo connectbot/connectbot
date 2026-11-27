@@ -72,6 +72,7 @@ class HostListScreenTest {
                     onNavigateToPortForwards = {},
                     onNavigateToProfiles = {},
                     onNavigateToHelp = {},
+                    onNavigateToSftp = {},
                 )
             }
         }
@@ -95,6 +96,7 @@ class HostListScreenTest {
                     onNavigateToPortForwards = {},
                     onNavigateToProfiles = {},
                     onNavigateToHelp = {},
+                    onNavigateToSftp = {},
                 )
             }
         }
@@ -119,6 +121,7 @@ class HostListScreenTest {
                     onNavigateToPortForwards = {},
                     onNavigateToProfiles = {},
                     onNavigateToHelp = {},
+                    onNavigateToSftp = {},
                 )
             }
         }
@@ -147,6 +150,7 @@ class HostListScreenTest {
                     onNavigateToPortForwards = {},
                     onNavigateToProfiles = {},
                     onNavigateToHelp = {},
+                    onNavigateToSftp = {},
                 )
             }
         }
@@ -170,6 +174,7 @@ class HostListScreenTest {
                     onNavigateToSettings = {},
                     onNavigateToPubkeys = {},
                     onNavigateToPortForwards = {},
+                    onNavigateToSftp = {},
                     onNavigateToProfiles = {},
                     onNavigateToHelp = {},
                 )
@@ -435,6 +440,7 @@ class HostListScreenTest {
         onNavigateToSettings: () -> Unit = {},
         onNavigateToPubkeys: () -> Unit = {},
         onNavigateToPortForwards: (Host) -> Unit = {},
+        onNavigateToSftp: (Host) -> Unit = {},
         onNavigateToProfiles: () -> Unit = {},
         onNavigateToHelp: () -> Unit = {},
         onToggleSortOrder: () -> Unit = {},
@@ -457,6 +463,7 @@ class HostListScreenTest {
                     onNavigateToSettings = onNavigateToSettings,
                     onNavigateToPubkeys = onNavigateToPubkeys,
                     onNavigateToPortForwards = onNavigateToPortForwards,
+                    onNavigateToSftp = onNavigateToSftp,
                     onNavigateToProfiles = onNavigateToProfiles,
                     onNavigateToHelp = onNavigateToHelp,
                     onToggleSortOrder = onToggleSortOrder,

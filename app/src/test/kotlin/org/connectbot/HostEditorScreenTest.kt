@@ -122,6 +122,10 @@ class HostEditorScreenTest {
         val automation = composeTestRule.onNodeWithText(automationTitle, useUnmergedTree = true).getUnclippedBoundsInRoot()
         val preceding = composeTestRule.onNodeWithText(precedingTitle, useUnmergedTree = true).getUnclippedBoundsInRoot()
         assertEquals(preceding.left.value, automation.left.value, 0.5f)
+        composeTestRule.onNodeWithText(automationTitle).performClick()
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.automation_add)).performScrollTo().assertIsDisplayed()
+        composeTestRule.runOnUiThread { org.robolectric.shadows.ShadowDialog.getLatestDialog().onBackPressed() }
+        composeTestRule.onNodeWithText("Nickname").performScrollTo().assertIsDisplayed()
     }
 
     @Test
