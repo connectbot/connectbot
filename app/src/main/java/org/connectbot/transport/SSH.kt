@@ -36,6 +36,8 @@ import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import org.connectbot.R
@@ -227,6 +229,7 @@ open class SSH : AbsTransport {
     private var readBufferOffset: Int = 0
 
     private val portForwards = mutableListOf<PortForward>()
+    private val portForwardMutex = Mutex()
 
     protected var columns: Int = 0
     protected var rows: Int = 0
@@ -1353,12 +1356,32 @@ open class SSH : AbsTransport {
         outputDrained?.complete(Unit)
         localIpAddress = null
 
-        // Detach ownership before disconnecting: callbacks can re-enter close().
-        val (closingSession, closingClient, closingJumps) = synchronized(jumpClients) {
-            Triple(session, client, jumpClients.asReversed().toList()).also {
-                session = null
-                client = null
-                jumpClients.clear()
+        // Detach ownership before suspending: callbacks can re-enter close().
+        val (resources, forwarders) = portForwardMutex.withLock {
+            authenticated = false
+            val resources = synchronized(jumpClients) {
+                Triple(session, client, jumpClients.asReversed().toList()).also {
+                    session = null
+                    client = null
+                    jumpClients.clear()
+                }
+            }
+            val forwarders = portForwards.mapNotNull { forward ->
+                val forwarder = forward.getIdentifier() as? PortForwarder
+                forward.setEnabled(false)
+                forward.setIdentifier(null)
+                forwarder
+            }
+            resources to forwarders
+        }
+        val (closingSession, closingClient, closingJumps) = resources
+        for (forwarder in forwarders) {
+            try {
+                forwarder.stop()
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Timber.w(e, "Failed to stop port forward during SSH shutdown")
             }
         }
         closingSession?.close()
@@ -1526,14 +1549,14 @@ open class SSH : AbsTransport {
         return portForwards.remove(portForward)
     }
 
-    override suspend fun enablePortForward(portForward: PortForward): Boolean {
+    override suspend fun enablePortForward(portForward: PortForward): Boolean = portForwardMutex.withLock {
         if (!portForwards.contains(portForward)) {
             Timber.e("Attempt to enable port forward not in list")
-            return false
+            return@withLock false
         }
 
         if (!authenticated) {
-            return false
+            return@withLock false
         }
 
         val forwarder: PortForwarder? = try {
@@ -1559,38 +1582,39 @@ open class SSH : AbsTransport {
             }
         } catch (e: Exception) {
             Timber.e(e, "Could not create port forward")
-            return false
+            return@withLock false
         }
 
         if (forwarder == null) {
-            return false
+            return@withLock false
         }
 
         portForward.setIdentifier(forwarder)
         portForward.setEnabled(true)
-        return true
+        return@withLock true
     }
 
-    override suspend fun disablePortForward(portForward: PortForward): Boolean {
+    override suspend fun disablePortForward(portForward: PortForward): Boolean = portForwardMutex.withLock {
         if (!portForwards.contains(portForward)) {
             Timber.e("Attempt to disable port forward not in list")
-            return false
+            return@withLock false
         }
 
         if (!authenticated) {
-            return false
+            return@withLock false
         }
 
         val forwarder = portForward.getIdentifier() as? PortForwarder
 
         if (!portForward.isEnabled() || forwarder == null) {
             Timber.d("Could not disable %s; it appears to be not enabled or have no handler", portForward.nickname)
-            return false
+            return@withLock false
         }
 
         portForward.setEnabled(false)
+        portForward.setIdentifier(null)
         forwarder.stop()
-        return true
+        return@withLock true
     }
 
     override fun setInitialDimensions(columns: Int, rows: Int, width: Int, height: Int) {

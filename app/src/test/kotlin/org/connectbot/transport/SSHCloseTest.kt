@@ -19,13 +19,22 @@ package org.connectbot.transport
 
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
+import org.connectbot.data.entity.PortForward
+import org.connectbot.sshlib.PortForwarder
 import org.connectbot.sshlib.SshClient
+import org.connectbot.util.HostConstants
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.mockito.Mockito.doAnswer
+import org.mockito.Mockito.inOrder
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
+import java.util.UUID
 import java.util.concurrent.atomic.AtomicBoolean
 
 class SSHCloseTest {
@@ -62,6 +71,39 @@ class SSHCloseTest {
         ssh.close()
 
         verify(target, times(1)).disconnect()
+    }
+
+    @Test
+    fun closingStopsSocksListenerBeforeDisconnectingAndClearsState() = runTest {
+        val ssh = object : SSH() {
+            fun markAuthenticated() {
+                authenticated = true
+            }
+        }
+        val client = mock(SshClient::class.java)
+        val forwarder = mock(PortForwarder::class.java)
+        val forward = PortForward(
+            hostId = UUID.randomUUID(),
+            nickname = "socks",
+            type = HostConstants.PORTFORWARD_DYNAMIC5,
+            sourcePort = 1080,
+            destAddr = null,
+            destPort = 0,
+        )
+        SSH::class.java.getDeclaredField("client").apply { isAccessible = true }.set(ssh, client)
+        `when`(client.dynamicPortForward(1080)).thenReturn(forwarder)
+        ssh.addPortForward(forward)
+        ssh.markAuthenticated()
+        assertTrue(ssh.enablePortForward(forward))
+
+        ssh.close()
+
+        val order = inOrder(forwarder, client)
+        order.verify(forwarder).stop()
+        order.verify(client).disconnect()
+        assertFalse(forward.isEnabled())
+        assertNull(forward.getIdentifier())
+        assertFalse(ssh.enablePortForward(forward))
     }
 
     @Suppress("UNCHECKED_CAST")
